@@ -69,9 +69,14 @@ int sym;
 int int_val;
 char id_name[100];
 
-void syntax_error() { fprintf(stderr, "syntax error\n"); exit(1); }
+void syntax_error() {
+  fprintf(stderr, "syntax error\n");
+  exit(1);
+}
 
-void next_ch() { ch = getchar(); }
+void next_ch() {
+  ch = getchar(); 
+}
 
 void next_sym() {
   again: switch (ch) {
@@ -79,45 +84,56 @@ void next_sym() {
     case '\n':
       next_ch();
       goto again;
+
     case EOF:
       sym = EOI;
       break;
+
     case '{':
       next_ch();
       sym = LBRA;
       break;
+
     case '}':
       next_ch();
       sym = RBRA;
       break;
+
     case '(':
       next_ch();
       sym = LPAR;
       break;
+
     case ')':
       next_ch();
       sym = RPAR;
       break;
+
     case '+':
       next_ch();
       sym = PLUS;
       break;
+
     case '-':
       next_ch();
       sym = MINUS;
       break;
+
     case '<':
       next_ch();
       sym = LESS;
       break;
+
     case ';':
       next_ch();
       sym = SEMI;
       break;
+
     case '=':
       next_ch();
       sym = EQUAL;
       break;
+
     default:
       if (ch >= '0' && ch <= '9') {
         int_val = 0; /* missing overflow check */
@@ -378,30 +394,36 @@ void c(node *x) {
       g(IFETCH);
       g(x->val);
       break;
+
     case CST:
       g(IPUSH);
       g(x->val);
       break;
+
     case ADD:
       c(x->o1);
       c(x->o2);
       g(IADD);
       break;
+
     case SUB:
       c(x->o1);
       c(x->o2);
       g(ISUB);
       break;
+
     case LT:
       c(x->o1);
       c(x->o2);
       g(ILT);
       break;
+
     case SET:
       c(x->o2);
       g(ISTORE);
       g(x->o1->val);
       break;
+
     case IF1:
       c(x->o1);
       g(JZ);
@@ -409,6 +431,7 @@ void c(node *x) {
       c(x->o2);
       fix(p1, here);
       break;
+
     case IF2:
       c(x->o1);
       g(JZ);
@@ -420,6 +443,7 @@ void c(node *x) {
       c(x->o3);
       fix(p2, here);
       break;
+
     case WHILE:
       p1 = here;
       c(x->o1);
@@ -430,6 +454,7 @@ void c(node *x) {
       fix(hole(), p1);
       fix(p2, here);
       break;
+
     case DO:
       p1 = here;
       c(x->o1);
@@ -437,18 +462,22 @@ void c(node *x) {
       g(JNZ);
       fix(hole(), p1);
       break;
+
     case SEQ:
       c(x->o1);
       c(x->o2);
       break;
+
     case EXPR:
       c(x->o1);
       g(IPOP);
       break;
+
     case PROG:
       c(x->o1);
       g(HALT);
       break;
+
     case EMPTY:
       break;
   }
@@ -460,8 +489,8 @@ void c(node *x) {
 
 int globals[26];
 
-void run()
-{ int stack[1000], *sp = stack;
+void run() {
+  int stack[1000], *sp = stack;
   code *pc = object;
 
   again:
@@ -469,33 +498,45 @@ void run()
       case IFETCH:
         *sp++ = globals[*pc++];
         goto again;
+
       case ISTORE:
         globals[*pc++] = sp[-1];
         goto again;
+
       case IPUSH:
         *sp++ = *pc++;
         goto again;
+
       case IPOP:
         --sp;
         goto again;
+
       case IADD:
-        sp[-2] = sp[-2] + sp[-1]; --sp;
+        sp[-2] = sp[-2] + sp[-1];
+        --sp;
         goto again;
+
       case ISUB:
-        sp[-2] = sp[-2] - sp[-1]; --sp;
+        sp[-2] = sp[-2] - sp[-1];
+        --sp;
         goto again;
+
       case ILT:
-        sp[-2] = sp[-2] < sp[-1]; --sp;
+        sp[-2] = sp[-2] < sp[-1];
+        --sp;
         goto again;
+
       case JMP:
         pc += *pc;
         goto again;
+
       case JZ:
         if (*--sp == 0)
           pc += *pc;
         else
           pc++;
         goto again;
+
       case JNZ:
         if (*--sp != 0)
           pc += *pc;
