@@ -16,18 +16,18 @@
  * variables that are not zero.  The grammar of Tiny-C in EBNF is:
  *
  *  <program> ::= <statement>
- *  <statement> ::= "if" <paren_expr> <statement> |
- *                  "if" <paren_expr> <statement> "else" <statement> |
- *                  "while" <paren_expr> <statement> |
- *                  "do" <statement> "while" <paren_expr> ";" |
+ *  <statement> ::= "if" <parenthesis_expression> <statement> |
+ *                  "if" <parenthesis_expression> <statement> "else" <statement> |
+ *                  "while" <parenthesis_expression> <statement> |
+ *                  "do" <statement> "while" <parenthesis_expression> ";" |
  *                  "{" { <statement> } "}" |
- *                  <expr> ";" |
+ *                  <expression> ";" |
  *                  ";"
- *  <paren_expr> ::= "(" <expr> ")"
- *  <expr> ::= <test> | <id> "=" <expr>
- *  <test> ::= <sum> | <sum> "<" <sum>
+ *  <parenthesis_expression> ::= "(" <expression> ")"
+ *  <expression> ::= <comparison> | <id> "=" <expression>
+ *  <comparison> ::= <sum> | <sum> "<" <sum>
  *  <sum> ::= <term> | <sum> "+" <term> | <sum> "-" <term>
- *  <term> ::= <id> | <int> | <paren_expr>
+ *  <term> ::= <id> | <int> | <parenthesis_expression>
  *  <id> ::= "a" | "b" | "c" | "d" | ... | "z"
  *  <int> ::= <an_unsigned_decimal_integer>
  *
@@ -184,134 +184,142 @@ struct ast_node {
 };
 typedef struct ast_node ast_node;
 
-ast_node *new_node(int k) {
-  ast_node *x = (ast_node*) malloc(sizeof(ast_node));
-  x->node_kind = k;
-  return x;
+ast_node *create_new_ast_node(int k) {
+  ast_node *new_node = (ast_node*) malloc(sizeof(ast_node));
+  new_node->node_kind = k;
+  return new_node;
 }
 
-ast_node *paren_expr(); /* forward declaration */
+ast_node *parenthesis_expression(); /* forward declaration */
 
-/* <term> ::= <id> | <int> | <paren_expr> */
+/* <term> ::= <id> | <int> | <parenthesis_expression> */
 ast_node *term() {
-  ast_node *x;
-  if (sym == ID) {
-    x = new_node(VAR);
-    x->node_value = id_name[0] - 'a';
-    next_sym();
-  }
-  else if (sym == INT) {
-    x = new_node(CST);
-    x->node_value = int_val;
-    next_sym();
-  }
-  else
-    x = paren_expr();
+  ast_node *term_node;
 
-  return x;
+  if (sym == ID) {
+    term_node = create_new_ast_node(VAR);
+    term_node->node_value = id_name[0] - 'a';
+    next_sym();
+  }
+
+  else if (sym == INT) {
+    term_node = create_new_ast_node(CST);
+    term_node->node_value = int_val;
+    next_sym();
+  }
+
+  else
+    term_node = parenthesis_expression();
+
+  return term_node;
 }
 
 /* <sum> ::= <term> | <sum> "+" <term> | <sum> "-" <term> */
 ast_node *sum() {
-  ast_node *t, *x = term();
+  ast_node *sum_node, *term_node, *temp;
+
+  term_node = term();
+  sum_node = term_node;
+
   while (sym == PLUS || sym == MINUS) {
-    t = x;
-    x = new_node(sym == PLUS ? ADD : SUB);
+    temp = sum_node;
+    sum_node = create_new_ast_node(sym == PLUS ? ADD : SUB);
     next_sym();
-    x->child_1 = t;
-    x->child_2 = term();
+    sum_node->child_1 = temp;
+    sum_node->child_2 = term();
   }
-  return x;
+
+  return sum_node;
 }
 
-/* <test> ::= <sum> | <sum> "<" <sum> */
-ast_node *test() {
-  ast_node *t, *x = sum();
+/* <comparison> ::= <sum> | <sum> "<" <sum> */
+ast_node *comparison() {
+  ast_node *result, *left_operand = sum();
   if (sym == LESS) {
-    t = x;
-    x = new_node(LT);
+    result = left_operand;
+    left_operand = create_new_ast_node(LT);
     next_sym();
-    x->child_1 = t;
-    x->child_2 = sum();
+    left_operand->child_1 = result;
+    left_operand->child_2 = sum();
   }
-  return x;
+  return left_operand;
 }
 
-/* <expr> ::= <test> | <id> "=" <expr> */
-ast_node *expr() {
+/* <expression> ::= <comparison> | <id> "=" <expression> */
+ast_node *expression() {
   ast_node *t, *x;
   if (sym != ID)
-    return test();
+    return comparison();
   
-  x = test();
+  x = comparison();
   if (x->node_kind == VAR && sym == EQUAL) {
     t = x;
-    x = new_node(SET);
+    x = create_new_ast_node(SET);
     next_sym();
     x->child_1 = t;
-    x->child_2 = expr();
+    x->child_2 = expression();
   }
 
   return x;
 }
 
-/* <paren_expr> ::= "(" <expr> ")" */
-ast_node *paren_expr() {
-  ast_node *x;
+/* <parenthesis_expression> ::= "(" <expression> ")" */
+ast_node *parenthesis_expression() {
+  ast_node *result;
 
   if (sym == LPAR)
     next_sym();
   else
     syntax_error();
 
-  x = expr();
+  result = expression();
 
   if (sym == RPAR)
     next_sym();
   else
     syntax_error();
 
-  return x;
+  return result;
 }
 
 ast_node *statement() {
-  ast_node *t, *x;
+  ast_node *result, *temp;
 
-  /* "if" <paren_expr> <statement> */
+  /* "if" <parenthesis_expression> <statement> */
   if (sym == IF_SYM) {
-    x = new_node(IF1);
+    result = create_new_ast_node(IF1);
     next_sym();
-    x->child_1 = paren_expr();
-    x->child_2 = statement();
+    result->child_1 = parenthesis_expression();
+    result->child_2 = statement();
 
     /* ... "else" <statement> */
     if (sym == ELSE_SYM) {
-      x->node_kind = IF2;
+      result->node_kind = IF2;
       next_sym();
-      x->child_3 = statement();
+      result->child_3 = statement();
     }
   }
 
-  /* "while" <paren_expr> <statement> */
+  /* "while" <parenthesis_expression> <statement> */
   else if (sym == WHILE_SYM) {
-    x = new_node(WHILE);
+    result = create_new_ast_node(WHILE);
     next_sym();
-    x->child_1 = paren_expr();
-    x->child_2 = statement();
+    result->child_1 = parenthesis_expression();
+    result->child_2 = statement();
   }
 
-  /* "do" <statement> "while" <paren_expr> ";" */
+  /* "do" <statement> "while" <parenthesis_expression> ";" */
   else if (sym == DO_SYM) {
-    x = new_node(DO);
+    result = create_new_ast_node(DO);
     next_sym();
-    x->child_1 = statement();
+    result->child_1 = statement();
 
     if (sym == WHILE_SYM)
       next_sym();
     else
       syntax_error();
 
-    x->child_2 = paren_expr();
+    result->child_2 = parenthesis_expression();
 
     if (sym == SEMI)
       next_sym();
@@ -321,28 +329,28 @@ ast_node *statement() {
 
   /* ";" */
   else if (sym == SEMI) {
-    x = new_node(EMPTY);
+    result = create_new_ast_node(EMPTY);
     next_sym();
   }
 
   /* "{" { <statement> } "}" */
   else if (sym == LBRA) {
-    x = new_node(EMPTY);
+    result = create_new_ast_node(EMPTY);
     next_sym();
 
     while (sym != RBRA) {
-      t = x;
-      x = new_node(SEQ);
-      x->child_1 = t;
-      x->child_2 = statement();
+      temp = result;
+      result = create_new_ast_node(SEQ);
+      result->child_1 = temp;
+      result->child_2 = statement();
     }
     next_sym();
   }
 
-  /* <expr> ";" */
+  /* <expression> ";" */
   else {
-    x = new_node(EXPR);
-    x->child_1 = expr();
+    result = create_new_ast_node(EXPR);
+    result->child_1 = expression();
 
     if (sym == SEMI)
       next_sym();
@@ -350,20 +358,20 @@ ast_node *statement() {
       syntax_error();
   }
 
-  return x;
+  return result;
 }
 
 /* <program> ::= <statement> */
 ast_node *program() {
-  ast_node *x = new_node(PROG);
+  ast_node *result = create_new_ast_node(PROG);
 
   next_sym();
-  x->child_1 = statement();
+  result->child_1 = statement();
   
   if (sym != EOI)
     syntax_error();
 
-  return x;
+  return result;
 }
 
 /*---------------------------------------------------------------------------*/
