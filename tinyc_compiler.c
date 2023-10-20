@@ -191,6 +191,7 @@ ast_node *create_new_ast_node(int kind) {
 }
 
 ast_node *parenthesis_expression(); /* forward declaration */
+void printNode(ast_node *node, int printChildren); /* forward declaration */
 
 /* <term> ::= <id> | <int> | <parenthesis_expression> */
 ast_node *term() {
@@ -569,18 +570,26 @@ char* translateNodeKind(int nodeKind) {
 }
 
 void printNode(ast_node *node, int printChildren) {
+  if(node == NULL) return;
+
   printf("node_kind: %s\n", translateNodeKind(node->node_kind));
   printf("node_value: %d\n", node->node_value);
 
   if(printChildren) {
-    printf("child_1:\n");
-    printNode(node->child_1, printChildren);
+    if(node->child_1 != NULL) {
+      printf("child_1:\n");
+      printNode(node->child_1, printChildren);
+    }
 
-    printf("child_2:\n");
-    printNode(node->child_2, printChildren);
+    if(node->child_2 != NULL) {
+      printf("child_2:\n");
+      printNode(node->child_2, printChildren);
+    }
 
-    printf("child_3:\n");
-    printNode(node->child_3, printChildren);
+    if(node->child_3 != NULL) {
+      printf("child_3:\n");
+      printNode(node->child_3, printChildren);
+    }
   }
 }
 
