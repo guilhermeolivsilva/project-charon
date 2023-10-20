@@ -68,6 +68,7 @@ int ch = ' ';
 int sym;
 int int_val;
 char id_name[100];
+int globalIdManager = -1;
 
 void syntax_error() {
   fprintf(stderr, "syntax error\n");
@@ -178,8 +179,9 @@ enum { VAR, CST, ADD, SUB, LT, SET,
        IF1, IF2, WHILE, DO, EMPTY, SEQ, EXPR, PROG };
 
 struct ast_node {
+  int node_id;
   int node_kind;
-  struct ast_node *child_1, *child_2, *child_3;
+  struct ast_node *child_1, *child_2, *child_3, *parent;
   int node_value;
 };
 typedef struct ast_node ast_node;
@@ -187,6 +189,7 @@ typedef struct ast_node ast_node;
 ast_node *create_new_ast_node(int kind) {
   ast_node *new_node = (ast_node*) malloc(sizeof(ast_node));
   new_node->node_kind = kind;
+  new_node->node_id = ++globalIdManager;
   return new_node;
 }
 
@@ -228,6 +231,9 @@ ast_node *sum() {
     next_sym();
     sum_node->child_1 = temp;
     sum_node->child_2 = term();
+
+    sum_node->child_1->parent = sum_node;
+    sum_node->child_2->parent = sum_node;
   }
 
   return sum_node;
@@ -242,6 +248,9 @@ ast_node *comparison() {
     next_sym();
     left_operand->child_1 = result;
     left_operand->child_2 = sum();
+
+    left_operand->child_1->parent = left_operand;
+    left_operand->child_2->parent = left_operand;
   }
   return left_operand;
 }
@@ -259,6 +268,9 @@ ast_node *expression() {
     next_sym();
     x->child_1 = t;
     x->child_2 = expression();
+
+    x->child_1->parent = x;
+    x->child_2->parent = x;
   }
 
   return x;
@@ -293,11 +305,16 @@ ast_node *statement() {
     result->child_1 = parenthesis_expression();
     result->child_2 = statement();
 
+    result->child_1->parent = result;
+    result->child_2->parent = result;
+
     /* ... "else" <statement> */
     if (sym == ELSE_SYM) {
       result->node_kind = IF2;
       next_sym();
       result->child_3 = statement();
+
+      result->child_3->parent = result;
     }
   }
 
@@ -307,6 +324,9 @@ ast_node *statement() {
     next_sym();
     result->child_1 = parenthesis_expression();
     result->child_2 = statement();
+
+    result->child_1->parent = result;
+    result->child_2->parent = result;
   }
 
   /* "do" <statement> "while" <parenthesis_expression> ";" */
@@ -314,6 +334,7 @@ ast_node *statement() {
     result = create_new_ast_node(DO);
     next_sym();
     result->child_1 = statement();
+    result->child_1->parent = result;
 
     if (sym == WHILE_SYM)
       next_sym();
@@ -321,6 +342,7 @@ ast_node *statement() {
       syntax_error();
 
     result->child_2 = parenthesis_expression();
+    result->child_2->parent = result;
 
     if (sym == SEMI)
       next_sym();
@@ -344,6 +366,9 @@ ast_node *statement() {
       result = create_new_ast_node(SEQ);
       result->child_1 = temp;
       result->child_2 = statement();
+
+      result->child_1->parent = result;
+      result->child_2->parent = result;
     }
     next_sym();
   }
@@ -352,6 +377,7 @@ ast_node *statement() {
   else {
     result = create_new_ast_node(EXPR);
     result->child_1 = expression();
+    result->child_1->parent = result;
 
     if (sym == SEMI)
       next_sym();
@@ -368,9 +394,12 @@ ast_node *program() {
 
   next_sym();
   result->child_1 = statement();
+  result->child_1->parent = result;
   
   if (sym != EOI)
     syntax_error();
+
+  printNode(result, 1);
 
   return result;
 }
@@ -572,8 +601,10 @@ char* translateNodeKind(int nodeKind) {
 void printNode(ast_node *node, int printChildren) {
   if(node == NULL) return;
 
+  printf("node_id: %d\n", node->node_id);
   printf("node_kind: %s\n", translateNodeKind(node->node_kind));
   printf("node_value: %d\n", node->node_value);
+  printf("parent_id: %d\n\n", node->parent == NULL ? -1 : node->parent->node_id);
 
   if(printChildren) {
     if(node->child_1 != NULL) {
