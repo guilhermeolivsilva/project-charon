@@ -184,9 +184,9 @@ struct ast_node {
 };
 typedef struct ast_node ast_node;
 
-ast_node *create_new_ast_node(int k) {
+ast_node *create_new_ast_node(int kind) {
   ast_node *new_node = (ast_node*) malloc(sizeof(ast_node));
-  new_node->node_kind = k;
+  new_node->node_kind = kind;
   return new_node;
 }
 
@@ -552,6 +552,36 @@ void run() {
           pc++;
         goto again;
     }
+}
+
+// Auxiliary functions
+
+char* translateNodeKind(int nodeKind) {
+  char* nodeKindMap[] = {
+    "VAR", "CST", "ADD",
+    "SUB", "LT", "SET",
+    "IF1", "IF2", "WHILE",
+    "DO", "EMPTY", "SEQ",
+    "EXPR", "PROG"
+  };
+
+  return nodeKindMap[nodeKind];
+}
+
+void printNode(ast_node *node, int printChildren) {
+  printf("node_kind: %s\n", translateNodeKind(node->node_kind));
+  printf("node_value: %d\n", node->node_value);
+
+  if(printChildren) {
+    printf("child_1:\n");
+    printNode(node->child_1, printChildren);
+
+    printf("child_2:\n");
+    printNode(node->child_2, printChildren);
+
+    printf("child_3:\n");
+    printNode(node->child_3, printChildren);
+  }
 }
 
 /*---------------------------------------------------------------------------*/
