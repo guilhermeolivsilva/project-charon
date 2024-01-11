@@ -1,59 +1,8 @@
-/* file: "tinyc.c" */
-
 /* Copyright (C) 2001 by Marc Feeley, All Rights Reserved. */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/* 
- * This is a compiler for the Tiny-C language.  Tiny-C is a
- * considerably stripped down version of C and it is meant as a
- * pedagogical tool for learning about compilers.  The integer global
- * variables "a" to "z" are predefined and initialized to zero, and it
- * is not possible to declare new variables.  The compiler reads the
- * program from standard input and prints out the value of the
- * variables that are not zero.  The grammar of Tiny-C in EBNF is:
- *
- *  <program> ::= <statement>
- *  <statement> ::= "if" <parenthesis_expression> <statement> |
- *                  "if" <parenthesis_expression> <statement> "else" <statement> |
- *                  "while" <parenthesis_expression> <statement> |
- *                  "do" <statement> "while" <parenthesis_expression> ";" |
- *                  "{" { <statement> } "}" |
- *                  <expression> ";" |
- *                  ";"
- *  <parenthesis_expression> ::= "(" <expression> ")"
- *  <expression> ::= <comparison> | <id> "=" <expression>
- *  <comparison> ::= <sum> | <sum> "<" <sum>
- *  <sum> ::= <term> | <sum> "+" <term> | <sum> "-" <term>
- *  <term> ::= <id> | <int> | <parenthesis_expression>
- *  <id> ::= "a" | "b" | "c" | "d" | ... | "z"
- *  <int> ::= <an_unsigned_decimal_integer>
- *
- * Here are a few invocations of the compiler:
- *
- * % echo "a=b=c=2<3;" | ./program.out
- * a = 1
- * b = 1
- * c = 1
- * % echo "{ i=1; while (i<100) i=i+i; }" | ./program.out
- * i = 128
- * % echo "{ i=125; j=100; while (i-j) if (i<j) j=j-i; else i=i-j; }" | ./program.out
- * i = 25
- * j = 25
- * % echo "{ i=1; do i=i+10; while (i<50); }" | ./program.out
- * i = 51
- * % echo "{ i=1; while ((i=i+10)<50) ; }" | ./program.out
- * i = 51
- * % echo "{ i=7; if (i<5) x=1; if (i<10) y=2; }" | ./program.out
- * i = 7
- * y = 2
- *
- * The compiler does a minimal amount of error checking to help
- * highlight the structure of the compiler.
- */
-
 
 /*---------------------------------------------------------------------------*/
 
