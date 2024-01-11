@@ -130,7 +130,7 @@ i = 51
 A simple program to highlight the available variables (`a` through `z`).
 
 ```
-% `echo "{ i=7; if (i<5) x=1; if (i<10) y=2; }" | ./program.out`
+% echo "{ i=7; if (i<5) x=1; if (i<10) y=2; }" | ./program.out
 i = 7
 y = 2
 ```
