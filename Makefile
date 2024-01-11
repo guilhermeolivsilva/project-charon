@@ -5,7 +5,7 @@ debug:
 	clang tinyc_compiler.c -o debug_program.out -g
 
 clean:
-	rm -rf *.out *.out.dSYM
+	rm -rf *.out *.out.dSYM input output
 
 sanity:
 	echo "a=b=c=2<3;" | ./program.out
