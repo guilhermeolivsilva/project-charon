@@ -54,3 +54,4 @@ dkms.conf
 # I/O files
 input
 output
+*.result
