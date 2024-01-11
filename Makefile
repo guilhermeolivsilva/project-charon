@@ -5,12 +5,12 @@ debug:
 	clang tinyc_compiler.c -o debug_program.out -g
 
 clean:
-	rm -rf *.out *.out.dSYM input output
+	rm -rf *.out *.out.dSYM tests/*.result
 
-sanity:
-	echo "a=b=c=2<3;" | ./program.out
-	echo "{ i=1; while (i<100) i=i+i; }" | ./program.out
-	echo "{ i=125; j=100; while (i-j) if (i<j) j=j-i; else i=i-j; }" | ./program.out
-	echo "{ i=1; do i=i+10; while (i<50); }" | ./program.out
-	echo "{ i=1; while ((i=i+10)<50) ; }" | ./program.out
-	echo "{ i=7; if (i<5) x=1; if (i<10) y=2; }" | ./program.out
+test:
+	./program.out < tests/two_is_less_than_three.test > tests/two_is_less_than_three.result
+	./program.out < tests/power_of_two.test > tests/power_of_two.result
+	./program.out < tests/greatest_common_divisor.test > tests/greatest_common_divisor.result
+	./program.out < tests/do_while.test > tests/do_while.result
+	./program.out < tests/while.test > tests/while.result
+	./program.out < tests/available_vars.test > tests/available_vars.result
