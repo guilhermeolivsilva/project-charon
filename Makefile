@@ -1,8 +1,8 @@
 all:
-	clang++ src/tinyc_compiler.cpp -o program.out
+	clang tinyc_compiler.c -o program.out
 
 debug:
-	clang++ src/tinyc_compiler.cpp -o debug_program.out -g
+	clang tinyc_compiler.c -o debug_program.out -g
 
 clean:
 	rm -rf *.out *.out.dSYM tests/*.result
