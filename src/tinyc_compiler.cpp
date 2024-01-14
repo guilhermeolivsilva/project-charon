@@ -348,7 +348,7 @@ ast_node *program() {
   if (sym != EOI)
     syntax_error();
 
-  // printNode(result, 1);
+  printNode(result, 1);
 
   return result;
 }
@@ -477,58 +477,58 @@ void generate_code_from_ast_node(ast_node *x) {
 int globals[26];
 
 void run() {
-  int stack[1000], *stackPointer = stack;
-  code *programCounter = object;
+  int stack[1000], *sp = stack;
+  code *pc = object;
 
   again:
-    switch (*programCounter++) {
+    switch (*pc++) {
       case IFETCH:
-        *stackPointer++ = globals[*programCounter++];
+        *sp++ = globals[*pc++];
         goto again;
 
       case ISTORE:
-        globals[*programCounter++] = stackPointer[-1];
+        globals[*pc++] = sp[-1];
         goto again;
 
       case IPUSH:
-        *stackPointer++ = *programCounter++;
+        *sp++ = *pc++;
         goto again;
 
       case IPOP:
-        --stackPointer;
+        --sp;
         goto again;
 
       case IADD:
-        stackPointer[-2] = stackPointer[-2] + stackPointer[-1];
-        --stackPointer;
+        sp[-2] = sp[-2] + sp[-1];
+        --sp;
         goto again;
 
       case ISUB:
-        stackPointer[-2] = stackPointer[-2] - stackPointer[-1];
-        --stackPointer;
+        sp[-2] = sp[-2] - sp[-1];
+        --sp;
         goto again;
 
       case ILT:
-        stackPointer[-2] = stackPointer[-2] < stackPointer[-1];
-        --stackPointer;
+        sp[-2] = sp[-2] < sp[-1];
+        --sp;
         goto again;
 
       case JMP:
-        programCounter += *programCounter;
+        pc += *pc;
         goto again;
 
       case JZ:
-        if (*--stackPointer == 0)
-          programCounter += *programCounter;
+        if (*--sp == 0)
+          pc += *pc;
         else
-          programCounter++;
+          pc++;
         goto again;
 
       case JNZ:
-        if (*--stackPointer != 0)
-          programCounter += *programCounter;
+        if (*--sp != 0)
+          pc += *pc;
         else
-          programCounter++;
+          pc++;
         goto again;
     }
 }
@@ -579,11 +579,8 @@ void printNode(ast_node *node, int printChildren) {
 
 int main() {
   int i;
-  ast_node* generated_program;
 
-  generated_program = program();
-
-  generate_code_from_ast_node(generated_program);
+  generate_code_from_ast_node(program());
 
   for (i=0; i<26; i++)
     globals[i] = 0;
