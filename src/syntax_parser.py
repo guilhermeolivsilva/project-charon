@@ -58,3 +58,31 @@ class SyntaxParser:
     @global_id_manager.setter
     def global_id_manager(self, value: int) -> None:
         self._global_id_manager = value
+
+    @uses_global_id
+    def term(self, symbol: str, value: int) -> Node:
+        """
+        Generate a `term` for the AST.
+
+        Terms are either a variable, a constant, or a paranthesis expression.
+    
+        Parameters
+        ----------
+        symbol : str
+            The symbol to parse. If not "ID" or "INT", creates a
+            `parenthesis_expression`.
+        value : int
+            The value to be stored in the Node.
+        """
+
+        symbol_map = {
+            "ID": Node(id=self.global_id_manager, kind="VAR", value=value),
+            "INT": Node(id=self.global_id_manager, kind="CST", value=value)
+        }
+        
+        try:
+            new_node = symbol_map[symbol]
+        except KeyError:
+            new_node = self.parenthesis_expression()
+
+        return new_node
