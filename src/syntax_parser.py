@@ -73,6 +73,11 @@ class SyntaxParser:
             `parenthesis_expression`.
         value : int
             The value to be stored in the Node.
+
+        Returns
+        -------
+        term_node : Node
+            The new `term` generated Node.
         """
 
         symbol_map = {
@@ -81,8 +86,12 @@ class SyntaxParser:
         }
         
         try:
-            new_node = symbol_map[symbol]
+            term_node = symbol_map[symbol]
         except KeyError:
-            new_node = self.parenthesis_expression()
+            term_node = self.parenthesis_expression()
 
-        return new_node
+        return term_node
+
+    @uses_global_id
+    def parenthesis_expression(self) -> Node:
+        raise NotImplementedError()
