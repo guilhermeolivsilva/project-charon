@@ -1,9 +1,9 @@
 """Implement a syntax parser to use with the AST."""
 
-from abstract_syntax_tree import Node
+from .abstract_syntax_tree import Node
 
 
-def uses_global_id(func: function) -> function:
+def uses_global_id(func: callable) -> callable:
     """
     Decorate a function to enable it to access the `global_id_manager`.
 
@@ -21,7 +21,7 @@ def uses_global_id(func: function) -> function:
         The decorated function.
     """
 
-    def wrapper(cls, *args, **kwargs) -> function:
+    def wrapper(cls, *args, **kwargs) -> callable:
         """
         Wrap the function to be decorated.
 
@@ -30,8 +30,15 @@ def uses_global_id(func: function) -> function:
         result : object
             The result of the decorated function.
         """
-        result = func(cls, *args, **kwargs)
-        cls.global_id_manager += 1
+        try:
+            result = func(cls, *args, **kwargs)
+        except Exception:
+            print(
+                "Could not run decorated function.",
+                "The ID counter was not affected."
+            )
+        else:
+            cls.global_id_manager += 1
 
         return result
 
