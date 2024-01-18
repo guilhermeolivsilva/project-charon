@@ -65,7 +65,7 @@ class SyntaxParser:
         Generate a `term` for the AST.
 
         Terms are either a variable, a constant, or a paranthesis expression.
-    
+
         Parameters
         ----------
         symbol : str
@@ -82,18 +82,18 @@ class SyntaxParser:
 
         symbol_map = {
             "ID": Node(id=self.global_id_manager, kind="VAR", value=value),
-            "INT": Node(id=self.global_id_manager, kind="CST", value=value)
+            "INT": Node(id=self.global_id_manager, kind="CST", value=value),
         }
-        
+
         try:
             term_node = symbol_map[symbol]
         except KeyError:
             term_node = self.parenthesis_expression()
 
         return term_node
-    
+
     @uses_global_id
-    def sum(self, symbol: str, lhs: dict, rhs: dict) -> Node:
+    def sum(self, symbol: str, lhs: Node, rhs: Node) -> Node:
         """
         Generate a `sum` for the AST.
 
@@ -106,49 +106,28 @@ class SyntaxParser:
         symbol : str
             The symbol to parse. If not "ID" or "INT", creates a
             `parenthesis_expression`.
-        lhs : dict
-            A dictionary with the data to store in the left hand side Node of
-            the `sum`. Must contain the `symbol` and `value` keys.
-        rhs : dict
-            A dictionary with the data to store in the right hand side Node of
-            the `sum`. Must contain the `symbol` and `value` keys.
-        
+        lhs : Node
+            The Node that represents the left hand side term of the operation.
+        rhs : Node
+            The Node that represents the right hand side term of the operation.
+
         Returns
         -------
         sum_node : Node
             The new `sum` generated Node.
-
-        Raises
-        ------
-        AssertionError
-            Raised if either the `lhs` or the `rhs` parameters are
-            malformatted.
         """
-        # Assert the `lhs` and `rhs` have the expected contents.
-        assert ["symbol", "value"] == list(lhs.keys())
-        assert ["symbol", "value"] == list(rhs.keys())
-
-
         symbol_map = {
             "PLUS": Node(id=self.global_id_manager, kind="ADD", value=-1),
-            "MINUS": Node(id=self.global_id_manager, kind="SUB", value=-1)
+            "MINUS": Node(id=self.global_id_manager, kind="SUB", value=-1),
         }
 
         sum_node = symbol_map[symbol]
 
-        left_node = self.term(**lhs)
-        right_node = self.term(**rhs)
+        lhs.add_parent(sum_node)
+        rhs.add_parent(sum_node)
 
-        # Manually increment the IDs just to make sure it won't overlap
-        # (the `global_id_manager` will still track correctly!)
-        left_node.id += 1
-        right_node.id += 1
-        
-        left_node.add_parent(sum_node)
-        right_node.add_parent(sum_node)
-
-        sum_node.add_child(left_node)
-        sum_node.add_child(right_node)
+        sum_node.add_child(lhs)
+        sum_node.add_child(rhs)
 
         return sum_node
 
