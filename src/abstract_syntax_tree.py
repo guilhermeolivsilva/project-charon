@@ -23,6 +23,30 @@ class Node:
         self.parent: Node = None
         self.children: list = []
 
+    def add_child(self, child: "Node") -> None:
+        """
+        Add a Node to the `self.children` list.
+
+        Parameters
+        ----------
+        child : Node
+            The Node to be added.
+        """
+        self.children.append(child)
+
+    def __str__(self) -> str:
+        """
+        Implement a string representation of a Node object.
+
+        This method is internally invoked when using `print(node_obj)`.
+
+        Returns
+        -------
+        : str
+            The string representation of a Node object.
+        """
+        return f"ID: {self.id}, Kind: {self.kind}, Value: {self.value}"
+
 
 class AbstractSyntaxTree:
     """
