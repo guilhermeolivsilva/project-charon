@@ -34,6 +34,17 @@ class Node:
         """
         self.children.append(child)
 
+    def add_parent(self, parent: "Node") -> None:
+        """
+        Set a Node as this object's parent.
+
+        Parameters
+        ----------
+        parent : Node
+            A Node object to be set as the parent of `this`.
+        """
+        self.parent = parent
+
     def __str__(self) -> str:
         """
         Implement a string representation of a Node object.
@@ -42,10 +53,15 @@ class Node:
 
         Returns
         -------
-        : str
+        _str : str
             The string representation of a Node object.
         """
-        return f"ID: {self.id}, Kind: {self.kind}, Value: {self.value}"
+        _str = f"ID: {self.id}, Kind: {self.kind}, Value: {self.value}"
+
+        if self.parent:
+            _str += f", Parent ID: {self.parent.id}"
+
+        return _str
 
 
 class AbstractSyntaxTree:
