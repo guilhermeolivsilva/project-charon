@@ -130,6 +130,38 @@ class SyntaxParser:
         sum_node.add_child(rhs)
 
         return sum_node
+    
+    @uses_global_id
+    def comparison(self, lhs: Node, rhs: Node) -> Node:
+        """
+        Generate a `comparison` for the AST.
+
+        A `comparison` is a triplet of Nodes consisting of the left and right
+        hand side terms, and the `comparison` itself.
+
+        TinyC currently only supports the "less than" (`<`) comparison.
+
+        Parameters
+        ----------
+        lhs : Node
+            The Node that represents the left hand side term of the operation.
+        rhs : Node
+            The Node that represents the right hand side term of the operation.
+
+        Returns
+        -------
+        comparison_node : Node
+            The new `comparison` generated Node.
+        """
+        comparison_node = Node(id=self.global_id_manager, kind="LT", value=-1)
+
+        lhs.add_parent(comparison_node)
+        rhs.add_parent(comparison_node)
+
+        comparison_node.add_child(lhs)
+        comparison_node.add_child(rhs)
+
+        return comparison_node
 
     @uses_global_id
     def parenthesis_expression(self) -> Node:
