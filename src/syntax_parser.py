@@ -162,6 +162,36 @@ class SyntaxParser:
         comparison_node.add_child(rhs)
 
         return comparison_node
+    
+    @uses_global_id
+    def expression(self, lhs: Node, rhs: Node) -> Node:
+        """
+        Generate a `expression` for the AST.
+
+        A `expression` is a triplet of Nodes consisting of the left and right
+        hand side terms, and the `expression` itself.
+
+        Parameters
+        ----------
+        lhs : Node
+            The Node that represents the left hand side term of the operation.
+        rhs : Node
+            The Node that represents the right hand side term of the operation.
+
+        Returns
+        -------
+        expression_node : Node
+            The new `expression` generated Node.
+        """
+        expression_node = Node(id=self.global_id_manager, kind="SET", value=-1)
+
+        lhs.add_parent(expression_node)
+        rhs.add_parent(expression_node)
+
+        expression_node.add_child(lhs)
+        expression_node.add_child(rhs)
+
+        return expression_node
 
     @uses_global_id
     def parenthesis_expression(self) -> Node:
