@@ -32,7 +32,8 @@ def uses_global_id(func: callable) -> callable:
         """
         try:
             result = func(cls, *args, **kwargs)
-        except Exception:
+        except Exception as e:
+            print(f"ERROR: {e}")
             print("Could not run decorated function. The ID counter was not affected.")
         else:
             cls.global_id_manager += 1
@@ -59,7 +60,7 @@ class SyntaxParser:
     @uses_global_id
     def term(
         self,
-        symbol: str or list = None,
+        symbol: str or list,
         value: int = None,
         lhs: Node = None,
         rhs: Node = None,
@@ -69,15 +70,17 @@ class SyntaxParser:
 
         Terms are either a variable, a constant, or a paranthesis expression.
 
-        If a variable or a constant, then only the `symbol` and `value`
-        parameters should be set. If a parenthesis expression, then only the
-        `lhs` and `rhs` parameters should be set.
+        If a variable or a constant, then the `value` parameter must be set,
+        and the `symbol` must be a single string. If a parenthesis expression,
+        then the `symbol` parameter must be a `list` of `str`, and the `lhs`
+        and `rhs` parameters must be set.
 
         Parameters
         ----------
-        symbol : str
-            The symbol to parse. If `None`, creates a
-            `parenthesis_expression`.
+        symbol : str or list of str
+            The symbol to parse. If a `list`, creates a 
+            `parenthesis_expression`. Check the docstring of the 
+            `parenthesis_expression` method for more info.
         value : int
             The value to be stored in the Node.
         lhs : Node
@@ -93,8 +96,15 @@ class SyntaxParser:
             The new `term` generated Node.
         """
 
-        _err_msg = "Not all parameters must be set simultaneously."
-        assert not all([symbol, value, lhs, rhs]), _err_msg
+        simple_term_condition = isinstance(symbol, str) and symbol is not None
+        parenthesis_term_condition = (
+            isinstance(symbol, list) and lhs is not None and rhs is not None
+        )
+
+        _err_msg = "Malformed method call."
+        _err_msg += "Set either (symbol, value) or (symbol, lhs, rhs)"
+
+        assert simple_term_condition ^ parenthesis_term_condition, _err_msg
 
         symbol_map = {
             "ID": Node(id=self.global_id_manager, kind="VAR", value=value),
@@ -103,7 +113,7 @@ class SyntaxParser:
 
         try:
             term_node = symbol_map[symbol]
-        except KeyError:
+        except (KeyError, TypeError):
             term_node = self.parenthesis_expression(symbol, lhs, rhs)
 
         return term_node
@@ -116,7 +126,7 @@ class SyntaxParser:
         ----------
         symbol : list
             A list of symbols to parse. Must be as it follows: ["LPAR",
-            <symbol>, "RPAR"], where <symbol> is any symbol from the lexer.
+            <symbol>, "RPAR"], where <symbol> is valid symbol from the lexer.
         lhs : Node
             The Node that represents the left hand side term inside the
             parenthesis expression.
@@ -140,13 +150,44 @@ class SyntaxParser:
 
         lpar, expression_symbol, rpar = symbol
 
-        assert lpar == "LPAR", "Missing left parenthesis symbol (LPAR)"
-        assert rpar == "RPAR", "Missing right parenthesis symbol (RPAR)"
-
-        _err_msg = "LPAR must come before RPAR."
-        assert symbol.index(lpar) < symbol.index(rpar), _err_msg
+        _err_par_symbol = "Missing or misplaced {} parenthesis symbol ({}PAR)"
+        assert lpar == "LPAR", _err_par_symbol.format("left", "L")
+        assert rpar == "RPAR", _err_par_symbol.format("right", "R")
 
         return self.expression(expression_symbol, lhs, rhs)
+
+    @uses_global_id
+    def expression(self, symbol: str, lhs: Node, rhs: Node) -> Node:
+        """
+        Generate a `expression` for the AST.
+
+        A `expression` is a triplet of Nodes consisting of the left and right
+        hand side terms, and the `expression` itself.
+
+        Parameters
+        ----------
+        lhs : Node
+            The Node that represents the left hand side term of the operation.
+        rhs : Node
+            The Node that represents the right hand side term of the operation.
+
+        Returns
+        -------
+        expression_node : Node
+            The new `expression` generated Node.
+        """
+        if symbol != "ID":
+            return self.comparison(lhs=lhs, rhs=rhs)
+
+        expression_node = Node(id=self.global_id_manager, kind="SET", value=-1)
+
+        lhs.add_parent(expression_node)
+        rhs.add_parent(expression_node)
+
+        expression_node.add_child(lhs)
+        expression_node.add_child(rhs)
+
+        return expression_node
 
     @uses_global_id
     def sum(self, symbol: str, lhs: Node, rhs: Node) -> Node:
@@ -219,36 +260,3 @@ class SyntaxParser:
         comparison_node.add_child(rhs)
 
         return comparison_node
-
-    @uses_global_id
-    def expression(self, symbol: str, lhs: Node, rhs: Node) -> Node:
-        """
-        Generate a `expression` for the AST.
-
-        A `expression` is a triplet of Nodes consisting of the left and right
-        hand side terms, and the `expression` itself.
-
-        Parameters
-        ----------
-        lhs : Node
-            The Node that represents the left hand side term of the operation.
-        rhs : Node
-            The Node that represents the right hand side term of the operation.
-
-        Returns
-        -------
-        expression_node : Node
-            The new `expression` generated Node.
-        """
-        if symbol != "ID":
-            return self.comparison(lhs=lhs, rhs=rhs)
-
-        expression_node = Node(id=self.global_id_manager, kind="SET", value=-1)
-
-        lhs.add_parent(expression_node)
-        rhs.add_parent(expression_node)
-
-        expression_node.add_child(lhs)
-        expression_node.add_child(rhs)
-
-        return expression_node
