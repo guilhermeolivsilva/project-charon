@@ -409,3 +409,31 @@ class SyntaxParser:
 
         return do_while_node
 
+    @uses_global_id
+    def program(self, _statement: Node) -> Node:
+        """
+        Generate a `program` statement for the AST.
+
+        A `program` statement is the initial node of the AST. It has a single
+        child, `_statement`, that represents its initial instruction.
+
+        Parameters
+        ----------
+        _parenthesis_expression : Node
+            The Node that represents the expression to evaluate.
+        _statement : Node
+            The Node that represents the statement to execute while the
+            `_parenthesis_expression` evaluates to `True`.
+
+        Returns
+        -------
+        do_while_node : Node
+            The new `do-while` generated Node.
+        """
+
+        program_node = Node(id=self.global_id_manager, kind="PROG")
+
+        _statement.add_parent(program_node)
+        program_node.add_child(_statement)
+
+        return program_node
