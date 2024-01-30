@@ -264,8 +264,27 @@ class SyntaxParser:
 
     @uses_global_id
     def if_statement(
-            self, _parenthesis_expression: Node, _statement: Node
-        ) -> Node:
+        self, _parenthesis_expression: Node, _statement: Node
+    ) -> Node:
+        """
+        Generate an `if` statement for the AST.
+
+        An `if` statement is a pair of a `parenthesis_expression` followed by
+        the `_statement` to run if it evaluates to `True`.
+
+        Parameters
+        ----------
+        _parenthesis_expression : Node
+            The Node that represents the expression to evaluate.
+        _statement : Node
+            The Node that represents the statement to execute if the
+            `_parenthesis_expression` evaluates to `True`.
+
+        Returns
+        -------
+        if_node : Node
+            The new `if` generated Node.
+        """
 
         if_node = Node(id=self.global_id_manager, kind="IF")
 
@@ -279,10 +298,34 @@ class SyntaxParser:
 
     @uses_global_id
     def if_else_statement(
-            self, _parenthesis_expression: Node,
-            _statement_if: Node,
-            _statement_else: Node
-        ) -> Node:
+        self,
+        _parenthesis_expression: Node,
+        _statement_if: Node,
+        _statement_else: Node
+    ) -> Node:
+        """
+        Generate an `if-else` statement for the AST.
+
+        An `if` statement is a triple of a `parenthesis_expression` followed by
+        the `_statement_if` to run if it evaluates to `True`, and the
+        `_statement_else` if it evaluates to `False`. 
+
+        Parameters
+        ----------
+        _parenthesis_expression : Node
+            The Node that represents the expression to evaluate.
+        _statement_if : Node
+            The Node that represents the statement to execute if the
+            `_parenthesis_expression` evaluates to `True`.
+        _statement_else : Node
+            The Node that represents the statement to execute if the
+            `_parenthesis_expression` evaluates to `False`.
+
+        Returns
+        -------
+        if_else_node : Node
+            The new `if-else` generated Node.
+        """
 
         if_else_node = Node(id=self.global_id_manager, kind="IFELSE")
 
