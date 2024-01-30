@@ -269,8 +269,8 @@ class SyntaxParser:
         """
         Generate an `if` statement for the AST.
 
-        An `if` statement is a pair of a `parenthesis_expression` followed by
-        the `_statement` to run if it evaluates to `True`.
+        An `if` statement is a pair of a `_parenthesis_expression` followed
+        by the `_statement` to run if it evaluates to `True`.
 
         Parameters
         ----------
@@ -306,8 +306,8 @@ class SyntaxParser:
         """
         Generate an `if-else` statement for the AST.
 
-        An `if` statement is a triple of a `parenthesis_expression` followed by
-        the `_statement_if` to run if it evaluates to `True`, and the
+        An `if` statement is a triple of a `_parenthesis_expression` followed
+        by the `_statement_if` to run if it evaluates to `True`, and the
         `_statement_else` if it evaluates to `False`. 
 
         Parameters
@@ -338,3 +338,37 @@ class SyntaxParser:
         if_else_node.add_child(_statement_else)
 
         return if_else_node
+
+    @uses_global_id
+    def while_statement(
+        self, _parenthesis_expression: Node, _statement: Node
+    ) -> Node:
+        """
+        Generate a `while` statement for the AST.
+
+        A `while` statement is a pair of a `_parenthesis_expression` followed
+        by the `_statement` to run while it evaluates to `True`.
+
+        Parameters
+        ----------
+        _parenthesis_expression : Node
+            The Node that represents the expression to evaluate.
+        _statement : Node
+            The Node that represents the statement to execute while the
+            `_parenthesis_expression` evaluates to `True`.
+
+        Returns
+        -------
+        while_node : Node
+            The new `while` generated Node.
+        """
+
+        while_node = Node(id=self.global_id_manager, kind="WHILE")
+
+        _parenthesis_expression.add_parent(while_node)
+        _statement.add_parent(while_node)
+
+        while_node.add_child(_parenthesis_expression)
+        while_node.add_child(_statement)
+
+        return while_node
