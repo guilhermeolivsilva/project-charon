@@ -251,6 +251,7 @@ class SyntaxParser:
         comparison_node : Node
             The new `comparison` generated Node.
         """
+
         comparison_node = Node(id=self.global_id_manager, kind="LT", value=-1)
 
         lhs.add_parent(comparison_node)
@@ -260,3 +261,37 @@ class SyntaxParser:
         comparison_node.add_child(rhs)
 
         return comparison_node
+
+    @uses_global_id
+    def if_statement(
+            self, _parenthesis_expression: Node, _statement: Node
+        ) -> Node:
+
+        if_node = Node(id=self.global_id_manager, kind="IF")
+
+        _parenthesis_expression.add_parent(if_node)
+        _statement.add_parent(if_node)
+
+        if_node.add_child(_parenthesis_expression)
+        if_node.add_child(_statement)
+
+        return if_node
+
+    @uses_global_id
+    def if_else_statement(
+            self, _parenthesis_expression: Node,
+            _statement_if: Node,
+            _statement_else: Node
+        ) -> Node:
+
+        if_else_node = Node(id=self.global_id_manager, kind="IFELSE")
+
+        _parenthesis_expression.add_parent(if_else_node)
+        _statement_if.add_parent(if_else_node)
+        _statement_else.add_parent(if_else_node)
+
+        if_else_node.add_child(_parenthesis_expression)
+        if_else_node.add_child(_statement_if)
+        if_else_node.add_child(_statement_else)
+
+        return if_else_node
