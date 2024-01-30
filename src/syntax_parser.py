@@ -372,3 +372,40 @@ class SyntaxParser:
         while_node.add_child(_statement)
 
         return while_node
+
+    @uses_global_id
+    def do_while_statement(
+        self, _parenthesis_expression: Node, _statement: Node
+    ) -> Node:
+        """
+        Generate a `do-while` statement for the AST.
+
+        A `do-while` statement is a pair of a `parenthesis_expression` followed
+        by the `_statement` to run while it evaluates to `True`.
+
+        Notice that the `_statement` will always run at least once.
+
+        Parameters
+        ----------
+        _parenthesis_expression : Node
+            The Node that represents the expression to evaluate.
+        _statement : Node
+            The Node that represents the statement to execute while the
+            `_parenthesis_expression` evaluates to `True`.
+
+        Returns
+        -------
+        do_while_node : Node
+            The new `do-while` generated Node.
+        """
+
+        do_while_node = Node(id=self.global_id_manager, kind="DOWHILE")
+
+        _parenthesis_expression.add_parent(do_while_node)
+        _statement.add_parent(do_while_node)
+
+        do_while_node.add_child(_parenthesis_expression)
+        do_while_node.add_child(_statement)
+
+        return do_while_node
+
