@@ -10,10 +10,9 @@ class Node:
     id : int
         The ID of the Node.
     kind : str
-        The Node kind. Must be VAR, CST, ADD, SUB, LT, SET, IF1, IF2, WHILE,
-        DO, EMPTY, SEQ, EXPR, or PROG.
-    value : int, optional (default = -1)
-        The value the Node holds, if any. Defaults to -1.
+        The Node kind.
+    value : int or None, optional (default = None)
+        The value the Node holds, if any. Defaults to None.
     """
 
     def __init__(self, id: int, kind: str, value: int or None = None) -> None:
@@ -72,7 +71,7 @@ class AbstractSyntaxTree:
     """
 
     def __init__(self) -> None:
-        self.root: Node = Node(id=0, kind="PROG", value=-1)
+        self.root: Node = Node(id=0, kind="PROG")
 
     # TODO: assert no IDs are duplicate.
     # TODO: implement a tree traversal method.
