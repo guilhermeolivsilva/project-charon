@@ -179,7 +179,7 @@ class SyntaxParser:
         if symbol != "ID":
             return self.comparison(lhs=lhs, rhs=rhs)
 
-        expression_node = Node(id=self.global_id_manager, kind="SET", value=-1)
+        expression_node = Node(id=self.global_id_manager, kind="SET")
 
         lhs.add_parent(expression_node)
         rhs.add_parent(expression_node)
@@ -215,8 +215,8 @@ class SyntaxParser:
         """
 
         symbol_map = {
-            "PLUS": Node(id=self.global_id_manager, kind="ADD", value=-1),
-            "MINUS": Node(id=self.global_id_manager, kind="SUB", value=-1),
+            "PLUS": Node(id=self.global_id_manager, kind="ADD"),
+            "MINUS": Node(id=self.global_id_manager, kind="SUB"),
         }
 
         sum_node = symbol_map[symbol]
@@ -252,7 +252,7 @@ class SyntaxParser:
             The new `comparison` generated Node.
         """
 
-        comparison_node = Node(id=self.global_id_manager, kind="LT", value=-1)
+        comparison_node = Node(id=self.global_id_manager, kind="LT")
 
         lhs.add_parent(comparison_node)
         rhs.add_parent(comparison_node)

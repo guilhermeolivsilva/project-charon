@@ -16,10 +16,10 @@ class Node:
         The value the Node holds, if any. Defaults to -1.
     """
 
-    def __init__(self, id: int, kind: str, value: int = -1) -> None:
+    def __init__(self, id: int, kind: str, value: int or None = None) -> None:
         self.id: int = id
         self.kind: str = kind
-        self.value: int = value
+        self.value: int or None = value
         self.parent: Node = None
         self.children: list = []
 
