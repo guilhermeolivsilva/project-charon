@@ -22,6 +22,24 @@ class Node:
         self.parent: Node = None
         self.children: list = []
 
+    def __str__(self) -> str:
+        """
+        Implement a string representation of a Node object.
+
+        This method is internally invoked when using `print(node_obj)`.
+
+        Returns
+        -------
+        _str : str
+            The string representation of a Node object.
+        """
+        _str = f"ID: {self.id}, Kind: {self.kind}, Value: {self.value}"
+
+        if self.parent:
+            _str += f", Parent ID: {self.parent.id}"
+
+        return _str
+
     def add_child(self, child: "Node") -> None:
         """
         Add a Node to the `self.children` list.
@@ -43,24 +61,6 @@ class Node:
             A Node object to be set as the parent of `this`.
         """
         self.parent = parent
-
-    def __str__(self) -> str:
-        """
-        Implement a string representation of a Node object.
-
-        This method is internally invoked when using `print(node_obj)`.
-
-        Returns
-        -------
-        _str : str
-            The string representation of a Node object.
-        """
-        _str = f"ID: {self.id}, Kind: {self.kind}, Value: {self.value}"
-
-        if self.parent:
-            _str += f", Parent ID: {self.parent.id}"
-
-        return _str
 
 
 class AbstractSyntaxTree:
