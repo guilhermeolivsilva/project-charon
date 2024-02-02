@@ -34,7 +34,13 @@ class CodeGenerator:
             "LT": (
                 self.parse_simple_node,
                 {"instruction": "ILT"}
-            )
+            ),
+            "SET": (self.parse_set_node, {}),
+            "IF": (self.parse_if_node, {}),
+            "IFELSE": (
+                self.parse_if_node,
+                {"is_if_else": True}
+            ),
         }
 
         handler, kwargs = instruction_map[node.kind]
@@ -46,3 +52,24 @@ class CodeGenerator:
             self.generate_code(child)
 
         self.code_collection.append((instruction, node))
+
+    def parse_set_node(self, node: Node, **kwargs) -> None:
+        lhs, rhs = node.children
+        self.generate_code(rhs)
+
+        self.code_collection.append(("ISTORE", lhs))
+
+    def parse_if_node(self, node: Node, is_if_else: bool = False, **kwargs) -> None:
+        if is_if_else:
+            expr, if_statement, else_statement = node.children
+        else:
+            expr, if_statement = node.children
+
+        self.generate_code(expr)
+        self.code_collection.append(("JZ", expr))
+
+        self.generate_code(if_statement)
+        self.code_collection.append(("JMP", if_statement))
+
+        if is_if_else:
+            self.generate_code(else_statement)
