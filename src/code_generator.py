@@ -15,16 +15,31 @@ class CodeGenerator:
 
     def generate_code(self, node: Node) -> None:
         instruction_map = {
-            "VAR": (self.parse_simple_node, "IFETCH"),
-            "CST": (self.parse_simple_node, "IPUSH"),
-            "ADD": (self.parse_simple_node, "IADD"),
-            "SUB": (self.parse_simple_node, "ISUB"),
-            "LT": (self.parse_simple_node, "ILT")
+            "VAR": (
+                self.parse_simple_node,
+                {"instruction": "IFETCH"}
+            ),
+            "CST": (
+                self.parse_simple_node,
+                {"instruction": "IPUSH"}
+            ),
+            "ADD": (
+                self.parse_simple_node,
+                {"instruction": "IADD"}
+            ),
+            "SUB": (
+                self.parse_simple_node,
+                {"instruction": "ISUB"}
+            ),
+            "LT": (
+                self.parse_simple_node,
+                {"instruction": "ILT"}
+            )
         }
 
-        handler, instruction = instruction_map[node.kind]
+        handler, kwargs = instruction_map[node.kind]
 
-        handler(node=node, instruction=instruction)
+        handler(node=node, **kwargs)
 
     def parse_simple_node(self, node: Node, instruction: str) -> None:
         for child in node.children:
