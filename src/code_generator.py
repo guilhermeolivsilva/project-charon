@@ -50,13 +50,25 @@ class CodeGenerator:
             "SET": (self.parse_set_node, {}),
             "IF": (self.parse_if_node, {}),
             "IFELSE": (self.parse_if_node, {"is_if_else": True}),
+            "WHILE": (self.parse_while_node, {}),
+            "DOWHILE": (self.parse_do_while_node, {}),
+            "EXPR": (
+                self.parse_simple_node,
+                {"instruction": "IPOP", "children_first": True},
+            ),
+            "PROG": (
+                self.parse_simple_node,
+                {"instruction": "HALT", "children_first": True},
+            ),
         }
 
         handler, kwargs = instruction_map[node.kind]
 
         handler(node=node, **kwargs)
 
-    def parse_simple_node(self, node: Node, instruction: str) -> None:
+    def parse_simple_node(
+        self, node: Node, instruction: str, children_first: bool = False
+    ) -> None:
         """
         Generate code from a simple Node.
 
@@ -68,12 +80,19 @@ class CodeGenerator:
             The Node object to parse.
         instruction : str
             The instruction to add to the `code_collection`.
+        children_first : bool, optional (default=False)
+            If enabled, generates code from children Nodes before adding the
+            `instruction` to the `code_collection`. Defaults to `False`.
         """
+
+        if not children_first:
+            self.code_collection.append((instruction, node))
 
         for child in node.children:
             self.generate_code(child)
 
-        self.code_collection.append((instruction, node))
+        if children_first:
+            self.code_collection.append((instruction, node))
 
     def parse_set_node(self, node: Node, **kwargs) -> None:
         """
@@ -133,3 +152,20 @@ class CodeGenerator:
 
         self.generate_code(statement)
         self.code_collection.append(("JMP", statement))
+
+    def parse_do_while_node(self, node: Node, **kwargs) -> None:
+        """
+        Generate code from a `DOWHILE` Node.
+
+        Parameters
+        ----------
+        node : Node
+            The `DOWHILE` Node to parse.
+        """
+
+        expr, statement = node.children
+
+        self.generate_code(expr)
+        self.generate_code(statement)
+
+        self.code_collection.append(("JNZ", statement))
