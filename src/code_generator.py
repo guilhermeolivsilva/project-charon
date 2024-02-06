@@ -109,10 +109,27 @@ class CodeGenerator:
             expr, if_statement = node.children
 
         self.generate_code(expr)
-        self.code_collection.append(("JZ", expr))
-
+        self.code_collection.append(("JZ", if_statement))
         self.generate_code(if_statement)
-        self.code_collection.append(("JMP", if_statement))
 
         if is_if_else:
+            self.code_collection.append(("JMP", else_statement))
             self.generate_code(else_statement)
+
+    def parse_while_node(self, node: Node, **kwargs) -> None:
+        """
+        Generate code from a `WHILE` Node.
+
+        Parameters
+        ----------
+        node : Node
+            The `WHILE` Node to parse.
+        """
+
+        expr, statement = node.children
+
+        self.generate_code(expr)
+        self.code_collection.append(("JZ", expr))
+
+        self.generate_code(statement)
+        self.code_collection.append(("JMP", statement))
