@@ -3,7 +3,7 @@
 from src.node import Node
 
 
-def test_node_init():
+def test_init():
     """Test the instantiation of Node objects."""
 
     node_id = 1
@@ -21,7 +21,7 @@ def test_node_init():
     assert node.children == []
 
 
-def test_node_str():
+def test_str():
     """Test the string representation of Node objects."""
 
     node_id = 1
@@ -37,7 +37,7 @@ def test_node_str():
     assert str(node) == f"ID: {node_id}, Kind: {node_kind}, Value: {node_value}"
 
 
-def test_node_add_child():
+def test_add_child():
     """Test the `Node.add_child` method."""
 
     parent_node = Node(id=1, kind="TEST")
@@ -48,7 +48,7 @@ def test_node_add_child():
     assert child_node in parent_node.children
 
 
-def test_node_add_parent():
+def test_add_parent():
     """Test the `Node.add_parent` method."""
 
     parent_node = Node(id=1, kind="TEST")
