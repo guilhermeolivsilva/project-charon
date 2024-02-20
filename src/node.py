@@ -1,5 +1,6 @@
 """Implement Nodes to be used in the Abstract Syntax Tree."""
 
+from typing import Union
 
 class Node:
 
@@ -16,10 +17,10 @@ class Node:
         The value the Node holds, if any. Defaults to None.
     """
 
-    def __init__(self, id: int, kind: str, value: int or None = None) -> None:
+    def __init__(self, id: int, kind: str, value: Union[int, None] = None) -> None:
         self.id: int = id
         self.kind: str = kind
-        self.value: int or None = value
+        self.value: Union[int, None] = value
         self.parent: Node = None
         self.children: list = []
 

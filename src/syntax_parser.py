@@ -1,5 +1,7 @@
 """Implement a syntax parser to use with the AST."""
 
+from typing import Union
+
 from .abstract_syntax_tree import Node
 
 
@@ -60,10 +62,10 @@ class SyntaxParser:
     @uses_global_id
     def term(
         self,
-        symbol: str or list,
-        value: int = None,
-        lhs: Node = None,
-        rhs: Node = None,
+        symbol: Union[str, list],
+        value: Union[int, None] = None,
+        lhs: Union[Node, None] = None,
+        rhs: Union[Node, None] = None,
     ) -> Node:
         """
         Generate a `term` for the AST.

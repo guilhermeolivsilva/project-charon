@@ -3,7 +3,7 @@
 
 class Lexer:
     @classmethod
-    def parse_character(cls, character: str) -> (str, int):
+    def parse_character(cls, character: str) -> tuple[str, int]:
         """
         Parse a character and return its corresponding symbol.
 
