@@ -30,7 +30,7 @@ class VirtualMachine:
             if instruction == "HALT":
                 break
 
-            instruction_handler = getattr(self, f"{instruction.lower()}")
+            instruction_handler = getattr(self, instruction.lower())
             instruction_handler()
 
     def ifetch(self) -> None:
