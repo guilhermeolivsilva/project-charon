@@ -67,7 +67,7 @@ class CodeGenerator:
         handler(node=node, **kwargs)
 
     def parse_simple_node(
-        self, node: Node, instruction: str, children_first: bool = False
+        self, node: Node, instruction: str, children_first: bool = True
     ) -> None:
         """
         Generate code from a simple Node.
@@ -80,9 +80,9 @@ class CodeGenerator:
             The Node object to parse.
         instruction : str
             The instruction to add to the `code_collection`.
-        children_first : bool, optional (default=False)
+        children_first : bool, optional (default=True)
             If enabled, generates code from children Nodes before adding the
-            `instruction` to the `code_collection`. Defaults to `False`.
+            `instruction` to the `code_collection`. Defaults to `True`.
         """
 
         if not children_first:
