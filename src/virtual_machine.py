@@ -12,9 +12,7 @@ class VirtualMachine:
     """
 
     def __init__(self, code_collection: list) -> None:
-        self.variables = {
-            i: 0 for i in range(ord('a'), ord('z') + 1)
-        }
+        self.variables = { i: 0 for i in range(1, 26+1) }
 
         self.stack = [None for _ in range(1, 10)]
         self.stack_pointer = 0
@@ -29,13 +27,27 @@ class VirtualMachine:
 
             self.program_counter += 1
 
-            if instruction == "IFETCH":
-                self.stack[self.stack_pointer] = self.variables[self.program_counter]
-                self.stack_pointer += 1
-
-            elif instruction == "IADD":
-                self.stack[self.stack_pointer - 2] += self.stack[self.stack_pointer - 1]
-                self.stack_pointer -= 1
-
-            elif instruction == "HALT":
+            if instruction == "HALT":
                 break
+
+            instruction_handler = getattr(self, f"{instruction.lower()}")
+            instruction_handler()
+
+    def ifetch(self) -> None:
+        """Fetch the contents of a variable and push it to the stack."""
+
+        self.stack[self.stack_pointer] = self.variables[self.program_counter]
+        self.stack_pointer += 1
+
+    def iadd(self) -> None:
+        """Add the contents of the nth-1 and nth-2 elements of the stack."""
+
+        self.stack[self.stack_pointer - 2] += self.stack[self.stack_pointer - 1]
+        self.stack_pointer -= 1
+
+    def isub(self) -> None:
+        """Subtract the contents of the nth-1 and nth-2 elements of the stack."""
+
+        self.stack[self.stack_pointer - 2] -= self.stack[self.stack_pointer - 1]
+        self.stack_pointer -= 1
+
