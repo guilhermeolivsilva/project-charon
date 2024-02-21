@@ -1,4 +1,4 @@
-"""Implement unit tests for the classes defined in `abstract_suntax_tree`."""
+"""Implement unit tests for the `src.node.Node` class."""
 
 from src.node import Node
 
