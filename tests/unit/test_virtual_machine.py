@@ -44,8 +44,27 @@ def test_run_ifetch(mocker: MockerFixture) -> None:
     vm.ifetch = mocker.spy(vm, "ifetch")
     vm.run()
 
-    # Assert the method was called and the stack has the expected value
+    # Assert the method was called and the `stack` has the expected value
     vm.ifetch.assert_called_once_with(test_node)
+    assert vm.stack == [test_value]
+
+
+def test_run_ipush(mocker: MockerFixture) -> None:
+    """Test `VirtualMachine.ipush` through the `run` method."""
+
+    test_value = 23
+    test_node = Node(id=1, kind="CST", value=test_value)
+
+    vm = VirtualMachine(
+        code_collection=[("IPUSH", test_node)],
+        stack_size=1
+    )
+
+    vm.ipush = mocker.spy(vm, "ipush")
+    vm.run()
+
+    # Assert the method was called and the `stack` has the expected value
+    vm.ipush.assert_called_once_with(test_node)
     assert vm.stack == [test_value]
 
 
@@ -64,6 +83,54 @@ def test_run_istore(mocker: MockerFixture) -> None:
     vm.istore = mocker.spy(vm, "istore")
     vm.run()
 
-    # Assert the method was called and the stack has the expected value
+    # Assert the method was called and the `variables` has the expected value
     vm.istore.assert_called_once_with(test_node)
     assert vm.variables[0] == test_value
+
+
+def test_run_iadd(mocker: MockerFixture) -> None:
+    """Test `VirtualMachine.iadd` through the `run` method."""
+    lhs_value = 23
+    lhs = Node(id=1, kind="CST", value=lhs_value)
+
+    rhs_value = 35
+    rhs = Node(id=2, kind="CST", value=rhs_value)
+
+    vm = VirtualMachine(
+        code_collection=[
+            ("IPUSH", lhs),
+            ("IPUSH", rhs),
+            ("IADD", None)
+        ],
+        stack_size=2
+    )
+
+    vm.iadd = mocker.spy(vm, "iadd")
+    vm.run()
+
+    vm.iadd.assert_called_once()
+    assert vm.stack == [lhs_value + rhs_value, rhs_value]
+
+
+def test_run_isub(mocker: MockerFixture) -> None:
+    """Test `VirtualMachine.isub` through the `run` method."""
+    lhs_value = 23
+    lhs = Node(id=1, kind="CST", value=lhs_value)
+
+    rhs_value = 35
+    rhs = Node(id=2, kind="CST", value=rhs_value)
+
+    vm = VirtualMachine(
+        code_collection=[
+            ("IPUSH", lhs),
+            ("IPUSH", rhs),
+            ("ISUB", None)
+        ],
+        stack_size=2
+    )
+
+    vm.isub = mocker.spy(vm, "isub")
+    vm.run()
+
+    vm.isub.assert_called_once()
+    assert vm.stack == [lhs_value - rhs_value, rhs_value]
