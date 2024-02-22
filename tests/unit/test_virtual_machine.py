@@ -72,7 +72,7 @@ def test_run_istore(mocker: MockerFixture) -> None:
     """Test `VirtualMachine.istore` through the `run` method."""
 
     test_value = 23
-    test_node = Node(id=1, kind="CST", value=0)
+    test_node = Node(id=1, kind="VAR", value=0)
 
     vm = VirtualMachine(
         code_collection=[("ISTORE", test_node)],
@@ -86,6 +86,29 @@ def test_run_istore(mocker: MockerFixture) -> None:
     # Assert the method was called and the `variables` has the expected value
     vm.istore.assert_called_once_with(test_node)
     assert vm.variables[0] == test_value
+
+
+def test_run_ipop(mocker: MockerFixture) -> None:
+    """Test `VirtualMachine.ipop` through the `run` method."""
+
+    test_value = 23
+
+    vm = VirtualMachine(
+        code_collection=[("IPOP", None)],
+        stack_size=1
+    )
+
+    # Mock the stack to only contain the `test_value`
+    vm.stack.append(test_value)
+    vm.stack_pointer = 1
+    vm.ipop = mocker.spy(vm, "ipop")
+    vm.run()
+
+    # Assert the method was called and the `test_value` has been removed from
+    # the stack
+    vm.ipop.assert_called_once()
+    assert vm.stack_pointer == 0
+    assert test_value not in vm.stack
 
 
 def test_run_iadd(mocker: MockerFixture) -> None:

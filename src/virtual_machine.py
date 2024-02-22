@@ -77,6 +77,12 @@ class VirtualMachine:
         self.stack[self.stack_pointer] = node.value
         self.stack_pointer += 1
 
+    def ipop(self, **kwargs) -> None:
+        """Pop a value from the stack and discard it."""
+
+        self.stack[self.stack_pointer] = None
+        self.stack_pointer -= 1
+
     def iadd(self, **kwargs) -> None:
         """
         Add the contents of the (n-1)th and (n-2)th elements of the stack.
