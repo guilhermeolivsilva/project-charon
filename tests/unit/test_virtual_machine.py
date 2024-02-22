@@ -157,3 +157,27 @@ def test_run_isub(mocker: MockerFixture) -> None:
 
     vm.isub.assert_called_once()
     assert vm.stack == [lhs_value - rhs_value, rhs_value]
+
+
+def test_run_ilt(mocker: MockerFixture) -> None:
+    """Test `VirtualMachine.ilt` through the `run` method."""
+    lhs_value = 23
+    lhs = Node(id=1, kind="CST", value=lhs_value)
+
+    rhs_value = 35
+    rhs = Node(id=2, kind="CST", value=rhs_value)
+
+    vm = VirtualMachine(
+        code_collection=[
+            ("IPUSH", lhs),
+            ("IPUSH", rhs),
+            ("ILT", None)
+        ],
+        stack_size=2
+    )
+
+    vm.ilt = mocker.spy(vm, "ilt")
+    vm.run()
+
+    vm.ilt.assert_called_once()
+    assert vm.stack == [lhs_value < rhs_value, rhs_value]

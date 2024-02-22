@@ -98,3 +98,13 @@ class VirtualMachine:
 
         self.stack[self.stack_pointer - 2] -= self.stack[self.stack_pointer - 1]
         self.stack_pointer -= 1
+
+    def ilt(self, **kwargs) -> None:
+        """
+        Check whether the (n-2)th element of the stack is less than the (n-1)th.
+        """
+
+        self.stack[self.stack_pointer - 2] = (
+            self.stack[self.stack_pointer - 2] < self.stack[self.stack_pointer - 1]
+        )
+        self.stack_pointer -= 1
