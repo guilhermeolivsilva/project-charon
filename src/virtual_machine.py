@@ -38,7 +38,7 @@ class VirtualMachine:
             instruction_handler = getattr(self, instruction.lower())
             instruction_handler(node=node)
 
-    def ifetch(self, node: Node) -> None:
+    def ifetch(self, node: Node, **kwargs) -> None:
         """
         Fetch the contents of a variable and push it to the stack.
 
@@ -51,7 +51,7 @@ class VirtualMachine:
         self.stack[self.stack_pointer] = self.variables[node.value]
         self.stack_pointer += 1
 
-    def istore(self, node: Node) -> None:
+    def istore(self, node: Node, **kwargs) -> None:
         """
         Store the (n-1)th element of the stack in a variable.
 
@@ -64,7 +64,7 @@ class VirtualMachine:
         self.variables[node.value] = self.stack[self.stack_pointer - 1]
         self.stack_pointer -= 1
 
-    def ipush(self, node: Node) -> None:
+    def ipush(self, node: Node, **kwargs) -> None:
         """
         Push the contents of a node to the top of the stack.
 
@@ -108,3 +108,42 @@ class VirtualMachine:
             self.stack[self.stack_pointer - 2] < self.stack[self.stack_pointer - 1]
         )
         self.stack_pointer -= 1
+
+    def jz(self, node: Node) -> None:
+        """
+        Compute the next block of code if the parenthesis expression evaluates to True.
+
+        If it is `False`, then jump to the first instruction right after the
+        node of reference (i.e., `node`).
+
+        Parameters
+        ----------
+        node : Node
+            The node of reference.
+        """
+
+        if self.stack[self.stack_pointer - 1]:
+            return
+        else:
+            self.jmp(node)
+
+            # Offset the unconditional JMP it will find.
+            self.program_counter += 1
+
+    def jmp(self, node: Node, **kwargs) -> None:
+        """
+        Advance the code to the instruction referenced by a node.
+
+        Parameters
+        ----------
+        node : Node
+            The node of reference.
+        """
+
+        for _, other_node in self.code_collection[self.program_counter + 1:]:
+            self.program_counter += 1
+
+            if other_node == node:
+                break
+
+        self.program_counter += 1
