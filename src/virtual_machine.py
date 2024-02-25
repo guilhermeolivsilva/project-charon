@@ -30,13 +30,15 @@ class VirtualMachine:
         while True:
             instruction, node = self.code_collection[self.program_counter]
 
-            self.program_counter += 1
+            print(instruction, node)
 
             if instruction == "HALT":
                 break
 
             instruction_handler = getattr(self, instruction.lower())
             instruction_handler(node=node)
+
+            self.program_counter += 1
 
     def ifetch(self, node: Node, **kwargs) -> None:
         """
@@ -109,27 +111,6 @@ class VirtualMachine:
         )
         self.stack_pointer -= 1
 
-    def jz(self, node: Node) -> None:
-        """
-        Compute the next block of code if the parenthesis expression evaluates to True.
-
-        If it is `False`, then jump to the first instruction right after the
-        node of reference (i.e., `node`).
-
-        Parameters
-        ----------
-        node : Node
-            The node of reference.
-        """
-
-        if self.stack[self.stack_pointer - 1]:
-            return
-        else:
-            self.jmp(node)
-
-            # Offset the unconditional JMP it will find.
-            self.program_counter += 1
-
     def jmp(self, node: Node, **kwargs) -> None:
         """
         Advance the code to the instruction referenced by a node.
@@ -146,4 +127,39 @@ class VirtualMachine:
             if other_node == node:
                 break
 
-        self.program_counter += 1
+    def jz(self, node: Node) -> None:
+        """
+        Compute the next block of code if the parenthesis expression evaluates to `True`.
+
+        If it is `False`, then jump to the first instruction right after the
+        node of reference (i.e., `node`).
+
+        Parameters
+        ----------
+        node : Node
+            The node of reference.
+        """
+
+        if self.stack[self.stack_pointer - 1]:
+            return
+        else:
+            self.jmp(node)
+
+
+    def jnz(self, node: Node) -> None:
+        """
+        Compute the next block of code if the parenthesis expression evaluates to `False`.
+
+        If it is `True`, then jump to the first instruction right after the
+        node of reference (i.e., `node`).
+
+        Parameters
+        ----------
+        node : Node
+            The node of reference.
+        """
+
+        if not self.stack[self.stack_pointer - 1]:
+            return
+        else:
+            self.jmp(node)
