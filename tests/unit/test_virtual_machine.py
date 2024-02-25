@@ -113,6 +113,7 @@ def test_run_ipop(mocker: MockerFixture) -> None:
 
 def test_run_iadd(mocker: MockerFixture) -> None:
     """Test `VirtualMachine.iadd` through the `run` method."""
+
     lhs_value = 23
     lhs = Node(id=1, kind="CST", value=lhs_value)
 
@@ -137,6 +138,7 @@ def test_run_iadd(mocker: MockerFixture) -> None:
 
 def test_run_isub(mocker: MockerFixture) -> None:
     """Test `VirtualMachine.isub` through the `run` method."""
+
     lhs_value = 23
     lhs = Node(id=1, kind="CST", value=lhs_value)
 
@@ -161,6 +163,7 @@ def test_run_isub(mocker: MockerFixture) -> None:
 
 def test_run_ilt(mocker: MockerFixture) -> None:
     """Test `VirtualMachine.ilt` through the `run` method."""
+
     lhs_value = 23
     lhs = Node(id=1, kind="CST", value=lhs_value)
 
@@ -181,3 +184,176 @@ def test_run_ilt(mocker: MockerFixture) -> None:
 
     vm.ilt.assert_called_once()
     assert vm.stack == [lhs_value < rhs_value, rhs_value]
+
+
+def test_run_jmp(mocker: MockerFixture) -> None:
+    """Test `VirtualMachine.jmp` through the `run` method."""
+
+    node_to_run = Node(id=1, kind="CST", value=23)
+    node_to_ignore = Node(id=2, kind="CST", value=35)
+    another_node_to_run = Node(id=3, kind="CST", value=13)
+
+    vm = VirtualMachine(
+        code_collection=[
+            ("IPUSH", node_to_run),
+            ("JMP", node_to_ignore),
+            ("IPUSH", node_to_ignore),
+            ("IPUSH", another_node_to_run)
+        ],
+        stack_size=3
+    )
+
+    vm.jmp = mocker.spy(vm, "jmp")
+
+    vm.run()
+
+    vm.jmp.assert_called_once()
+    assert vm.stack == [node_to_run.value, another_node_to_run.value, None]
+
+
+def test_run_jz_true(mocker: MockerFixture) -> None:
+    """
+    Test `VirtualMachine.jz` through the `run` method.
+
+    In this test, assert that the `jz` method correctly handles `True`
+    conditions.
+    """
+
+    node_to_run = Node(id=1, kind="CST", value=23)
+    node_not_to_ignore = Node(id=2, kind="CST", value=35)
+
+    vm = VirtualMachine(
+        code_collection = [
+            ("JZ", node_not_to_ignore),
+            ("IPUSH", node_not_to_ignore),
+            ("IPUSH", node_to_run)
+        ],
+        stack_size=3
+    )
+
+    # Mock the stack to contain a `True` reference for the `JZ` instruction.
+    vm.stack = [True, None, None]
+    vm.stack_pointer += 1
+
+    vm.jz = mocker.spy(vm, "jz")
+
+    vm.run()
+
+    vm.jz.assert_called_once()
+    assert vm.stack == [
+        True,
+        node_not_to_ignore.value,
+        node_to_run.value,
+    ]
+
+
+def test_run_jz_false(mocker: MockerFixture) -> None:
+    """
+    Test `VirtualMachine.jz` through the `run` method.
+
+    In this test, assert that the `jz` method correctly handles `False`
+    conditions.
+    """
+
+    node_to_run = Node(id=1, kind="CST", value=23)
+    node_to_ignore = Node(id=2, kind="CST", value=35)
+    another_node_to_ignore = Node(id=3, kind="CST", value=13)
+
+    vm = VirtualMachine(
+        code_collection = [
+            ("JZ", node_to_ignore),
+            ("IPUSH", another_node_to_ignore),
+            ("IPUSH", node_to_ignore),
+            ("IPUSH", node_to_run)
+        ],
+        stack_size=3
+    )
+
+    # Mock the stack to contain a `False` reference for the `JZ` instruction.
+    vm.stack = [False, None, None]
+    vm.stack_pointer += 1
+
+    vm.jz = mocker.spy(vm, "jz")
+
+    vm.run()
+
+    vm.jz.assert_called_once()    
+    assert vm.stack == [
+        False,
+        node_to_run.value,
+        None
+    ]
+
+
+def test_run_jz_true(mocker: MockerFixture) -> None:
+    """
+    Test `VirtualMachine.jnz` through the `run` method.
+
+    In this test, assert that the `jnz` method correctly handles `True`
+    conditions.
+    """
+
+    node_to_run = Node(id=1, kind="CST", value=23)
+    node_to_ignore = Node(id=2, kind="CST", value=35)
+    another_node_to_ignore = Node(id=3, kind="CST", value=13)
+
+    vm = VirtualMachine(
+        code_collection = [
+            ("JNZ", node_to_ignore),
+            ("IPUSH", another_node_to_ignore),
+            ("IPUSH", node_to_ignore),
+            ("IPUSH", node_to_run)
+        ],
+        stack_size=3
+    )
+
+    # Mock the stack to contain a `True` reference for the `JNZ` instruction.
+    vm.stack = [True, None, None]
+    vm.stack_pointer += 1
+
+    vm.jnz = mocker.spy(vm, "jnz")
+
+    vm.run()
+
+    vm.jnz.assert_called_once()    
+    assert vm.stack == [
+        True,
+        node_to_run.value,
+        None
+    ]
+
+
+def test_run_jnz_false(mocker: MockerFixture) -> None:
+    """
+    Test `VirtualMachine.jnz` through the `run` method.
+
+    In this test, assert that the `jnz` method correctly handles `False`
+    conditions.
+    """
+
+    node_to_run = Node(id=1, kind="CST", value=23)
+    node_not_to_ignore = Node(id=2, kind="CST", value=35)
+
+    vm = VirtualMachine(
+        code_collection = [
+            ("JNZ", node_not_to_ignore),
+            ("IPUSH", node_not_to_ignore),
+            ("IPUSH", node_to_run)
+        ],
+        stack_size=3
+    )
+
+    # Mock the stack to contain a `False` reference for the `JNZ` instruction.
+    vm.stack = [False, None, None]
+    vm.stack_pointer += 1
+
+    vm.jnz = mocker.spy(vm, "jnz")
+
+    vm.run()
+
+    vm.jnz.assert_called_once()
+    assert vm.stack == [
+        False,
+        node_not_to_ignore.value,
+        node_to_run.value,
+    ]
