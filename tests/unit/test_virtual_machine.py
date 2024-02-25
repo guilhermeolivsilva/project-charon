@@ -357,3 +357,22 @@ def test_run_jnz_false(mocker: MockerFixture) -> None:
         node_not_to_ignore.value,
         node_to_run.value,
     ]
+
+
+def test_run_empty(mocker: MockerFixture) -> None:
+    """Test `VirtualMachine.jnz` through the `run` method."""
+
+    vm = VirtualMachine(
+        code_collection=[
+            ("EMPTY", Node(id=-1, kind="EMPTY"))
+        ],
+        stack_size=1
+    )
+
+    vm.empty = mocker.spy(vm, "empty")
+
+    vm.run()
+
+    vm.empty.assert_called_once()
+    assert vm.stack == [None]
+

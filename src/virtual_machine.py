@@ -163,3 +163,12 @@ class VirtualMachine:
             return
         else:
             self.jmp(node)
+
+    def empty(self, **kwargs) -> None:
+        """
+        Do nothing.
+        
+        Useful when creating "code holes".
+        """
+
+        ...

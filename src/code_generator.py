@@ -127,12 +127,15 @@ class CodeGenerator:
         else:
             expr, if_statement = node.children
 
+        dummy_node = Node(id=-1, kind="EMPTY")
+
         self.generate_code(expr)
-        self.code_collection.append(("JZ", if_statement))
+        self.code_collection.append(("JZ", dummy_node))
         self.generate_code(if_statement)
 
         if is_if_else:
             self.code_collection.append(("JMP", else_statement))
+            self.code_collection.append(("EMPTY", dummy_node))
             self.generate_code(else_statement)
 
     def parse_while_node(self, node: Node, **kwargs) -> None:
