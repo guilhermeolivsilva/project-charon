@@ -3,33 +3,53 @@
 
 class Lexer:
     @classmethod
-    def parse_character(cls, character: str) -> tuple[str, int]:
+    def parse_source_code(cls, source_code: str) -> list:
         """
-        Parse a character and return its corresponding symbol.
+        Parse the reserved words first, and then character by character.
 
         Parameters
         ----------
-        character : str
-            The character to be parsed. Must be a string with unit length.
+        source_code : str
+            The source code to parse.
+
+        Returns
+        -------
+        : list
+            List of symbols that represent the source code.
+        """
+
+        return list(map(Lexer.parse_word, source_code))
+
+    @classmethod
+    def parse_word(cls, word: str) -> tuple[str, int]:
+        """
+        Parse a word and return its corresponding symbol.
+
+        Parameters
+        ----------
+        word : str
+            The word to parse.
 
         Returns
         -------
         symbol : str
-            The corresponding symbol to the given character.
+            The corresponding symbol to the given word.
         value : int or None
-            The value, if any.
+            The associated value, if any.
 
         Raises
         ------
         SyntaxError
             Raised if the input does not correspond to a supported symbol.
         """
-        if len(character) > 1:
-            return ""
 
         symbol_map = {
             " ": "",
             "\n": "",
+            "do": "DO_SYM",
+            "while": "WHILE_SYM",
+            "if": "IF_SYM",
+            "else": "ELSE_SYM",
             "{": "LBRA",
             "}": "RBRA",
             "(": "LPAR",
@@ -44,13 +64,14 @@ class Lexer:
         value = None
 
         try:
-            symbol = symbol_map[character]
+            symbol = symbol_map[word]
         except KeyError:
-            if (character >= "0") and (character <= "9"):
+            if (word >= "0") and (word <= "9"):
                 symbol = "INT"
-                value = int(character)
-            elif (character >= "a") and (character <= "z"):
+                value = int(word)
+            elif (word >= "a") and (word <= "z"):
                 symbol = "ID"
+                value = word
             else:
                 raise SyntaxError("The given input is not supported.")
 
