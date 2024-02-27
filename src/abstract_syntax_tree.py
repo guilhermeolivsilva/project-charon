@@ -46,11 +46,20 @@ def uses_global_id(func: callable) -> callable:
     return wrapper
 
 
-class SyntaxParser:
-    """Syntax Parser that translates input text to AST nodes."""
+class AbstractSyntaxTree:
+    """
+    Abstract Syntax Tree that contains Nodes generated from a source code.
 
-    def __init__(self) -> None:
+    Parameters
+    ----------
+    source_code : list of tuple
+        A list of tuples that represents the source code to parse. Must be in
+        (`symbol`, `value`) format.
+    """
+
+    def __init__(self, source_code: list[tuple]) -> None:
         self._global_id_manager: int = 1
+        self.source_code = source_code
 
     @property
     def global_id_manager(self) -> int:
