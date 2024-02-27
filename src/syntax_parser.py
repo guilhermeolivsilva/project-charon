@@ -1,8 +1,8 @@
-"""Implement a syntax parser to use with the AST."""
+"""Implement the Abstract Syntax Tree (AST)."""
 
 from typing import Union
 
-from .abstract_syntax_tree import Node
+from .node import Node
 
 
 def uses_global_id(func: callable) -> callable:
@@ -32,6 +32,7 @@ def uses_global_id(func: callable) -> callable:
         result : object
             The result of the decorated function.
         """
+
         try:
             result = func(cls, *args, **kwargs)
         except Exception as e:

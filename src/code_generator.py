@@ -1,6 +1,6 @@
 """Implement a code generator for the virtual machine."""
 
-from .abstract_syntax_tree import Node
+from .node import Node
 from .syntax_parser import SyntaxParser
 
 
