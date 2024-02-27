@@ -1,5 +1,5 @@
-# Deprecated stuff
-old_and_deprecated/
+# Local tests/experiments
+notebooks/
 
 # Prerequisites
 *.d
