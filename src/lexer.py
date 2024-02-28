@@ -14,11 +14,17 @@ class Lexer:
 
         Returns
         -------
-        : list
+        parsed_source_code : list
             List of symbols that represent the source code.
         """
 
-        return list(map(Lexer.parse_word, Lexer.preprocess_source_code(source_code)))
+        parsed_source_code = list(
+            map(Lexer.parse_word, Lexer.preprocess_source_code(source_code))
+        )
+
+        parsed_source_code.append(("EOI", None))
+
+        return parsed_source_code
 
     @classmethod
     def parse_word(cls, word: str) -> tuple[str, int]:
