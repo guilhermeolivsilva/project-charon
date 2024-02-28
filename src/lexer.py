@@ -1,9 +1,11 @@
 """Implement a lexer for the Tiny C compiler."""
 
+from typing import Generator
+
 
 class Lexer:
     @classmethod
-    def parse_source_code(cls, source_code: str) -> list:
+    def parse_source_code(cls, source_code: str) -> Generator:
         """
         Parse the reserved words first, and then character by character.
 
@@ -14,17 +16,13 @@ class Lexer:
 
         Returns
         -------
-        parsed_source_code : list
-            List of symbols that represent the source code.
+        : Generator
+            Generator of symbols that represent the source code.
         """
 
-        parsed_source_code = list(
-            map(Lexer.parse_word, Lexer.preprocess_source_code(source_code))
+        return map(
+            Lexer.parse_word, Lexer.preprocess_source_code(source_code)
         )
-
-        parsed_source_code.append(("EOI", None))
-
-        return parsed_source_code
 
     @classmethod
     def parse_word(cls, word: str) -> tuple[str, int]:

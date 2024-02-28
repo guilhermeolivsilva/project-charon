@@ -53,11 +53,12 @@ def test_parse_source_code():
         ("ID", "b"),
         ("LESS", None),
         ("INT", 10),
-        ("RPAR", None),
-        ("EOI", None)
+        ("RPAR", None)
     ]
 
-    assert Lexer.parse_source_code(source_code) == expected_parsed_code
+    lexer_parsed_code = Lexer.parse_source_code(source_code)
+
+    assert list(lexer_parsed_code) == expected_parsed_code
 
 
 @pytest.mark.parametrize(
