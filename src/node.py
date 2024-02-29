@@ -41,6 +41,30 @@ class Node:
             _str += f", Parent ID: {self.parent.id}"
 
         return _str
+    
+    def set_kind(self, kind: str) -> None:
+        """
+        Set the `kind` of the Node.
+
+        Parameters
+        ----------
+        kind : str
+            The new `kind` to set.
+        """
+
+        self.kind = kind
+
+    def get_kind(self) -> str:
+        """
+        Get the `kind` of the Node.
+
+        Returns
+        -------
+        kind : str
+            The `kind` of this node.
+        """
+
+        return self.kind
 
     def add_child(self, child: "Node") -> None:
         """
