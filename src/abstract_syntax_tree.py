@@ -272,7 +272,7 @@ class AbstractSyntaxTree:
         while self.current_symbol in ["PLUS", "MINUS"]:
             left_operand = sum_node
 
-            _node_kind = "PLUS" if self.current_symbol == "ADD" else "MINUS"
+            _node_kind = "ADD" if self.current_symbol == "PLUS" else "SUB"
             sum_node = self._create_node(kind=_node_kind)
 
             self._next_symbol()
@@ -317,9 +317,9 @@ class AbstractSyntaxTree:
     def _next_symbol(self) -> None:
         """Get the next symbol to evaluate."""
 
-        try:
+        if len(self.source_code) > 0:
             self.current_symbol, self.current_value = self.source_code.pop(0)
-        except IndexError:
+        else:
             self.current_symbol, self.current_value = ("EOI", None)
 
     def _create_node(self, kind: str, value: Union[None, int] = None) -> Node:
