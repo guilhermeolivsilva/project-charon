@@ -59,7 +59,6 @@ class VirtualMachine:
         """
 
         self.variables[node.value] = self.stack[self.stack_pointer - 1]
-        self.stack_pointer -= 1
 
     def ipush(self, node: Node, **kwargs) -> None:
         """
@@ -130,6 +129,8 @@ class VirtualMachine:
         # Look backwards (i.e., before the instruction that triggered this)
         for _, other_node in self.code_collection[:initial_program_couter]:
             if other_node == node:
+                # Offset the default PC incrementer, to avoid dealignment
+                self.program_counter -= 1
                 return
 
             self.program_counter += 1
