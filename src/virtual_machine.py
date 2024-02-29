@@ -108,7 +108,7 @@ class VirtualMachine:
 
     def jmp(self, node: Node, **kwargs) -> None:
         """
-        Advance the code to the instruction referenced by a node.
+        Point the program counter to the instruction referenced by a node.
 
         Parameters
         ----------
@@ -116,18 +116,29 @@ class VirtualMachine:
             The node of reference.
         """
 
-        for _, other_node in self.code_collection[self.program_counter + 1:]:
-            self.program_counter += 1
+        initial_program_couter = self.program_counter
 
+        # Look forward (i.e., after the current instruction)
+        for _, other_node in self.code_collection[initial_program_couter + 1:]:
             if other_node == node:
-                break
+                return
+
+            self.program_counter += 1
+            
+        self.program_counter = 0
+
+        # Look backwards (i.e., before the instruction that triggered this)
+        for _, other_node in self.code_collection[:initial_program_couter]:
+            if other_node == node:
+                return
+
+            self.program_counter += 1
 
     def jz(self, node: Node) -> None:
         """
         Compute the next block of code if the parenthesis expression evaluates to `True`.
 
-        If it is `False`, then jump to the first instruction right after the
-        node of reference (i.e., `node`).
+        If it is `False`, then jump to the node of reference (i.e., `node`).
 
         Parameters
         ----------
@@ -145,8 +156,7 @@ class VirtualMachine:
         """
         Compute the next block of code if the parenthesis expression evaluates to `False`.
 
-        If it is `True`, then jump to the first instruction right after the
-        node of reference (i.e., `node`).
+        If it is `True`, then jump to the node of reference (i.e., `node`).
 
         Parameters
         ----------

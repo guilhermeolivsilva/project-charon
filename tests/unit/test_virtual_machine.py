@@ -15,11 +15,9 @@ def test_init() -> None:
 
     vm = VirtualMachine(code_collection=code_collection, stack_size=stack_size)
 
-    assert len(vm.variables) == 26
     assert len(vm.stack) == stack_size
     assert not any(vm.stack)
     assert all(code in vm.code_collection for code in code_collection)
-    assert ("HALT", None) in vm.code_collection
     assert vm.stack_pointer == vm.program_counter == 0
 
 
@@ -36,7 +34,10 @@ def test_run_ifetch(mocker: MockerFixture) -> None:
     test_node = Node(id=1, kind="VAR", value=0)
 
     vm = VirtualMachine(
-        code_collection=[("IFETCH", test_node)],
+        code_collection=[
+            ("IFETCH", test_node),
+            ("HALT", None)
+        ],
         stack_size=1
     )
     vm.variables[0] = test_value
@@ -56,7 +57,10 @@ def test_run_ipush(mocker: MockerFixture) -> None:
     test_node = Node(id=1, kind="CST", value=test_value)
 
     vm = VirtualMachine(
-        code_collection=[("IPUSH", test_node)],
+        code_collection=[
+            ("IPUSH", test_node),
+            ("HALT", None)
+        ],
         stack_size=1
     )
 
@@ -75,7 +79,10 @@ def test_run_istore(mocker: MockerFixture) -> None:
     test_node = Node(id=1, kind="VAR", value=0)
 
     vm = VirtualMachine(
-        code_collection=[("ISTORE", test_node)],
+        code_collection=[
+            ("ISTORE", test_node),
+            ("HALT", None)
+        ],
         stack_size=1
     )
 
@@ -94,7 +101,10 @@ def test_run_ipop(mocker: MockerFixture) -> None:
     test_value = 23
 
     vm = VirtualMachine(
-        code_collection=[("IPOP", None)],
+        code_collection=[
+            ("IPOP", None),
+            ("HALT", None)
+        ],
         stack_size=1
     )
 
@@ -124,7 +134,8 @@ def test_run_iadd(mocker: MockerFixture) -> None:
         code_collection=[
             ("IPUSH", lhs),
             ("IPUSH", rhs),
-            ("IADD", None)
+            ("IADD", None),
+            ("HALT", None)
         ],
         stack_size=2
     )
@@ -149,7 +160,8 @@ def test_run_isub(mocker: MockerFixture) -> None:
         code_collection=[
             ("IPUSH", lhs),
             ("IPUSH", rhs),
-            ("ISUB", None)
+            ("ISUB", None),
+            ("HALT", None)
         ],
         stack_size=2
     )
@@ -174,7 +186,8 @@ def test_run_ilt(mocker: MockerFixture) -> None:
         code_collection=[
             ("IPUSH", lhs),
             ("IPUSH", rhs),
-            ("ILT", None)
+            ("ILT", None),
+            ("HALT", None)
         ],
         stack_size=2
     )
@@ -196,9 +209,10 @@ def test_run_jmp(mocker: MockerFixture) -> None:
     vm = VirtualMachine(
         code_collection=[
             ("IPUSH", node_to_run),
-            ("JMP", node_to_ignore),
+            ("JMP", another_node_to_run),
             ("IPUSH", node_to_ignore),
-            ("IPUSH", another_node_to_run)
+            ("IPUSH", another_node_to_run),
+            ("HALT", None)
         ],
         stack_size=3
     )
@@ -219,31 +233,31 @@ def test_run_jz_true(mocker: MockerFixture) -> None:
     conditions.
     """
 
-    node_to_run = Node(id=1, kind="CST", value=23)
+    condition_node = Node(id=1, kind="CST", value=True)
     node_not_to_ignore = Node(id=2, kind="CST", value=35)
+    another_node_to_run = Node(id=3, kind="CST", value=13)
 
     vm = VirtualMachine(
         code_collection = [
-            ("JZ", node_not_to_ignore),
+            ("IPUSH", condition_node),
+            ("JZ", another_node_to_run),
             ("IPUSH", node_not_to_ignore),
-            ("IPUSH", node_to_run)
+            ("IPUSH", another_node_to_run),
+            ("HALT", None)
         ],
         stack_size=3
     )
-
-    # Mock the stack to contain a `True` reference for the `JZ` instruction.
-    vm.stack = [True, None, None]
-    vm.stack_pointer += 1
 
     vm.jz = mocker.spy(vm, "jz")
 
     vm.run()
 
     vm.jz.assert_called_once()
+
     assert vm.stack == [
-        True,
+        condition_node.value,
         node_not_to_ignore.value,
-        node_to_run.value,
+        another_node_to_run.value
     ]
 
 
@@ -255,23 +269,20 @@ def test_run_jz_false(mocker: MockerFixture) -> None:
     conditions.
     """
 
-    node_to_run = Node(id=1, kind="CST", value=23)
+    condition_node = Node(id=1, kind="CST", value=False)
     node_to_ignore = Node(id=2, kind="CST", value=35)
-    another_node_to_ignore = Node(id=3, kind="CST", value=13)
+    another_node_to_run = Node(id=3, kind="CST", value=13)
 
     vm = VirtualMachine(
         code_collection = [
-            ("JZ", node_to_ignore),
-            ("IPUSH", another_node_to_ignore),
+            ("IPUSH", condition_node),
+            ("JZ", another_node_to_run),
             ("IPUSH", node_to_ignore),
-            ("IPUSH", node_to_run)
+            ("IPUSH", another_node_to_run),
+            ("HALT", None)
         ],
         stack_size=3
     )
-
-    # Mock the stack to contain a `False` reference for the `JZ` instruction.
-    vm.stack = [False, None, None]
-    vm.stack_pointer += 1
 
     vm.jz = mocker.spy(vm, "jz")
 
@@ -279,13 +290,13 @@ def test_run_jz_false(mocker: MockerFixture) -> None:
 
     vm.jz.assert_called_once()    
     assert vm.stack == [
-        False,
-        node_to_run.value,
+        condition_node.value,
+        another_node_to_run.value,
         None
     ]
 
 
-def test_run_jz_true(mocker: MockerFixture) -> None:
+def test_run_jnz_true(mocker: MockerFixture) -> None:
     """
     Test `VirtualMachine.jnz` through the `run` method.
 
@@ -293,23 +304,20 @@ def test_run_jz_true(mocker: MockerFixture) -> None:
     conditions.
     """
 
-    node_to_run = Node(id=1, kind="CST", value=23)
+    condition_node = Node(id=1, kind="CST", value=True)
     node_to_ignore = Node(id=2, kind="CST", value=35)
-    another_node_to_ignore = Node(id=3, kind="CST", value=13)
+    another_node_to_run = Node(id=3, kind="CST", value=13)
 
     vm = VirtualMachine(
         code_collection = [
-            ("JNZ", node_to_ignore),
-            ("IPUSH", another_node_to_ignore),
+            ("IPUSH", condition_node),
+            ("JNZ", another_node_to_run),
             ("IPUSH", node_to_ignore),
-            ("IPUSH", node_to_run)
+            ("IPUSH", another_node_to_run),
+            ("HALT", None)
         ],
         stack_size=3
     )
-
-    # Mock the stack to contain a `True` reference for the `JNZ` instruction.
-    vm.stack = [True, None, None]
-    vm.stack_pointer += 1
 
     vm.jnz = mocker.spy(vm, "jnz")
 
@@ -317,8 +325,8 @@ def test_run_jz_true(mocker: MockerFixture) -> None:
 
     vm.jnz.assert_called_once()    
     assert vm.stack == [
-        True,
-        node_to_run.value,
+        condition_node.value,
+        another_node_to_run.value,
         None
     ]
 
@@ -331,31 +339,31 @@ def test_run_jnz_false(mocker: MockerFixture) -> None:
     conditions.
     """
 
-    node_to_run = Node(id=1, kind="CST", value=23)
+    condition_node = Node(id=1, kind="CST", value=False)
     node_not_to_ignore = Node(id=2, kind="CST", value=35)
+    another_node_to_run = Node(id=3, kind="CST", value=13)
 
     vm = VirtualMachine(
         code_collection = [
-            ("JNZ", node_not_to_ignore),
+            ("IPUSH", condition_node),
+            ("JNZ", another_node_to_run),
             ("IPUSH", node_not_to_ignore),
-            ("IPUSH", node_to_run)
+            ("IPUSH", another_node_to_run),
+            ("HALT", None)
         ],
         stack_size=3
     )
-
-    # Mock the stack to contain a `False` reference for the `JNZ` instruction.
-    vm.stack = [False, None, None]
-    vm.stack_pointer += 1
 
     vm.jnz = mocker.spy(vm, "jnz")
 
     vm.run()
 
     vm.jnz.assert_called_once()
+
     assert vm.stack == [
-        False,
+        condition_node.value,
         node_not_to_ignore.value,
-        node_to_run.value,
+        another_node_to_run.value
     ]
 
 
@@ -364,7 +372,8 @@ def test_run_empty(mocker: MockerFixture) -> None:
 
     vm = VirtualMachine(
         code_collection=[
-            ("EMPTY", Node(id=-1, kind="EMPTY"))
+            ("EMPTY", Node(id=-1, kind="EMPTY")),
+            ("HALT", None)
         ],
         stack_size=1
     )
