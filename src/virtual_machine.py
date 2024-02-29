@@ -14,11 +14,8 @@ class VirtualMachine:
     """
 
     def __init__(self, code_collection: list, stack_size: int = 1000) -> None:
-        halt_instruction = ("HALT", None)
-        if halt_instruction not in code_collection:
-            code_collection.append(halt_instruction)
 
-        self.variables = { i: 0 for i in range(0, 26) }
+        self.variables = {}
         self.stack = [None for _ in range(0, stack_size)]
         self.code_collection = code_collection
         self.stack_pointer = 0
@@ -29,8 +26,6 @@ class VirtualMachine:
 
         while True:
             instruction, node = self.code_collection[self.program_counter]
-
-            print(instruction, node)
 
             if instruction == "HALT":
                 break
@@ -171,4 +166,4 @@ class VirtualMachine:
         Useful when creating "code holes".
         """
 
-        ...
+        return 
