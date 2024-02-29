@@ -42,15 +42,15 @@ class CodeGenerator:
         instruction_map = {
             "VAR": (self.parse_simple_node, {"instruction": "IFETCH"}),
             "CST": (self.parse_simple_node, {"instruction": "IPUSH"}),
-            "SEQ": (self.parse_sequence, {}),
             "ADD": (self.parse_simple_node, {"instruction": "IADD"}),
             "SUB": (self.parse_simple_node, {"instruction": "ISUB"}),
             "LT": (self.parse_simple_node, {"instruction": "ILT"}),
             "SET": (self.parse_set_node, {}),
             "IF": (self.parse_if_node, {}),
-            "IFELSE": (self.parse_if_node, {"is_if_else": True}),
+            "IFELSE": (self.parse_if_else_node, {}),
             "WHILE": (self.parse_while_node, {}),
             "DO": (self.parse_do_while_node, {}),
+            "SEQ": (self.parse_sequence, {}),
             "EXPR": (
                 self.parse_simple_node,
                 {"instruction": "IPOP", "children_first": True},
@@ -94,19 +94,6 @@ class CodeGenerator:
         if children_first:
             self.code_collection.append((instruction, node))
 
-    def parse_sequence(self, node: Node, **kwargs) -> None:
-        """
-        Generate code from a sequence of commands.
-
-        Parameters
-        ----------
-        node : Node
-            The Node object to parse.
-        """
-
-        for child in node.children:
-            self.generate_code(child)
-
     def parse_set_node(self, node: Node, **kwargs) -> None:
         """
         Generate code from a `SET` kind Node.
@@ -122,34 +109,47 @@ class CodeGenerator:
 
         self.code_collection.append(("ISTORE", lhs))
 
-    def parse_if_node(self, node: Node, is_if_else: bool = False, **kwargs) -> None:
+    def parse_if_node(self, node: Node, **kwargs) -> None:
         """
-        Generate code from an `IF` or `IFELSE` kind Node.
+        Generate code from an `IF` kind Node.
 
         Parameters
         ----------
         node : Node
-            The `IF` or `IFELSE` Node to parse.
-        is_if_else : bool, optional (default = False)
-            A flag that indicates whether it is an `IF` or `IFELSE` Node. Set
-            it to `True` if it is `IFELSE`. Defaults to `False`.
+            The `IF` Node to parse.
         """
 
-        if is_if_else:
-            expr, if_statement, else_statement = node.children
-        else:
-            expr, if_statement = node.children
-
-        last_if_command = if_statement.children[-1]
+        expr, if_statement = node.children
 
         self.generate_code(expr)
+
+        last_if_command = if_statement.children[-1]
         self.code_collection.append(("JZ", last_if_command))
+
         self.generate_code(if_statement)
 
-        if is_if_else:
-            last_else_command = else_statement.children[-1]
-            self.code_collection.append(("JMP", last_else_command))
-            self.generate_code(else_statement)
+    def parse_if_else_node(self, node: Node, **kwargs) -> None:
+        """
+        Generate code from an `IFELSE` kind Node.
+
+        Parameters
+        ----------
+        node : Node
+            The `IFELSE` Node to parse.
+        """
+
+        expr, if_statement, else_statement = node.children
+
+        self.generate_code(expr)
+
+        first_else_command = else_statement.children[0]
+        self.code_collection.append(("JZ", first_else_command))
+
+        self.generate_code(if_statement)
+
+        last_else_command = else_statement.children[-1]
+        self.code_collection.append(("JMP", last_else_command))
+        self.generate_code(else_statement)
 
     def parse_while_node(self, node: Node, **kwargs) -> None:
         """
@@ -164,10 +164,15 @@ class CodeGenerator:
         expr, statement = node.children
 
         self.generate_code(expr)
-        self.code_collection.append(("JZ", expr))
+
+        dummy_node = Node(id=-1, kind="EMPTY")
+        self.code_collection.append(("JZ", dummy_node))
 
         self.generate_code(statement)
-        self.code_collection.append(("JMP", statement))
+
+        first_expression_node = expr.children[0]
+        self.code_collection.append(("JMP", first_expression_node))
+        self.code_collection.append(("EMPTY", dummy_node))
 
     def parse_do_while_node(self, node: Node, **kwargs) -> None:
         """
@@ -179,9 +184,24 @@ class CodeGenerator:
             The `DOWHILE` Node to parse.
         """
 
-        expr, statement = node.children
+        statement, expr = node.children
 
-        self.generate_code(expr)
         self.generate_code(statement)
+        self.generate_code(expr)
 
-        self.code_collection.append(("JNZ", statement))
+        first_statement_node = statement.children[0]
+
+        self.code_collection.append(("JNZ", first_statement_node))
+
+    def parse_sequence(self, node: Node, **kwargs) -> None:
+        """
+        Generate code from a sequence of commands.
+
+        Parameters
+        ----------
+        node : Node
+            The Node object to parse.
+        """
+
+        for child in node.children:
+            self.generate_code(child)
