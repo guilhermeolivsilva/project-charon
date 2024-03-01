@@ -2,7 +2,7 @@
 
 from typing import Generator, Union
 
-from .node import Node
+from src.node import Node
 
 
 class AbstractSyntaxTree:

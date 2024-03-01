@@ -1,6 +1,6 @@
 """Implement a code generator for the virtual machine."""
 
-from .node import Node
+from src.node import Node
 
 
 class CodeGenerator:
