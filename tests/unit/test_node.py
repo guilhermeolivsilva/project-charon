@@ -21,6 +21,29 @@ def test_init():
     assert node.children == []
 
 
+def test_eq():
+    """Test the equality operator between Node objects."""
+
+    args_a = {
+        "id": 1,
+        "kind": "TEST",
+        "value": 23
+    }
+
+    args_b = {
+        "id": 2,
+        "kind": "TEST",
+        "value": 35
+    }
+
+    lhs = Node(**args_a)
+    rhs_a = Node(**args_a)
+    rhs_b = Node(**args_b)
+
+    assert lhs == rhs_a
+    assert lhs != rhs_b
+
+
 def test_str():
     """Test the string representation of Node objects."""
 

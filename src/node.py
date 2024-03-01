@@ -24,6 +24,31 @@ class Node:
         self.parent: Node = None
         self.children: list = []
 
+    def __eq__(self, other: "Node") -> bool:
+        """
+        Implement the equality comparison between Nodes.
+
+        Notice that this method ignores the `parent` and `children` attributes.
+
+        Parameters
+        ----------
+        other : Node
+            The right hand side Node of the comparison.
+
+        Returns
+        -------
+        is_equal : bool
+            `True` if all the attributes are equal, `False` otherwise.
+        """
+
+        is_equal = (
+            self.id == other.id
+            and self.kind == other.kind
+            and self.value == other.value
+        )
+
+        return is_equal
+
     def __str__(self) -> str:
         """
         Implement a string representation of a Node object.
