@@ -182,3 +182,25 @@ i = 51
 i = 25
 j = 25
 ```
+
+## Fibonacci sequence
+
+```
+> Input
+{
+    i = 1;
+    a = 0;
+    b = 1;
+    while (i < 10) {
+        c = a;
+        a = b;
+        b = c + a;
+        i = i + 1; 
+    }
+}
+
+> Result
+{'i': 10, 'a': 34, 'b': 55, 'c': 21}
+
+# (The result is in the `b` variable.)
+```
