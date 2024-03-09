@@ -44,117 +44,185 @@ class AbstractSyntaxTree:
 
         Returns
         -------
-        statement_node : Node
+        : Node
             The parent node of the statement representation.
-
-        TODO: implement handlers for each case to reduce redudant code.
         """
 
-        # Parse an `if` statement: `if <parenthesis_expression> <statement>`
-        if self.current_symbol == "IF_SYM":
-            statement_node = self._create_node(kind="IF")
+        statement_handler_map = {
+            "IF_SYM": self._if_sym,
+            "WHILE_SYM": self._while_sym,
+            "DO_SYM": self._do_sym,
+            "SEMI": self._semi,
+            "LBRA": self._brackets
+        }
+
+        handler = statement_handler_map.get(
+            self.current_symbol,
+            self._handle_eol
+        )
+
+        return handler()
+
+    def _if_sym(self) -> Node:
+        """
+        Parse an `if` statement: `if <parenthesis_expression> <statement>`
+
+        Returns
+        -------
+        statement_node : Node
+            The parent node of the statement representation.
+        """
+
+        statement_node = self._create_node(kind="IF")
+
+        self._next_symbol()
+
+        parenthesis_expression = self._parenthesis_expression()
+        if_statement = self._statement()
+
+        parenthesis_expression.add_parent(statement_node)
+        statement_node.add_child(parenthesis_expression)
+
+        if_statement.add_parent(statement_node)
+        statement_node.add_child(if_statement)
+
+        # Add the `else` clause to the `if`: `else <statement>`
+        if self.current_symbol == "ELSE_SYM":
+            statement_node.set_kind("IFELSE")
 
             self._next_symbol()
 
-            parenthesis_expression = self._parenthesis_expression()
-            if_statement = self._statement()
+            else_statement = self._statement()
 
-            parenthesis_expression.add_parent(statement_node)
-            statement_node.add_child(parenthesis_expression)
+            else_statement.add_parent(statement_node)
+            statement_node.add_child(else_statement)
 
-            if_statement.add_parent(statement_node)
-            statement_node.add_child(if_statement)
+        return statement_node
+    
+    def _while_sym(self) -> Node:
+        """
+        Parse a `while` statement: `while <parenthesis_expression> <statement>`.
 
-            # Add the `else` clause to the `if`: `else <statement>`
-            if self.current_symbol == "ELSE_SYM":
-                statement_node.set_kind("IFELSE")
+        Returns
+        -------
+        statement_node : Node
+            The parent node of the statement representation.
+        """
 
-                self._next_symbol()
+        statement_node = self._create_node(kind="WHILE")
 
-                else_statement = self._statement()
+        self._next_symbol()
 
-                else_statement.add_parent(statement_node)
-                statement_node.add_child(else_statement)
+        parenthesis_expression = self._parenthesis_expression()
+        while_statement = self._statement()
 
-        # Parse a `while` statement: 
-        # `while <parenthesis_expression> <statement>`
-        elif self.current_symbol == "WHILE_SYM":
-            statement_node = self._create_node(kind="WHILE")
+        parenthesis_expression.add_parent(statement_node)
+        statement_node.add_child(parenthesis_expression)
 
+        while_statement.add_parent(statement_node)
+        statement_node.add_child(while_statement)
+
+        return statement_node
+    
+    def _do_sym(self) -> Node:
+        """
+        Parse a `do/while` statement: `do <statement> while <parenthesis_expression> ;`
+        Returns
+        -------
+        statement_node : Node
+            The parent node of the statement representation.
+        """
+
+        statement_node = self._create_node(kind="DO")
+
+        self._next_symbol()
+
+        do_statement = self._statement()
+
+        do_statement.add_parent(statement_node)
+        statement_node.add_child(do_statement)
+
+        if self.current_symbol == "WHILE_SYM":
             self._next_symbol()
-
-            parenthesis_expression = self._parenthesis_expression()
-            while_statement = self._statement()
-
-            parenthesis_expression.add_parent(statement_node)
-            statement_node.add_child(parenthesis_expression)
-
-            while_statement.add_parent(statement_node)
-            statement_node.add_child(while_statement)
-
-        # Parse a `do/while` statement: 
-        # `do <statement> while <parenthesis_expression> ;`
-        elif self.current_symbol == "DO_SYM":
-            statement_node = self._create_node(kind="DO")
-
-            self._next_symbol()
-
-            do_statement = self._statement()
-
-            do_statement.add_parent(statement_node)
-            statement_node.add_child(do_statement)
-
-            if self.current_symbol == "WHILE_SYM":
-                self._next_symbol()
-            else:
-                raise SyntaxError("Malformed `do` statement: missing `while`.")
-            
-            parenthesis_expression = self._parenthesis_expression()
-            parenthesis_expression.add_parent(statement_node)
-            statement_node.add_child(parenthesis_expression)
-
-            if self.current_symbol == "SEMI":
-                self._next_symbol()
-            else:
-                raise SyntaxError("Missing semicolon at the end of statement.")
-        
-        # Parse the semicolon.    
-        elif self.current_symbol == "SEMI":
-            statement_node = self._create_node(kind="EMPTY")
-            self._next_symbol()
-
-        # Parse a statement embraced by brackets: `{ <statement> }`
-        elif self.current_symbol == "LBRA":
-            statement_node = self._create_node(kind="EMPTY")
-        
-            self._next_symbol()
-
-            while self.current_symbol != "RBRA":
-                temp_node = statement_node
-                statement_node = self._create_node(kind="SEQ")
-
-                temp_node.add_parent(statement_node)
-                statement_node.add_child(temp_node)
-
-                child_statement = self._statement()
-
-                child_statement.add_parent(statement_node)
-                statement_node.add_child(child_statement)
-
-            self._next_symbol()
-        
-        # Parse an expression terminated by a semicolon: `<expression> ;`
         else:
-            statement_node = self._create_node(kind="EXPR")
-            expression = self._expression()
+            raise SyntaxError("Malformed `do` statement: missing `while`.")
+        
+        parenthesis_expression = self._parenthesis_expression()
+        parenthesis_expression.add_parent(statement_node)
+        statement_node.add_child(parenthesis_expression)
 
-            expression.add_parent(statement_node)
-            statement_node.add_child(expression)
+        if self.current_symbol == "SEMI":
+            self._next_symbol()
+        else:
+            raise SyntaxError("Missing semicolon at the end of statement.")
+        
+        return statement_node
+    
+    def _semi(self) -> Node:
+        """
+        Parse the semicolon.
+        
+        Returns
+        -------
+        statement_node : Node
+            The parent node of the statement representation.
+        """
 
-            if self.current_symbol == "SEMI":
-                self._next_symbol()
-            else:
-                raise SyntaxError("Missing semicolon at the end of expression.")
+        statement_node = self._create_node(kind="EMPTY")
+        self._next_symbol()
+
+        return statement_node
+    
+    def _brackets(self) -> Node:
+        """
+        Parse a statement embraced by brackets: `{ <statement> }`.
+
+        Returns
+        -------
+        statement_node : Node
+            The parent node of the statement representation.
+        """
+
+        statement_node = self._create_node(kind="EMPTY")
+    
+        self._next_symbol()
+
+        while self.current_symbol != "RBRA":
+            temp_node = statement_node
+            statement_node = self._create_node(kind="SEQ")
+
+            temp_node.add_parent(statement_node)
+            statement_node.add_child(temp_node)
+
+            child_statement = self._statement()
+
+            child_statement.add_parent(statement_node)
+            statement_node.add_child(child_statement)
+
+        self._next_symbol()
+
+        return statement_node
+        
+    def _handle_eol(self) -> Node:
+        """
+        Parse an expression terminated by a semicolon: `<expression> ;`
+
+        Returns
+        -------
+        statement_node : Node
+            The parent node of the statement representation.
+        """
+
+        statement_node = self._create_node(kind="EXPR")
+        expression = self._expression()
+
+        expression.add_parent(statement_node)
+        statement_node.add_child(expression)
+
+        if self.current_symbol == "SEMI":
+            self._next_symbol()
+        else:
+            raise SyntaxError("Missing semicolon at the end of expression.")
 
         return statement_node
 
