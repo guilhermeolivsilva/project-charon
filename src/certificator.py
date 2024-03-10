@@ -13,7 +13,7 @@ def generate_primes(number_of_primes: int) -> list[int]:
     """
     Generate a list with the first `number_of_primes`-th prime numbers.
 
-    This function uses cache. Eppstein's implementation of the Sieve of
+    This function uses D. Eppstein's implementation of the Sieve of
     Eratosthenes to achieve its goal.
 
     Parameters
