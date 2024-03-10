@@ -4,6 +4,22 @@ from typing import Generator
 
 
 class Lexer:
+    symbol_map = {
+        "do": "DO_SYM",
+        "while": "WHILE_SYM",
+        "if": "IF_SYM",
+        "else": "ELSE_SYM",
+        "{": "LBRA",
+        "}": "RBRA",
+        "(": "LPAR",
+        ")": "RPAR",
+        "+": "PLUS",
+        "-": "MINUS",
+        "<": "LESS",
+        ";": "SEMI",
+        "=": "EQUAL",
+    }
+
     @classmethod
     def parse_source_code(cls, source_code: str) -> Generator:
         """
@@ -20,9 +36,7 @@ class Lexer:
             Generator of symbols that represent the source code.
         """
 
-        return map(
-            Lexer.parse_word, Lexer.preprocess_source_code(source_code)
-        )
+        return map(Lexer.parse_word, Lexer.preprocess_source_code(source_code))
 
     @classmethod
     def parse_word(cls, word: str) -> tuple[str, int]:
@@ -47,26 +61,10 @@ class Lexer:
             Raised if the input does not correspond to a supported symbol.
         """
 
-        symbol_map = {
-            "do": "DO_SYM",
-            "while": "WHILE_SYM",
-            "if": "IF_SYM",
-            "else": "ELSE_SYM",
-            "{": "LBRA",
-            "}": "RBRA",
-            "(": "LPAR",
-            ")": "RPAR",
-            "+": "PLUS",
-            "-": "MINUS",
-            "<": "LESS",
-            ";": "SEMI",
-            "=": "EQUAL",
-        }
-
         value = None
 
         try:
-            symbol = symbol_map[word]
+            symbol = cls.symbol_map[word]
         except KeyError:
             if (word >= "0") and (word <= "9"):
                 symbol = "INT"
@@ -78,7 +76,7 @@ class Lexer:
                 raise SyntaxError("The given input is not supported.")
 
         return (symbol, value)
-    
+
     @classmethod
     def preprocess_source_code(cls, source_code: str) -> list[str]:
         """
@@ -113,10 +111,20 @@ class Lexer:
 
         # Remove empty tokens
         preprocessed_source = list(
-            filter(
-                lambda x: x if len(x) > 0 else None,
-                source_code
-            )
+            filter(lambda x: x if len(x) > 0 else None, source_code)
         )
 
         return preprocessed_source
+
+    @classmethod
+    def get_supported_tokens(cls) -> list[str]:
+        """
+        Get a list of tokens supported by the Lexer.
+
+        Returns
+        -------
+        : list[str]
+            The list of supported tokens.        
+        """
+
+        return list(cls.symbol_map.values()) + ["INT", "ID"]
