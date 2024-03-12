@@ -71,6 +71,14 @@ class Certificator:
         self.frontend_code = frontend_code
         self.backend_code = backend_code
 
+        supported_tokens = Lexer.get_supported_tokens()
+        self.frontend_tokens = {
+            key: value
+            for key, value in zip(
+                supported_tokens, generate_primes(len(supported_tokens))
+            )
+        }
+
     def parse_frontend_code(self) -> str:
         """
         Generate a string representation of the frontend code.
@@ -79,26 +87,102 @@ class Certificator:
         -------
         representation : str
             A unique string representation of the frontend code.
-        """
+        """        
 
-        supported_tokens = Lexer.get_supported_tokens()
-
-        frontend_tokens = {
-            key: value
-            for key, value in zip(
-                supported_tokens, generate_primes(len(supported_tokens))
-            )
+        frontend_handlers_map = {
+            "ID": self._parse_frontend_variable,
+            "INT": self._parse_frontend_integer
         }
 
         primes = generate_primes(len(self.frontend_code))
 
         representation = ""
 
-        for frontend_instruction, prime in zip(self.frontend_code, primes):
-            token, _ = frontend_instruction
-            representation += f"({frontend_tokens[token]}^{prime}) * "
+        for code, prime in zip(self.frontend_code, primes):
+            code_kind, _ = code
+
+            handler = frontend_handlers_map.get(
+                code_kind,
+                self._parse_frontend_default
+            )
+
+            representation += handler(code=code, prime=prime)
 
         # Pad out the " * " at the end of the string.
         representation = representation[:-3]
 
         return representation
+    
+    def _parse_frontend_default(self, code: tuple[str], prime: int) -> str:
+        """
+        Parse a symbol or a reserved word from the frontend.
+
+        This is the default parser -- i.e., parses any tokens unless it's an
+        integer or a variable.
+
+        Parameters
+        ----------
+        code : tuple[str]
+            Tuple that represents a single code piece from the frontend source
+            code. This is a pair of (`token`, `value`).
+        prime : int
+            A prime number to identify this code piece.
+
+        Returns
+        -------
+         : str
+            The parsed representation
+        """
+
+        # The associated `value` of these tokens is always `None`.
+        token, _ = code
+
+        return f"({self.frontend_tokens.get(token)}^{prime}) * "
+
+
+    def _parse_frontend_variable(self, code: tuple[str], prime: int) -> str:
+        """
+        Parse a variable from the frontend source code.
+
+        Parameters
+        ----------
+        code : tuple[str]
+            Tuple that represents a single code piece from the frontend source
+            code. This is a pair of (`token`, `value`).
+        prime : int
+            A prime number to identify this code piece.
+
+        Returns
+        -------
+        representation : str
+            The parsed representation
+        """
+
+        # To parse a variable, we only need its name.
+        _, variable_name = code
+
+        return f"({self.frontend_tokens.get(variable_name)}^{prime}) * "
+    
+    def _parse_frontend_integer(self, code: tuple[str], prime: int) -> str:
+        """
+        Parse a literal integer from the frontend source code.
+
+        Parameters
+        ----------
+        code : tuple[str]
+            Tuple that represents a single code piece from the frontend source
+            code. This is a pair of (`token`, `value`).
+        prime : int
+            A prime number to identify this code piece.
+
+        Returns
+        -------
+        representation : str
+            The parsed representation
+        
+        TODO: review Gödel's numbering for constants.
+        """
+
+        token, value = code
+
+        return f"({value}*{self.frontend_tokens.get(token)}^{prime}) * "
