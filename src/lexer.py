@@ -1,14 +1,19 @@
 """Implement a lexer for the Tiny C compiler."""
 
+from string import ascii_lowercase
+
 from typing import Generator
 
 
 class Lexer:
-    symbol_map = {
+    reserved_words = {
         "do": "DO_SYM",
         "while": "WHILE_SYM",
         "if": "IF_SYM",
-        "else": "ELSE_SYM",
+        "else": "ELSE_SYM"
+    }
+
+    symbols = {
         "{": "LBRA",
         "}": "RBRA",
         "(": "LPAR",
@@ -17,7 +22,18 @@ class Lexer:
         "-": "MINUS",
         "<": "LESS",
         ";": "SEMI",
-        "=": "EQUAL",
+        "=": "EQUAL"
+    }
+
+    variables = {
+        character: "ID"
+        for character in ascii_lowercase
+    }
+
+    lexer_tokens = {
+        **reserved_words,
+        **symbols,
+        **variables
     }
 
     @classmethod
@@ -64,16 +80,17 @@ class Lexer:
         value = None
 
         try:
-            symbol = cls.symbol_map[word]
+            symbol = cls.lexer_tokens[word]
         except KeyError:
             if (word >= "0") and (word <= "9"):
                 symbol = "INT"
-                value = int(word)
-            elif (word >= "a") and (word <= "z"):
-                symbol = "ID"
-                value = word
             else:
                 raise SyntaxError("The given input is not supported.")
+            
+        if symbol == "ID":
+            value = word
+        elif symbol == "INT":
+            value = int(word)
 
         return (symbol, value)
 
@@ -115,16 +132,3 @@ class Lexer:
         )
 
         return preprocessed_source
-
-    @classmethod
-    def get_supported_tokens(cls) -> list[str]:
-        """
-        Get a list of tokens supported by the Lexer.
-
-        Returns
-        -------
-        : list[str]
-            The list of supported tokens.        
-        """
-
-        return list(cls.symbol_map.values()) + ["INT", "ID"]
