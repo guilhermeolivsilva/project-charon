@@ -22,7 +22,12 @@ def test_init() -> None:
 
 
 def test_run() -> None:
-    """Test the `VirtualMachine.run` method."""
+    """
+    Test the `VirtualMachine.run` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    following `test_run_...` tests.
+    """
 
     ...
 
