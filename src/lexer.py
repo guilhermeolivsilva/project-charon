@@ -30,10 +30,16 @@ class Lexer:
         for character in ascii_lowercase
     }
 
+    literals = {
+        str(literal): "INT"
+        for literal in range(0, 10)
+    }
+
     lexer_tokens = {
         **reserved_words,
         **symbols,
-        **variables
+        **variables,
+        **literals
     }
 
     @classmethod
