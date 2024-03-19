@@ -23,6 +23,7 @@ class Node:
         self.value: Union[int, None] = value
         self.parent: Node = None
         self.children: list = []
+        self.position_in_tree: Union[int, None] = None
 
     def __eq__(self, other: "Node") -> bool:
         """
@@ -65,7 +66,22 @@ class Node:
         if self.parent:
             _str += f", Parent ID: {self.parent.id}"
 
+        if self.position_in_tree is not None:
+            _str += f", Position in Tree: {self.position_in_tree}"
+
         return _str
+    
+    def set_position_in_tree(self, position_in_tree: int) -> None:
+        """
+        Set the `position_in_tree` of the Node.
+
+        Parameters
+        ----------
+        position_in_tree : int
+            The new `position_in_tree` to set.
+        """
+
+        self.position_in_tree = position_in_tree
     
     def set_kind(self, kind: str) -> None:
         """
