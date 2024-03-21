@@ -36,7 +36,7 @@ class CodeGenerator:
         Parameters
         ----------
         node : Node
-            A Node from the AST.
+            The initial Node from the AST. (i.e., its `root`.)
         """
 
         instruction_map = {
