@@ -47,6 +47,17 @@ def test_generate_code() -> None:
     ...
 
 
+def test_parse_simple_node() -> None:
+    """
+    Test the `CodeGenerator.parse_simple_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    following tests.
+    """
+
+    ...
+
+
 @pytest.mark.parametrize(
     "node, children, expected_result",
     [
@@ -127,14 +138,16 @@ def test_generate_code() -> None:
         )
     ]
 )
-def test_generate_code_cst_var(
+def test_generate_code_simple_node(
     node: Node,
     children: Union[list[Node], None],
     expected_result: list[tuple[str, Node]],
     mocker: MockerFixture
 ) -> None:
     """
-    Test the `CodeGenerator.generate_code` method for `VAR` and `CST` nodes.
+    Test the `CodeGenerator.generate_code` method for simple nodes.
+
+    A simple node is of `VAR`, `CST`, `ADD`, `SUB` or `LT` kind.
 
     This test also asserts that the `parse_simple_node` method has been called.
 
@@ -167,3 +180,29 @@ def test_generate_code_cst_var(
     
         assert instruction == expected_instruction
         assert reference_node == expected_node
+
+
+def test_generate_code_set_node(mocker: MockerFixture) -> None:
+    """Test the `CodeGenerator.generate_code` method for `SET` nodes."""
+
+    cg = CodeGenerator()
+    cg.parse_set_node = mocker.spy(cg, "parse_set_node")
+
+    node = Node(id=1, kind="SET")
+    child_1 = Node(id=2, kind="VAR", value="a")
+    child_2 = Node(id=3, kind="VAR", value="b")
+    node.add_child(child_1)
+    node.add_child(child_2)
+
+    cg.generate_code(node)
+
+    cg.parse_set_node.assert_called()
+
+    expected_result = [
+        ("IFETCH", child_2),
+        ("ISTORE", child_1)
+    ]
+
+    # In this case, we can check the equality directly because the expected
+    # result uses the exact same `Node` objects.
+    assert cg.code_collection == expected_result
