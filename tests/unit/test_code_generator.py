@@ -189,18 +189,107 @@ def test_generate_code_set_node(mocker: MockerFixture) -> None:
     cg.parse_set_node = mocker.spy(cg, "parse_set_node")
 
     node = Node(id=1, kind="SET")
-    child_1 = Node(id=2, kind="VAR", value="a")
-    child_2 = Node(id=3, kind="VAR", value="b")
-    node.add_child(child_1)
-    node.add_child(child_2)
+    lhs = Node(id=2, kind="VAR", value="a")
+    rhs = Node(id=3, kind="VAR", value="b")
+    node.add_child(lhs)
+    node.add_child(rhs)
 
     cg.generate_code(node)
 
     cg.parse_set_node.assert_called()
 
     expected_result = [
-        ("IFETCH", child_2),
-        ("ISTORE", child_1)
+        ("IFETCH", rhs),
+        ("ISTORE", lhs)
+    ]
+
+    # In this case, we can check the equality directly because the expected
+    # result uses the exact same `Node` objects.
+    assert cg.code_collection == expected_result
+
+
+def test_generate_code_if_node(mocker: MockerFixture) -> None:
+    """Test the `CodeGenerator.generate_code` method for `IF` nodes."""
+
+    cg = CodeGenerator()
+    cg.parse_if_node = mocker.spy(cg, "parse_if_node")
+
+    node = Node(id=1, kind="IF")
+
+    expr = Node(id=2, kind="LT")
+    expr_lhs = Node(id=3, kind="VAR", value="a")
+    expr.add_child(expr_lhs)
+    expr_rhs = Node(id=4, kind="CST", value=1)
+    expr.add_child(expr_rhs)
+    node.add_child(expr)
+
+    if_statement = Node(id=5, kind="SET")
+    if_statement_lhs = Node(id=6, kind="VAR", value="b")
+    if_statement.add_child(if_statement_lhs)
+    if_statement_rhs = Node(id=7, kind="CST", value=2)
+    if_statement.add_child(if_statement_rhs)
+    node.add_child(if_statement)
+
+    cg.generate_code(node)
+
+    cg.parse_if_node.assert_called()
+
+    expected_result = [
+        ('IFETCH', expr_lhs),
+        ('IPUSH', expr_rhs),
+        ('ILT', expr),
+        ('JZ', if_statement_rhs),
+        ('IPUSH', if_statement_rhs),
+        ('ISTORE', if_statement_lhs)
+    ]
+
+    # In this case, we can check the equality directly because the expected
+    # result uses the exact same `Node` objects.
+    assert cg.code_collection == expected_result
+
+
+def test_generate_code_ifelse_node(mocker: MockerFixture) -> None:
+    """Test the `CodeGenerator.generate_code` method for `IFELSE` nodes."""
+
+    cg = CodeGenerator()
+    cg.parse_if_else_node = mocker.spy(cg, "parse_if_else_node")
+
+    node = Node(id=1, kind="IFELSE")
+
+    expr = Node(id=2, kind="LT")
+    expr_lhs = Node(id=3, kind="VAR", value="a")
+    expr.add_child(expr_lhs)
+    expr_rhs = Node(id=4, kind="CST", value=1)
+    expr.add_child(expr_rhs)
+
+    if_statement = Node(id=5, kind="SET")
+    if_statement_lhs = Node(id=6, kind="VAR", value="b")
+    if_statement.add_child(if_statement_lhs)
+    if_statement_rhs = Node(id=7, kind="CST", value=2)
+    if_statement.add_child(if_statement_rhs)
+
+    else_statement = Node(id=8, kind="SET")
+    else_statement_lhs = Node(id=9, kind="VAR", value="b")
+    else_statement.add_child(else_statement_lhs)
+    else_statement_rhs = Node(id=10, kind="CST", value=10)
+    else_statement.add_child(else_statement_rhs)
+
+    node.add_child(expr)
+    node.add_child(if_statement)
+    node.add_child(else_statement)
+
+    cg.generate_code(node)
+
+    expected_result = [
+        ('IFETCH', expr_lhs),
+        ('IPUSH', expr_rhs),
+        ('ILT', expr),
+        ('JZ', else_statement_lhs),
+        ('IPUSH', if_statement_rhs),
+        ('ISTORE', if_statement_lhs),
+        ('JMP', else_statement_rhs),
+        ('IPUSH', else_statement_rhs),
+        ('ISTORE', else_statement_lhs)
     ]
 
     # In this case, we can check the equality directly because the expected
