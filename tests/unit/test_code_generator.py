@@ -47,32 +47,10 @@ def test_generate_code() -> None:
     ...
 
 
-def test_parse_simple_node() -> None:
-    """
-    Test the `CodeGenerator.parse_simple_node` method.
-    
-    This test is omitted because all of its possibilities are covered by the
-    following tests.
-    """
-
-    ...
-
-
 @pytest.mark.parametrize(
     "node, children, expected_result",
     [
-        (
-            # node
-            Node(id=1, kind="CST", value=23),
-
-            # children
-            None,
-
-            # expected_result
-            [
-                ("IPUSH", Node(id=1, kind="CST", value=23))
-            ]
-        ),
+        # Variable (VAR)
         (
             # node
             Node(id=1, kind="VAR", value="a"),
@@ -85,6 +63,22 @@ def test_parse_simple_node() -> None:
                 ("IFETCH", Node(id=1, kind="VAR", value="a"))
             ]
         ),
+
+        # Constant (CST)
+        (
+            # node
+            Node(id=1, kind="CST", value=23),
+
+            # children
+            None,
+
+            # expected_result
+            [
+                ("IPUSH", Node(id=1, kind="CST", value=23))
+            ]
+        ),
+
+        # Addition (ADD)
         (
             # node
             Node(id=1, kind="ADD"),
@@ -102,6 +96,8 @@ def test_parse_simple_node() -> None:
                 ("IADD", Node(id=1, kind="ADD"))
             ]
         ),
+
+        # Subtraction (SUB)
         (
             # node
             Node(id=1, kind="SUB"),
@@ -119,6 +115,8 @@ def test_parse_simple_node() -> None:
                 ("ISUB", Node(id=1, kind="SUB"))
             ]
         ),
+
+        # Comparison (LT -- i.e., "less than")
         (
             # node
             Node(id=1, kind="LT"),
@@ -135,6 +133,59 @@ def test_parse_simple_node() -> None:
                 ("IFETCH", Node(id=3, kind="VAR", value="a")),
                 ("ILT", Node(id=1, kind="LT"))
             ]
+        ),
+
+        # Expression (EXPR)
+        (
+            # node
+            Node(id=1, kind="EXPR"),
+
+            # children
+            [
+                Node(id=2, kind="CST", value=1),
+                Node(id=3, kind="VAR", value="a")
+            ],
+
+            # expected result
+            [
+                ("IPUSH", Node(id=2, kind="CST", value=1)),
+                ("IFETCH", Node(id=3, kind="VAR", value="a")),
+                ("IPOP", Node(id=1, kind="EXPR"))
+            ]
+        ),
+
+        # Program (PROG)
+        (
+            # node
+            Node(id=1, kind="PROG"),
+
+            # children
+            [
+                Node(id=2, kind="CST", value=1),
+                Node(id=3, kind="VAR", value="a")
+            ],
+
+            # expected result
+            [
+                ("IPUSH", Node(id=2, kind="CST", value=1)),
+                ("IFETCH", Node(id=3, kind="VAR", value="a")),
+                ("HALT", Node(id=1, kind="PROG"))
+            ]
+        ),
+
+        # Empty node (EMPTY)
+        (
+            # node
+            Node(id=1, kind="EMPTY"),
+
+            # children
+            [],
+
+            # expected result
+            [
+                ("EMPTY", Node(id=1, kind="EMPTY"))
+            ]
+            
         )
     ]
 )
@@ -168,8 +219,6 @@ def test_generate_code_simple_node(
     cg = CodeGenerator()
     cg.parse_simple_node = mocker.spy(cg, "parse_simple_node")
     cg.generate_code(node)
-
-    cg.parse_simple_node.assert_called()
     
     # Must split the expected result and assert each item separately because
     # direct comparisons will fail. The `Node` objects aren't actually the
@@ -180,6 +229,8 @@ def test_generate_code_simple_node(
     
         assert instruction == expected_instruction
         assert reference_node == expected_node
+
+    cg.parse_simple_node.assert_called()
 
 
 def test_generate_code_set_node(mocker: MockerFixture) -> None:
@@ -196,8 +247,6 @@ def test_generate_code_set_node(mocker: MockerFixture) -> None:
 
     cg.generate_code(node)
 
-    cg.parse_set_node.assert_called()
-
     expected_result = [
         ("IFETCH", rhs),
         ("ISTORE", lhs)
@@ -206,6 +255,7 @@ def test_generate_code_set_node(mocker: MockerFixture) -> None:
     # In this case, we can check the equality directly because the expected
     # result uses the exact same `Node` objects.
     assert cg.code_collection == expected_result
+    cg.parse_set_node.assert_called()
 
 
 def test_generate_code_if_node(mocker: MockerFixture) -> None:
@@ -232,20 +282,20 @@ def test_generate_code_if_node(mocker: MockerFixture) -> None:
 
     cg.generate_code(node)
 
-    cg.parse_if_node.assert_called()
-
     expected_result = [
-        ('IFETCH', expr_lhs),
-        ('IPUSH', expr_rhs),
-        ('ILT', expr),
-        ('JZ', if_statement_rhs),
-        ('IPUSH', if_statement_rhs),
-        ('ISTORE', if_statement_lhs)
+        ("IFETCH", expr_lhs),
+        ("IPUSH", expr_rhs),
+        ("ILT", expr),
+        ("JZ", if_statement_rhs),
+        ("IPUSH", if_statement_rhs),
+        ("ISTORE", if_statement_lhs)
     ]
 
     # In this case, we can check the equality directly because the expected
     # result uses the exact same `Node` objects.
     assert cg.code_collection == expected_result
+
+    cg.parse_if_node.assert_called()
 
 
 def test_generate_code_ifelse_node(mocker: MockerFixture) -> None:
@@ -281,17 +331,218 @@ def test_generate_code_ifelse_node(mocker: MockerFixture) -> None:
     cg.generate_code(node)
 
     expected_result = [
-        ('IFETCH', expr_lhs),
-        ('IPUSH', expr_rhs),
-        ('ILT', expr),
-        ('JZ', else_statement_lhs),
-        ('IPUSH', if_statement_rhs),
-        ('ISTORE', if_statement_lhs),
-        ('JMP', else_statement_rhs),
-        ('IPUSH', else_statement_rhs),
-        ('ISTORE', else_statement_lhs)
+        ("IFETCH", expr_lhs),
+        ("IPUSH", expr_rhs),
+        ("ILT", expr),
+        ("JZ", else_statement_lhs),
+        ("IPUSH", if_statement_rhs),
+        ("ISTORE", if_statement_lhs),
+        ("JMP", else_statement_rhs),
+        ("IPUSH", else_statement_rhs),
+        ("ISTORE", else_statement_lhs)
     ]
 
     # In this case, we can check the equality directly because the expected
     # result uses the exact same `Node` objects.
     assert cg.code_collection == expected_result
+
+    cg.parse_if_else_node.assert_called()
+
+
+def test_generate_code_while_node(mocker: MockerFixture) -> None:
+    """Test the `CodeGenerator.generate_code` method for `WHILE` nodes."""
+
+    cg = CodeGenerator()
+    cg.parse_while_node = mocker.spy(cg, "parse_while_node")
+
+    node = Node(id=1, kind="WHILE")
+
+    expr = Node(id=2, kind="LT")
+    expr_lhs = Node(id=3, kind="VAR", value="a")
+    expr.add_child(expr_lhs)
+    expr_rhs = Node(id=4, kind="CST", value=1)
+    expr.add_child(expr_rhs)
+
+    statement = Node(id=5, kind="ADD")
+    statement_lhs = Node(id=6, kind="VAR", value="b")
+    statement.add_child(statement_lhs)
+    statement_rhs = Node(id=7, kind="CST", value=2)
+    statement.add_child(statement_rhs)
+
+    node.add_child(expr)
+    node.add_child(statement)
+
+    _empty_node = Node(id=-1, kind="EMPTY")
+
+    cg.generate_code(node)
+
+    expected_result = [
+        ("IFETCH", expr_lhs),
+        ("IPUSH", expr_rhs),
+        ("ILT", expr),
+        ("JZ", _empty_node),
+        ("IFETCH", statement_lhs),
+        ("IPUSH", statement_rhs),
+        ("IADD", statement),
+        ("JMP", expr_lhs),
+        ("EMPTY", _empty_node)
+    ]
+
+    for result, expected in zip(cg.code_collection, expected_result):
+        expected_instruction, expected_node = result
+        instruction, reference_node = expected
+    
+        assert instruction == expected_instruction
+        assert reference_node == expected_node
+
+    cg.parse_while_node.assert_called()
+
+
+def test_generate_code_do_while(mocker: MockerFixture) -> None:
+    """Test the `CodeGenerator.generate_code` method for `DO` nodes."""
+
+    cg = CodeGenerator()
+    cg.parse_do_while_node = mocker.spy(cg, "parse_do_while_node")
+    
+    node = Node(id=1, kind="DO")
+
+    expr = Node(id=2, kind="LT")
+    expr_lhs = Node(id=3, kind="VAR", value="a")
+    expr.add_child(expr_lhs)
+    expr_rhs = Node(id=4, kind="CST", value=1)
+    expr.add_child(expr_rhs)
+
+    statement = Node(id=5, kind="ADD")
+    statement_lhs = Node(id=6, kind="VAR", value="b")
+    statement.add_child(statement_lhs)
+    statement_rhs = Node(id=7, kind="CST", value=2)
+    statement.add_child(statement_rhs)
+
+    node.add_child(expr)
+    node.add_child(statement)
+
+    cg.generate_code(node)
+
+    expected_result = [
+        ("IFETCH", expr_lhs),
+        ("IPUSH", expr_rhs),
+        ("ILT", expr),
+        ("IFETCH", statement_lhs),
+        ("IPUSH", statement_rhs),
+        ("IADD", statement),
+        ("JNZ", expr_lhs)
+    ]
+
+    for result, expected in zip(cg.code_collection, expected_result):
+        expected_instruction, expected_node = result
+        instruction, reference_node = expected
+    
+        assert instruction == expected_instruction
+        assert reference_node == expected_node
+
+    cg.parse_do_while_node.assert_called()
+
+
+def test_generate_code_sequence(mocker: MockerFixture) -> None:
+    """Test the `CodeGenerator.generate_code` method for `SEQ` nodes."""
+
+    cg = CodeGenerator()
+    cg.parse_sequence = mocker.spy(cg, "parse_sequence")
+
+    node = Node(id=1, kind="SEQ")
+    statement = Node(id=5, kind="ADD")
+    statement_lhs = Node(id=6, kind="VAR", value="b")
+    statement.add_child(statement_lhs)
+    statement_rhs = Node(id=7, kind="CST", value=2)
+    statement.add_child(statement_rhs)
+
+    node.add_child(statement)
+
+    cg.generate_code(node)
+
+    expected_result = [
+        ("IFETCH", statement_lhs),
+        ("IPUSH", statement_rhs),
+        ("IADD", statement)
+    ]
+
+    assert cg.code_collection == expected_result
+
+    cg.parse_sequence.assert_called()
+
+
+def test_parse_simple_node() -> None:
+    """
+    Test the `CodeGenerator.parse_simple_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    previous tests.
+    """
+
+    ...
+
+
+def test_parse_set_node() -> None:
+    """
+    Test the `CodeGenerator.parse_set_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    previous tests.
+    """
+
+    ...
+
+
+def test_parse_if_node() -> None:
+    """
+    Test the `CodeGenerator.parse_if_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    previous tests.
+    """
+
+    ...
+
+
+def test_parse_if_else_node() -> None:
+    """
+    Test the `CodeGenerator.parse_if_else_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    previous tests.
+    """
+
+    ...
+
+
+def test_parse_while_node() -> None:
+    """
+    Test the `CodeGenerator.parse_while_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    previous tests.
+    """
+
+    ...
+
+
+def test_parse_do_while_node() -> None:
+    """
+    Test the `CodeGenerator.parse_do_while_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    previous tests.
+    """
+
+    ...
+
+
+def test_parse_sequence_node() -> None:
+    """
+    Test the `CodeGenerator.parse_sequence_node` method.
+    
+    This test is omitted because all of its possibilities are covered by the
+    previous tests.
+    """
+
+    ...
