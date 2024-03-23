@@ -45,12 +45,6 @@ class CodeGenerator:
             "ADD": (self.parse_simple_node, {"instruction": "IADD"}),
             "SUB": (self.parse_simple_node, {"instruction": "ISUB"}),
             "LT": (self.parse_simple_node, {"instruction": "ILT"}),
-            "SET": (self.parse_set_node, {}),
-            "IF": (self.parse_if_node, {}),
-            "IFELSE": (self.parse_if_else_node, {}),
-            "WHILE": (self.parse_while_node, {}),
-            "DO": (self.parse_do_while_node, {}),
-            "SEQ": (self.parse_sequence, {}),
             "EXPR": (
                 self.parse_simple_node,
                 {"instruction": "IPOP", "children_first": True},
@@ -59,7 +53,13 @@ class CodeGenerator:
                 self.parse_simple_node,
                 {"instruction": "HALT", "children_first": True},
             ),
-            "EMPTY": (self.parse_simple_node, {"instruction": "EMPTY"})
+            "EMPTY": (self.parse_simple_node, {"instruction": "EMPTY"}),
+            "SET": (self.parse_set_node, {}),
+            "IF": (self.parse_if_node, {}),
+            "IFELSE": (self.parse_if_else_node, {}),
+            "WHILE": (self.parse_while_node, {}),
+            "DO": (self.parse_do_while_node, {}),
+            "SEQ": (self.parse_sequence, {})
         }
 
         handler, kwargs = instruction_map[node.kind]
