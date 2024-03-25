@@ -16,6 +16,23 @@ class AbstractSyntaxTree:
         the source code in (`symbol`, `value`) format.
     """
 
+    node_kinds = [
+        "VAR",
+        "CST",
+        "ADD",
+        "SUB",
+        "LT",
+        "EXPR",
+        "PROG",
+        "EMPTY",
+        "SET",
+        "IF",
+        "IFELSE",
+        "WHILE",
+        "DO",
+        "SEQ"
+    ]
+
     def __init__(self, source_code: Generator) -> None:
         self.node_id_manager: int = 1
         self.source_code = list(source_code)
