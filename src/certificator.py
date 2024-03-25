@@ -6,7 +6,10 @@ same ID. However, no pair of statements must have the same ID -- and the same
 goes for instructions.
 """
 
+from string import ascii_lowercase
+
 from src.abstract_syntax_tree import AbstractSyntaxTree
+from src.code_generator import CodeGenerator
 from src.lexer import Lexer
 from src.node import Node
 
@@ -117,6 +120,21 @@ class Certificator:
         Code Generator.
     """
 
+    variables = ascii_lowercase
+    literals = [str(literal) for literal in range(0, 10)]
+
+    frontend_symbols = [
+        *AbstractSyntaxTree.node_kinds,
+        *variables,
+        *literals
+    ]
+
+    backend_symbols = [
+        *CodeGenerator.instructions,
+        *variables,
+        *literals
+    ]
+
     def __init__(
         self, frontend_code: AbstractSyntaxTree, backend_code: list[tuple]
     ) -> None:
@@ -126,8 +144,16 @@ class Certificator:
         self.frontend_tokens = {
             key: value
             for key, value in zip(
-                Lexer.lexer_tokens,
-                get_range_of_primes(len(Lexer.lexer_tokens))
+                self.frontend_symbols,
+                get_range_of_primes(len(self.frontend_symbols))
+            )
+        }
+
+        self.backend_tokens = {
+            key: value
+            for key, value in zip(
+                self.backend_symbols,
+                get_range_of_primes(len(self.backend_symbols))
             )
         }
 
