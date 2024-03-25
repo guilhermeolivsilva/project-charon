@@ -9,6 +9,21 @@ class CodeGenerator:
     Abstract Syntax Tree (AST) Nodes.
     """
 
+    instructions = [
+        "IFETCH",
+        "IPUSH",
+        "ISTORE",
+        "IPOP",
+        "IADD",
+        "ISUB",
+        "ILT",
+        "HALT",
+        "EMPTY",
+        "JMP",
+        "JZ",
+        "JNZ"
+    ]
+
     def __init__(self) -> None:
         self.code_collection: list = []
 
