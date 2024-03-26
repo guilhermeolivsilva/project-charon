@@ -22,7 +22,7 @@ class Node:
         self.kind: str = kind
         self.value: Union[int, None] = value
         self.parent: Node = None
-        self.children: list = []
+        self.children: list[Node] = []
         self.position_in_tree: Union[int, None] = None
 
     def __eq__(self, other: "Node") -> bool:
@@ -117,6 +117,63 @@ class Node:
             The Node to be added.
         """
         self.children.append(child)
+
+    def remove_child(self, child_node: "Node") -> None:
+        """
+        Remove the `child_node` from the the `self.children` list.
+
+        Parameters
+        ----------
+        child_node : Node
+            The Node to remove.
+        """
+
+        if child_node in self.children:
+            self.children.remove(child_node)
+            child_node.parent = None
+
+    def remove_from_tree(self) -> None:
+        """Remove itself from the tree."""
+
+        if self.parent:
+            self.parent.remove_child(self)
+
+    def merge(self, merge_target: 'Node', attribute_absortion: dict = {}) -> None:
+        """
+        Merge the `merge_target` to `self`.
+
+        In this merger, the `merge_target`'s children becomes children of
+        `self`, and the `merge_target` is removed from the tree. If
+        `absorb_value` is set to `True`, then `self.value` is set to
+        `merge_target.value`.
+
+        Parameters
+        ----------
+        merge_target : Node
+            The `Node` to be merged with `self`.
+        attribute_absortion : dict
+            TODO
+        """
+
+        absorb_value = attribute_absortion.get("absorb_value", False)
+
+        if absorb_value:
+            self.value = merge_target.value
+
+        for child in merge_target.children:
+            child.add_parent(self)
+
+        parent_children_first = attribute_absortion.get(
+            "parent_children_first",
+            True
+        )
+
+        if parent_children_first:
+            self.children.extend(merge_target.children)
+        else:
+            self.children = [*merge_target.children, *self.children]
+
+        merge_target.remove_from_tree()
 
     def add_parent(self, parent: "Node") -> None:
         """
