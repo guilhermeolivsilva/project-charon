@@ -119,7 +119,13 @@ class CodeGenerator:
             The `SET` Node to parse.
         """
 
-        lhs, rhs = node.children
+        # Making the Code Generator compatible with AST Merging optimization.
+        if node.value is not None:
+            lhs = Node(id=-1, kind="VAR", value=node.value)
+            rhs = node.children[0]
+        else:
+            lhs, rhs = node.children
+
         self.generate_code(rhs)
 
         self.code_collection.append(("ISTORE", lhs))
