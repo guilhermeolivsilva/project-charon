@@ -10,47 +10,7 @@ from string import ascii_lowercase
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.code_generator import CodeGenerator
-from src.lexer import Lexer
 from src.node import Node
-
-
-def get_range_of_primes(range_length: int) -> list[int]:
-    """
-    Generate a list with the first `range_length`-th prime numberbers.
-
-    This function uses D. Eppstein's implementation of the Sieve of
-    Eratosthenes to achieve its goal.
-
-    Parameters
-    ----------
-    range_length : int
-        The amount of prime numberbers to generate.
-
-    Returns
-    -------
-    primes : list[int]
-        List with the first `range_length` prime numberbers.
-    """
-
-    primes = []
-
-    cache = {}
-    current_integer = 2
-
-    while len(primes) <= range_length:
-        if current_integer not in cache:
-            primes.append(current_integer)
-            cache[current_integer * current_integer] = [current_integer]
-        else:
-            for cached_element in cache[current_integer]:
-                cache.setdefault(cached_element + current_integer, []).append(
-                    cached_element
-                )
-            del cache[current_integer]
-
-        current_integer += 1
-
-    return primes
 
 
 def is_prime(number: int) -> bool:
@@ -138,14 +98,14 @@ class Certificator:
     def __init__(
         self, frontend_code: AbstractSyntaxTree, backend_code: list[tuple]
     ) -> None:
-        self.frontend_code = frontend_code.root
+        self.frontend_code = frontend_code
         self.backend_code = backend_code
 
         self.frontend_tokens = {
             key: value
             for key, value in zip(
                 self.frontend_symbols,
-                get_range_of_primes(len(self.frontend_symbols))
+                range(1, len(self.frontend_symbols) + 1)
             )
         }
 
@@ -153,7 +113,7 @@ class Certificator:
             key: value
             for key, value in zip(
                 self.backend_symbols,
-                get_range_of_primes(len(self.backend_symbols))
+                range(1, len(self.backend_symbols) + 1)
             )
         }
 
@@ -161,7 +121,7 @@ class Certificator:
         """Traverse the AST and annotate each node with its relative position."""
 
         # Using a list to avoid issues with variable scoping in nested function
-        current_prime = [1]
+        base = [1]
 
         def traverse(node: Node) -> None:
             if node is None:
@@ -170,8 +130,108 @@ class Certificator:
             for child in node.children:
                 traverse(child)
 
-            current_prime[0] = next_prime(current_prime[0])
-            
-            node.set_position_in_tree(current_prime[0])
+            base[0] = next_prime(base[0])
+            exponent = self.get_label_exponent(node)
+
+            certificate_label = f"{base[0]}^{exponent}"
+
+            node.set_certificate_label(certificate_label)
 
         traverse(self.frontend_code)
+
+    def get_label_exponent(self, node: Node) -> str:
+        """
+        Compute the exponent to label the given `node`.
+
+        Parameters
+        ----------
+        node : Node
+            The AST node to compute its associated exponent.
+
+        Returns
+        -------
+        : str
+            The unique exponent to label the `node`.
+        """
+
+        node_handlers = {
+            "VAR": self._get_value_exponent,
+            "CST": self._get_value_exponent,
+            "ADD": self._get_keyword_exponent,
+            "SUB": self._get_keyword_exponent,
+            "LT": self._get_keyword_exponent,
+            "EXPR": self._get_keyword_exponent,
+            "PROG": self._get_keyword_exponent,
+            "EMPTY": self._get_keyword_exponent,
+            "SET": self._get_set_exponent,
+            "IF": self._get_keyword_exponent,
+            "IFELSE": self._get_keyword_exponent,
+            "WHILE": self._get_keyword_exponent,
+            "DO": self._get_keyword_exponent,
+            "SEQ": self._get_keyword_exponent,
+        }
+
+        handler = node_handlers.get(node.kind)
+
+        return handler(node=node)
+    
+    def _get_value_exponent(self, node: Node) -> str:
+        """
+        Parse a VAR or CST Node.
+
+        Parameters
+        ----------
+        node : Node
+            The Node to compute the exponent for.
+
+        Returns
+        -------
+        : str
+            The exponent associated to the `node`.
+        """
+
+        # TODO: parse integers digit by digit
+
+        return self.frontend_tokens.get(str(node.value))
+
+    def _get_keyword_exponent(self, node: Node) -> str:
+        """
+        Parse a keyword Node.
+
+        A keyword Node is a node whose `kind` is Tiny C reserved word or an
+        operator (+, -, <).
+
+        Parameters
+        ----------
+        node : Node
+            The Node to compute the exponent for.
+
+        Returns
+        -------
+        : str
+            The exponent associated to the `node`.
+        """
+
+        return self.frontend_tokens.get(node.kind)
+
+    def _get_set_exponent(self, node: Node) -> str:
+        """
+        Parse a SET Node.
+
+        Parameters
+        ----------
+        node : Node
+            The Node to compute the exponent for.
+
+        Returns
+        -------
+        : str
+            The exponent associated to the `node`.
+        """
+
+        exponent = (
+            100 * self.frontend_tokens.get(node.kind) +
+            self.frontend_tokens.get(node.value)
+        )
+
+        return str(exponent)
