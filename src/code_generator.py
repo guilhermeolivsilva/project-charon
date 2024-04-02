@@ -18,10 +18,10 @@ class CodeGenerator:
         "ISUB",
         "ILT",
         "HALT",
-        "EMPTY",
-        "JMP",
         "JZ",
+        "JMP",
         "JNZ"
+        "EMPTY",
     ]
 
     def __init__(self) -> None:

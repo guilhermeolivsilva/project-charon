@@ -19,18 +19,18 @@ class AbstractSyntaxTree:
     node_kinds = [
         "VAR",
         "CST",
+        "SET",
+        "EXPR",
         "ADD",
         "SUB",
         "LT",
-        "EXPR",
         "PROG",
-        "EMPTY",
-        "SET",
         "IF",
         "IFELSE",
         "WHILE",
         "DO",
-        "SEQ"
+        "SEQ",
+        "EMPTY"
     ]
 
     def __init__(self, source_code: Generator) -> None:
