@@ -52,6 +52,28 @@ class AbstractSyntaxTree:
         if self.current_symbol != "EOI":
             raise SyntaxError("Source code does not have EOI identifier.")
 
+    def print_tree(self, node: Node = None, indent: int = 0, counter: int = 0) -> None:
+        """
+        Recursively print the AST starting from the `root`.
+
+        Parameters
+        ----------
+        node : Node
+            The root node of the tree.
+        indent : int, optional
+            The indentation level for pretty printing, default is 0.
+        """
+        if node is None:
+            node = self.root
+
+        # Print the current node with appropriate indentation
+        print("  " * indent + str(node))
+
+        # Recursively print children with increased indentation
+        for child in node.children:
+            counter += 1
+            self.print_tree(child, indent + 1)
+
     def _statement(self) -> Node:
         """
         Evaluate a statement and add its nodes to the AST.
