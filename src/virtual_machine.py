@@ -21,6 +21,24 @@ class VirtualMachine:
         self.stack_pointer = 0
         self.program_counter = 0
 
+    def __str__(self) -> str:
+        """
+        Generate a string representation of the VirtualMachine object.
+
+        Returns
+        -------
+        : str
+            The string representation.
+        """
+
+        _stack_str = ', '.join(str(item) for item in self.stack if item is not None)
+        stack_info = f"Stack (`None` is omitted): [{_stack_str}]"
+
+        _variables_str = str(self.variables)
+        variables_info = f"Variables: {_variables_str}"
+
+        return stack_info + "\n" + variables_info
+
     def run(self) -> None:
         """Run the program on the virtual machine."""
 
