@@ -132,12 +132,6 @@ class Node:
             self.children.remove(child_node)
             child_node.parent = None
 
-    def remove_from_tree(self) -> None:
-        """Remove itself from the tree."""
-
-        if self.parent:
-            self.parent.remove_child(self)
-
     def merge(self, merge_target: 'Node', attribute_absortion: dict = {}) -> None:
         """
         Merge the `merge_target` to `self`.
@@ -173,7 +167,7 @@ class Node:
         else:
             self.children = [*merge_target.children, *self.children]
 
-        merge_target.remove_from_tree()
+        self.children.remove(merge_target)
 
     def add_parent(self, parent: "Node") -> None:
         """
