@@ -43,7 +43,7 @@ class Lexer:
     }
 
     @classmethod
-    def parse_source_code(cls, source_code: str) -> Generator:
+    def parse_source_code(cls, source_code: str) -> list:
         """
         Parse the reserved words first, and then character by character.
 
@@ -54,11 +54,11 @@ class Lexer:
 
         Returns
         -------
-        : Generator
-            Generator of symbols that represent the source code.
+        : list
+            List of symbols that represent the source code.
         """
 
-        return map(Lexer.parse_word, Lexer.preprocess_source_code(source_code))
+        return list(map(Lexer.parse_word, Lexer.preprocess_source_code(source_code)))
 
     @classmethod
     def parse_word(cls, word: str) -> tuple[str, int]:
