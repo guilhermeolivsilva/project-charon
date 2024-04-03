@@ -66,8 +66,6 @@ SOURCE_CODE = [
 EXPECTED_DFS = """
 ID: 0, Kind: PROG, Value: None
 ID: 14, Kind: SEQ, Value: None, Parent ID: 0
-ID: 7, Kind: SEQ, Value: None, Parent ID: 14
-ID: 2, Kind: SEQ, Value: None, Parent ID: 7
 ID: 1, Kind: EMPTY, Value: None, Parent ID: 2
 ID: 3, Kind: EXPR, Value: None, Parent ID: 2
 ID: 5, Kind: SET, Value: None, Parent ID: 3
@@ -81,8 +79,6 @@ ID: 11, Kind: VAR, Value: a, Parent ID: 12
 ID: 13, Kind: CST, Value: 1, Parent ID: 12
 ID: 15, Kind: DO, Value: None, Parent ID: 14
 ID: 31, Kind: SEQ, Value: None, Parent ID: 15
-ID: 24, Kind: SEQ, Value: None, Parent ID: 31
-ID: 17, Kind: SEQ, Value: None, Parent ID: 24
 ID: 16, Kind: EMPTY, Value: None, Parent ID: 17
 ID: 18, Kind: EXPR, Value: None, Parent ID: 17
 ID: 20, Kind: SET, Value: None, Parent ID: 18

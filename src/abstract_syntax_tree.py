@@ -66,10 +66,8 @@ class AbstractSyntaxTree:
         if node is None:
             node = self.root
 
-        # Print the current node with appropriate indentation
         print("  " * indent + str(node))
 
-        # Recursively print children with increased indentation
         for child in node.children:
             counter += 1
             self.print_tree(child, indent + 1)
@@ -230,8 +228,16 @@ class AbstractSyntaxTree:
             temp_node = statement_node
             statement_node = self._create_node(kind="SEQ")
 
-            temp_node.add_parent(statement_node)
-            statement_node.add_child(temp_node)
+            # Avoid multiple nested SEQ statements
+            both_are_seq = temp_node.kind == statement_node.kind == "SEQ"
+
+            if both_are_seq:
+                for children in temp_node.children:
+                    children.add_parent = statement_node
+                statement_node.children = [*temp_node.children, *statement_node.children]
+            else:
+                temp_node.add_parent(statement_node)
+                statement_node.add_child(temp_node)
 
             child_statement = self._statement()
 
