@@ -132,7 +132,9 @@ class Node:
             self.children.remove(child_node)
             child_node.parent = None
 
-    def merge(self, merge_target: 'Node', attribute_absortion: dict = {}) -> None:
+    def merge(
+        self, merge_target: 'Node', attribute_absortion: dict[str, bool] = {}
+    ) -> None:
         """
         Merge the `merge_target` to `self`.
 
@@ -145,8 +147,15 @@ class Node:
         ----------
         merge_target : Node
             The `Node` to be merged with `self`.
-        attribute_absortion : dict
-            TODO
+        attribute_absortion : dict (str: bool)
+            A dictionary of settings to handle the attributes of the node being
+            merged into `self`. This dictionary may set the following keys:
+                - `absorb_value`:
+                    Whether `self.value` should be set to `merge_target.value`.
+                - `parent_children_first`:
+                    Whether `self.children` must come before `merge_target.children`
+                    when absorbing the target's children into the Node's self
+                    children. Useful when handling conditional nodes.
         """
 
         absorb_value = attribute_absortion.get("absorb_value", False)
