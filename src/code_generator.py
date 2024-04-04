@@ -121,7 +121,8 @@ class CodeGenerator:
 
         # Making the Code Generator compatible with AST Merging optimization.
         if node.value is not None:
-            lhs = Node(id=-1, kind="VAR", value=node.value)
+            lhs = Node(id=node.id, kind="VAR", value=node.value)
+            lhs.set_certificate_label(node.certificate_label)
             rhs = node.children[0]
         else:
             lhs, rhs = node.children
@@ -223,6 +224,9 @@ class CodeGenerator:
         node : Node
             The Node object to parse.
         """
+
+        dummy_node = Node(id=node.id, kind="SEQ")
+        self.code_collection.append(("EMPTY", dummy_node))
 
         for child in node.children:
             self.generate_code(child)

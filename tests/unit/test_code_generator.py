@@ -461,12 +461,18 @@ def test_generate_code_sequence(mocker: MockerFixture) -> None:
     cg.generate_code(node)
 
     expected_result = [
+        ("EMPTY", node),
         ("IFETCH", statement_lhs),
         ("IPUSH", statement_rhs),
         ("IADD", statement)
     ]
 
-    assert cg.code_collection == expected_result
+    for result, expected in zip(cg.code_collection, expected_result):
+        expected_instruction, expected_node = result
+        instruction, reference_node = expected
+    
+        assert instruction == expected_instruction
+        assert reference_node == expected_node
 
     cg.parse_sequence.assert_called()
 
