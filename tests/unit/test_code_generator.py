@@ -334,7 +334,7 @@ def test_generate_code_ifelse_node(mocker: MockerFixture) -> None:
         ("IFETCH", expr_lhs),
         ("IPUSH", expr_rhs),
         ("ILT", expr),
-        ("JZ", else_statement_lhs),
+        ("JZ", else_statement),
         ("IPUSH", if_statement_rhs),
         ("ISTORE", if_statement_lhs),
         ("JMP", else_statement_rhs),
@@ -372,7 +372,7 @@ def test_generate_code_while_node(mocker: MockerFixture) -> None:
     node.add_child(expr)
     node.add_child(statement)
 
-    _empty_node = Node(id=-1, kind="EMPTY")
+    _empty_node = Node(id=node.id, kind="EMPTY")
 
     cg.generate_code(node)
 

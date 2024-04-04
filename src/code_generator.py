@@ -164,7 +164,7 @@ class CodeGenerator:
 
         self.generate_code(expr)
 
-        first_else_command = else_statement.children[0]
+        first_else_command = else_statement
         self.code_collection.append(("JZ", first_else_command))
 
         self.generate_code(if_statement)
@@ -187,7 +187,7 @@ class CodeGenerator:
 
         self.generate_code(expr)
 
-        dummy_node = Node(id=-1, kind="EMPTY")
+        dummy_node = Node(id=node.id, kind="EMPTY")
         self.code_collection.append(("JZ", dummy_node))
 
         self.generate_code(statement)
