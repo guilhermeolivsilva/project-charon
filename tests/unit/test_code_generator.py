@@ -31,8 +31,8 @@ def test_str() -> None:
     for node in test_nodes:
         cg.generate_code(node)
 
-    expected_result = "Instruction: IPUSH, Node: (ID: 1, Kind: CST, Value: 23)\n"
-    expected_result += "Instruction: IFETCH, Node: (ID: 2, Kind: VAR, Value: a)"
+    expected_result = "Instruction: IPUSH, Node: (ID: 1, Value: 23, Kind: CST)\n"
+    expected_result += "Instruction: IFETCH, Node: (ID: 2, Value: a, Kind: VAR)"
 
     assert str(cg) == expected_result
 

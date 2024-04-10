@@ -61,7 +61,7 @@ class Node:
         _str : str
             The string representation of a Node object.
         """
-        _str = f"ID: {self.id}, Kind: {self.kind}, Value: {self.value}"
+        _str = f"ID: {self.id}, Value: {self.value}, Kind: {self.kind}"
 
         if self.parent:
             _str += f", Parent ID: {self.parent.id}"

@@ -57,7 +57,7 @@ def test_str():
         value=node_value
     )
 
-    assert str(node) == f"ID: {node_id}, Kind: {node_kind}, Value: {node_value}"
+    assert str(node) == f"ID: {node_id}, Value: {node_value}, Kind: {node_kind}"
 
 
 def test_add_child():
