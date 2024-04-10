@@ -25,7 +25,7 @@ class CodeGenerator:
     ]
 
     def __init__(self) -> None:
-        self.code_collection: list = []
+        self.code_collection: list[tuple[str, Node]] = []
 
     def __str__(self) -> str:
         """
@@ -119,7 +119,7 @@ class CodeGenerator:
             The `SET` Node to parse.
         """
 
-        # Making the Code Generator compatible with AST Merging optimization.
+        # Making the Code Generator compatible with AST pruning.
         if node.value is not None:
             lhs = Node(id=node.id, kind="VAR", value=node.value)
             lhs.set_certificate_label(node.certificate_label)
