@@ -8,6 +8,16 @@ from src.certificators.utils import next_prime
 
 
 class FrontendCertificator(Interface):
+    """
+    Certificate the frontend representation of some program.
+
+    Parameters
+    ----------
+    ast : AbstractSyntaxTree
+        The AST of the program to certificate.
+    prunes : list[str], optional (default = [])
+        List of pruning methods to apply on the AST.
+    """
 
     symbols = [
         *Interface.basic_symbols,
@@ -98,7 +108,7 @@ class FrontendCertificator(Interface):
             if child.kind == "VAR":
                 node.merge(child, {"absorb_value": True})
 
-    def certificate(self) -> None:
+    def certificate(self, **kwargs) -> None:
         """
         Certificate the frontend code.
         
@@ -158,6 +168,15 @@ class FrontendCertificator(Interface):
         traverse(self.ast.root)
 
     def get_certificate(self) -> str:
+        """
+        Get the complete certificate of the frontend code.
+
+        Returns
+        -------
+        : str
+            The string representation that concatenates all of the certification
+            labels of the AST Nodes.
+        """
 
         # Using a list to avoid issues with variable scoping in nested function
         certificate = []
