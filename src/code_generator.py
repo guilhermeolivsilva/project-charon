@@ -10,6 +10,7 @@ class CodeGenerator:
     """
 
     instructions = [
+        "EMPTY",
         "IFETCH",
         "IPUSH",
         "ISTORE",
@@ -21,7 +22,6 @@ class CodeGenerator:
         "JZ",
         "JMP",
         "JNZ"
-        "EMPTY",
     ]
 
     def __init__(self) -> None:
