@@ -22,3 +22,7 @@ class Interface:
     @abstractmethod
     def certificate(self, **kwargs) -> None:
         pass
+
+    @abstractmethod
+    def get_certificate(self) -> list[str]:
+        pass
