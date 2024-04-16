@@ -167,13 +167,13 @@ class FrontendCertificator(Interface):
 
         traverse(self.ast.root)
 
-    def get_certificate(self) -> str:
+    def get_certificate(self) -> list[str]:
         """
         Get the complete certificate of the frontend code.
 
         Returns
         -------
-        : str
+        : list[str]
             The string representation that concatenates all of the certification
             labels of the AST Nodes.
         """
@@ -214,7 +214,7 @@ class FrontendCertificator(Interface):
 
         traverse(self.ast.root)
 
-        return "*".join(certificate)
+        return certificate
 
     def _get_frontend_exponent(self, node: Node) -> str:
         """
@@ -239,13 +239,13 @@ class FrontendCertificator(Interface):
             "LT": self._get_keyword_exponent,
             "EXPR": self._get_keyword_exponent,
             "PROG": self._get_keyword_exponent,
-            "EMPTY": self._get_keyword_exponent,
+            "EMPTY": self._get_empty_exponent,
             "SET": self._get_set_exponent,
             "IF": self._get_keyword_exponent,
             "IFELSE": self._get_keyword_exponent,
             "WHILE": self._get_keyword_exponent,
             "DO": self._get_keyword_exponent,
-            "SEQ": self._get_keyword_exponent,
+            "SEQ": self._get_empty_exponent,
         }
 
         handler = node_handlers.get(node.kind)
@@ -312,3 +312,7 @@ class FrontendCertificator(Interface):
         )
 
         return str(exponent)
+    
+    def _get_empty_exponent(self, node: Node) -> str:
+
+        return self.tokens.get("EMPTY")
