@@ -17,6 +17,7 @@ class AbstractSyntaxTree:
     """
 
     node_kinds = [
+        "EMPTY",
         "VAR",
         "CST",
         "SET",
@@ -29,8 +30,7 @@ class AbstractSyntaxTree:
         "IFELSE",
         "WHILE",
         "DO",
-        "SEQ",
-        "EMPTY"
+        "SEQ"
     ]
 
     def __init__(self, source_code: Generator) -> None:
