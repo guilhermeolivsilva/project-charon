@@ -1,6 +1,9 @@
 """Representation of CST nodes for the Abstract Syntax Tree."""
 
+from typing import Union
+from typing_extensions import override
 from .node import Node
+
 
 
 class CST(Node):
@@ -11,4 +14,9 @@ class CST(Node):
     base class.
     """
 
-    ...
+    @override
+    def __init__(self, id: int, value: Union[int, None] = None) -> None:
+        if value is not None and not isinstance(value, int):
+            raise TypeError("CST value must be an integer or None.")
+
+        super().__init__(id, value)
