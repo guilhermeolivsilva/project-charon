@@ -1,5 +1,6 @@
 """Base class for AST Nodes classes (e.g., VAR, CST etc.)."""
 
+from abc import abstractmethod
 from typing import Union
 
 
@@ -15,7 +16,7 @@ class Node:
         The value the Node holds, if any. Defaults to None.
     """
 
-    def __init__(self, id: int, value: Union[int, None] = None) -> None:
+    def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
         self.id: int = id
         self.value: Union[int, None] = value
 
@@ -27,7 +28,7 @@ class Node:
         """
         Implement the equality comparison between Nodes.
 
-        Notice that this method ignores the `parent` and `children` attributes.
+        Notice that this method ignores the `parent` attribute.
 
         Parameters
         ----------
@@ -81,7 +82,7 @@ class Node:
 
         self.certificate_label = certificate_label
 
-    def add_parent(self, parent: "Node") -> None:
+    def set_parent(self, parent: "Node") -> None:
         """
         Set a Node as this object's parent.
 
@@ -93,9 +94,12 @@ class Node:
 
         self.parent = parent
 
+    @abstractmethod
     def traverse(self, func: callable, **kwargs) -> None:
         """
         Traverse the node and apply a `func` to its children.
+
+        Each Node type should implement its own traversal method.
 
         Parameters
         ----------
@@ -103,5 +107,4 @@ class Node:
             The function to call during the traversal.
         """
 
-        for child in self.children:
-            child.traverse(func, **kwargs)
+        ...
