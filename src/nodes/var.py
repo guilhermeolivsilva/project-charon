@@ -1,6 +1,6 @@
 """Representation of VAR nodes for the Abstract Syntax Tree."""
 
-from typing import Union
+from string import ascii_lowercase
 from typing_extensions import override
 from .node import Node
 
@@ -14,8 +14,8 @@ class VAR(Node):
     """
 
     @override
-    def __init__(self, id: int, value: Union[str, None] = None) -> None:
-        if value is not None and not isinstance(value, str):
-            raise TypeError("VAR value must be a string or None.")
+    def __init__(self, id: int, value: str) -> None:
+        if not isinstance(value, str) and value not in ascii_lowercase:
+            raise TypeError("VAR value must be a valid variable name ([a-z]).")
 
         super().__init__(id, value)
