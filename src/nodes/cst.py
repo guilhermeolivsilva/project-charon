@@ -10,7 +10,7 @@ class CST(Node):
     Implement the representation of a constant for the AST.
 
     This class does not need to override any methods or properties of the
-    base class.
+    base class other than the constructor for type checking.
     """
 
     @override

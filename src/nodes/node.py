@@ -18,7 +18,7 @@ class Node:
 
     def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
         self.id: int = id
-        self.value: Union[int, None] = value
+        self.value: Union[int, str, None] = value
 
         # Attributes to fill later
         self.certificate_label: int = None
