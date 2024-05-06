@@ -7,7 +7,7 @@ class LT(Operation):
     """
     Implement the representation of a "less than" comparison for the AST.
 
-    This class is simply an interface for the `Operation` class.
+    This class simply is an interface for the `Operation` class.
 
     Parameters
     ----------

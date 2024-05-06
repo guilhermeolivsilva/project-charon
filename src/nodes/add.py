@@ -7,7 +7,7 @@ class ADD(Operation):
     """
     Implement the representation of an addition for the AST.
 
-    This class is simply an interface for the `Operation` class.
+    This class simply is an interface for the `Operation` class.
 
     Parameters
     ----------
