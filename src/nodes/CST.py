@@ -5,7 +5,6 @@ from typing_extensions import override
 from .base.node import Node
 
 
-
 class CST(Node):
     """
     Implement the representation of a constant for the AST.
