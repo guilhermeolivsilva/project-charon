@@ -2,7 +2,7 @@
 
 from string import ascii_lowercase
 from typing_extensions import override
-from .node import Node
+from .base.node import Node
 
 
 class SET(Node):

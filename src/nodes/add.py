@@ -1,6 +1,6 @@
 """Representation of ADD nodes for the Abstract Syntax Tree."""
 
-from .operation import Operation
+from .base.operation import Operation
 
 
 class ADD(Operation):

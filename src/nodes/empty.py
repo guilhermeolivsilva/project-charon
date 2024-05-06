@@ -1,6 +1,6 @@
 """Representation of EMPTY nodes for the Abstract Syntax Tree."""
 
-from .node import Node
+from .base.node import Node
 
 
 class EMPTY(Node):
