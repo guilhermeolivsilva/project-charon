@@ -74,12 +74,13 @@ class Node:
 
         self.certificate_label = certificate_label
 
-    @abstractmethod
     def traverse(self, func: callable, **kwargs) -> None:
         """
         Traverse the node and apply a `func` to its children.
 
-        Each Node type should implement its own traversal method.
+        This implementation should only be used for atomic nodes (i.e.,
+        `CST`, `VAR` and `EMPTY`). Other nodes should implement their own
+        traversal methods, as there are children to handle.
 
         Parameters
         ----------
@@ -87,4 +88,4 @@ class Node:
             The function to call during the traversal.
         """
 
-        ...
+        func(self, **kwargs)
