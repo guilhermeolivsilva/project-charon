@@ -2,14 +2,14 @@
 
 from typing_extensions import override
 
-from .base.node import Node
+from .base.conditional import Conditional
 
 
-class IF(Node):
+class IF(Conditional):
     """
     Implement the representation of a conditional for the AST.
 
-    This class overrides the constructor and `traverse` methods.
+    This class overrides the `traverse` method.
 
     Parameters
     ----------
@@ -17,19 +17,10 @@ class IF(Node):
         The ID of the Node.
     parenthesis_expression : Node
         The node representation of the expression to be evaluated.
-    if_statement : Node
+    statement_if_true : Node
         The node representation of code to run if the `parenthesis_expression`
         evaluates to `True`.
     """
-
-    @override
-    def __init__(
-        self, id: int, parenthesis_expression: Node, if_statement: Node
-    ) -> None:
-        super().__init__(id)
-
-        self.parenthesis_expression: Node = parenthesis_expression
-        self.if_statement: Node = if_statement
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
@@ -45,4 +36,4 @@ class IF(Node):
 
         self.parenthesis_expression.traverse(func, **kwargs)
         func(self, **kwargs)
-        self.if_statement.traverse(func, **kwargs)
+        self.statement_if_true.traverse(func, **kwargs)

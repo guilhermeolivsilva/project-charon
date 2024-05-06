@@ -1,13 +1,17 @@
 """Representation of WHILE nodes for the Abstract Syntax Tree."""
 
-from .base.loop import Loop
+from typing_extensions import override
+
+from .base.node import Node
+from .base.conditional import Conditional
 
 
-class WHILE(Loop):
+class WHILE(Conditional):
     """
     Implement the representation of a `WHILE` loop for the AST.
 
-    This class simply is an interface for the `Loop` class.
+    This class simply is an interface for the `Conditional` class, renaming
+    the `statement_if_true` to `loop`.
 
     Parameters
     ----------
@@ -16,6 +20,10 @@ class WHILE(Loop):
     parenthesis_expression : Node
         The node representation of the expression to be evaluated.
     loop : Node
-        The node representation of code to run if the `parenthesis_expression`
-        evaluates to `True`.
+        The node representation of code to run while the
+        `parenthesis_expression` evaluates to `True`.
     """
+
+    @override
+    def __init__(self, id: int, parenthesis_expression: Node, loop: Node) -> None:
+        super().__init__(id, parenthesis_expression, loop)

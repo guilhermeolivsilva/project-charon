@@ -2,10 +2,11 @@
 
 from typing_extensions import override
 
+from .base.conditional import Conditional
 from .base.node import Node
 
 
-class IFELSE(Node):
+class IFELSE(Conditional):
     """
     Implement the representation of a conditional for the AST.
 
@@ -17,10 +18,10 @@ class IFELSE(Node):
         The ID of the Node.
     parenthesis_expression : Node
         The node representation of the expression to be evaluated.
-    if_statement : Node
+    statement_if_true : Node
         The node representation of code to run if the `parenthesis_expression`
         evaluates to `True`.
-    else_statement : Node
+    statement_if_false : Node
         The node representation of code to run if the `parenthesis_expression`
         evaluates to `False`.
     """
@@ -29,21 +30,19 @@ class IFELSE(Node):
     def __init__(
         self, id: int,
         parenthesis_expression: Node,
-        if_statement: Node,
-        else_statement: Node
+        statement_if_true: Node,
+        statement_if_false: Node
     ) -> None:
-        super().__init__(id)
+        super().__init__(id, parenthesis_expression, statement_if_true)
 
-        self.parenthesis_expression: Node = parenthesis_expression
-        self.if_statement: Node = if_statement
-        self.else_statement: Node = else_statement
+        self.statement_if_false: Node = statement_if_false
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
         """
         Apply the traversal `func` to the `parenthesis_expression` node, to
-        the `IF` node itself, to the `if_statement` node, and the to the
-        `else_statement` node.
+        the `IF` node itself, to the `statement_if_true` node, and the to the
+        `statement_if_false` node.
 
         Parameters
         ----------
@@ -53,5 +52,5 @@ class IFELSE(Node):
 
         self.parenthesis_expression.traverse(func, **kwargs)
         func(self, **kwargs)
-        self.if_statement.traverse(func, **kwargs)
-        self.else_statement.traverse(func, **kwargs)
+        self.statement_if_true.traverse(func, **kwargs)
+        self.statement_if_false.traverse(func, **kwargs)
