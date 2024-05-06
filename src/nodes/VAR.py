@@ -12,6 +12,13 @@ class VAR(Node):
 
     This class does not need to override any methods or properties of the
     base class other than the constructor for type checking.
+
+    Parameters
+    ----------
+    id : int
+        The ID of the Node.
+    value : str
+        The variable to attribute to. Must be a single, lower case character.
     """
 
     @override
