@@ -9,8 +9,14 @@ class SET(Node):
     """
     Implement the representation of a attribution operation for the AST.
 
-    This class does not need to override any methods or properties of the
-    base class other than the constructor for type checking.
+    This class overrides the constructor and `traverse` methods.
+
+    Parameters
+    ----------
+    id : int
+        The ID of the Node.
+    child_expression : Node
+        The node representation of the child expression.
     """
 
     @override
@@ -22,4 +28,19 @@ class SET(Node):
 
         super().__init__(id, value)
 
-        self.child_expression = child_expression
+        self.child_expression: Node = child_expression
+
+    @override
+    def traverse(self, func: callable, **kwargs) -> None:
+        """
+        Apply the traversal `func` to the child expression node, and then
+        to the `SET` node itself.
+
+        Parameters
+        ----------
+        func : callable
+            The function to call during the traversal.
+        """
+
+        self.child_expression.traverse(func, **kwargs)
+        func(self, **kwargs)
