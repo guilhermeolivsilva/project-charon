@@ -16,6 +16,8 @@ class SET(Node):
     ----------
     id : int
         The ID of the Node.
+    value : str
+        The variable to attribute to. Must be a single, lower case character.
     child_expression : Node
         The node representation of the child expression.
     """
