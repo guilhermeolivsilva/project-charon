@@ -10,5 +10,3 @@ class EMPTY(Node):
     This class does not need to override any methods or properties of the
     base class.
     """
-
-    ...

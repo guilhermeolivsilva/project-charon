@@ -2,6 +2,7 @@
 
 from string import ascii_lowercase
 from typing_extensions import override
+
 from .base.node import Node
 
 

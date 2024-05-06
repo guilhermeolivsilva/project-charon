@@ -18,5 +18,3 @@ class SUB(Operation):
     rhs : Node
         The Node representation of the right hand side of the subtraction.
     """
-
-    ...

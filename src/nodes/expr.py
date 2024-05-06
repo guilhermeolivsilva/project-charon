@@ -1,6 +1,7 @@
 """Representation of EXPR nodes for the Abstract Syntax Tree."""
 
 from typing_extensions import override
+
 from .base.node import Node
 
 
