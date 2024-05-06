@@ -11,6 +11,13 @@ class CST(Node):
 
     This class does not need to override any methods or properties of the
     base class other than the constructor for type checking.
+
+    Parameters
+    ----------
+    id : int
+        The ID of the Node.
+    value : int
+        The value of the constant.
     """
 
     @override
