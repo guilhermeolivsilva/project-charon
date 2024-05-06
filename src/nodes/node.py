@@ -19,16 +19,11 @@ class Node:
     def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
         self.id: int = id
         self.value: Union[int, str, None] = value
-
-        # Attributes to fill later
-        self.certificate_label: int = None
-        self.parent: Node = None
+        self.certificate_label: str = None
 
     def __eq__(self, other: "Node") -> bool:
         """
         Implement the equality comparison between Nodes.
-
-        Notice that this method ignores the `parent` attribute.
 
         Parameters
         ----------
@@ -62,9 +57,6 @@ class Node:
         """
         _str = f"ID: {self.id}, Value: {self.value}, Kind: {type(self).__name__}"
 
-        if self.parent:
-            _str += f", Parent ID: {self.parent.id}"
-
         if self.certificate_label is not None:
             _str += f", Certificate Label: {self.certificate_label}"
 
@@ -81,18 +73,6 @@ class Node:
         """
 
         self.certificate_label = certificate_label
-
-    def set_parent(self, parent: "Node") -> None:
-        """
-        Set a Node as this object's parent.
-
-        Parameters
-        ----------
-        parent : Node
-            A Node object to be set as the parent of `this`.
-        """
-
-        self.parent = parent
 
     @abstractmethod
     def traverse(self, func: callable, **kwargs) -> None:
