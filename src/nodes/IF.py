@@ -29,7 +29,7 @@ class IF(Node):
         super().__init__(id)
 
         self.parenthesis_expression: Node = parenthesis_expression
-        self.if_statement = if_statement
+        self.if_statement: Node = if_statement
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:

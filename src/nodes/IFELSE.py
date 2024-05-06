@@ -35,8 +35,8 @@ class IFELSE(Node):
         super().__init__(id)
 
         self.parenthesis_expression: Node = parenthesis_expression
-        self.if_statement = if_statement
-        self.else_statement = else_statement
+        self.if_statement: Node = if_statement
+        self.else_statement: Node = else_statement
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
