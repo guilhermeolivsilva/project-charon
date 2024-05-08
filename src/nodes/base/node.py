@@ -1,6 +1,5 @@
 """Base class for AST Nodes classes (e.g., VAR, CST etc.)."""
 
-from abc import abstractmethod
 from typing import Union
 
 
@@ -89,3 +88,18 @@ class Node:
         """
 
         func(self, **kwargs)
+
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of `self`.
+
+        The printed text is indented according with the optional `indent`
+        paremeter.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        print("  " * indent + str(self))

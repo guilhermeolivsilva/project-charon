@@ -55,3 +55,21 @@ class IFELSE(Conditional):
         func(self, **kwargs)
         self.statement_if_true.traverse(func, **kwargs)
         self.statement_if_false.traverse(func, **kwargs)
+
+    @override
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of this `Conditional`.
+
+        The node itself is aligned with `indent`, and its children are padded
+        with an additional left space.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        super().print(indent)
+
+        self.statement_if_false.print(indent + 1)

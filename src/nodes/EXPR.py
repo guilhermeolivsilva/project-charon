@@ -39,3 +39,21 @@ class EXPR(Node):
 
         self.child_expression.traverse(func, **kwargs)
         func(self, **kwargs)
+
+    @override
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of this `EXPR`.
+
+        The node itself is aligned with `indent`, and its children are padded
+        with an additional left space.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        super().print(indent)
+
+        self.child_expression.print(indent + 1)

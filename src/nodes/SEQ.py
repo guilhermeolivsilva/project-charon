@@ -23,7 +23,7 @@ class SEQ(Node):
 
         self.children: list[Node] = []
 
-    def add_children(self, child: Node) -> None:
+    def add_child(self, child: Node) -> None:
         """
         Add a child Node to the `self.children` list.
 
@@ -50,4 +50,23 @@ class SEQ(Node):
         func(self, **kwargs)
 
         for child in self.children:
-            func(child, **kwargs)
+            child.traverse(func, **kwargs)
+
+    @override
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of this `Conditional`.
+
+        The node itself is aligned with `indent`, and its children are padded
+        with an additional left space.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        super().print(indent)
+
+        for child in self.children:
+            child.print(indent + 1)

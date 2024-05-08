@@ -27,3 +27,19 @@ class WHILE(Conditional):
     @override
     def __init__(self, id: int, parenthesis_expression: Node, loop: Node) -> None:
         super().__init__(id, parenthesis_expression, loop)
+
+    @override
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of this `Operation`.
+
+        The node itself is aligned with `indent`, and its children are padded
+        with an additional left space.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        super().print(indent)

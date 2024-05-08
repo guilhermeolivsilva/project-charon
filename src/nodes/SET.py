@@ -4,9 +4,10 @@ from string import ascii_lowercase
 from typing_extensions import override
 
 from .base.node import Node
+from .base.operation import Operation
 
 
-class SET(Node):
+class SET(Operation):
     """
     Implement the representation of a attribution operation for the AST.
 
@@ -16,22 +17,17 @@ class SET(Node):
     ----------
     id : int
         The ID of the Node.
-    value : str
-        The variable to attribute to. Must be a single, lower case character.
-    child_expression : Node
-        The node representation of the child expression.
+    lhs : Node
+        The node representation of the variable to attribute to.
+    rhs : Node
+        The node representation of the expression to be attributed to `lhs`.
     """
 
     @override
-    def __init__(self, id: int, value: str, child_expression: Node) -> None:
-        if not isinstance(value, str) or value not in ascii_lowercase:
-            err_msg = "Left hand side element of SET operation must be a"
-            err_msg += " string that represents a variable ([a-z] interval)."
-            raise TypeError(err_msg)
+    def __init__(self, id: int, lhs: Node, rhs: Node) -> None:
+        super().__init__(id, lhs=None, rhs=rhs)
 
-        super().__init__(id, value)
-
-        self.child_expression: Node = child_expression
+        self.value = lhs.value
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
@@ -45,5 +41,23 @@ class SET(Node):
             The function to call during the traversal.
         """
 
-        self.child_expression.traverse(func, **kwargs)
+        self.rhs.traverse(func, **kwargs)
         func(self, **kwargs)
+
+    @override
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of this `Conditional`.
+
+        The node itself is aligned with `indent`, and its children are padded
+        with an additional left space.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        print("  " * indent + str(self))
+
+        self.rhs.print(indent + 1)

@@ -45,3 +45,22 @@ class Operation(Node):
         self.lhs.traverse(func, **kwargs)
         self.rhs.traverse(func, **kwargs)
         func(self, **kwargs)
+
+    @override
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of this `Operation`.
+
+        The node itself is aligned with `indent`, and its children are padded
+        with an additional left space.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        super().print(indent)
+
+        self.lhs.print(indent + 1)
+        self.rhs.print(indent + 1)
