@@ -1,5 +1,6 @@
 """Representation of operation nodes for the Abstract Syntax Tree."""
 
+from typing import Union
 from typing_extensions import override
 from .node import Node
 
@@ -64,3 +65,26 @@ class Operation(Node):
 
         self.lhs.print(indent + 1)
         self.rhs.print(indent + 1)
+
+    @override
+    def generate_code(self) -> list[tuple[str, Union[int, str, None]]]:
+        """
+        Generate the code associated with this `Operation`.
+
+        For this node specialization, generate code from the left and right
+        hand sides nodes first, and then from the node itself.
+
+        Returns
+        -------
+        code_metadata : list of dict
+            Return a list of dictionaries containing code metadata: the related
+            `instruction`, and node `id`, and `value`.
+        """
+
+        code_metadata = [
+            *self.lhs.generate_code(),
+            *self.rhs.generate_code(),
+            *super().generate_code()
+        ]
+
+        return code_metadata

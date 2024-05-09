@@ -26,3 +26,5 @@ class CST(Node):
             raise TypeError("CST value must be an integer.")
 
         super().__init__(id, value)
+
+        self.instruction: str = "IPUSH"

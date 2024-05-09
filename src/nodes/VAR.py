@@ -27,3 +27,5 @@ class VAR(Node):
             raise TypeError("VAR value must be a valid variable name ([a-z]).")
 
         super().__init__(id, value)
+
+        self.instruction: str = "IFETCH"

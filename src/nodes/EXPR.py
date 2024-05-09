@@ -1,6 +1,7 @@
 """Representation of EXPR nodes for the Abstract Syntax Tree."""
 
 from typing_extensions import override
+from typing import Union
 
 from .base.node import Node
 
@@ -24,6 +25,8 @@ class EXPR(Node):
         super().__init__(id)
 
         self.child_expression: Node = child_expression
+
+        self.instruction: str = "IPOP"
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
@@ -57,3 +60,26 @@ class EXPR(Node):
         super().print(indent)
 
         self.child_expression.print(indent + 1)
+
+    @override
+    def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
+        """
+        Generate the code associated with this `EXPR`.
+
+        For this node specialization, generate code from its `child_expression`
+        first, and then from the node itself.
+
+        Returns
+        -------
+        code_metadata : list of dict
+            Return a dictionary of code metadata: the related `instruction`,
+            and node `id`, and `value`.
+        """
+
+        code_metadata = [
+            *self.child_expression.generate_code(),
+            *super().generate_code()
+        ]
+
+        return code_metadata
+        

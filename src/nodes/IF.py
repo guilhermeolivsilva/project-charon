@@ -1,5 +1,6 @@
 """Representation of IF nodes for the Abstract Syntax Tree."""
 
+from typing import Union
 from typing_extensions import override
 
 from .base.conditional import Conditional
@@ -53,3 +54,39 @@ class IF(Conditional):
         """
 
         super().print(indent)
+
+    @override
+    def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
+        """
+        Generate the code associated with this `IF`.
+
+        For this node specialization, generate code from the
+        `parenthesis_expression` first, add a conditional jump to the last
+        instruction of the `statement_if_true` subtree -- i.e., to jump to if
+        the `parenthesis_expression` evaluates to `False`; in other words, to
+        skip the conditional code -- and then from the `statement_if_true`.
+
+        Returns
+        -------
+        code_metadata : list of dict
+            Return a list of dictionaries containing code metadata: the related
+            `instruction`, and node `id`, and `value`.
+        """
+
+        _parenthesis_expression_code = self.parenthesis_expression.generate_code()
+        _statement_if_true_code = self.statement_if_true.generate_code()
+
+        _last_statement_if_true_instruction = _statement_if_true_code[-1]
+        _id_to_jump_if_eval_to_false = _last_statement_if_true_instruction["id"]
+
+        _metadata_if_eval_to_false = {
+            "instruction": "JZ",
+            "id": _id_to_jump_if_eval_to_false,
+            "value": None
+        }
+
+        return [
+            *_parenthesis_expression_code,
+            _metadata_if_eval_to_false,
+            *_statement_if_true_code
+        ]

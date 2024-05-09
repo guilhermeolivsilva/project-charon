@@ -2,6 +2,8 @@
 
 from typing_extensions import override
 
+from src.nodes.base.node import Node
+
 from .base.operation import Operation
 
 
@@ -20,6 +22,12 @@ class ADD(Operation):
     rhs : Node
         The Node representation of the right hand side of the addition.
     """
+
+    @override
+    def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
+        super().__init__(id, lhs, rhs, **kwargs)
+
+        self.instruction: str = "IADD"
 
     @override
     def print(self, indent: int = 0) -> None:

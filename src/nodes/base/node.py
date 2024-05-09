@@ -18,6 +18,9 @@ class Node:
     def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
         self.id: int = id
         self.value: Union[int, str, None] = value
+
+        # Each `Node` specialization must set its `instruction`.
+        self.instruction: str = None
         self.certificate_label: str = None
 
     def __eq__(self, other: "Node") -> bool:
@@ -54,6 +57,7 @@ class Node:
         _str : str
             The string representation of a Node object.
         """
+
         _str = f"ID: {self.id}, Value: {self.value}, Kind: {type(self).__name__}"
 
         if self.certificate_label is not None:
@@ -103,3 +107,36 @@ class Node:
         """
 
         print("  " * indent + str(self))
+
+    def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
+        """
+        Generate the code associated with this `Node`.
+
+        The generated code consists of a dictionary containing the relevant
+        `Node` data for the code to run -- namely, the `instruction`, the `id`,
+        and the `value`.
+
+        Notice that some `Nodes` may rewrite this method in order to deal
+        with special attributes -- such as the `Operation` nodes, that must
+        handle its children nodes.
+
+        Returns
+        -------
+        code_metadata : list of dict
+            Return a list of dictionaries containing code metadata: the related
+            `instruction`, and node `id`, and `value`.
+
+        Notes
+        -----
+        This method returns a `list` rather than only the `code_metadata` in
+        order to standardize the return type as some subclasses might have to
+        generate code using not only the node itself, but its children, too.
+        """
+
+        code_metadata = {
+            "instruction": self.instruction,
+            "id": self.id,
+            "value": self.value
+        }
+
+        return [code_metadata]
