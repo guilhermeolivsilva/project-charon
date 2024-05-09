@@ -76,17 +76,20 @@ class IF(Conditional):
         _parenthesis_expression_code = self.parenthesis_expression.generate_code()
         _statement_if_true_code = self.statement_if_true.generate_code()
 
-        _last_statement_if_true_instruction = _statement_if_true_code[-1]
-        _id_to_jump_if_eval_to_false = _last_statement_if_true_instruction["id"]
+        _last_instruction_of_conditional_block = _statement_if_true_code[-1]
+        _last_instruction_of_conditional_block_id = _last_instruction_of_conditional_block["id"]
 
-        _metadata_if_eval_to_false = {
+        _conditional_jump = {
             "instruction": "JZ",
-            "id": _id_to_jump_if_eval_to_false,
+            "id": _last_instruction_of_conditional_block_id,
             "value": None
         }
 
+        # If `parenthesis_expression` evals to `False`, jump to the instruction
+        # with ID `_last_instruction_of_conditional_block_id`. If not, execute
+        # the `_statement_if_true_code`.
         return [
             *_parenthesis_expression_code,
-            _metadata_if_eval_to_false,
+            _conditional_jump,
             *_statement_if_true_code
         ]

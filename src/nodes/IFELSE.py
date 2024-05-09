@@ -85,7 +85,7 @@ class IFELSE(Conditional):
         `parenthesis_expression` first, add a conditional jump to the first
         instruction of the `statement_if_false` subtree -- i.e., to jump to if
         the `parenthesis_expression` evaluates to `False` --, then generate
-        code from the `statement_if_true`, add an inconditional jump to the
+        code from the `statement_if_true`, add an unconditional jump to the
         last instruction of teh `statement_if_false` subtree, and then finally
         generate code from `statement_if_false`.
 
@@ -100,26 +100,31 @@ class IFELSE(Conditional):
         _statement_if_true_code = self.statement_if_true.generate_code()
         _statement_if_false_code = self.statement_if_false.generate_code()
 
-        first_statement_if_false_instruction = _statement_if_false_code[0]
-        _id_to_jump_if_eval_to_false = first_statement_if_false_instruction["id"]
-        _metadata_if_eval_to_false = {
+        _first_instruction_of_else_block = _statement_if_false_code[0]
+        _first_instruction_of_else_block_id = _first_instruction_of_else_block["id"]
+        _conditional_jump = {
             "instruction": "JZ",
-            "id": _id_to_jump_if_eval_to_false,
+            "id": _first_instruction_of_else_block_id,
             "value": None
         }
 
-        last_statement_if_false_instruction = _statement_if_false_code[-1]
-        _id_to_jump_if_eval_to_true = last_statement_if_false_instruction["id"]
-        _metadata_if_eval_to_true = {
+        _last_instruction_of_else_block = _statement_if_false_code[-1]
+        _last_instruction_of_else_block_id = _last_instruction_of_else_block["id"]
+        _unconditional_jump = {
             "instruction": "JMP",
-            "id": _id_to_jump_if_eval_to_true,
+            "id": _last_instruction_of_else_block_id,
             "value": None
         }
 
+        # If `parenthesis_expression` evals to `False`, jump to the instruction
+        # with ID `_first_instruction_of_else_block_id`. If not, execute
+        # the `_statement_if_true_code`. However, add an unconditional jump
+        # right after the `_statement_if_true_code` in order to skip the
+        # `_statemente_if_false_code`.
         return [
             *_parenthesis_expression_code,
-            _metadata_if_eval_to_false,
+            _conditional_jump,
             *_statement_if_true_code,
-            _metadata_if_eval_to_true,
+            _unconditional_jump,
             *_statement_if_false_code
         ]
