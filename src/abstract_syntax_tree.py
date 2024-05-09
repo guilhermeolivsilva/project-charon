@@ -1,8 +1,9 @@
 """Implement the Abstract Syntax Tree (AST)."""
 
-from typing import Generator, Union
+from typing import Union
 
-from src.node import Node
+from src.nodes import *
+from src.nodes.base import *
 
 
 class AbstractSyntaxTree:
@@ -11,9 +12,9 @@ class AbstractSyntaxTree:
 
     Parameters
     ----------
-    source_code : Generator
-        A Generator created by the `Lexer` that contains the representation of
-        the source code in (`symbol`, `value`) format.
+    source_code : list
+        A list of tuples created by the `Lexer` that contains the
+        representation of the source code in (`symbol`, `value`) format.
     """
 
     node_kinds = [
@@ -33,44 +34,38 @@ class AbstractSyntaxTree:
         "SEQ"
     ]
 
-    def __init__(self, source_code: Generator) -> None:
+    def __init__(self, source_code: list) -> None:
         self.node_id_manager: int = 1
-        self.source_code = list(source_code)
-        self.current_symbol = None
-        self.current_value = None
-        self.root = Node(id=0, kind="PROG")
+        self.source_code: list = source_code
+        self.root: PROG = PROG(id=0)
+
+        # Attributes to be used later
+        self.current_symbol: str = None
+        self.current_value: Union[str, int] = None
 
     def build(self) -> None:
         """Build the Abstract Syntax Tree from the source code."""
 
         self._next_symbol()
-        program_node = self._statement()
-        
-        self.root.add_child(program_node)
-        program_node.add_parent(self.root)
+        first_statement = self._statement()
+
+        self.root.set_first_statement(first_statement)
 
         if self.current_symbol != "EOI":
             raise SyntaxError("Source code does not have EOI identifier.")
 
-    def print_tree(self, node: Node = None, indent: int = 0, counter: int = 0) -> None:
+    def print_tree(self, indent: int = 0) -> None:
         """
         Recursively print the AST starting from the `root`.
 
         Parameters
         ----------
-        node : Node
-            The root node of the tree.
         indent : int, optional
-            The indentation level for pretty printing, default is 0.
+            The indentation level for pretty printing, default is 0, for the
+            root (and incremented by 1 for each level).
         """
-        if node is None:
-            node = self.root
 
-        print("  " * indent + str(node))
-
-        for child in node.children:
-            counter += 1
-            self.print_tree(child, indent + 1)
+        self.root.print(indent=indent)
 
     def _statement(self) -> Node:
         """
@@ -100,84 +95,83 @@ class AbstractSyntaxTree:
 
         return handler()
 
-    def _if_sym(self) -> Node:
+    def _if_sym(self) -> Conditional:
         """
         Parse an `if` statement: `if <parenthesis_expression> <statement>`
 
         Returns
         -------
-        statement_node : Node
-            The parent node of the statement representation.
+        : Conditional
+            A `Conditional` node that is parent of the expression to evaluate,
+            and the code to run if `True`. If `IFELSE`, this node is also the
+            parent of the code to run if the expression evaulates to `False`.
         """
 
-        statement_node = self._create_node(kind="IF")
-
+        conditional_node_id = self._get_next_id()
         self._next_symbol()
 
         parenthesis_expression = self._parenthesis_expression()
-        if_statement = self._statement()
+        statement_if_true = self._statement()
 
-        parenthesis_expression.add_parent(statement_node)
-        statement_node.add_child(parenthesis_expression)
-
-        if_statement.add_parent(statement_node)
-        statement_node.add_child(if_statement)
-
-        # Add the `else` clause to the `if`: `else <statement>`
+        # If the next symbol is `ELSE`, generate an `IFELSE` object instead
         if self.current_symbol == "ELSE_SYM":
-            statement_node.set_kind("IFELSE")
-
             self._next_symbol()
 
-            else_statement = self._statement()
+            statement_if_false = self._statement()
 
-            else_statement.add_parent(statement_node)
-            statement_node.add_child(else_statement)
-
-        return statement_node
+            return IFELSE(
+                id=conditional_node_id,
+                parenthesis_expression=parenthesis_expression,
+                statement_if_true=statement_if_true,
+                statement_if_false=statement_if_false
+            )
     
-    def _while_sym(self) -> Node:
+        return IF(
+            id=conditional_node_id,
+            parenthesis_expression=parenthesis_expression,
+            statement_if_true=statement_if_true
+        )
+    
+    def _while_sym(self) -> Conditional:
         """
         Parse a `while` statement: `while <parenthesis_expression> <statement>`.
 
         Returns
         -------
-        statement_node : Node
-            The parent node of the statement representation.
+        : Conditional
+            A `Conditional` node that is parent of the expression to evaluate,
+            and the code to run while it is `True`.
         """
 
-        statement_node = self._create_node(kind="WHILE")
-
+        conditional_node_id = self._get_next_id()
         self._next_symbol()
 
         parenthesis_expression = self._parenthesis_expression()
-        while_statement = self._statement()
+        loop = self._statement()
 
-        parenthesis_expression.add_parent(statement_node)
-        statement_node.add_child(parenthesis_expression)
-
-        while_statement.add_parent(statement_node)
-        statement_node.add_child(while_statement)
-
-        return statement_node
+        return WHILE(
+            id=conditional_node_id,
+            parenthesis_expression=parenthesis_expression,
+            loop=loop
+        )
     
-    def _do_sym(self) -> Node:
+    def _do_sym(self) -> Conditional:
         """
         Parse a `do/while` statement: `do <statement> while <parenthesis_expression> ;`
+
         Returns
         -------
-        statement_node : Node
-            The parent node of the statement representation.
+        : Conditional
+            A `Conditional` node that is parent of the expression to evaluate,
+            and the code to run while it is `True`. Note that the code to loop
+            is executed at least once, even if the `parenthesis_expression`
+            always evaluates to `False`.
         """
 
-        statement_node = self._create_node(kind="DO")
-
+        conditional_node_id = self._get_next_id()
         self._next_symbol()
 
-        do_statement = self._statement()
-
-        do_statement.add_parent(statement_node)
-        statement_node.add_child(do_statement)
+        loop = self._statement()
 
         if self.current_symbol == "WHILE_SYM":
             self._next_symbol()
@@ -185,95 +179,99 @@ class AbstractSyntaxTree:
             raise SyntaxError("Malformed `do` statement: missing `while`.")
         
         parenthesis_expression = self._parenthesis_expression()
-        parenthesis_expression.add_parent(statement_node)
-        statement_node.add_child(parenthesis_expression)
 
         if self.current_symbol == "SEMI":
             self._next_symbol()
         else:
             raise SyntaxError("Missing semicolon at the end of statement.")
         
-        return statement_node
+        return DO(
+            id=conditional_node_id,
+            parenthesis_expression=parenthesis_expression,
+            loop=loop
+        )
     
-    def _semi(self) -> Node:
+    def _semi(self) -> EMPTY:
         """
         Parse the semicolon.
         
         Returns
         -------
-        statement_node : Node
-            The parent node of the statement representation.
+        statement_node : EMPTY
+            An EMPTY node.
         """
 
-        statement_node = self._create_node(kind="EMPTY")
+        empty_node_id = self._get_next_id()
+        statement_node = EMPTY(id=empty_node_id)
+
         self._next_symbol()
 
         return statement_node
     
-    def _brackets(self) -> Node:
+    def _brackets(self) -> SEQ:
         """
         Parse a statement embraced by brackets: `{ <statement> }`.
 
         Returns
         -------
-        statement_node : Node
-            The parent node of the statement representation.
+        statement_node : SEQ
+            The parent node of a sequence of one or more statements.
         """
 
-        statement_node = self._create_node(kind="EMPTY")
+        statement_node_id = self._get_next_id()
+        statement_node = EMPTY(id=statement_node_id)
     
         self._next_symbol()
 
         while self.current_symbol != "RBRA":
             temp_node = statement_node
-            statement_node = self._create_node(kind="SEQ")
+
+            sequence_node_id = self._get_next_id()
+            statement_node = SEQ(id=sequence_node_id)
 
             # Avoid multiple nested SEQ statements
-            both_are_seq = temp_node.kind == statement_node.kind == "SEQ"
+            both_are_seq = (
+                isinstance(temp_node, SEQ) and isinstance(statement_node, SEQ)
+            )
 
             if both_are_seq:
-                for children in temp_node.children:
-                    children.add_parent = statement_node
                 statement_node.children = [*temp_node.children, *statement_node.children]
             else:
-                temp_node.add_parent(statement_node)
                 statement_node.add_child(temp_node)
 
             child_statement = self._statement()
-
-            child_statement.add_parent(statement_node)
             statement_node.add_child(child_statement)
 
         self._next_symbol()
 
         return statement_node
         
-    def _handle_eol(self) -> Node:
+    def _handle_eol(self) -> EXPR:
         """
         Parse an expression terminated by a semicolon: `<expression> ;`
 
         Returns
         -------
-        statement_node : Node
-            The parent node of the statement representation.
+        statement_node : EXPR
+            The parent node of an expression.
         """
 
-        statement_node = self._create_node(kind="EXPR")
-        expression = self._expression()
-
-        expression.add_parent(statement_node)
-        statement_node.add_child(expression)
+        expression_node_id = self._get_next_id()
+        child_expression = self._expression()
 
         if self.current_symbol == "SEMI":
             self._next_symbol()
         else:
             raise SyntaxError("Missing semicolon at the end of expression.")
 
-        return statement_node
+        return EXPR(
+            id=expression_node_id,
+            child_expression=child_expression
+        )
 
     def _parenthesis_expression(self) -> Node:
         """
-        Evaluate a parenthesis expression.
+        Parse a `parenthesis_expression`.
 
         A `parenthesis_expression` is formed by an `expression` embraced by
         parenthesis -- `( <expression> )`.
@@ -298,7 +296,7 @@ class AbstractSyntaxTree:
         
         return parenthesis_expression_node
 
-    def _expression(self) -> Node:
+    def _expression(self) -> Operation:
         """
         Evaluate an expression.
 
@@ -307,7 +305,7 @@ class AbstractSyntaxTree:
 
         Returns
         -------
-        expression_node : Node
+        expression_node : Operation
             The node representation of the expression.
         """
         
@@ -316,24 +314,23 @@ class AbstractSyntaxTree:
 
         expression_node = self._comparison()
 
-        if expression_node.get_kind() == "VAR" and self.current_symbol == "EQUAL":
-            variable = expression_node
+        if isinstance(expression_node, VAR) and self.current_symbol == "EQUAL":
+            lhs = expression_node
 
-            expression_node = self._create_node(kind="SET")
-
+            set_node_id = self._get_next_id()
             self._next_symbol()
 
-            variable.add_parent(expression_node)
-            expression_node.add_child(variable)
+            rhs = self._expression()
 
-            child_expression = self._expression()
-
-            child_expression.add_parent(expression_node)
-            expression_node.add_child(child_expression)
+            expression_node = SET(
+                id=set_node_id,
+                lhs=lhs,
+                rhs=rhs
+            )
         
         return expression_node
 
-    def _comparison(self) -> Node:
+    def _comparison(self) -> Operation:
         """
         Evaluate a comparison.
 
@@ -342,7 +339,7 @@ class AbstractSyntaxTree:
 
         Returns
         -------
-        comparison_node : Node
+        comparison_node : Operation
             The node representation of the comparison.
         """
         
@@ -351,21 +348,21 @@ class AbstractSyntaxTree:
         if self.current_symbol == "LESS":
             left_operand = comparison_node
 
-            comparison_node = self._create_node(kind="LT")
+            comparison_node_id = self._get_next_id()
 
             self._next_symbol()
 
-            left_operand.add_parent(comparison_node)
-            comparison_node.add_child(left_operand)
-
             right_operand = self._sum()
 
-            right_operand.add_parent(comparison_node)
-            comparison_node.add_child(right_operand)
+            comparison_node = LT(
+                id=comparison_node_id,
+                lhs=left_operand,
+                rhs=right_operand
+            )
 
         return comparison_node
 
-    def _sum(self) -> Node:
+    def _sum(self) -> Operation:
         """
         Evaluate a sum.
 
@@ -375,7 +372,7 @@ class AbstractSyntaxTree:
 
         Returns
         -------
-        sum_node : Node
+        sum_node : Operation
             The node representation of the sum.
         """
 
@@ -385,18 +382,26 @@ class AbstractSyntaxTree:
         while self.current_symbol in ["PLUS", "MINUS"]:
             left_operand = sum_node
 
-            _node_kind = "ADD" if self.current_symbol == "PLUS" else "SUB"
-            sum_node = self._create_node(kind=_node_kind)
+            sum_node_kind = "ADD" if self.current_symbol == "PLUS" else "SUB"
+            sum_node_id = self._get_next_id()
 
             self._next_symbol()
 
-            left_operand.add_parent(sum_node)
-            sum_node.add_child(left_operand)
+            right_operand = self._term()
 
-            other_term = self._term()
+            if sum_node_kind == "ADD":
+                sum_node = ADD(
+                    id=sum_node_id,
+                    lhs=left_operand,
+                    rhs=right_operand
+                )
 
-            other_term.add_parent(sum_node)
-            sum_node.add_child(other_term)
+            else:
+                sum_node = SUB(
+                    id=sum_node_id,
+                    lhs=left_operand,
+                    rhs=right_operand
+                )
 
         return sum_node
 
@@ -413,17 +418,22 @@ class AbstractSyntaxTree:
             The node representation of the term.
         """
 
-        if self.current_symbol in ["ID", "INT"]:
-            _node_kind = "VAR" if self.current_symbol == "ID" else "CST"
-            term_node = self._create_node(
-                kind=_node_kind,
+        if self.current_symbol == "ID":
+            term_node = VAR(
+                id=self._get_next_id(),
+                value=self.current_value
+            )
+        
+        elif self.current_symbol == "INT":
+            term_node = CST(
+                id=self._get_next_id(),
                 value=self.current_value
             )
 
-            self._next_symbol()
-
         else:
-            term_node = self._parenthesis_expression()
+            return self._parenthesis_expression()
+        
+        self._next_symbol()
 
         return term_node
 
@@ -435,9 +445,20 @@ class AbstractSyntaxTree:
         else:
             self.current_symbol, self.current_value = ("EOI", None)
 
-    def _create_node(self, kind: str, value: Union[None, int] = None) -> Node:
-        
-        new_node = Node(id=self.node_id_manager, kind=kind, value=value)
+    def _get_next_id(self) -> int:
+        """
+        Get the ID to use in the next Node to be created.
+
+        This function centralizes the management of the `node_id_manager`
+        property.
+
+        Returns
+        -------
+        next_id : int
+            The ID to use.
+        """
+
+        next_id = self.node_id_manager
         self.node_id_manager += 1
 
-        return new_node
+        return next_id
