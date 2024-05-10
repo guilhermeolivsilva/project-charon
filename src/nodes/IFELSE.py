@@ -100,27 +100,27 @@ class IFELSE(Conditional):
         _statement_if_true_code = self.statement_if_true.generate_code()
         _statement_if_false_code = self.statement_if_false.generate_code()
 
-        _first_instruction_of_else_block = _statement_if_false_code[0]
-        _first_instruction_of_else_block_id = _first_instruction_of_else_block["id"]
+        _beginning_of_else_block = _statement_if_false_code[0]
+        _beginning_of_else_block_id = _beginning_of_else_block["id"]
         _conditional_jump = {
             "instruction": "JZ",
-            "id": _first_instruction_of_else_block_id,
+            "id": _beginning_of_else_block_id,
             "value": None
         }
 
-        _last_instruction_of_else_block = _statement_if_false_code[-1]
-        _last_instruction_of_else_block_id = _last_instruction_of_else_block["id"]
+        _end_of_else_block = _statement_if_false_code[-1]
+        _end_of_else_block_id = _end_of_else_block["id"]
         _unconditional_jump = {
             "instruction": "JMP",
-            "id": _last_instruction_of_else_block_id,
+            "id": _end_of_else_block_id,
             "value": None
         }
 
         # If `parenthesis_expression` evals to `False`, jump to the instruction
-        # with ID `_first_instruction_of_else_block_id`. If not, execute
-        # the `_statement_if_true_code`. However, add an unconditional jump
-        # right after the `_statement_if_true_code` in order to skip the
-        # `_statemente_if_false_code`.
+        # with ID `_beginning_of_else_block_id`. If not, execute the
+        # `_statement_if_true_code`. However, add an unconditional jump right
+        # after the `_statement_if_true_code` in order to skip the
+        # `_statement_if_false_code`.
         return [
             *_parenthesis_expression_code,
             _conditional_jump,
