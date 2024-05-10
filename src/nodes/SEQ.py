@@ -1,5 +1,6 @@
 """Representation of SEQ nodes for the Abstract Syntax Tree."""
 
+from typing import Union
 from typing_extensions import override
 
 from .base.node import Node
@@ -70,3 +71,38 @@ class SEQ(Node):
 
         for child in self.children:
             child.print(indent + 1)
+
+    @override
+    def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
+        """
+        Generate the code associated with this `SEQ`.
+
+        For this node specialization, return a dummy instruction and the code
+        regarding the `children`.
+
+        Returns
+        -------
+        code_metadata : list of dict
+            Return a list of dictionaries containing code metadata: the related
+            `instruction`, and node `id`, and `value`.
+        """
+
+        _dummy_instruction = {
+            "instruction": "EMPTY",
+            "id": self.id,
+            "value": None
+        }
+
+        # Flatten the code of the children in a single, one dimensional list of
+        # code metadata (dicts), as each child.generate_code call returns a
+        # list of dicts.
+        _children_code = [
+            code_metadata
+            for child in self.children
+            for code_metadata in child.generate_code()
+        ]
+
+        return [
+            _dummy_instruction,
+            *_children_code
+        ]

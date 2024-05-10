@@ -1,5 +1,6 @@
 """Representation of DO nodes for the Abstract Syntax Tree."""
 
+from typing import Union
 from typing_extensions import override
 
 from .base.node import Node
@@ -43,3 +44,39 @@ class DO(Conditional):
         """
 
         super().print(indent)
+
+    @override
+    def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
+        """
+        Generate the code associated with this `DO`.
+
+        For this node specialization, generate code from the `loop` first,
+        then from the `parenthesis_expression`, and add a conditional jump
+        to the beginning of the loop for it to run again, if the
+        `parenthesis_expression` evaluates to `True`.
+
+        Returns
+        -------
+        code_metadata : list of dict
+            Return a list of dictionaries containing code metadata: the related
+            `instruction`, and node `id`, and `value`.
+        """
+
+        _loop_code = self.statement_if_true.generate_code()
+        _parenthesis_expression_code = self.parenthesis_expression.generate_code()
+    
+        # Conditional jump to reenter the loop if the `parenthesis_expression`
+        # evaluates to `True`
+        _beginning_of_loop = _loop_code[0]
+        _beginning_of_loop_id = _beginning_of_loop["id"]
+        _conditional_jump = {
+            "instruction": "JNZ",
+            "id": _beginning_of_loop_id,
+            "value": None
+        }
+
+        return [
+            *_loop_code,
+            *_parenthesis_expression_code,
+            _conditional_jump
+        ]
