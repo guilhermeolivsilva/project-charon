@@ -35,11 +35,12 @@ def test_create_virtual_machine():
     code_generator.generate_code(expected_ast.root)
 
     for expected, tested in zip(code_generator.code_collection, vm.code_collection):
-        expected_instruction, expected_node = expected
-        tested_instruction, tested_node = tested
+        expected_instruction, expected_id, expected_value = expected.values()
+        tested_instruction, tested_id, tested_value = tested.values()
 
         assert expected_instruction == tested_instruction
-        assert expected_node == tested_node
+        assert expected_id == tested_id
+        assert expected_value == tested_value
 
     vm.run()
 
