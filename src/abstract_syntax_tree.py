@@ -219,7 +219,7 @@ class AbstractSyntaxTree:
         """
 
         statement_node_id = self._get_next_id()
-        statement_node = EMPTY(id=statement_node_id)
+        statement_node = SEQ(id=statement_node_id)
     
         self._next_symbol()
 

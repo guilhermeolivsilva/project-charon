@@ -66,7 +66,6 @@ SOURCE_CODE = [
 EXPECTED_PRINT_TREE = """
 ID: 0, Value: None, Kind: PROG
   ID: 14, Value: None, Kind: SEQ
-    ID: 1, Value: None, Kind: EMPTY
     ID: 3, Value: None, Kind: EXPR
       ID: 5, Value: a, Kind: SET
         ID: 6, Value: 5, Kind: CST
@@ -80,7 +79,6 @@ ID: 0, Value: None, Kind: PROG
         ID: 48, Value: b, Kind: VAR
         ID: 50, Value: a, Kind: VAR
       ID: 31, Value: None, Kind: SEQ
-        ID: 16, Value: None, Kind: EMPTY
         ID: 18, Value: None, Kind: EXPR
           ID: 20, Value: c, Kind: SET
             ID: 22, Value: None, Kind: SUB
@@ -96,12 +94,10 @@ ID: 0, Value: None, Kind: PROG
             ID: 33, Value: a, Kind: VAR
             ID: 35, Value: c, Kind: VAR
           ID: 37, Value: None, Kind: SEQ
-            ID: 36, Value: None, Kind: EMPTY
             ID: 38, Value: None, Kind: EXPR
               ID: 40, Value: d, Kind: SET
                 ID: 41, Value: 10, Kind: CST
           ID: 43, Value: None, Kind: SEQ
-            ID: 42, Value: None, Kind: EMPTY
             ID: 44, Value: None, Kind: EXPR
               ID: 46, Value: d, Kind: SET
                 ID: 47, Value: 0, Kind: CST
