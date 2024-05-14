@@ -1,7 +1,8 @@
 """Representation of EXPR nodes for the Abstract Syntax Tree."""
 
-from typing_extensions import override
 from typing import Union
+
+from typing_extensions import override
 
 from .base.node import Node
 
@@ -27,6 +28,7 @@ class EXPR(Node):
         self.child_expression: Node = child_expression
 
         self.instruction: str = "IPOP"
+        self.symbol: str = "41"
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
@@ -82,4 +84,27 @@ class EXPR(Node):
         ]
 
         return code_metadata
-        
+
+    @override
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `EXPR`, and set this attribute.
+
+        For `EXPR` nodes, certificate the `child_expression`, recursively, and
+        then the `EXPR` node itself.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = self.child_expression.certificate(prime)
+
+        return super().certificate(prime)

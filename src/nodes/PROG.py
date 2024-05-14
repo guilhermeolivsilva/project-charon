@@ -1,6 +1,7 @@
 """Representation of PROG nodes for the Abstract Syntax Tree."""
 
 from typing import Union
+
 from typing_extensions import override
 
 from .base.node import Node
@@ -23,6 +24,7 @@ class PROG(Node):
         super().__init__(id)
 
         self.first_statement: Node = None
+        self.symbol: str = "45"
 
     def set_first_statement(self, first_statement: Node) -> None:
         """
@@ -96,3 +98,27 @@ class PROG(Node):
             *_program_code,
             _program_end
         ]
+
+    @override
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of `PROG`, and set this attribute.
+
+        For `PROG` nodes, certificate the `first_statement`, recursively, and
+        then the `PROG` node itself.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = self.first_statement.certificate(prime)
+
+        return super().certificate(prime)

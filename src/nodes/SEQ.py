@@ -1,8 +1,10 @@
 """Representation of SEQ nodes for the Abstract Syntax Tree."""
 
 from typing import Union
+
 from typing_extensions import override
 
+from src.utils import next_prime
 from .base.node import Node
 
 
@@ -23,6 +25,7 @@ class SEQ(Node):
         super().__init__(id)
 
         self.children: list[Node] = []
+        self.symbol: str = "50"
 
     def add_child(self, child: Node) -> None:
         """
@@ -106,3 +109,29 @@ class SEQ(Node):
             _dummy_instruction,
             *_children_code
         ]
+    
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `SEQ`, and set this attribute.
+
+        For `SEQ` nodes, certificate the `SEQ` node itself first, and then its
+        children in the same order as they appear in the `children` list.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = super().certificate(prime)
+
+        for child in self.children:
+            prime = child.certificate(prime)
+
+        return prime
