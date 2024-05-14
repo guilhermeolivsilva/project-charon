@@ -2,8 +2,6 @@
 
 from typing import Union
 
-import pytest
-
 from src.code_generator import CodeGenerator
 from src.nodes import *
 
