@@ -1,7 +1,9 @@
 """Representation of operation nodes for the Abstract Syntax Tree."""
 
 from typing import Union
+
 from typing_extensions import override
+
 from .node import Node
 
 
@@ -88,3 +90,28 @@ class Operation(Node):
         ]
 
         return code_metadata
+    
+    @override
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `Operation`, and set this attribute.
+
+        For `Operation` nodes, certificate the `lhs` and `rhs` children first,
+        and then the `Operation` itself.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = self.lhs.certificate(prime)
+        prime = self.rhs.certificate(prime)
+
+        return super().certificate(prime)

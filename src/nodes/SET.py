@@ -1,8 +1,10 @@
 """Representation of SET nodes for the Abstract Syntax Tree."""
 
-from string import ascii_lowercase
 from typing import Union
+
 from typing_extensions import override
+
+from src.utils import get_variable_name_symbol, next_prime
 
 from .base.node import Node
 from .base.operation import Operation
@@ -31,6 +33,7 @@ class SET(Operation):
         self.value: Union[str, int, None] = lhs.value
 
         self.instruction: str = "ISTORE"
+        self.symbol: str = f"(40^{get_variable_name_symbol(self.value)})"
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
@@ -92,3 +95,32 @@ class SET(Operation):
         ]
 
         return code_metadata
+
+    @override
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `SET`, and set this attribute.
+
+        For `SET` nodes, certificate the `rhs` first. Then, certificate the
+        `SET` itself with `symbol ^ variable_name_symbol`. The
+        `variable_name_symbol` is obtained with utils.get_variable_name_symbol.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = self.rhs.certificate(prime)
+
+        self.set_certificate_label(
+            certificate_label=f"{prime}^{self.symbol}"
+        )
+
+        return next_prime(prime)

@@ -28,6 +28,7 @@ class ADD(Operation):
         super().__init__(id, lhs, rhs, **kwargs)
 
         self.instruction: str = "IADD"
+        self.symbol: str = "(42)"
 
     @override
     def print(self, indent: int = 0) -> None:
