@@ -24,7 +24,7 @@ class PROG(Node):
         super().__init__(id)
 
         self.first_statement: Node = None
-        self.symbol: str = "(45)"
+        self.symbol: str = "(35)"
 
     def set_first_statement(self, first_statement: Node) -> None:
         """

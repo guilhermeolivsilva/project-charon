@@ -28,7 +28,7 @@ class SUB(Operation):
         super().__init__(id, lhs, rhs, **kwargs)
 
         self.instruction: str = "ISUB"
-        self.symbol: str = "(43)"
+        self.symbol: str = "(33)"
 
     @override
     def print(self, indent: int = 0) -> None:

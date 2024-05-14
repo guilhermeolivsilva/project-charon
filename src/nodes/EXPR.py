@@ -28,7 +28,7 @@ class EXPR(Node):
         self.child_expression: Node = child_expression
 
         self.instruction: str = "IPOP"
-        self.symbol: str = "(41)"
+        self.symbol: str = "(31)"
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:

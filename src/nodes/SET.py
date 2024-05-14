@@ -33,7 +33,7 @@ class SET(Operation):
         self.value: Union[str, int, None] = lhs.value
 
         self.instruction: str = "ISTORE"
-        self.symbol: str = f"(40^{get_variable_name_symbol(self.value)})"
+        self.symbol: str = f"(30^{get_variable_name_symbol(self.value)})"
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:

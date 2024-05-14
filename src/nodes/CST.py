@@ -28,4 +28,4 @@ class CST(Node):
         super().__init__(id, value)
 
         self.instruction: str = "IPUSH"
-        self.symbol: str = f"(39^{self.value})"
+        self.symbol: str = f"(29^{self.value})"

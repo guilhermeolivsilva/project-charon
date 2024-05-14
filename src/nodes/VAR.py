@@ -39,5 +39,5 @@ class VAR(Node):
         super().__init__(id, value)
 
         self.instruction: str = "IFETCH"
-        self.symbol: str = f"(38^{get_variable_name_symbol(self.value)})"
+        self.symbol: str = f"(28^{get_variable_name_symbol(self.value)})"
 
