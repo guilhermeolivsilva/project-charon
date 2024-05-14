@@ -1,4 +1,4 @@
-"""General purpose utilities for the Certificator infrastructure."""
+"""General purpose utilities."""
 
 
 def is_prime(number: int) -> bool:
