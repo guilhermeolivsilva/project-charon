@@ -17,23 +17,6 @@ class AbstractSyntaxTree:
         representation of the source code in (`symbol`, `value`) format.
     """
 
-    node_kinds = [
-        "EMPTY",
-        "VAR",
-        "CST",
-        "SET",
-        "EXPR",
-        "ADD",
-        "SUB",
-        "LT",
-        "PROG",
-        "IF",
-        "IFELSE",
-        "WHILE",
-        "DO",
-        "SEQ"
-    ]
-
     def __init__(self, source_code: list) -> None:
         self.node_id_manager: int = 1
         self.source_code: list = source_code

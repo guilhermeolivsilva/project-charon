@@ -4,7 +4,7 @@ from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.node import Node
 
 from src.certificators.interface import Interface
-from src.certificators.utils import next_prime
+from src.utils import next_prime
 
 
 class FrontendCertificator(Interface):
@@ -15,8 +15,6 @@ class FrontendCertificator(Interface):
     ----------
     ast : AbstractSyntaxTree
         The AST of the program to certificate.
-    prunes : list[str], optional (default = [])
-        List of pruning methods to apply on the AST.
     """
 
     symbols = [
@@ -24,9 +22,8 @@ class FrontendCertificator(Interface):
         *AbstractSyntaxTree.node_kinds,
     ]
 
-    def __init__(self, ast: AbstractSyntaxTree, prunes: list[str] = []) -> None:
+    def __init__(self, ast: AbstractSyntaxTree) -> None:
         self.ast = ast
-        self.prunes = prunes
 
         self.tokens = {
             key: value
@@ -35,78 +32,6 @@ class FrontendCertificator(Interface):
                 range(1, len(self.symbols) + 1)
             )
         }
-
-    def prune_ast(self) -> None:
-        """Prune the AST by merging redundant Nodes."""
-
-        enabled_prunes = [
-            self.__getattribute__(prune)
-            for prune in self.prunes
-        ]
-
-        for prune in enabled_prunes:
-            self.prune(self.ast.root, prune)
-
-    def prune(
-        self, node: Node, _prune: callable
-    ) -> None:
-        """
-        Apply a pruning method to the AST in recursive, inorder DFS fashion.
-
-        Parameters
-        ----------
-        node : Node
-            The current Node.
-        _prune : callable
-            The prune method to employ.
-        """
-
-        _prune(node)
-
-        for child in node.children:
-            self.prune(child, _prune)
-
-    def _merge_seq_empty(self, node: Node) -> None:
-        """
-        Merge SEQ Nodes to EMPTY Nodes.
-
-        This method only merges nodes if the EMPTY Node is the child of the
-        SEQ Node. The SEQ Node is kept, while the EMPTY is removed from the
-        tree.
-
-        Parameters
-        ----------
-        node : Node
-            The Node currently being evaluated.
-        """
-
-        if node.kind != "SEQ":
-            return
-
-        for child in node.children:
-            if child.kind == "EMPTY":
-                node.merge(child)
-
-    def _merge_set_var(self, node: Node) -> None:
-        """
-        Merge SET Nodes to VAR Nodes.
-
-        This method simplifies the value attribution operation by adding the
-        target variable (left hand side of the `=` operator) to the SET Node
-        itself.
-
-        Parameters
-        ----------
-        node : Node
-            The Node currently being evaluated.
-        """
-
-        if node.kind != "SET":
-            return
-
-        for child in node.children:
-            if child.kind == "VAR":
-                node.merge(child, {"absorb_value": True})
 
     def certificate(self, **kwargs) -> None:
         """
