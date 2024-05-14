@@ -18,20 +18,20 @@ The grammar of Tiny-C in EBNF is:
 
 ```
 <program> ::= <statement>
-<statement> ::= "if" <parenthesis_expression> <statement> |
-                "if" <parenthesis_expression> <statement> "else" <statement> |
-                "while" <parenthesis_expression> <statement> |
-                "do" <statement> "while" <parenthesis_expression> ";" |
-                "{" { <statement> } "}" |
-                <expression> ";" |
-                ";"
+<statement> ::= "if" <parenthesis_expression> <statement>
+                | "if" <parenthesis_expression> <statement> "else" <statement>
+                | "while" <parenthesis_expression> <statement>
+                | "do" <statement> "while" <parenthesis_expression> ";"
+                | "{" { <statement> } "}"
+                | <expression> ";"
+                | ";"
 <parenthesis_expression> ::= "(" <expression> ")"
 <expression> ::= <comparison> | <id> "=" <expression>
 <comparison> ::= <sum> | <sum> "<" <sum>
 <sum> ::= <term> | <sum> "+" <term> | <sum> "-" <term>
 <term> ::= <id> | <int> | <parenthesis_expression>
 <id> ::= "a" | "b" | "c" | "d" | ... | "z"
-<int> ::= <an_unsigned_decimal_integer>
+<int> ::= <unsigned_decimal_integer>
 ```
 
 # Lexer
@@ -108,9 +108,7 @@ may find it [here](https://github.com/guilhermeolivsilva/tinyc/tree/main/tests/i
 }
 
 > Result
-a = 1
-b = False
-c = False
+{'a': 1, 'b': False, 'c': False}
 ```
 
 ## Control Flow
@@ -128,8 +126,7 @@ c = False
 }
 
 > Result
-i = 10
-y = 2
+{'i': 10, 'y': 2}
 ```
 
 ## While
@@ -144,7 +141,7 @@ y = 2
 }
 
 > Result
-i = 128
+{'i': 128}
 ```
 
 ## Do/While
@@ -158,7 +155,7 @@ i = 128
 }
 
 > Result
-i = 51
+{'i': 51}
 ```
 
 ## Greatest Commond Divisor
@@ -179,8 +176,7 @@ i = 51
 }
 
 > Result
-i = 25
-j = 25
+{'i': 25, 'j': 25}
 ```
 
 ## Fibonacci sequence
