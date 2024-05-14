@@ -1,6 +1,7 @@
 """Representation of WHILE nodes for the Abstract Syntax Tree."""
 
 from typing import Union
+
 from typing_extensions import override
 
 from .base.node import Node
@@ -28,6 +29,8 @@ class WHILE(Conditional):
     @override
     def __init__(self, id: int, parenthesis_expression: Node, loop: Node) -> None:
         super().__init__(id, parenthesis_expression, loop)
+
+        self.symbol: str = "(38)"
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -102,3 +105,31 @@ class WHILE(Conditional):
             _unconditional_jump,
             _dummy_instruction_metadata
         ]
+
+    @override
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `WHILE`, and set this attribute.
+
+        For `WHILE` nodes, certificate the `parenthesis_expression` and `loop`
+        subtrees first, recursively, and then the `WHILE` node itself.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = self.parenthesis_expression.certificate(prime)
+
+        # The `statement_if_true` is the actual internal name of the `loop`
+        # subtree.
+        prime = self.statement_if_true.certificate(prime)
+
+        return super().certificate(prime)

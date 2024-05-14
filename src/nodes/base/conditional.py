@@ -65,3 +65,30 @@ class Conditional(Node):
 
         self.parenthesis_expression.print(indent + 1)
         self.statement_if_true.print(indent + 1)
+
+    @override
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `Conditional`, and set this attribute.
+
+        For `Conditional` nodes, certificate the `parenthesis_expression`,
+        recursively, and the `Conditional` itself, and then the children
+        `statement` nodes -- also recursively.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = self.parenthesis_expression.certificate(prime)
+
+        prime = super().certificate(prime)
+
+        return self.statement_if_true.certificate(prime)

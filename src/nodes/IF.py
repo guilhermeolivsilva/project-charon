@@ -1,7 +1,10 @@
 """Representation of IF nodes for the Abstract Syntax Tree."""
 
 from typing import Union
+
 from typing_extensions import override
+
+from src.nodes.base.node import Node
 
 from .base.conditional import Conditional
 
@@ -22,6 +25,12 @@ class IF(Conditional):
         The node representation of code to run if the `parenthesis_expression`
         evaluates to `True`.
     """
+
+    @override
+    def __init__(self, id: int, parenthesis_expression: Node, statement_if_true: Node) -> None:
+        super().__init__(id, parenthesis_expression, statement_if_true)
+
+        self.symbol: str = "(36)"
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:

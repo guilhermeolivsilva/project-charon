@@ -1,6 +1,7 @@
 """Representation of IFELSE nodes for the Abstract Syntax Tree."""
 
 from typing import Union
+
 from typing_extensions import override
 
 from .base.conditional import Conditional
@@ -38,6 +39,7 @@ class IFELSE(Conditional):
         super().__init__(id, parenthesis_expression, statement_if_true)
 
         self.statement_if_false: Node = statement_if_false
+        self.symbol: str = "(37)"
 
     @override
     def traverse(self, func: callable, **kwargs) -> None:
@@ -128,3 +130,29 @@ class IFELSE(Conditional):
             _unconditional_jump,
             *_statement_if_false_code
         ]
+
+    @override
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `IFELSE`, and set this attribute.
+
+        For `IFELSE` nodes, certificate the `parenthesis_expression`,
+        recursively, and the `IFELSE` itself, and then the children
+        `statement` nodes -- also recursively -- in order (i.e., the
+        `statement_if_true` and then the `statement_if_false` subtrees).
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        prime = super().certificate(prime)
+
+        return self.statement_if_false.certificate(prime)
