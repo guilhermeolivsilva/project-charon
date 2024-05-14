@@ -2,6 +2,8 @@
 
 from typing import Union
 
+from src.utils import next_prime
+
 
 class Node:
     """
@@ -18,10 +20,12 @@ class Node:
     def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
         self.id: int = id
         self.value: Union[int, str, None] = value
-
-        # Each `Node` specialization must set its `instruction`.
-        self.instruction: str = None
         self.certificate_label: str = None
+
+        # Each `Node` specialization must set its own `instruction` and
+        # `symbol`.
+        self.instruction: str = None
+        self.symbol: str = None
 
     def __eq__(self, other: "Node") -> bool:
         """
@@ -77,21 +81,17 @@ class Node:
 
         self.certificate_label = certificate_label
 
-    def traverse(self, func: callable, **kwargs) -> None:
+    def get_certificate_label(self) -> str:
         """
-        Traverse the node and apply a `func` to its children.
+        Get the contents of `certificate_label`.
 
-        This implementation should only be used for atomic nodes (i.e.,
-        `CST`, `VAR` and `EMPTY`). Other nodes should implement their own
-        traversal methods, as there are children to handle.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
+        Returns
+        -------
+        : str
+            The certificate label of the `Node`.
         """
 
-        func(self, **kwargs)
+        return self.certificate_label
 
     def print(self, indent: int = 0) -> None:
         """
@@ -140,3 +140,30 @@ class Node:
         }
 
         return [code_metadata]
+    
+    def certificate(self, prime: int) -> int:
+        """
+        Compute the certificate of the current `Node`, and set this attribute.
+
+        This method returns an integer, that corresponds to a prime number that
+        comes after the given `prime` (immediately after or not) in
+        order to allow recursively certificate the nodes of a subtree of the
+        AST.
+
+        Parameters
+        ----------
+        prime : int
+            A prime number that represents the relative position of the `Node`
+            in the AST.
+
+        Returns
+        -------
+        : int
+            A prime number that comes after the given `prime`.
+        """
+
+        self.set_certificate_label(
+            certificate_label=f"{prime}^{self.symbol}"
+        )
+
+        return next_prime(prime)
