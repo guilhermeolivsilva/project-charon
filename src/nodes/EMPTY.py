@@ -11,9 +11,6 @@ class EMPTY(Node):
     """
     Implement the representation of an `EMPTY` node for the AST.
 
-    This class does not need to override any methods or properties of the
-    base class other than the `symbol`.
-
     Parameters
     ----------
     id : int

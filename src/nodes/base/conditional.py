@@ -9,8 +9,6 @@ class Conditional(Node):
     """
     Implement the representation of conditionals for the AST.
 
-    This class overrides the constructor and `traverse` methods.
-
     Parameters
     ----------
     id : int
@@ -30,22 +28,6 @@ class Conditional(Node):
 
         self.parenthesis_expression: Node = parenthesis_expression
         self.statement_if_true: Node = statement_if_true
-
-    @override
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the `parenthesis_expression` node, to
-        the `statement_if_true` node, and then to the parent node itself.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        self.parenthesis_expression.traverse(func, **kwargs)
-        self.statement_if_true.traverse(func, **kwargs)
-        func(self, **kwargs)
 
     @override
     def print(self, indent: int = 0) -> None:

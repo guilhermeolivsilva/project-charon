@@ -12,9 +12,6 @@ class VAR(Node):
     """
     Implement the representation of a variable for the AST.
 
-    This class does not need to override any methods or properties of the
-    base class other than the constructor for type checking.
-
     Parameters
     ----------
     id : int
@@ -29,9 +26,7 @@ class VAR(Node):
         value_is_ascii_lowercase = value in ascii_lowercase
         value_is_single_letter = len(value) == 1
 
-        typecheck = (
-            value_is_str and value_is_ascii_lowercase and value_is_single_letter
-        )
+        typecheck = value_is_str and value_is_ascii_lowercase and value_is_single_letter
 
         if not typecheck:
             raise TypeError("VAR value must be a valid variable name ([a-z]).")
@@ -40,4 +35,3 @@ class VAR(Node):
 
         self.instruction: str = "IFETCH"
         self.symbol: str = f"(28^{get_variable_name_symbol(self.value)})"
-

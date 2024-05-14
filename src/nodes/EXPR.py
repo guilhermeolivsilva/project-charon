@@ -11,8 +11,6 @@ class EXPR(Node):
     """
     Implement the representation of an expression for the AST.
 
-    This class overrides the constructor and `traverse` methods.
-
     Parameters
     ----------
     id : int
@@ -29,21 +27,6 @@ class EXPR(Node):
 
         self.instruction: str = "IPOP"
         self.symbol: str = "(31)"
-
-    @override
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the child expression node, and then
-        to the `EXPR` node itself.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        self.child_expression.traverse(func, **kwargs)
-        func(self, **kwargs)
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -80,7 +63,7 @@ class EXPR(Node):
 
         code_metadata = [
             *self.child_expression.generate_code(),
-            *super().generate_code()
+            *super().generate_code(),
         ]
 
         return code_metadata

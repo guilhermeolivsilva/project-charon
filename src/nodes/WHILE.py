@@ -73,29 +73,27 @@ class WHILE(Conditional):
 
         # Conditional jump to leave the loop if the `parenthesis_expression`
         # evaluates to `False`
-        _conditional_jump = {
-            "instruction": "JZ",
-            "id": self.id,
-            "value": None
-        }
+        _conditional_jump = {"instruction": "JZ", "id": self.id, "value": None}
 
         # Dummy instruction (i.e., `EMPTY`) just outside the loop. This is the
         # target of the `_conditional_jump` for it to leave the loop.
         _dummy_instruction_metadata = {
             "instruction": "EMPTY",
             "id": self.id,
-            "value": None
+            "value": None,
         }
 
         # Unconditional jump at the end of the `_loop_code` so the
         # `parenthesis_expression` can be reevaluated
         _beginning_of_parenthesis_expression = _parenthesis_expression_code[0]
-        _beginning_of_parenthesis_expression_id = _beginning_of_parenthesis_expression["id"]
-    
+        _beginning_of_parenthesis_expression_id = _beginning_of_parenthesis_expression[
+            "id"
+        ]
+
         _unconditional_jump = {
             "instruction": "JMP",
             "id": _beginning_of_parenthesis_expression_id,
-            "value": None
+            "value": None,
         }
 
         return [
@@ -103,7 +101,7 @@ class WHILE(Conditional):
             _conditional_jump,
             *_loop_code,
             _unconditional_jump,
-            _dummy_instruction_metadata
+            _dummy_instruction_metadata,
         ]
 
     @override

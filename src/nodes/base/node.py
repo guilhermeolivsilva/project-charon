@@ -49,7 +49,7 @@ class Node:
         )
 
         return is_equal
-    
+
     def __str__(self) -> str:
         """
         Implement a string representation of a Node object.
@@ -68,7 +68,7 @@ class Node:
             _str += f", Certificate Label: {self.certificate_label}"
 
         return _str
-    
+
     def set_certificate_label(self, certificate_label: str) -> None:
         """
         Set the `certificate_label` of the Node.
@@ -136,11 +136,11 @@ class Node:
         code_metadata = {
             "instruction": self.instruction,
             "id": self.id,
-            "value": self.value
+            "value": self.value,
         }
 
         return [code_metadata]
-    
+
     def certificate(self, prime: int) -> int:
         """
         Compute the certificate of the current `Node`, and set this attribute.
@@ -162,8 +162,6 @@ class Node:
             A prime number that comes after the given `prime`.
         """
 
-        self.set_certificate_label(
-            certificate_label=f"{prime}^{self.symbol}"
-        )
+        self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
 
         return next_prime(prime)

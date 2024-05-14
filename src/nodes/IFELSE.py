@@ -12,8 +12,6 @@ class IFELSE(Conditional):
     """
     Implement the representation of a conditional for the AST.
 
-    This class overrides the constructor and `traverse` methods.
-
     Parameters
     ----------
     id : int
@@ -42,24 +40,6 @@ class IFELSE(Conditional):
         self.symbol: str = "(37)"
 
     @override
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the `parenthesis_expression` node, to
-        the `IF` node itself, to the `statement_if_true` node, and the to the
-        `statement_if_false` node.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        self.parenthesis_expression.traverse(func, **kwargs)
-        func(self, **kwargs)
-        self.statement_if_true.traverse(func, **kwargs)
-        self.statement_if_false.traverse(func, **kwargs)
-
-    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `Conditional`.
@@ -76,7 +56,6 @@ class IFELSE(Conditional):
         super().print(indent)
 
         self.statement_if_false.print(indent + 1)
-
 
     @override
     def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
@@ -107,7 +86,7 @@ class IFELSE(Conditional):
         _conditional_jump = {
             "instruction": "JZ",
             "id": _beginning_of_else_block_id,
-            "value": None
+            "value": None,
         }
 
         _end_of_else_block = _statement_if_false_code[-1]
@@ -115,7 +94,7 @@ class IFELSE(Conditional):
         _unconditional_jump = {
             "instruction": "JMP",
             "id": _end_of_else_block_id,
-            "value": None
+            "value": None,
         }
 
         # If `parenthesis_expression` evals to `False`, jump to the instruction
@@ -128,7 +107,7 @@ class IFELSE(Conditional):
             _conditional_jump,
             *_statement_if_true_code,
             _unconditional_jump,
-            *_statement_if_false_code
+            *_statement_if_false_code,
         ]
 
     @override

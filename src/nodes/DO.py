@@ -12,9 +12,6 @@ class DO(Conditional):
     """
     Implement the representation of a `DO` loop for the AST.
 
-    This class simply is an interface for the `Conditional` class, renaming
-    the `statement_if_true` to `loop`.
-
     Parameters
     ----------
     id : int
@@ -67,7 +64,7 @@ class DO(Conditional):
 
         _loop_code = self.statement_if_true.generate_code()
         _parenthesis_expression_code = self.parenthesis_expression.generate_code()
-    
+
         # Conditional jump to reenter the loop if the `parenthesis_expression`
         # evaluates to `True`
         _beginning_of_loop = _loop_code[0]
@@ -75,14 +72,10 @@ class DO(Conditional):
         _conditional_jump = {
             "instruction": "JNZ",
             "id": _beginning_of_loop_id,
-            "value": None
+            "value": None,
         }
 
-        return [
-            *_loop_code,
-            *_parenthesis_expression_code,
-            _conditional_jump
-        ]
+        return [*_loop_code, *_parenthesis_expression_code, _conditional_jump]
 
     @override
     def certificate(self, prime: int) -> int:

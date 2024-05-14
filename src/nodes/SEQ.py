@@ -12,8 +12,6 @@ class SEQ(Node):
     """
     Implement the representation of a sequence of statements for the AST.
 
-    This class overrides the constructor and `traverse` methods.
-
     Parameters
     ----------
     id : int
@@ -38,23 +36,6 @@ class SEQ(Node):
         """
 
         self.children.append(child)
-
-    @override
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the `SEQ` node itself, and then
-        to each of its children.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        func(self, **kwargs)
-
-        for child in self.children:
-            child.traverse(func, **kwargs)
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -90,11 +71,7 @@ class SEQ(Node):
             `instruction`, and node `id`, and `value`.
         """
 
-        _dummy_instruction = {
-            "instruction": "EMPTY",
-            "id": self.id,
-            "value": None
-        }
+        _dummy_instruction = {"instruction": "EMPTY", "id": self.id, "value": None}
 
         # Flatten the code of the children in a single, one dimensional list of
         # code metadata (dicts), as each child.generate_code call returns a
@@ -105,11 +82,8 @@ class SEQ(Node):
             for code_metadata in child.generate_code()
         ]
 
-        return [
-            _dummy_instruction,
-            *_children_code
-        ]
-    
+        return [_dummy_instruction, *_children_code]
+
     def certificate(self, prime: int) -> int:
         """
         Compute the certificate of the current `SEQ`, and set this attribute.

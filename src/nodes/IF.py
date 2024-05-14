@@ -13,8 +13,6 @@ class IF(Conditional):
     """
     Implement the representation of a conditional for the AST.
 
-    This class overrides the `traverse` method.
-
     Parameters
     ----------
     id : int
@@ -27,26 +25,12 @@ class IF(Conditional):
     """
 
     @override
-    def __init__(self, id: int, parenthesis_expression: Node, statement_if_true: Node) -> None:
+    def __init__(
+        self, id: int, parenthesis_expression: Node, statement_if_true: Node
+    ) -> None:
         super().__init__(id, parenthesis_expression, statement_if_true)
 
         self.symbol: str = "(36)"
-
-    @override
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the `parenthesis_expression` node, to
-        the `IF` node itself, and then to the `if_statement` node.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        self.parenthesis_expression.traverse(func, **kwargs)
-        func(self, **kwargs)
-        self.statement_if_true.traverse(func, **kwargs)
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -91,7 +75,7 @@ class IF(Conditional):
         _conditional_jump = {
             "instruction": "JZ",
             "id": _end_of_conditional_block_id,
-            "value": None
+            "value": None,
         }
 
         # If `parenthesis_expression` evals to `False`, jump to the instruction
@@ -100,5 +84,5 @@ class IF(Conditional):
         return [
             *_parenthesis_expression_code,
             _conditional_jump,
-            *_statement_if_true_code
+            *_statement_if_true_code,
         ]

@@ -11,8 +11,6 @@ class PROG(Node):
     """
     Implement the representation of the beginning of a program for the AST.
 
-    This class overrides the constructor and `traverse` methods.
-
     Parameters
     ----------
     id : int
@@ -33,24 +31,10 @@ class PROG(Node):
         Parameters
         ----------
         first_statement : Node
-            The node that represents the first statement.        
+            The node that represents the first statement.
         """
 
         self.first_statement = first_statement
-
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the first statement node, and then
-        to the `PROG` node itself.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        self.first_statement.traverse(func, **kwargs)
-        func(self, **kwargs)
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -86,18 +70,11 @@ class PROG(Node):
             `instruction`, and node `id`, and `value`.
         """
 
-        _program_end = {
-            "instruction": "HALT",
-            "id": self.id,
-            "value": None
-        }
+        _program_end = {"instruction": "HALT", "id": self.id, "value": None}
 
         _program_code = self.first_statement.generate_code()
 
-        return [
-            *_program_code,
-            _program_end
-        ]
+        return [*_program_code, _program_end]
 
     @override
     def certificate(self, prime: int) -> int:

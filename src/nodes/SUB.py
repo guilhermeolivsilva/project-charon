@@ -11,8 +11,6 @@ class SUB(Operation):
     """
     Implement the representation of a subtraction for the AST.
 
-    This class simply is an interface for the `Operation` class.
-
     Parameters
     ----------
     id : int

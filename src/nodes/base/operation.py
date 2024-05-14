@@ -11,10 +11,8 @@ class Operation(Node):
     """
     Implement the representation of an operation for the AST.
 
-    An operation is either the addition (`ADD`), subtraction (`SUB`), or
-    comparison (`LT`) of two nodes.
-
-    This class overrides the constructor and `traverse` methods.
+    An operation is either the addition (`ADD`), subtraction (`SUB`),
+    comparison (`LT`), or attribution (`SET`) of two nodes.
 
     Parameters
     ----------
@@ -32,22 +30,6 @@ class Operation(Node):
 
         self.lhs: Node = lhs
         self.rhs: Node = rhs
-
-    @override
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the left and right hand nodes of the
-        addition, and then to the parent node itself.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        self.lhs.traverse(func, **kwargs)
-        self.rhs.traverse(func, **kwargs)
-        func(self, **kwargs)
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -86,11 +68,11 @@ class Operation(Node):
         code_metadata = [
             *self.lhs.generate_code(),
             *self.rhs.generate_code(),
-            *super().generate_code()
+            *super().generate_code(),
         ]
 
         return code_metadata
-    
+
     @override
     def certificate(self, prime: int) -> int:
         """

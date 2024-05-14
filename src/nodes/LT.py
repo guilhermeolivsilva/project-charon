@@ -9,9 +9,7 @@ from .base.operation import Operation
 
 class LT(Operation):
     """
-    Implement the representation of a "less than" comparison for the AST.
-
-    This class simply is an interface for the `Operation` class.
+    Implement the representation of a "less than" (<) comparison for the AST.
 
     Parameters
     ----------

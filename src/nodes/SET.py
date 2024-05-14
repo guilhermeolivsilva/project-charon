@@ -14,8 +14,6 @@ class SET(Operation):
     """
     Implement the representation of a attribution operation for the AST.
 
-    This class overrides the constructor and `traverse` methods.
-
     Parameters
     ----------
     id : int
@@ -34,21 +32,6 @@ class SET(Operation):
 
         self.instruction: str = "ISTORE"
         self.symbol: str = f"(30^{get_variable_name_symbol(self.value)})"
-
-    @override
-    def traverse(self, func: callable, **kwargs) -> None:
-        """
-        Apply the traversal `func` to the child expression node, and then
-        to the `SET` node itself.
-
-        Parameters
-        ----------
-        func : callable
-            The function to call during the traversal.
-        """
-
-        self.rhs.traverse(func, **kwargs)
-        func(self, **kwargs)
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -86,13 +69,10 @@ class SET(Operation):
         _this_metadata = {
             "instruction": self.instruction,
             "id": self.id,
-            "value": self.value
+            "value": self.value,
         }
 
-        code_metadata = [
-            *self.rhs.generate_code(),
-            _this_metadata
-        ]
+        code_metadata = [*self.rhs.generate_code(), _this_metadata]
 
         return code_metadata
 
@@ -119,8 +99,6 @@ class SET(Operation):
 
         prime = self.rhs.certificate(prime)
 
-        self.set_certificate_label(
-            certificate_label=f"{prime}^{self.symbol}"
-        )
+        self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
 
         return next_prime(prime)
