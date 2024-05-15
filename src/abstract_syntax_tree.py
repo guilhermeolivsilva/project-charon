@@ -43,9 +43,9 @@ class AbstractSyntaxTree:
 
         Parameters
         ----------
-        indent : int, optional
-            The indentation level for pretty printing, default is 0, for the
-            root (and incremented by 1 for each level).
+        indent : int (optional, default = 0)
+            The indentation level for pretty printing. Defaults to 0 for the
+            root (and is incremented by 1 for each level).
         """
 
         self.root.print(indent=indent)
