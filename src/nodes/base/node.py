@@ -81,17 +81,23 @@ class Node:
 
         self.certificate_label = certificate_label
 
-    def get_certificate_label(self) -> str:
+    def get_certificate_label(self) -> list[str]:
         """
         Get the contents of `certificate_label`.
 
         Returns
         -------
-        : str
-            The certificate label of the `Node`.
+        : list of str
+            A list containing the certificate label of the `Node`.
+
+        Notes
+        -----
+        This method returns a list, rather than the string itself, in order to
+        allow returning multiple labels when nodes have children. Thus,
+        subclasses should return a composition of lists.
         """
 
-        return self.certificate_label
+        return [self.certificate_label]
 
     def print(self, indent: int = 0) -> None:
         """

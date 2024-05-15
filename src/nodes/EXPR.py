@@ -29,6 +29,25 @@ class EXPR(Node):
         self.symbol: str = "(31)"
 
     @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `EXPR` nodes, first obtain the certificate from the `child_expression`
+        subtree, recursively, and then from the `EXPR` node itself.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+        
+        return [
+            *self.child_expression.get_certificate_label(),
+            *super().get_certificate_label()
+        ]
+
+    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `EXPR`.

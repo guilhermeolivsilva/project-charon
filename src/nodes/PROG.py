@@ -37,6 +37,26 @@ class PROG(Node):
         self.first_statement = first_statement
 
     @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `PROG` nodes, first obtain the certificate from the
+        `first_statement` subtree, recursively, and then from the `PROG` node
+        itself.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+        
+        return [
+            *self.first_statement.get_certificate_label(),
+            *super().get_certificate_label()
+        ]
+
+    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `PROG`.

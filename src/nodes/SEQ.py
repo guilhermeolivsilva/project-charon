@@ -4,7 +4,6 @@ from typing import Union
 
 from typing_extensions import override
 
-from src.utils import next_prime
 from .base.node import Node
 
 
@@ -36,6 +35,27 @@ class SEQ(Node):
         """
 
         self.children.append(child)
+
+    @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `SEQ` nodes, obtain the certificate from the `SEQ` node itself
+        first, and then from the `children` subtrees, recursively.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+        
+        certificate_label: list[str] = super().get_certificate_label()
+
+        for child in self.children:
+            certificate_label.append(*child.get_certificate_label())
+
+        return certificate_label
 
     @override
     def print(self, indent: int = 0) -> None:
