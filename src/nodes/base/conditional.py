@@ -30,6 +30,27 @@ class Conditional(Node):
         self.statement_if_true: Node = statement_if_true
 
     @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `Conditional` nodes, obtain the certificates, recursively, from the
+        `parenthesis_expression` subtree first, then from the `Conditional`
+        node itself, and, finally, from the `statement_if_true` subtree.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+        
+        return [
+            *self.parenthesis_expression.get_certificate_label(),
+            *super().get_certificate_label(),
+            *self.statement_if_true.get_certificate_label()
+        ]
+
+    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `Conditional`.

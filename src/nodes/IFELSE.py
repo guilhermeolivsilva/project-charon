@@ -40,6 +40,26 @@ class IFELSE(Conditional):
         self.symbol: str = "(37)"
 
     @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `IFELSE` nodes, first call the `Conditional.get_certificate_label`
+        method, and compose it with the `certificate_label` obtained recursively
+        from the `statement_if_false` subtree.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+        
+        return [
+            *super().get_certificate_label(),
+            *self.statement_if_false.get_certificate_label()
+        ]
+
+    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `Conditional`.

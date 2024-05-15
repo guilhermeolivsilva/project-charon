@@ -32,6 +32,27 @@ class DO(Conditional):
         self.symbol: str = "(39)"
 
     @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `WHILE` nodes, first obtain the `certificate_label` from the
+        `parenthesis_expression` and loop (`statement_if_true`) subtrees,
+        recursively, and then from the `WHILE` node itself.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+        
+        return [
+            *self.parenthesis_expression.get_certificate_label(),
+            *self.statement_if_true.get_certificate_label(),
+            self.certificate_label
+        ]
+
+    @override
     def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
         """
         Generate the code associated with this `DO`.
