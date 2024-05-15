@@ -53,7 +53,7 @@ class SEQ(Node):
         certificate_label: list[str] = super().get_certificate_label()
 
         for child in self.children:
-            certificate_label.append(*child.get_certificate_label())
+            certificate_label.extend(child.get_certificate_label())
 
         return certificate_label
 
