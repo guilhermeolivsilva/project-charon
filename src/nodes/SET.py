@@ -34,6 +34,25 @@ class SET(Operation):
         self.symbol: str = f"(30^{get_variable_name_symbol(self.value)})"
 
     @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `SET` nodes, first obtain the certificate from the `rhs` subtree,
+        recursively, and then from the `SET` node itself.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+        
+        return [
+            *self.rhs.get_certificate_label(),
+            self.certificate_label
+        ]
+
+    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `Conditional`.
