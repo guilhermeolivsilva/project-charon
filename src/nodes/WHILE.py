@@ -4,6 +4,8 @@ from typing import Union
 
 from typing_extensions import override
 
+from src.utils import next_prime
+
 from .base.node import Node
 from .base.conditional import Conditional
 
@@ -114,4 +116,6 @@ class WHILE(Conditional):
         # subtree.
         prime = self.statement_if_true.certificate(prime)
 
-        return super().certificate(prime)
+        self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
+
+        return next_prime(prime)
