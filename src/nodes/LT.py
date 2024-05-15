@@ -27,19 +27,3 @@ class LT(Operation):
 
         self.instruction: str = "ILT"
         self.symbol: str = "(34)"
-
-    @override
-    def print(self, indent: int = 0) -> None:
-        """
-        Print the string representation of this `Operation`.
-
-        The node itself is aligned with `indent`, and its children are padded
-        with an additional left space.
-
-        Parameters
-        ----------
-        indent : int (optional, default = 0)
-            The number of left padding spaces to indent.
-        """
-
-        super().print(indent)
