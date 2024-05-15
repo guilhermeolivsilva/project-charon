@@ -50,10 +50,10 @@ class PROG(Node):
         : list of str
             A list containing the certificate label of the `Node`.
         """
-        
+
         return [
             *self.first_statement.get_certificate_label(),
-            *super().get_certificate_label()
+            *super().get_certificate_label(),
         ]
 
     @override

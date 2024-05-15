@@ -46,11 +46,8 @@ class SET(Operation):
         : list of str
             A list containing the certificate label of the `Node`.
         """
-        
-        return [
-            *self.rhs.get_certificate_label(),
-            self.certificate_label
-        ]
+
+        return [*self.rhs.get_certificate_label(), self.certificate_label]
 
     @override
     def print(self, indent: int = 0) -> None:

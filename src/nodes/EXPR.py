@@ -41,10 +41,10 @@ class EXPR(Node):
         : list of str
             A list containing the certificate label of the `Node`.
         """
-        
+
         return [
             *self.child_expression.get_certificate_label(),
-            *super().get_certificate_label()
+            *super().get_certificate_label(),
         ]
 
     @override

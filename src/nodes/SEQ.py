@@ -49,7 +49,7 @@ class SEQ(Node):
         : list of str
             A list containing the certificate label of the `Node`.
         """
-        
+
         certificate_label: list[str] = super().get_certificate_label()
 
         for child in self.children:

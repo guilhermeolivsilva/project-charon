@@ -43,11 +43,11 @@ class Conditional(Node):
         : list of str
             A list containing the certificate label of the `Node`.
         """
-        
+
         return [
             *self.parenthesis_expression.get_certificate_label(),
             *super().get_certificate_label(),
-            *self.statement_if_true.get_certificate_label()
+            *self.statement_if_true.get_certificate_label(),
         ]
 
     @override
