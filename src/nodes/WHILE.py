@@ -51,8 +51,8 @@ class WHILE(Conditional):
 
         return [
             *self.parenthesis_expression.get_certificate_label(),
-            *self.statement_if_true.get_certificate_label(),
             self.certificate_label,
+            *self.statement_if_true.get_certificate_label(),
         ]
 
     @override
