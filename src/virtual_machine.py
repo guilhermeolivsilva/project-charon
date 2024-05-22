@@ -192,6 +192,16 @@ class VirtualMachine:
         else:
             self.jmp(value)
 
+    def seq(self, **kwargs) -> None:
+        """
+        Do nothing.
+
+        This simply marks there is a sequence of commands following this
+        instruction.
+        """
+
+        return
+
     def empty(self, **kwargs) -> None:
         """
         Do nothing.
@@ -199,4 +209,4 @@ class VirtualMachine:
         Useful when creating "code holes".
         """
 
-        return 
+        return

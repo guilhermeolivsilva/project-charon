@@ -91,7 +91,7 @@ class SEQ(Node):
             `instruction`, and node `id`, and `value`.
         """
 
-        _dummy_instruction = {"instruction": "EMPTY", "id": self.id, "value": None}
+        _dummy_instruction = {"instruction": "SEQ", "id": self.id, "value": None}
 
         # Flatten the code of the children in a single, one dimensional list of
         # code metadata (dicts), as each child.generate_code call returns a
