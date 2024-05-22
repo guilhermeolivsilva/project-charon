@@ -78,8 +78,8 @@ class DO(Conditional):
         _beginning_of_loop_id = _beginning_of_loop["id"]
         _conditional_jump = {
             "instruction": "JNZ",
-            "id": _beginning_of_loop_id,
-            "value": None,
+            "id": -1,
+            "value": _beginning_of_loop_id,
         }
 
         return [*_loop_code, *_parenthesis_expression_code, _conditional_jump]

@@ -270,8 +270,8 @@ def test_run_jmp() -> None:
 
     jmp_instruction = {
         "instruction": "JMP",
-        "id": 3,
-        "value": None
+        "id": -1,
+        "value": 3
     }
 
     code_collection = [
@@ -318,8 +318,8 @@ def test_run_jz_true() -> None:
 
     conditional_jump_instruction = {
         "instruction": "JZ",
-        "id": 3,
-        "value": None
+        "id": -1,
+        "value": 3
     }
 
     code_collection = [
@@ -368,8 +368,8 @@ def test_run_jz_false() -> None:
 
     conditional_jump_instruction = {
         "instruction": "JZ",
-        "id": 3,
-        "value": None
+        "id": -1,
+        "value": 3
     }
 
     code_collection = [
@@ -420,8 +420,8 @@ def test_run_jnz_true() -> None:
 
     conditional_jump_instruction = {
         "instruction": "JNZ",
-        "id": 3,
-        "value": None
+        "id": -1,
+        "value": 3
     }
 
     code_collection = [
@@ -472,8 +472,8 @@ def test_run_jnz_false() -> None:
 
     conditional_jump_instruction = {
         "instruction": "JNZ",
-        "id": 3,
-        "value": None
+        "id": -1,
+        "value": 3
     }
 
     code_collection = [

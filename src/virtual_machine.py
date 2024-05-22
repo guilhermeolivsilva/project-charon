@@ -128,21 +128,21 @@ class VirtualMachine:
         )
         self.stack_pointer -= 1
 
-    def jmp(self, id: int, **kwargs) -> None:
+    def jmp(self, value: int, **kwargs) -> None:
         """
         Point the program counter to the instruction referenced by an ID.
 
         Parameters
         ----------
-        id : int
-            The ID of reference.
+        value : int
+            The ID of the target instruction to jump to.
         """
 
         initial_program_couter = self.program_counter
 
         # Look forward (i.e., after the current instruction)
         for code_metadata in self.code_collection[initial_program_couter + 1:]:
-            if code_metadata["id"] == id:
+            if code_metadata["id"] == value:
                 return
 
             self.program_counter += 1
@@ -151,14 +151,14 @@ class VirtualMachine:
 
         # Look backwards (i.e., before the instruction that triggered this)
         for code_metadata in self.code_collection[:initial_program_couter]:
-            if code_metadata["id"] == id:
+            if code_metadata["id"] == value:
                 # Offset the default PC incrementer, to avoid dealignment
                 self.program_counter -= 1
                 return
 
             self.program_counter += 1
 
-    def jz(self, id: int, **kwargs) -> None:
+    def jz(self, value: int, **kwargs) -> None:
         """
         Compute the next block of code if the parenthesis expression evaluates to `True`.
 
@@ -166,16 +166,16 @@ class VirtualMachine:
 
         Parameters
         ----------
-        id : int
-            The ID of reference.
+        value : int
+            The ID of the target instruction to jump to.
         """
 
         if self.stack[self.stack_pointer - 1]:
             return
         else:
-            self.jmp(id)
+            self.jmp(value)
 
-    def jnz(self, id: int, **kwargs) -> None:
+    def jnz(self, value: int, **kwargs) -> None:
         """
         Compute the next block of code if the parenthesis expression evaluates to `False`.
 
@@ -183,14 +183,14 @@ class VirtualMachine:
 
         Parameters
         ----------
-        id : int
-            The ID of reference.
+        value : int
+            The ID of the target instruction to jump to.
         """
 
         if not self.stack[self.stack_pointer - 1]:
             return
         else:
-            self.jmp(id)
+            self.jmp(value)
 
     def empty(self, **kwargs) -> None:
         """

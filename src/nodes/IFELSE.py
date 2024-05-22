@@ -105,16 +105,16 @@ class IFELSE(Conditional):
         _beginning_of_else_block_id = _beginning_of_else_block["id"]
         _conditional_jump = {
             "instruction": "JZ",
-            "id": _beginning_of_else_block_id,
-            "value": None,
+            "id": -1,
+            "value": _beginning_of_else_block_id,
         }
 
         _end_of_else_block = _statement_if_false_code[-1]
         _end_of_else_block_id = _end_of_else_block["id"]
         _unconditional_jump = {
             "instruction": "JMP",
-            "id": _end_of_else_block_id,
-            "value": None,
+            "id": -1,
+            "value": _end_of_else_block_id,
         }
 
         # If `parenthesis_expression` evals to `False`, jump to the instruction

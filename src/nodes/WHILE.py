@@ -80,7 +80,7 @@ class WHILE(Conditional):
 
         # Conditional jump to leave the loop if the `parenthesis_expression`
         # evaluates to `False`
-        _conditional_jump = {"instruction": "JZ", "id": self.id, "value": None}
+        _conditional_jump = {"instruction": "JZ", "id": -1, "value": self.id}
 
         # Dummy instruction (i.e., `EMPTY`) just outside the loop. This is the
         # target of the `_conditional_jump` for it to leave the loop.
@@ -99,8 +99,8 @@ class WHILE(Conditional):
 
         _unconditional_jump = {
             "instruction": "JMP",
-            "id": _beginning_of_parenthesis_expression_id,
-            "value": None,
+            "id": -1,
+            "value": _beginning_of_parenthesis_expression_id,
         }
 
         return [

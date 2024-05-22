@@ -58,8 +58,8 @@ class IF(Conditional):
 
         _conditional_jump = {
             "instruction": "JZ",
-            "id": _end_of_conditional_block_id,
-            "value": None,
+            "id": -1,
+            "value": _end_of_conditional_block_id,
         }
 
         # If `parenthesis_expression` evals to `False`, jump to the instruction
