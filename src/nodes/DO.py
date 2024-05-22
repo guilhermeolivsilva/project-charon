@@ -47,9 +47,9 @@ class DO(Conditional):
         """
 
         return [
-            *self.parenthesis_expression.get_certificate_label(),
             *self.statement_if_true.get_certificate_label(),
-            self.certificate_label,
+            *self.parenthesis_expression.get_certificate_label(),
+            self.certificate_label
         ]
 
     @override
@@ -104,11 +104,10 @@ class DO(Conditional):
             A prime number that comes after the given `prime`.
         """
 
-        prime = self.parenthesis_expression.certificate(prime)
-
         # The `statement_if_true` is the actual internal name of the `loop`
         # subtree.
         prime = self.statement_if_true.certificate(prime)
+        prime = self.parenthesis_expression.certificate(prime)
 
         self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
 
