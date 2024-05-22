@@ -32,7 +32,7 @@ def test_str() -> None:
 
     cg.generate_code(program)
 
-    expected_result = "Instruction: EMPTY, ID: 1, Value: None\n"
+    expected_result = "Instruction: SEQ, ID: 1, Value: None\n"
     expected_result += "Instruction: IPUSH, ID: 3, Value: 1\n"
     expected_result += "Instruction: IFETCH, ID: 4, Value: a\n"
     expected_result += "Instruction: IADD, ID: 2, Value: None\n"
