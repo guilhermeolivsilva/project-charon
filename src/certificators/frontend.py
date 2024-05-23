@@ -34,8 +34,8 @@ class FrontendCertificator(Interface):
         Returns
         -------
         : list[str]
-            The string representation that concatenates all of the certification
-            labels of the AST Nodes.
+            A list of containing all of the certification labels of the AST
+            Nodes.
         """
 
         return self.ast.root.get_certificate_label()
