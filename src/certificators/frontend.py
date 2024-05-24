@@ -27,6 +27,7 @@ class FrontendCertificator(Interface):
         """
 
         self.ast.root.certificate(prime=1)
+        self.computed_certificate = self.ast.root.get_certificate_label()
 
     def get_certificate(self) -> list[str]:
         """
@@ -38,8 +39,5 @@ class FrontendCertificator(Interface):
             A list of containing all of the certification labels of the AST
             Nodes.
         """
-
-        if not self.computed_certificate:
-            self.computed_certificate = self.ast.root.get_certificate_label()
 
         return self.computed_certificate
