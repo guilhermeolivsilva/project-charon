@@ -37,6 +37,8 @@ class BackendCertificator(Interface):
     }
 
     def __init__(self, code_collection: list[dict[str, Union[int, str, None]]]) -> None:
+        super().__init__()
+
         self.code_collection: list[dict[str, Union[int, str, None]]] = [
             {
                 "idx": idx,
@@ -51,8 +53,6 @@ class BackendCertificator(Interface):
             **self.variables,
             **self.instructions
         }
-
-        self.computed_certificate: list[str] = []
 
     def certificate(self, **kwargs) -> None:
         """

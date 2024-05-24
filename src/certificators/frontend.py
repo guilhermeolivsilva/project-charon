@@ -15,6 +15,7 @@ class FrontendCertificator(Interface):
     """
 
     def __init__(self, ast: AbstractSyntaxTree) -> None:
+        super().__init__()
         self.ast: AbstractSyntaxTree = ast
 
     def certificate(self, **kwargs) -> None:
@@ -38,4 +39,7 @@ class FrontendCertificator(Interface):
             Nodes.
         """
 
-        return self.ast.root.get_certificate_label()
+        if not self.computed_certificate:
+            self.computed_certificate = self.ast.root.get_certificate_label()
+
+        return self.computed_certificate

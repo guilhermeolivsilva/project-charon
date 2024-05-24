@@ -6,9 +6,8 @@ from abc import abstractmethod
 class Interface:
     """Interface for certificator classes."""
 
-    @abstractmethod
-    def __init__(self, code) -> None:
-        pass
+    def __init__(self, **kwargs) -> None:
+        self.computed_certificate: list[str] = []
 
     @abstractmethod
     def certificate(self, **kwargs) -> None:
