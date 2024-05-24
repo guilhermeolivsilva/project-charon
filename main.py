@@ -3,7 +3,7 @@
 from src.interpreter import create_instance
 
 
-def main() -> None:
+def main() -> int:
     """
     Input the source code from the stdin and run it in the Virtual Machine.
 
@@ -31,6 +31,8 @@ def main() -> None:
 
     vm.run()
     print(vm.variables)
+
+    return 0
 
 
 if __name__ == '__main__':
