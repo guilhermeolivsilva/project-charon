@@ -2,12 +2,12 @@
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.code_generator import CodeGenerator
-from src.interpreter import create_virtual_machine
+from src.interpreter import create_instance
 from src.lexer import Lexer
 
 
-def test_create_virtual_machine():
-    """Test the `create_virtual_machine` function."""
+def test_create_instance():
+    """Test the `create_instance` function."""
 
     source_code = """
     {
@@ -24,7 +24,9 @@ def test_create_virtual_machine():
     }
     """
 
-    vm = create_virtual_machine(source_code)
+    instance = create_instance(source_code)
+
+    vm, frontend_certificate, backend_certificate = instance.values()
 
     expected_parsed_source = Lexer.parse_source_code(source_code)
 
@@ -41,6 +43,8 @@ def test_create_virtual_machine():
         assert expected_instruction == tested_instruction
         assert expected_id == tested_id
         assert expected_value == tested_value
+
+    assert frontend_certificate == backend_certificate
 
     vm.run()
 

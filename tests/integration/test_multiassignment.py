@@ -1,6 +1,6 @@
 """Test if the language correctly assigns values to variables."""
 
-from src.interpreter import create_virtual_machine
+from src.interpreter import create_instance
 
 
 def test_gcd():
@@ -14,7 +14,10 @@ def test_gcd():
     }
     """
 
-    vm = create_virtual_machine(source_code)
-    vm.run()
+    instance = create_instance(source_code)
 
+    vm, frontend_certificate, backend_certificate = instance.values()
+    assert frontend_certificate == backend_certificate
+
+    vm.run()
     assert vm.variables == {"a": 1, "b": False, "c": False}

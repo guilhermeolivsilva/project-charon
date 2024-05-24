@@ -1,6 +1,6 @@
 """Implement the main function of the Tiny C environment."""
 
-from src.interpreter import create_virtual_machine
+from src.interpreter import create_instance
 
 
 def main() -> None:
@@ -12,7 +12,22 @@ def main() -> None:
 
     source_code: str = input()
 
-    vm = create_virtual_machine(source_code)
+    instance = create_instance(source_code)
+
+    vm, frontend_certificate, backend_certificate = instance.values()
+
+    print("Frontend certificate:")
+    print(frontend_certificate)
+
+    print("Backend certificate:")
+    print(backend_certificate)
+
+    try:
+        assert frontend_certificate == backend_certificate
+        print("Certificates match!")
+    except AssertionError:
+        print("Certificates don't match. Aborting...")
+        return 1
 
     vm.run()
     print(vm.variables)

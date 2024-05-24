@@ -1,6 +1,6 @@
 """Integration test that checks if the control flow works correctly."""
 
-from src.interpreter import create_virtual_machine
+from src.interpreter import create_instance
 
 
 SOURCE_CODE = """
@@ -21,9 +21,12 @@ def test_if():
 
     placeholder = 1
 
-    vm = create_virtual_machine(SOURCE_CODE.format(**{"placeholder": placeholder}))
-    vm.run()
+    instance = create_instance(SOURCE_CODE.format(**{"placeholder": placeholder}))
 
+    vm, frontend_certificate, backend_certificate = instance.values()
+    assert frontend_certificate == backend_certificate
+
+    vm.run()
     assert vm.variables == {"i": placeholder, "x": 1}
 
 
@@ -32,8 +35,10 @@ def test_else():
 
     placeholder = 10
 
-    vm = create_virtual_machine(SOURCE_CODE.format(**{"placeholder": placeholder}))
+    instance = create_instance(SOURCE_CODE.format(**{"placeholder": placeholder}))
+
+    vm, frontend_certificate, backend_certificate = instance.values()
+    assert frontend_certificate == backend_certificate
 
     vm.run()
-
     assert vm.variables == {"i": placeholder, "y": 2}

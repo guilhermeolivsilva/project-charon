@@ -1,6 +1,6 @@
 """Integration test for the `do/while` statement."""
 
-from src.interpreter import create_virtual_machine
+from src.interpreter import create_instance
 
 
 def test_do_while():
@@ -14,7 +14,10 @@ def test_do_while():
     }
     """
 
-    vm = create_virtual_machine(source_code)
-    vm.run()
+    instance = create_instance(source_code)
 
+    vm, frontend_certificate, backend_certificate = instance.values()
+    assert frontend_certificate == backend_certificate
+
+    vm.run()
     assert vm.variables == {"i": 51}

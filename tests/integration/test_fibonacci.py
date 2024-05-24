@@ -2,7 +2,7 @@
 Test if the language correctly computes the 10th element of the Fibonacci sequence.
 """
 
-from src.interpreter import create_virtual_machine
+from src.interpreter import create_instance
 
 
 def test_fib():
@@ -26,7 +26,10 @@ def test_fib():
     }
     """
 
-    vm = create_virtual_machine(source_code)
-    vm.run()
+    instance = create_instance(source_code)
 
+    vm, frontend_certificate, backend_certificate = instance.values()
+    assert frontend_certificate == backend_certificate
+
+    vm.run()
     assert vm.variables['b'] == 55
