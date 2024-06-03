@@ -1,4 +1,4 @@
-"""Implement unit tests for the `src.cg` module."""
+"""Implement unit tests for the `src.code_generator` module."""
 
 from typing import Union
 
