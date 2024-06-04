@@ -23,7 +23,8 @@ def test_code_injection():
     }
     """
 
-    parsed_source = Lexer.parse_source_code(source_code)
+    lexer = Lexer(source_code)
+    parsed_source = lexer.parse_source_code()
 
     ast = AbstractSyntaxTree(source_code=parsed_source)
     ast.build()
@@ -78,7 +79,8 @@ def test_variable_overwrite():
     }
     """
 
-    parsed_source = Lexer.parse_source_code(source_code)
+    lexer = Lexer(source_code)
+    parsed_source = lexer.parse_source_code()
 
     ast = AbstractSyntaxTree(source_code=parsed_source)
     ast.build()

@@ -68,7 +68,7 @@ class AbstractSyntaxTree:
             "WHILE_SYM": self._while_sym,
             "DO_SYM": self._do_sym,
             "SEMI": self._semi,
-            "LBRA": self._brackets
+            "LCBRA": self._brackets
         }
 
         handler = statement_handler_map.get(
@@ -206,7 +206,7 @@ class AbstractSyntaxTree:
     
         self._next_symbol()
 
-        while self.current_symbol != "RBRA":
+        while self.current_symbol != "RCBRA":
             temp_node = statement_node
 
             sequence_node_id = self._get_next_id()

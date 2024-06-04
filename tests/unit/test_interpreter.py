@@ -28,7 +28,8 @@ def test_create_instance():
 
     vm, frontend_certificate, backend_certificate = instance.values()
 
-    expected_parsed_source = Lexer.parse_source_code(source_code)
+    lexer = Lexer(source_code)
+    expected_parsed_source = lexer.parse_source_code()
 
     expected_ast = AbstractSyntaxTree(expected_parsed_source)
     expected_ast.build()

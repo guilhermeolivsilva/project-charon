@@ -6,6 +6,21 @@ from string import ascii_lowercase
 from src.lexer import Lexer
 
 
+SOURCE_CODE = """
+    int main()
+    {
+        int a;
+        float b;
+
+        do {
+            if (a < b) { a = a + 1; }
+            else { b = b - 1; }
+        }
+        while (b < 10);
+    }
+"""
+
+
 def test_parse_source_code():
     """
     Test the `Lexer.parse_source_code` method.
@@ -13,50 +28,58 @@ def test_parse_source_code():
     This test uses a snippet that uses all reserved words.
     """
 
-    source_code = """
-    do {
-        if (a < b) { a = a + 1; }
-        else {b = b - 1;}
-    }
-    while (b < 10)
-    """
+
 
     expected_parsed_code = [
+        ("INT_TYPE", None),
+        ("FUNC", "main"),
+        ("LPAR", None),
+        ("RPAR", None),
+        ("LCBRA", None),
+        ("INT_TYPE", None),
+        ("ID", "a"),
+        ("SEMI", None),
+        ("FLOAT_TYPE", None),
+        ("ID", "b"),
+        ("SEMI", None),
         ("DO_SYM", None),
-        ("LBRA", None),
+        ("LCBRA", None),
         ("IF_SYM", None),
         ("LPAR", None),
         ("ID", "a"),
         ("LESS", None),
         ("ID", "b"),
         ("RPAR", None),
-        ("LBRA", None),
+        ("LCBRA", None),
         ("ID", "a"),
         ("EQUAL", None),
         ("ID", "a"),
         ("PLUS", None),
         ("INT", 1),
         ("SEMI", None),
-        ("RBRA", None),
+        ("RCBRA", None),
         ("ELSE_SYM", None),
-        ("LBRA", None),
-        ("ID", "b"), 
+        ("LCBRA", None),
+        ("ID", "b"),
         ("EQUAL", None),
         ("ID", "b"),
-        ("MINUS", None), 
+        ("MINUS", None),
         ("INT", 1),
         ("SEMI", None),
-        ("RBRA", None), 
-        ("RBRA", None),
+        ("RCBRA", None),
+        ("RCBRA", None),
         ("WHILE_SYM", None),
         ("LPAR", None),
         ("ID", "b"),
         ("LESS", None),
         ("INT", 10),
-        ("RPAR", None)
+        ("RPAR", None),
+        ("SEMI", None),
+        ("RCBRA", None)
     ]
 
-    lexer_parsed_code = Lexer.parse_source_code(source_code)
+    lexer = Lexer(SOURCE_CODE)
+    lexer_parsed_code = lexer.parse_source_code()
 
     assert list(lexer_parsed_code) == expected_parsed_code
 
@@ -64,12 +87,15 @@ def test_parse_source_code():
 @pytest.mark.parametrize(
     "word_tuple",
     [
+        ("int", ("INT_TYPE", None)),
+        ("float", ("FLOAT_TYPE", None)),
         ("do", ("DO_SYM", None)),
         ("while", ("WHILE_SYM", None)),
         ("if", ("IF_SYM", None)),
         ("else", ("ELSE_SYM", None)),
-        ("{", ("LBRA", None)),
-        ("}", ("RBRA", None)),
+        ("return", ("RET_SYM", None)),
+        ("{", ("LCBRA", None)),
+        ("}", ("RCBRA", None)),
         ("(", ("LPAR", None)),
         (")", ("RPAR", None)),
         ("+", ("PLUS", None)),
@@ -89,14 +115,15 @@ def test_parse_word_symbols_and_words(word_tuple):
         A tuple of (word_to_parse, expected_symbol).
     """
 
-    word_to_parse, expected_symbol = word_tuple
+    lexer = Lexer(None)
 
-    assert expected_symbol == Lexer.parse_word(word_to_parse)
+    word_to_parse, expected_symbol = word_tuple
+    assert expected_symbol == lexer.parse_word(word_to_parse)
 
 
 @pytest.mark.parametrize(
     "variable_tuple",
-    [(letter, ("ID", letter)) for letter in ascii_lowercase]
+    [(f"var_{letter}", ("ID", letter)) for letter in ascii_lowercase]
 )
 def test_parse_word_variables(variable_tuple):
     """
@@ -108,14 +135,18 @@ def test_parse_word_variables(variable_tuple):
         A tuple of (variable_to_parse, expected_symbol).
     """
 
-    variable_to_parse, expected_symbol = variable_tuple
+    lexer = Lexer(None)
 
-    assert expected_symbol == Lexer.parse_word(variable_to_parse)
+    variable_to_parse, expected_symbol = variable_tuple
+    assert expected_symbol == lexer.parse_word(variable_to_parse)
 
 
 @pytest.mark.parametrize(
     "literal_tuple",
-    [(str(i), ("INT", i)) for i in range(0, 10)]
+    [
+        *[(f"int_{str(i)}", ("INT", i)) for i in range(0, 10)],
+        *[(f"float_{str(i)}.0", ("FLOAT", float(i))) for i in range(0, 10)]
+    ]
 )
 def test_parse_word_literals(literal_tuple):
     """
@@ -127,60 +158,68 @@ def test_parse_word_literals(literal_tuple):
         A tuple of (literal_to_parse, expected_symbol).
     """
 
+    lexer = Lexer(None)
+
     literal_to_parse, expected_symbol = literal_tuple
+    assert expected_symbol == lexer.parse_word(literal_to_parse)
 
-    assert expected_symbol == Lexer.parse_word(literal_to_parse)
 
-
-def test_preprocess_source_code():
+def test_tokenize_source_code():
     """
-    Test the `Lexer.preprocess_source_code` method.
+    Test the `Lexer.tokenize_source_code` method.
      
     This test uses a snippet that uses all reserved words.
     """
 
-    source_code = """
-    do {
-        if (a < b) { a = a + 1; }
-        else {b = b - 1;}
-    }
-    while (b < 10)
-    """
-
     expected_preprocessed_code = [
-        "do",
-        "{",
-        "if",
-        "(",
-        "a",
-        "<",
-        "b",
-        ")",
-        "{",
-        "a",
-        "=",
-        "a",
-        "+",
-        "1",
-        ";",
-        "}",
-        "else",
-        "{",
-        "b",
-        "=",
-        "b",
-        "-",
-        "1",
-        ";",
-        "}",
-        "}", 
-        "while",
-        "(",
-        "b",
-        "<",
-        "10",
-        ")"
+        'int',
+        'func_main',
+        '(',
+        ')',
+        '{',
+        'int',
+        'var_a',
+        ';',
+        'float',
+        'var_b',
+        ';',
+        'do',
+        '{',
+        'if',
+        '(',
+        'var_a',
+        '<',
+        'var_b',
+        ')',
+        '{',
+        'var_a',
+        '=',
+        'var_a',
+        '+',
+        'int_1',
+        ';',
+        '}',
+        'else',
+        '{',
+        'var_b',
+        '=',
+        'var_b',
+        '-',
+        'int_1',
+        ';',
+        '}',
+        '}',
+        'while',
+        '(',
+        'var_b',
+        '<',
+        'int_10',
+        ')',
+        ';',
+        '}'
     ]
 
-    assert Lexer.preprocess_source_code(source_code) == expected_preprocessed_code
+    lexer = Lexer(SOURCE_CODE)
+
+    assert lexer.tokenize_source_code() == expected_preprocessed_code
 

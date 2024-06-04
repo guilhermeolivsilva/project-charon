@@ -7,7 +7,7 @@ from src.nodes.PROG import PROG
 
 
 SOURCE_CODE = [
-    ("LBRA", None),
+    ("LCBRA", None),
     ("ID", "a"),
     ("EQUAL", None),
     ("INT", 5),
@@ -19,7 +19,7 @@ SOURCE_CODE = [
     ("INT", 1),
     ("SEMI", None),
     ("DO_SYM", None),
-    ("LBRA", None),
+    ("LCBRA", None),
     ("ID", "c"),
     ("EQUAL", None),
     ("ID", "a"),
@@ -38,20 +38,20 @@ SOURCE_CODE = [
     ("LESS", None),
     ("ID", "c"),
     ("RPAR", None),
-    ("LBRA", None),
+    ("LCBRA", None),
     ("ID", "d"),
     ("EQUAL", None),
     ("INT", 10),
     ("SEMI", None),
-    ("RBRA", None),
+    ("RCBRA", None),
     ("ELSE_SYM", None),
-    ("LBRA", None),
+    ("LCBRA", None),
     ("ID", "d"),
     ("EQUAL", None),
     ("INT", 0),
     ("SEMI", None),
-    ("RBRA", None),
-    ("RBRA", None),
+    ("RCBRA", None),
+    ("RCBRA", None),
     ("WHILE_SYM", None),
     ("LPAR", None),
     ("ID", "b"),
@@ -59,7 +59,7 @@ SOURCE_CODE = [
     ("ID", "a"),
     ("RPAR", None),
     ("SEMI", None),
-    ("RBRA", None),
+    ("RCBRA", None),
 ]
 
 

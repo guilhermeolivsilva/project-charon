@@ -31,7 +31,8 @@ def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
             The computed certificate of the backend code.
     """
 
-    parsed_source = Lexer.parse_source_code(source_code)
+    lexer = Lexer(source_code)
+    parsed_source = lexer.parse_source_code()
 
     ast = AbstractSyntaxTree(source_code=parsed_source)
     ast.build()
