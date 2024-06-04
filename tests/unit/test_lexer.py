@@ -10,12 +10,14 @@ SOURCE_CODE = """
     int main()
     {
         struct my_struct {
-            int x;
+            int x[5];
             float y;
         };
 
         int a;
         my_struct b;
+
+        b.x = {1, 2, 3, 4, 5};
 
         do {
             if (a < b.x) { a = a + 1; }
@@ -43,6 +45,9 @@ def test_parse_source_code():
         ('LCBRA', None),
         ('INT_TYPE', None),
         ('ID', 'x'),
+        ('LBRA', None),
+        ('ARRAY_SIZE', 5),
+        ('RBRA', None),
         ('SEMI', None),
         ('FLOAT_TYPE', None),
         ('ID', 'y'),
@@ -54,6 +59,18 @@ def test_parse_source_code():
         ('SEMI', None),
         ('STRUCT_TYPE', 'my_struct'),
         ('ID', 'b'),
+        ('SEMI', None),
+        ('ID', 'b'),
+        ('DOT', None),
+        ('PROP', 'x'),
+        ('EQUAL', None),
+        ('LCBRA', None),
+        ('INT', 1),
+        ('INT', 2),
+        ('INT', 3),
+        ('INT', 4),
+        ('INT', 5),
+        ('RCBRA', None),
         ('SEMI', None),
         ('DO_SYM', None),
         ('LCBRA', None),
@@ -190,7 +207,7 @@ def test_tokenize_source_code():
     This test uses a snippet that uses all reserved words.
     """
 
-    expected_preprocessed_code = [
+    expected_tokenized_code = [
         'int',
         'func_main',
         '(',
@@ -201,6 +218,9 @@ def test_tokenize_source_code():
         '{',
         'int',
         'var_x',
+        '[',
+        'int_5',
+        ']',
         ';',
         'float',
         'var_y',
@@ -212,6 +232,16 @@ def test_tokenize_source_code():
         ';',
         'var_my_struct',
         'var_b',
+        ';',
+        'var_b.x',
+        '=',
+        '{',
+        'int_1',
+        'int_2',
+        'int_3',
+        'int_4',
+        'int_5',
+        '}',
         ';',
         'do',
         '{',
@@ -251,5 +281,5 @@ def test_tokenize_source_code():
 
     lexer = Lexer(SOURCE_CODE)
 
-    assert lexer.tokenize_source_code() == expected_preprocessed_code
+    assert lexer.tokenize_source_code() == expected_tokenized_code
 

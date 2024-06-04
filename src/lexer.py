@@ -145,9 +145,12 @@ class Lexer:
         # Remove line breaks
         source_code = self.source_code.replace("\n", "")
 
+        # Replace commas with spaces
+        source_code = source_code.replace(",", " ")
+
         # Tweak braces, parenthesis and semicolons before splitting the string
         # by blank spaces
-        tokens_to_tweak = ["(", ")", "{", "}", ";"]
+        tokens_to_tweak = ["(", ")", "{", "}", ";", "[", "]"]
         for token in tokens_to_tweak:
             source_code = source_code.replace(token, f" {token} ")
 
@@ -240,6 +243,36 @@ class Lexer:
                 postprocessed_source_code[idx] = struct_var_token
                 postprocessed_source_code.insert(idx + 1, dot_operation_token)
                 postprocessed_source_code.insert(idx + 2, property_token)
+
+            # Handle array declaration/access
+            elif symbol == "LBRA":
+
+                # Array declaration
+                try:
+                    prev_symbol, _ = postprocessed_source_code[idx - 2]
+                    is_declaration = "TYPE" in prev_symbol
+
+                    # If declaring the array, change the associated integer symbol
+                    # to ARRAY_SIZE
+                    if is_declaration:
+                        _, array_size = postprocessed_source_code[idx + 1]
+                        array_manipulation_token = ("ARRAY_SIZE", array_size)
+
+                    # If accessing an element in the array, change the symbol
+                    # to ARRAY_INDEX
+                    else:
+                        _, array_index = postprocessed_source_code[idx + 1]
+                        array_manipulation_token = ("ARRAY_INDEX", array_index)
+
+                    postprocessed_source_code[idx + 1] = array_manipulation_token
+
+                    # Also assert there is a RBRA after the integer
+                    next_symbol, _ = postprocessed_source_code[idx + 2]
+                    assert next_symbol == "RBRA"
+
+                except (IndexError, AssertionError):
+                    # If not either of previous cases, then the syntax is invalid :)
+                    raise SyntaxError("Malformed array.")
 
         return postprocessed_source_code
 
