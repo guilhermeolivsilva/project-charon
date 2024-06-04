@@ -229,6 +229,18 @@ class Lexer:
                 new_token = ("STRUCT_TYPE", value)
                 postprocessed_source_code[idx] = new_token
 
+            # Handle struct property access
+            elif symbol == "ID" and "." in value:
+                struct_var, struct_property = value.split(".")
+
+                struct_var_token = (symbol, struct_var)
+                dot_operation_token = (self.symbols.get("."), None)
+                property_token = ("PROP", struct_property)
+
+                postprocessed_source_code[idx] = struct_var_token
+                postprocessed_source_code.insert(idx + 1, dot_operation_token)
+                postprocessed_source_code.insert(idx + 2, property_token)
+
         return postprocessed_source_code
 
     def validate_source_code_syntax(self, post_processed_source_code: list) -> None:

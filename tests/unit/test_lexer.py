@@ -9,14 +9,19 @@ from src.lexer import Lexer
 SOURCE_CODE = """
     int main()
     {
+        struct my_struct {
+            int x;
+            float y;
+        };
+
         int a;
-        float b;
+        my_struct b;
 
         do {
-            if (a < b) { a = a + 1; }
-            else { b = b - 1; }
+            if (a < b.x) { a = a + 1; }
+            else { b.y = b.y - 1.0; }
         }
-        while (b < 10);
+        while (a < 10);
     }
 """
 
@@ -28,54 +33,68 @@ def test_parse_source_code():
     This test uses a snippet that uses all reserved words.
     """
 
-
-
     expected_parsed_code = [
-        ("INT_TYPE", None),
-        ("FUNC", "main"),
-        ("LPAR", None),
-        ("RPAR", None),
-        ("LCBRA", None),
-        ("INT_TYPE", None),
-        ("ID", "a"),
-        ("SEMI", None),
-        ("FLOAT_TYPE", None),
-        ("ID", "b"),
-        ("SEMI", None),
-        ("DO_SYM", None),
-        ("LCBRA", None),
-        ("IF_SYM", None),
-        ("LPAR", None),
-        ("ID", "a"),
-        ("LESS", None),
-        ("ID", "b"),
-        ("RPAR", None),
-        ("LCBRA", None),
-        ("ID", "a"),
-        ("EQUAL", None),
-        ("ID", "a"),
-        ("PLUS", None),
-        ("INT", 1),
-        ("SEMI", None),
-        ("RCBRA", None),
-        ("ELSE_SYM", None),
-        ("LCBRA", None),
-        ("ID", "b"),
-        ("EQUAL", None),
-        ("ID", "b"),
-        ("MINUS", None),
-        ("INT", 1),
-        ("SEMI", None),
-        ("RCBRA", None),
-        ("RCBRA", None),
-        ("WHILE_SYM", None),
-        ("LPAR", None),
-        ("ID", "b"),
-        ("LESS", None),
-        ("INT", 10),
-        ("RPAR", None),
-        ("SEMI", None),
-        ("RCBRA", None)
+        ('INT_TYPE', None),
+        ('FUNC', 'main'),
+        ('LPAR', None),
+        ('RPAR', None),
+        ('LCBRA', None),
+        ('STRUCT_DEF', 'my_struct'),
+        ('LCBRA', None),
+        ('INT_TYPE', None),
+        ('ID', 'x'),
+        ('SEMI', None),
+        ('FLOAT_TYPE', None),
+        ('ID', 'y'),
+        ('SEMI', None),
+        ('RCBRA', None),
+        ('SEMI', None),
+        ('INT_TYPE', None),
+        ('ID', 'a'),
+        ('SEMI', None),
+        ('STRUCT_TYPE', 'my_struct'),
+        ('ID', 'b'),
+        ('SEMI', None),
+        ('DO_SYM', None),
+        ('LCBRA', None),
+        ('IF_SYM', None),
+        ('LPAR', None),
+        ('ID', 'a'),
+        ('LESS', None),
+        ('ID', 'b'),
+        ('DOT', None),
+        ('PROP', 'x'),
+        ('RPAR', None),
+        ('LCBRA', None),
+        ('ID', 'a'),
+        ('EQUAL', None),
+        ('ID', 'a'),
+        ('PLUS', None),
+        ('INT', 1),
+        ('SEMI', None),
+        ('RCBRA', None),
+        ('ELSE_SYM', None),
+        ('LCBRA', None),
+        ('ID', 'b'),
+        ('DOT', None),
+        ('PROP', 'y'),
+        ('EQUAL', None),
+        ('ID', 'b'),
+        ('DOT', None),
+        ('PROP', 'y'),
+        ('MINUS', None),
+        ('FLOAT', 1.0),
+        ('SEMI', None),
+        ('RCBRA', None),
+        ('RCBRA', None),
+        ('WHILE_SYM', None),
+        ('LPAR', None),
+        ('ID', 'a'),
+        ('LESS', None),
+        ('INT', 10),
+        ('RPAR', None),
+        ('SEMI', None),
+        ('RCBRA', None)
     ]
 
     lexer = Lexer(SOURCE_CODE)
@@ -177,10 +196,21 @@ def test_tokenize_source_code():
         '(',
         ')',
         '{',
+        'struct',
+        'struct_my_struct',
+        '{',
+        'int',
+        'var_x',
+        ';',
+        'float',
+        'var_y',
+        ';',
+        '}',
+        ';',
         'int',
         'var_a',
         ';',
-        'float',
+        'var_my_struct',
         'var_b',
         ';',
         'do',
@@ -189,7 +219,7 @@ def test_tokenize_source_code():
         '(',
         'var_a',
         '<',
-        'var_b',
+        'var_b.x',
         ')',
         '{',
         'var_a',
@@ -201,17 +231,17 @@ def test_tokenize_source_code():
         '}',
         'else',
         '{',
-        'var_b',
+        'var_b.y',
         '=',
-        'var_b',
+        'var_b.y',
         '-',
-        'int_1',
+        'float_1.0',
         ';',
         '}',
         '}',
         'while',
         '(',
-        'var_b',
+        'var_a',
         '<',
         'int_10',
         ')',
