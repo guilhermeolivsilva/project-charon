@@ -221,7 +221,7 @@ class Lexer:
                 try:
                     assert struct_symbol == "STRUCT"
                 except AssertionError:
-                    raise ValueError("Missing name in struct declaration.")
+                    raise SyntaxError("Missing name in struct declaration.")
                 
                 new_token = (symbol, struct_name)
                 postprocessed_source_code[idx] = new_token
