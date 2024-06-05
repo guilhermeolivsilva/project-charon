@@ -12,6 +12,7 @@ SOURCE_CODE = """
         struct my_struct {
             int x[5];
             float y;
+            long z;
         };
 
         int a;
@@ -67,6 +68,9 @@ def test_parse_source_code():
         ('SEMI', None),
         ('FLOAT_TYPE', None),
         ('ID', 'y'),
+        ('SEMI', None),
+        ('LONG_TYPE', None),
+        ('ID', 'z'),
         ('SEMI', None),
         ('RCBRA', None),
         ('SEMI', None),
@@ -141,6 +145,7 @@ def test_parse_source_code():
     [
         ("int", ("INT_TYPE", None)),
         ("float", ("FLOAT_TYPE", None)),
+        ("long", ("LONG_TYPE", None)),
         ("struct", ("STRUCT_DEF", None)),
         ("do", ("DO_SYM", None)),
         ("while", ("WHILE_SYM", None)),
@@ -244,6 +249,9 @@ def test_tokenize_source_code():
         ';',
         'float',
         'var_y',
+        ';',
+        'long',
+        'var_z',
         ';',
         '}',
         ';',

@@ -8,6 +8,7 @@ class Lexer:
         # Types
         "int": "INT_TYPE",
         "float": "FLOAT_TYPE",
+        "long": "LONG_TYPE",
         "struct": "STRUCT_DEF",
 
         # Conditionals
