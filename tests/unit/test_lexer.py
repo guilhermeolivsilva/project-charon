@@ -27,6 +27,22 @@ SOURCE_CODE = """
     }
 """
 
+INVALID_SOURCES = [
+    # 1. Variable named after reserved word/symbol.
+    "int int;",
+    "float return;",
+    "int {",
+
+    # 2. Variable named after user-defined type.
+    "struct abc { int x; }; int abc;",
+
+    # 3. Multiple variables in a row without operator in between.
+    "int a; int b; a b;",
+
+    # 4. Unnamed struct.
+    "struct { int x; };"
+]
+
 
 def test_parse_source_code():
     """
@@ -125,12 +141,15 @@ def test_parse_source_code():
     [
         ("int", ("INT_TYPE", None)),
         ("float", ("FLOAT_TYPE", None)),
+        ("struct", ("STRUCT_DEF", None)),
         ("do", ("DO_SYM", None)),
         ("while", ("WHILE_SYM", None)),
         ("if", ("IF_SYM", None)),
         ("else", ("ELSE_SYM", None)),
         ("return", ("RET_SYM", None)),
         ("{", ("LCBRA", None)),
+        ("[", ("LBRA", None)),
+        ("]", ("RBRA", None)),
         ("}", ("RCBRA", None)),
         ("(", ("LPAR", None)),
         (")", ("RPAR", None)),
@@ -138,7 +157,8 @@ def test_parse_source_code():
         ("-", ("MINUS", None)),
         ("<", ("LESS", None)),
         (";", ("SEMI", None)),
-        ("=", ("EQUAL", None))
+        ("=", ("EQUAL", None)),
+        (".", ("DOT", None))
     ]
 )
 def test_parse_word_symbols_and_words(word_tuple):
@@ -203,7 +223,7 @@ def test_parse_word_literals(literal_tuple):
 def test_tokenize_source_code():
     """
     Test the `Lexer.tokenize_source_code` method.
-     
+
     This test uses a snippet that uses all reserved words.
     """
 
@@ -283,3 +303,18 @@ def test_tokenize_source_code():
 
     assert lexer.tokenize_source_code() == expected_tokenized_code
 
+
+@pytest.mark.parametrize(
+    "source_code",
+    INVALID_SOURCES
+)
+def test_validate_source_code_syntax(source_code: str):
+    """
+    Test the `Lexer.tokenize_source_code` method.
+
+    This snippets with covered syntax errors.
+    """
+
+    with pytest.raises(SyntaxError):
+        lexer = Lexer(source_code)
+        _ = lexer.parse_source_code()
