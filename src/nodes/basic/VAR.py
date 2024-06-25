@@ -5,7 +5,7 @@ from typing_extensions import override
 
 from src.utils import get_variable_name_symbol
 
-from .base.node import Node
+from .node import Node
 
 
 class VAR(Node):

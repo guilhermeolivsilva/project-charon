@@ -1,4 +1,4 @@
-"""Representation of SET nodes for the Abstract Syntax Tree."""
+"""Representation of ASSIGN nodes for the Abstract Syntax Tree."""
 
 from typing import Union
 
@@ -6,11 +6,11 @@ from typing_extensions import override
 
 from src.utils import get_variable_name_symbol, next_prime
 
-from .base.node import Node
-from .base.operation import Operation
+from .node import Node
+from .operations.operation import Operation
 
 
-class SET(Operation):
+class ASSIGN(Operation):
     """
     Implement the representation of a attribution operation for the AST.
 
@@ -38,8 +38,8 @@ class SET(Operation):
         """
         Get the contents of `certificate_label`.
 
-        For `SET` nodes, first obtain the certificate from the `rhs` subtree,
-        recursively, and then from the `SET` node itself.
+        For `ASSIGN` nodes, first obtain the certificate from the `rhs`
+        subtree, recursively, and then from the `ASSIGN` node itself.
 
         Returns
         -------
@@ -70,7 +70,7 @@ class SET(Operation):
     @override
     def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
         """
-        Generate the code associated with this `SET`.
+        Generate the code associated with this `ASSIGN`.
 
         For this node specialization, generate code from the `rhs` first, and
         then from the node itself.
@@ -95,10 +95,10 @@ class SET(Operation):
     @override
     def certificate(self, prime: int) -> int:
         """
-        Compute the certificate of the current `SET`, and set this attribute.
+        Compute the certificate of the current `ASSIGN`, and set this attribute.
 
-        For `SET` nodes, certificate the `rhs` first. Then, certificate the
-        `SET` itself with `symbol ^ variable_name_symbol`. The
+        For `ASSIGN` nodes, certificate the `rhs` first. Then, certificate the
+        `ASSIGN` itself with `symbol ^ variable_name_symbol`. The
         `variable_name_symbol` is obtained with utils.get_variable_name_symbol.
 
         Parameters

@@ -2,9 +2,9 @@
 
 from typing_extensions import override
 
-from src.nodes.base.node import Node
+from src.nodes.node import Node
 
-from .base.operation import Operation
+from .operations.operation import Operation
 
 
 class LT(Operation):

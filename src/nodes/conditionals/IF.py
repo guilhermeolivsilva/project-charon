@@ -4,9 +4,9 @@ from typing import Union
 
 from typing_extensions import override
 
-from src.nodes.base.node import Node
+from src.nodes.node import Node
 
-from .base.conditional import Conditional
+from .conditionals.conditional import Conditional
 
 
 class IF(Conditional):

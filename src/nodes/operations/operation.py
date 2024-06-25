@@ -4,7 +4,7 @@ from typing import Union
 
 from typing_extensions import override
 
-from .node import Node
+from ..node import Node
 
 
 class Operation(Node):

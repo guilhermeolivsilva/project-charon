@@ -10,7 +10,7 @@ from .IFELSE import IFELSE
 from .LT import LT
 from .PROG import PROG
 from .SEQ import SEQ
-from .SET import SET
+from .ASSIGN import SET
 from .SUB import SUB
 from .VAR import VAR
 from .WHILE import WHILE

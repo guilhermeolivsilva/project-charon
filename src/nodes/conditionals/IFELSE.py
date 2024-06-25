@@ -4,8 +4,8 @@ from typing import Union
 
 from typing_extensions import override
 
-from .base.conditional import Conditional
-from .base.node import Node
+from .conditionals.conditional import Conditional
+from .node import Node
 
 
 class IFELSE(Conditional):
