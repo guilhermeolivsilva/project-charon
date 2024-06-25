@@ -1,21 +1,23 @@
 """Implement a lexer for the Tiny C compiler."""
 
+from typing import Any, Union
+
 
 class Lexer:
-    types = {
+    types: dict[str, str] = {
         "int": "INT_TYPE",
         "float": "FLOAT_TYPE",
         "long": "LONG_TYPE"
     }
 
-    conditionals = {
+    conditionals: dict[str, str] = {
         "do": "DO_SYM",
         "while": "WHILE_SYM",
         "if": "IF_SYM",
         "else": "ELSE_SYM"
     }
 
-    symbols = {
+    symbols: dict[str, str] = {
         "{": "LCBRA",
         "}": "RCBRA",
         "[": "LBRA",
@@ -26,7 +28,7 @@ class Lexer:
         ".": "DOT"
     }
 
-    operators = {
+    operators: dict[str, str] = {
         "=": "ASSIGN",
         "+": "PLUS",
         "-": "MINUS",
@@ -43,7 +45,7 @@ class Lexer:
         "==": "EQUAL"
     }
 
-    reserved_words = {
+    reserved_words: dict[str, str] = {
         **types,
         **conditionals,
         **symbols,
@@ -55,6 +57,15 @@ class Lexer:
     }
 
     def __init__(self, source_code: str) -> None:
+        """
+        Initialize the Lexer object.
+
+        Parameters
+        ----------
+        source_code : str
+            The high-level, [C]haron source code.
+        """
+
         self.source_code: str = source_code
         self.functions: dict[str, dict] = {}
         self.globals: dict[str, dict] = {
@@ -62,24 +73,29 @@ class Lexer:
             "structs": {}
         }
 
-    def parse_source_code(self) -> dict:
+    def parse_source_code(self) -> dict[str, dict]:
         """
         Parse the scopes and functions from the given source code.
 
         Returns
         -------
-        scopes : dict
-            A dictionary containing the scopes parsed from the source code.
-            This dictionary is formatted as
+        parsed_source_code : dict
+            A dictionary containing the metadata of the global scope ("globals"
+            key), and the parsed code of each function ("functions" key).
+
+            The `globals` key contains a dictionary such as
 
             {
-                `scope_name`: {
-                    "start_idx": int,
-                    "end_idx": int,
-                    "variables": list[str],
-                    "structs": list[str]
+                "variables": { 
+                    <variable name>: <variable type>,
+                    ...
                 },
-                ...
+                "structs": {
+                    <struct name>: {
+                        <attribute name>: <attribute type>,
+                        ...
+                    }
+                }
             }
 
             where each `scope_name` is either a function or "globals" (for the
@@ -87,23 +103,24 @@ class Lexer:
             indices refer to the position of the tokenized source code where
             the scope lies.
 
-        functions : dict
-            A dictionary containing the parsed from the source code. This
-            dictionary is formatted as
+            The `functions` key, on the other hand, contains
 
             {
-                `function_name`: {
+                <function_name>: {
                     "type": element of `types` or a `struct` from the global
-                            scope.
-                    "parameters": list of (attr_type, attr_name) tuples.
-                }
+                            scope,
+                    "arguments": list of (attr_type, attr_name) tuples,
+                    "statements": list of annotated statements found within
+                                  the function.
+                },
+                ...
             }
         """
 
         symbol_collection = self.split_source()
 
         # Annotate constants with their types
-        symbol_collection = self.annotate_constants(symbol_collection)
+        symbol_collection = self._annotate_constants(symbol_collection)
 
         # Parse the global scope first
         self.parse_global_scope(symbol_collection)
@@ -114,11 +131,22 @@ class Lexer:
             symbol_collection=symbol_collection
         )
 
+        # Register the functions
+        self.functions = {
+            func_name: {}
+            for func_name in functions_scopes.keys()
+        }
+
         for function in functions_scopes:
-            self.parse_function_scope(
+            self.functions[function] = self.parse_function_scope(
                 symbol_collection,
                 **functions_scopes.get(function)
             )
+
+        return {
+            "globals": self.globals,
+            "functions": self.functions
+        }
 
     def split_source(self) -> list[str]:
         """
@@ -162,7 +190,7 @@ class Lexer:
 
         return tokenized_source
 
-    def annotate_constants(self, symbol_collection: list[str]) -> list[str]:
+    def _annotate_constants(self, symbol_collection: list[str]) -> list[str]:
         """
         Annotate constants with types.
 
@@ -208,7 +236,7 @@ class Lexer:
             The collection of symbols generated by the `split_source` method.
         """
 
-        curly_brackets_stack = []
+        curly_brackets_stack: list[int] = []
 
         for idx, token in enumerate(symbol_collection):
             if token == "{":
@@ -220,19 +248,19 @@ class Lexer:
             if not len(curly_brackets_stack):
 
                 if token == "struct":
-                    struct_name, struct_attributes = self._handle_struct(
+                    struct_name, struct_attributes, _ = self._handle_struct_definition(
                         symbol_collection=symbol_collection,
                         struct_idx=idx
                     )
                     self.globals["structs"][struct_name] = struct_attributes
 
                 else:
-                    variable_metadata = self._handle_variable(
+                    variable_metadata = self._handle_variable_definition(
                         symbol_collection=symbol_collection,
                         token_idx=idx
                     )
 
-                    # The `_handle_variable` method will return an empty tuple
+                    # The `_handle_variable_definition` method will return an empty tuple
                     # if the current token is not a variable. Thus, only add it
                     # to the `globals` dict if the returned value is not valid.
                     if variable_metadata:
@@ -247,11 +275,9 @@ class Lexer:
         symbol_collection: list[str],
         start_idx: int,
         end_idx: int
-    ) -> None:
+    ) -> dict[str, str]:
         """
         Parse the scope of a function defined in the source code.
-
-        This method fills the `self.functions` dictionary key of the function.
 
         Parameters
         ----------
@@ -261,15 +287,132 @@ class Lexer:
             The starting index of the function scope in the `symbol_collection`.
         end_idx : int
             The ending index of the function scope in the `symbol_collection`.
+
+        Returns
+        -------
+        function_metadata : dict[str, str]
+            The metadata (keys: type, arguments, statements) of the parsed
+            function.
         """
 
-        ...
+        # Basic metadata
+        function_name = symbol_collection[start_idx + 1]
+        function_type = symbol_collection[start_idx]
+        arguments = self._extract_arguments(
+            symbol_collection=symbol_collection,
+            function_idx=start_idx
+        )
 
-    def _handle_struct(
+        # Parse the statements
+        statements: list[tuple[str, Any]] = []
+        statements_start_idx = (
+            symbol_collection[start_idx : end_idx].index("{") + 1
+        )
+
+        function_symbol_collection = symbol_collection[
+            start_idx + statements_start_idx : end_idx
+        ]
+
+        idx = 0
+
+        # Make it easier to check if a symbol is used without being defined
+        local_structs: set[str] = set()
+        local_variables = set(arguments.keys())
+
+        while idx < len(function_symbol_collection):
+            curr_token = function_symbol_collection[idx]
+            locally_available_types: list[str] = [
+                *self.types,
+                *self.globals["structs"],
+                *local_structs
+            ]
+
+            # Simply skip the token if it is a known type
+            if curr_token in locally_available_types:
+                idx += 1
+
+            elif "cst" in curr_token:
+                statements.append(("CST", _handle_constant(curr_token)))
+                idx += 1
+                
+            elif curr_token in local_variables:
+                statements.append(("VAR", curr_token))
+                idx += 1
+
+            # Handle struct definition
+            elif curr_token == "struct":
+                _struct_metadata_tuple = self._handle_struct_definition(
+                    symbol_collection=function_symbol_collection,
+                    struct_idx=idx
+                )
+                struct_name, struct_attr, idx_offset = _struct_metadata_tuple
+                local_structs.add(struct_name)
+
+                struct_metadata = {
+                    "name": struct_name,
+                    "attributes": struct_attr
+                }
+
+                statements.append(("STRUCT_DEF", struct_metadata))
+
+                idx += idx_offset + 1
+
+            # Handle variables (definition, manipulation) and function calls
+            elif curr_token not in self.reserved_words:
+
+                # First, check if it is a variable definition.
+                try:
+                    var_name, var_type = self._handle_variable_definition(
+                        symbol_collection=function_symbol_collection,
+                        token_idx=idx,
+                        locally_available_types=locally_available_types
+                    )
+
+                    local_variables.add(var_name)
+
+                    variable_metadata = {
+                        "name": var_name,
+                        "type": var_type
+                    }
+
+                    statements.append(("VAR_DEF", variable_metadata))
+
+                # If not, check if it is a function call. If it is not either,
+                # `_handle_function_call` will raise a SyntaxError
+                except (SyntaxError, TypeError):
+                    function_name, parameters = self._handle_function_call(
+                        symbol_collection=function_symbol_collection,
+                        function_call_idx=idx
+                    )
+
+                    function_call_metadata = {
+                        "function": function_name,
+                        "parameters": parameters
+                    }
+
+                    statements.append(("FUNC_CALL", function_call_metadata))
+
+                idx += 1
+
+            # If not any of the above (but syntatically correct), it is a
+            # known symbol or reserved word of the language
+            else:
+                statements.append((self.reserved_words.get(curr_token)))
+                idx += 1
+
+        function_metadata = {
+            "type": function_type,
+            "arguments": arguments,
+            "statements": statements
+        }
+
+        return function_metadata
+
+    def _handle_struct_definition(
         self,
         symbol_collection: list[str],
         struct_idx: int
-    ) -> tuple[str, dict[str, str]]:
+    ) -> tuple[str, dict[str, str], int]:
         """
         Handle a struct type definition.
 
@@ -285,9 +428,11 @@ class Lexer:
 
         Returns
         -------
-        struct_metadata : tuple of (<struct_name>, <attributes>)
-            A tuple containing the name of the struct at the first position, and
-            the dictionary of its attributes (mapping of `attr_name`: `attr_type`).
+        struct_metadata : tuple of (<struct_name>, <attributes>, <idx>)
+            A tuple containing the name of the struct at the first position,
+            and the dictionary of its attributes (mapping of
+            `attr_name`: `attr_type`). The tuple also contains the index of the
+            curly bracket that closes the struct definition.
 
         Raises
         ------
@@ -355,14 +500,15 @@ class Lexer:
                 )
                 raise SyntaxError(err_msg)
 
-        struct_metadata = (struct_name, attributes)
+        struct_metadata = (struct_name, attributes, struct_start + idx)
 
         return struct_metadata
 
-    def _handle_variable(
+    def _handle_variable_definition(
         self,
         symbol_collection: list[str],
-        token_idx: int
+        token_idx: int,
+        locally_available_types: list[str] = []
     ) -> tuple[str, str]:
         """
         Handle a variable definition.
@@ -378,6 +524,9 @@ class Lexer:
             The collection of symbols generated by the `split_source` method.
         token_idx : int
             The index of the current token in the `symbol_collection` list.
+        locally_available_types : list of str, optional (default = [])
+            A list of types available in the context of the handled variable.
+            This is optional, and defaults to an empty list.
 
         Returns
         -------
@@ -404,7 +553,11 @@ class Lexer:
             next_token = symbol_collection[token_idx + 1]
 
             previous_token_is_valid_type = (
-                previous_token in [*self.types, *self.globals["structs"]]
+                previous_token in [
+                    *self.types,
+                    *self.globals["structs"],
+                    *locally_available_types
+                ]
             )
             next_token_is_valid = next_token in [";", "="]
 
@@ -435,6 +588,45 @@ class Lexer:
 
         except IndexError:
             return tuple()
+
+    def _handle_function_call(
+        self,
+        symbol_collection: list[str],
+        function_call_idx: int
+    ) -> tuple[str, list[str]]:
+        """
+        Handle a function call to extract the callee and parameters.
+
+        Parameters
+        ----------
+        symbol_collection : list of str
+            The collection of symbols generated by the `split_source` method.
+        struct_idx : int
+            The index of the function call in the `symbol_collection` list.
+
+        Raises
+        ------
+        SyntaxError
+            Raised if the called function is not defined.
+        """
+
+        function_name: str = symbol_collection[function_call_idx]
+
+        if function_name not in self.functions.keys():
+            raise SyntaxError(f"Use of undefined name '{function_name}'")
+
+        parameters: list[str] = []
+
+        for token in symbol_collection[function_call_idx + 1:]:
+            if token == "(":
+                continue
+
+            elif token == ")":
+                break
+            
+            parameters.append(token)
+
+        return function_name, parameters
 
     def _compute_functions_scopes_limits(
         self,
@@ -508,6 +700,75 @@ class Lexer:
 
         return previous_token_is_type and next_token_is_left_parenthesis
 
+    def _extract_arguments(
+        self,
+        symbol_collection: list[str],
+        function_idx: int
+    ) -> dict[str, str]:
+        """
+        Extract the arguments from a function.
+
+        The extracted arguments are returned as a list of (param_type, param_name)
+        tuples.
+
+        Parameters
+        ----------
+        symbol_collection : list of str
+            The collection of symbols generated by the `split_source` method.
+        function_idx : int
+            The index of the function name in the `symbol_collection` list.
+
+        Returns
+        -------
+        arguments : dict
+            A mapping of `param_name`: `param_type`. If the function takes no
+            arguments, return an empty list.
+
+        Raises
+        ------
+        SyntaxError
+            Raised if
+             - the function has malformed arguments (i.e., missing type and/or
+               name).
+             - a parameter has unknown type.
+        """
+        
+        # Align with the index of the left parenthesis (add 2 to offset).
+        curr_idx: int = function_idx + 2
+        arguments: dict[str, str] = {}
+
+        try:
+            while symbol_collection[curr_idx] != ")":
+                curr_token = symbol_collection[curr_idx]
+
+                if curr_token == "(":
+                    curr_idx += 1
+
+                elif curr_token == ")":
+                    break
+
+                else:
+                    param_type = curr_token
+                    param_name = symbol_collection[curr_idx + 1]
+
+                    if param_type not in [*self.types, *self.globals["structs"]]:
+                        function_name = symbol_collection[function_idx]
+                        err_msg = (
+                            f"Unknown type '{param_type}' in definition of "
+                            + f"function '{function_name}'"
+                        )
+                        raise SyntaxError(err_msg)
+
+                    arguments[param_name] = param_type
+                    curr_idx += 2
+
+        except IndexError:
+            function_name = symbol_collection[function_idx]
+            err_msg = f"Function '{function_name}' has malformed arguments."
+            raise SyntaxError(err_msg)
+
+        return arguments
+
 
 def _find_function_scope_end(symbol_collection: list[str], token_idx: int) -> int:
     curly_brackets_stack = []
@@ -527,3 +788,21 @@ def _find_function_scope_end(symbol_collection: list[str], token_idx: int) -> in
     scope_end = idx + token_idx
 
     return scope_end
+
+
+def _handle_constant(annotated_constant: str) -> Union[int, float]:
+    if "int" in annotated_constant:
+        str_to_offset = "int_cst_"
+
+        return {
+            "type": "int",
+            "value": int(annotated_constant[len(str_to_offset):])
+        }
+    
+    else:
+        str_to_offset = "float_cst_"
+
+        return {
+            "type": "float",
+            "value": float(annotated_constant[len(str_to_offset):])
+        }
