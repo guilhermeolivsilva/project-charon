@@ -1,5 +1,6 @@
 """Implement a lexer for the Tiny C compiler."""
 
+from copy import deepcopy
 from typing import Any, Union
 
 
@@ -177,6 +178,8 @@ class Lexer:
         for token in tokens_to_tweak:
             source_code = source_code.replace(token, f" {token} ")
 
+        # TODO: tweak dot operator
+
         # Split the code word by word (or character by character)
         source_code = source_code.split(" ")
 
@@ -241,6 +244,11 @@ class Lexer:
         for idx, token in enumerate(symbol_collection):
             if token == "{":
                 curly_brackets_stack.append(1)
+                continue
+
+            elif token == "}":
+                curly_brackets_stack.pop()
+                continue
 
             # If the `curly_brackets_stack` is empty, then its a global value
             # We are only interested in structs and variables. Thus, we'll only
@@ -254,8 +262,11 @@ class Lexer:
                     )
                     self.globals["structs"][struct_name] = struct_attributes
 
+                elif token in self.globals["structs"]:
+                    continue
+
                 else:
-                    variable_metadata = self._handle_variable_definition(
+                    definition_metadata = self._handle_variable_definition(
                         symbol_collection=symbol_collection,
                         token_idx=idx
                     )
@@ -263,12 +274,11 @@ class Lexer:
                     # The `_handle_variable_definition` method will return an empty tuple
                     # if the current token is not a variable. Thus, only add it
                     # to the `globals` dict if the returned value is not valid.
-                    if variable_metadata:
+                    if definition_metadata:
+                        variable_metadata = definition_metadata
+
                         variable_name, variable_type = variable_metadata
                         self.globals["variables"][variable_name] = variable_type
-
-            elif token == "}":
-                curly_brackets_stack.pop()
 
     def parse_function_scope(
         self,
@@ -316,19 +326,17 @@ class Lexer:
         idx = 0
 
         # Make it easier to check if a symbol is used without being defined
-        local_structs: set[str] = set()
-        local_variables = set(arguments.keys())
+        local_variables = deepcopy(arguments)
+        available_types: list[str] = [
+            *self.types,
+            *self.globals["structs"]
+        ]
 
         while idx < len(function_symbol_collection):
             curr_token = function_symbol_collection[idx]
-            locally_available_types: list[str] = [
-                *self.types,
-                *self.globals["structs"],
-                *local_structs
-            ]
 
             # Simply skip the token if it is a known type
-            if curr_token in locally_available_types:
+            if curr_token in available_types:
                 idx += 1
 
             elif "cst" in curr_token:
@@ -339,40 +347,31 @@ class Lexer:
                 statements.append(("VAR", curr_token))
                 idx += 1
 
-            # Handle struct definition
-            elif curr_token == "struct":
-                _struct_metadata_tuple = self._handle_struct_definition(
-                    symbol_collection=function_symbol_collection,
-                    struct_idx=idx
+            # Handle struct attributes
+            elif "." in curr_token:
+                attribute_access_metadata = self._handle_struct_attribute(
+                    token=curr_token,
+                    local_variables=local_variables
                 )
-                struct_name, struct_attr, idx_offset = _struct_metadata_tuple
-                local_structs.add(struct_name)
 
-                struct_metadata = {
-                    "name": struct_name,
-                    "attributes": struct_attr
-                }
-
-                statements.append(("STRUCT_DEF", struct_metadata))
-
-                idx += idx_offset + 1
+                statements.extend(attribute_access_metadata)
+                idx += 1
 
             # Handle variables (definition, manipulation) and function calls
             elif curr_token not in self.reserved_words:
 
                 # First, check if it is a variable definition.
                 try:
-                    var_name, var_type = self._handle_variable_definition(
+                    variable_name, variable_type = self._handle_variable_definition(
                         symbol_collection=function_symbol_collection,
-                        token_idx=idx,
-                        locally_available_types=locally_available_types
+                        token_idx=idx
                     )
 
-                    local_variables.add(var_name)
+                    local_variables[variable_name] = variable_type
 
                     variable_metadata = {
-                        "name": var_name,
-                        "type": var_type
+                        "name": variable_name,
+                        **variable_type
                     }
 
                     statements.append(("VAR_DEF", variable_metadata))
@@ -508,7 +507,6 @@ class Lexer:
         self,
         symbol_collection: list[str],
         token_idx: int,
-        locally_available_types: list[str] = []
     ) -> tuple[str, str]:
         """
         Handle a variable definition.
@@ -524,14 +522,11 @@ class Lexer:
             The collection of symbols generated by the `split_source` method.
         token_idx : int
             The index of the current token in the `symbol_collection` list.
-        locally_available_types : list of str, optional (default = [])
-            A list of types available in the context of the handled variable.
-            This is optional, and defaults to an empty list.
 
         Returns
         -------
         : tuple of (`variable_name`, `variable_type`) or empty tuple
-            A tuple of the variable metadata. If not a variable, an empty tuple
+            A tuple of the variable metadata. If not a variable, an empty tuple.
 
         Raises
         ------
@@ -541,6 +536,11 @@ class Lexer:
              - the variable is not followed by a valid token (`;`, `(`, `)`,
                `=`).
         """
+
+        available_types: list[str] = [
+            *self.types,
+            *self.globals["structs"]
+        ]
 
         try:
             # First, discard tokens that represent reserved words/symbols or constants
@@ -552,34 +552,45 @@ class Lexer:
             previous_token = symbol_collection[token_idx - 1]
             next_token = symbol_collection[token_idx + 1]
 
-            previous_token_is_valid_type = (
-                previous_token in [
-                    *self.types,
-                    *self.globals["structs"],
-                    *locally_available_types
-                ]
-            )
-            next_token_is_valid = next_token in [";", "="]
+            previous_token_is_valid_type = previous_token in [
+                *available_types,
+                "struct"
+            ]
+            simple_variable_definition = next_token in [";", "="]
+            array_definition = next_token == "["
 
             variable_name = symbol_collection[token_idx]
             variable_type = previous_token
 
-            if previous_token_is_valid_type and next_token_is_valid:
-                return (variable_name, variable_type)
+            if previous_token_is_valid_type and simple_variable_definition:
+                return variable_name, {"type": variable_type}
             
-            elif next_token_is_valid:
+            elif previous_token_is_valid_type and array_definition:
+                array_length = _handle_constant(
+                    annotated_constant=symbol_collection[token_idx + 2],
+                    number_only=True
+                )
+
+                array_metadata = {
+                    "type": variable_type,
+                    "length": array_length
+                }
+
+                return variable_name, array_metadata
+            
+            elif not previous_token_is_valid_type:
                 err_msg = (
                     f"Variable '{variable_name}' of unknown type"
                     f" '{variable_type}'"
                 )
                 raise SyntaxError(err_msg)
             
-            elif previous_token_is_valid_type:
+            elif not simple_variable_definition or not array_definition:
                 # If the token is preceeded by a valid type, and followed by a
                 # left or right parenthesis, then it is, respectivelly, a
                 # function definition or a function parameter -- which are
                 # syntatically valid.
-                if next_token not in ["(", ")"]:
+                if next_token not in ["(", ")", "{", "}"]:
                     err_msg = (
                         "Syntax error near definition of variable"
                         f" '{variable_name}'"
@@ -588,6 +599,33 @@ class Lexer:
 
         except IndexError:
             return tuple()
+ 
+    def _handle_struct_attribute(
+        self,
+        token: str,
+        local_variables: dict[str, str]
+    ) -> list[str, tuple]:
+
+        struct_var, struct_attr = token.split(".")
+
+        # Check if the variable has been declared
+        if struct_var not in local_variables:
+            err_msg = f"Invalid access of attribute '{struct_attr}' of unknown"
+            err_msg += f" struct variable '{struct_var}'"
+            raise SyntaxError(err_msg)
+
+        # Check if the struct type has the attribute of interest
+        struct_type = local_variables[struct_var]["type"]
+        if struct_attr not in self.globals["structs"][struct_type]:
+            err_msg = f"Access of unknown attribute '{struct_attr}' of"
+            err_msg += f" variable '{struct_var}'"
+            raise SyntaxError(err_msg)
+        
+        return [
+            ("VAR", struct_var),
+            "DOT",
+            ("STRUCT_ATTR", struct_attr)
+        ]
 
     def _handle_function_call(
         self,
@@ -790,19 +828,26 @@ def _find_function_scope_end(symbol_collection: list[str], token_idx: int) -> in
     return scope_end
 
 
-def _handle_constant(annotated_constant: str) -> Union[int, float]:
+def _handle_constant(
+    annotated_constant: str,
+    number_only: bool = False
+) -> Union[int, float]:
     if "int" in annotated_constant:
         str_to_offset = "int_cst_"
 
-        return {
-            "type": "int",
-            "value": int(annotated_constant[len(str_to_offset):])
-        }
+        value = int(annotated_constant[len(str_to_offset):])
+        _type = "int"
     
     else:
         str_to_offset = "float_cst_"
 
-        return {
-            "type": "float",
-            "value": float(annotated_constant[len(str_to_offset):])
-        }
+        _type = "float"
+        value = float(annotated_constant[len(str_to_offset):])
+
+    if number_only:
+        return value
+
+    return {
+        "type": _type,
+        "value": value
+    }
