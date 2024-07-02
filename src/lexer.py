@@ -5,12 +5,6 @@ from typing import Any, Union
 
 
 class Lexer:
-    types: dict[str, str] = {
-        "int": "INT_TYPE",
-        "float": "FLOAT_TYPE",
-        "long": "LONG_TYPE"
-    }
-
     conditionals: dict[str, str] = {
         "do": "DO_SYM",
         "while": "WHILE_SYM",
@@ -37,8 +31,8 @@ class Lexer:
         "/": "DIV",
         "<": "LESS",
         ">": "GREATER",
-        "&&": "AND",
-        "||": "OR",
+        "and": "AND",
+        "or": "OR",
         "<<": "LSHIFT",
         ">>": "RSHIFT",
         "&": "BITAND",
@@ -46,15 +40,22 @@ class Lexer:
         "==": "EQUAL"
     }
 
+    types: dict[str, str] = {
+        "int": "INT_TYPE",
+        "float": "FLOAT_TYPE",
+        "long": "LONG_TYPE"
+    }
+
     reserved_words: dict[str, str] = {
-        **types,
         **conditionals,
         **symbols,
         **operators,
 
         # Additional reserved words that are not in previous categories
         "struct": "STRUCT_DEF",
-        "return": "RET_SYM"
+        "return": "RET_SYM",
+
+        **types
     }
 
     def __init__(self, source_code: str) -> None:
