@@ -125,7 +125,7 @@ class Lexer:
         symbol_collection = self._annotate_constants(symbol_collection)
 
         # Parse the global scope first
-        self.parse_global_scope(symbol_collection)
+        self._parse_global_scope(symbol_collection)
 
         # Then, compute the bounding indices of each function, and parse them
         # one by one.
@@ -140,7 +140,7 @@ class Lexer:
         }
 
         for function in functions_scopes:
-            self.functions[function] = self.parse_function_scope(
+            self.functions[function] = self._parse_function_scope(
                 symbol_collection,
                 **functions_scopes.get(function)
             )
@@ -228,7 +228,7 @@ class Lexer:
 
         return symbol_collection
     
-    def parse_global_scope(self, symbol_collection: list[str]) -> None:
+    def _parse_global_scope(self, symbol_collection: list[str]) -> None:
         """
         Parse the struct types and variables to be available globally.
 
@@ -281,7 +281,7 @@ class Lexer:
                         variable_name, variable_type = variable_metadata
                         self.globals["variables"][variable_name] = variable_type
 
-    def parse_function_scope(
+    def _parse_function_scope(
         self,
         symbol_collection: list[str],
         start_idx: int,
@@ -459,6 +459,14 @@ class Lexer:
                 break
 
             attr_type, attr_name = subset[idx:idx + 2]
+
+            if attr_name in attributes:
+                err_msg = (
+                    f"Redefinition of attribute '{attr_name}' in struct"
+                    f" '{struct_name}'"
+                )
+                raise SyntaxError(err_msg)
+
             attributes[attr_name] = attr_type
 
             # Expected format: `<attr_type>` `<attr_name>` `;`.
@@ -471,7 +479,6 @@ class Lexer:
             err_msg = f"Invalid struct name '{struct_name}'"
             raise SyntaxError(err_msg)
 
-        unique_attr_names = set()
         for attr_name, attr_type in attributes.items():
 
             # 2. Check if all the types are valid
@@ -481,22 +488,12 @@ class Lexer:
                     f" '{attr_name}'"
                 )
                 raise SyntaxError(err_msg)
-            
-            # 3. Check if there are no attributes with duplicate names
-            if attr_name in unique_attr_names:
-                err_msg = (
-                    f"Redefinition of attribute '{attr_name}' in struct"
-                    f" '{struct_name}'"
-                )
-                raise SyntaxError(err_msg)
-            else:
-                unique_attr_names.add(attr_name)
 
-            # 4. Check if there are attributes named after reserved words
+            # 3. Check if there are attributes named after reserved words
             if attr_name in self.reserved_words:
                 err_msg = (
                     f"Invalid name of attribute '{attr_name}' in struct"
-                    f"' {struct_name}'"
+                    f" '{struct_name}'"
                 )
                 raise SyntaxError(err_msg)
 
@@ -535,7 +532,7 @@ class Lexer:
             Raised if
              - the variable is of unknown type;
              - the variable is not followed by a valid token (`;`, `(`, `)`,
-               `=`).
+               `=`, `[`, `]`).
         """
 
         available_types: list[str] = [
@@ -563,6 +560,24 @@ class Lexer:
             variable_name = symbol_collection[token_idx]
             variable_type = previous_token
 
+            next_token_is_valid = next_token in [
+                "(",
+                ")",
+                "{",
+                "}",
+                ";",
+                "=",
+                "[",
+                "]"
+            ]
+
+            if not next_token_is_valid:
+                err_msg = (
+                    "Syntax error near definition of variable"
+                    f" '{variable_name}'"
+                )
+                raise SyntaxError(err_msg)
+
             if previous_token_is_valid_type and simple_variable_definition:
                 return variable_name, {"type": variable_type}
             
@@ -585,18 +600,6 @@ class Lexer:
                     f" '{variable_type}'"
                 )
                 raise SyntaxError(err_msg)
-            
-            elif not simple_variable_definition or not array_definition:
-                # If the token is preceeded by a valid type, and followed by a
-                # left or right parenthesis, then it is, respectivelly, a
-                # function definition or a function parameter -- which are
-                # syntatically valid.
-                if next_token not in ["(", ")", "{", "}"]:
-                    err_msg = (
-                        "Syntax error near definition of variable"
-                        f" '{variable_name}'"
-                    )
-                    raise SyntaxError(err_msg)
 
         except IndexError:
             return tuple()
