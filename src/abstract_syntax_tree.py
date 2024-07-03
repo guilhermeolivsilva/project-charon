@@ -2,8 +2,7 @@
 
 from typing import Union
 
-from src.nodes import *
-from src.nodes.base import *
+from src.ast_nodes import *
 
 
 class AbstractSyntaxTree:
@@ -297,7 +296,7 @@ class AbstractSyntaxTree:
 
         expression_node = self._comparison()
 
-        if isinstance(expression_node, VAR) and self.current_symbol == "EQUAL":
+        if isinstance(expression_node, VAR) and self.current_symbol == "ASSIGN":
             lhs = expression_node
 
             set_node_id = self._get_next_id()
@@ -305,7 +304,7 @@ class AbstractSyntaxTree:
 
             rhs = self._expression()
 
-            expression_node = SET(
+            expression_node = ASSIGN(
                 id=set_node_id,
                 lhs=lhs,
                 rhs=rhs

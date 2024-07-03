@@ -3,17 +3,17 @@
 from pytest import fixture
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
-from src.nodes.PROG import PROG
+from src.ast_nodes.basic.PROG import PROG
 
 
 SOURCE_CODE = [
     ("LCBRA", None),
     ("ID", "a"),
-    ("EQUAL", None),
+    ("ASSIGN", None),
     ("INT", 5),
     ("SEMI", None),
     ("ID", "b"),
-    ("EQUAL", None),
+    ("ASSIGN", None),
     ("ID", "a"),
     ("MINUS", None),
     ("INT", 1),
@@ -21,13 +21,13 @@ SOURCE_CODE = [
     ("DO_SYM", None),
     ("LCBRA", None),
     ("ID", "c"),
-    ("EQUAL", None),
+    ("ASSIGN", None),
     ("ID", "a"),
     ("MINUS", None),
     ("ID", "b"),
     ("SEMI", None),
     ("ID", "b"),
-    ("EQUAL", None),
+    ("ASSIGN", None),
     ("ID", "b"),
     ("PLUS", None),
     ("INT", 1),
@@ -40,14 +40,14 @@ SOURCE_CODE = [
     ("RPAR", None),
     ("LCBRA", None),
     ("ID", "d"),
-    ("EQUAL", None),
+    ("ASSIGN", None),
     ("INT", 10),
     ("SEMI", None),
     ("RCBRA", None),
     ("ELSE_SYM", None),
     ("LCBRA", None),
     ("ID", "d"),
-    ("EQUAL", None),
+    ("ASSIGN", None),
     ("INT", 0),
     ("SEMI", None),
     ("RCBRA", None),

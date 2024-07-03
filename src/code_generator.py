@@ -2,7 +2,7 @@
 
 from typing import Union
 
-from src.nodes.base.node import Node
+from src.ast_nodes.node import Node
 
 
 class CodeGenerator:

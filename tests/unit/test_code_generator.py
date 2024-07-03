@@ -1,9 +1,7 @@
 """Implement unit tests for the `src.code_generator` module."""
 
-from typing import Union
-
 from src.code_generator import CodeGenerator
-from src.nodes import *
+from src.ast_nodes import *
 
 
 def test_init() -> None:
