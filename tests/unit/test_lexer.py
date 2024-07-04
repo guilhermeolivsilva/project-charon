@@ -15,7 +15,7 @@ struct my_struct {
 
 my_struct global_var;
 
-int abc(int asda) {
+int abc(int asda, int abcdef) {
     int bla = 1;
     float blabla = 2.0;
     long int xaxaxa;
@@ -23,13 +23,14 @@ int abc(int asda) {
     my_struct internal_struct_var;
     internal_struct_var.x = 1;
 
-    bla = bla + function_that_returns_struct(blabla);
+    bla = bla + function_that_returns_struct(blabla, 123);
 
     return blabla + bla;
 }
 
-my_struct function_that_returns_struct(int xyz) {
-    return xyz;
+my_struct function_that_returns_struct(int xyz, int aaa) {
+    int internal_guy;
+    return xyz + aaa;
 }
 
 struct test_struct {
@@ -42,12 +43,13 @@ int main() {
     int array[10];
 
     array[5] = 1;
+    int y;
 
     if(((x << 4) == 1 or x > 1) and (x < 10)) {
-        int y = x & 1;
+        y = x & 1;
     }
     else {
-        int y = x | 1;
+        y = x | 1;
     }
 
     return ((x * y) / 2) >> 1;
@@ -102,120 +104,141 @@ def test_parse_source_code():
     expected_parsed_code = {
         'globals': {
             'variables': {
-                'a': {'type': 'int'},
-                'global_var': {'type': 'my_struct'}
+                'a': {'type': 'int', 'pseudonymous': '%1'},
+                'global_var': {'type': 'my_struct', 'pseudonymous': '%2'}
             },
             'structs': {
-                'my_struct': {'x': 'int', 'y': 'float'},
-                'test_struct': {'abcd': 'int', 'xyz': 'int'}
+                'my_struct': {
+                    'pseudonymous': '%struct.1',
+                    'attributes': {
+                        'x': {'type': 'int', 'attr_pointer': 1},
+                        'y': {'type': 'float', 'attr_pointer': 2}
+                    }
+                },
+                'test_struct': {
+                    'pseudonymous': '%struct.2',
+                    'attributes': {
+                        'abcd': {'type': 'int', 'attr_pointer': 1},
+                        'xyz': {'type': 'int', 'attr_pointer': 2}
+                    }
+                }
             }
         },
         'functions': {
             'abc': {
+                'pseudonymous': '#1',
                 'type': 'int',
-                'arguments': {'asda': 'int'},
+                'arguments': {
+                    'asda': {'type': 'int', 'pseudonymous': '%3'},
+                    'abcdef': {'type': 'int', 'pseudonymous': '%4'}
+                },
                 'statements': [
-                    ('VAR_DEF', {'name': 'bla', 'type': 'int'}),
+                    ('VAR_DEF', {'name': 'bla', 'pseudonymous': '%5', 'type': 'int'}),
                     'ASSIGN',
                     ('CST', {'type': 'int', 'value': 1}),
                     'SEMI',
-                    ('VAR_DEF', {'name': 'blabla', 'type': 'float'}),
+                    ('VAR_DEF', {'name': 'blabla', 'pseudonymous': '%6', 'type': 'float'}),
                     'ASSIGN',
                     ('CST', {'type': 'float', 'value': 2.0}),
                     'SEMI',
-                    ('VAR_DEF', {'name': 'xaxaxa', 'type': 'long'}),
+                    ('VAR_DEF', {'name': 'xaxaxa', 'pseudonymous': '%7', 'type': 'long'}),
                     'SEMI',
-                    ('VAR_DEF', {'name': 'internal_struct_var', 'type': 'my_struct'}),
+                    ('VAR_DEF', {'name': 'internal_struct_var', 'pseudonymous': '%8', 'type': 'my_struct'}),
                     'SEMI',
                     ('VAR', 'internal_struct_var'),
                     'DOT',
-                    ('STRUCT_ATTR', 'x'),
+                    ('STRUCT_ATTR', 1),
                     'ASSIGN',
                     ('CST', {'type': 'int', 'value': 1}),
                     'SEMI',
-                    ('VAR', 'bla'),
+                    ('VAR', '%5'),
                     'ASSIGN',
-                    ('VAR', 'bla'),
+                    ('VAR', '%5'),
                     'PLUS',
-                    ('FUNC_CALL',
-                    {'function': 'function_that_returns_struct', 'parameters': ['blabla']}),
-                    'LPAR',
-                    ('VAR', 'blabla'),
-                    'RPAR',
+                    ('FUNC_CALL', {'function': '#2', 'parameters': ['%6', 123]}),
                     'SEMI',
                     'RET_SYM',
-                    ('VAR', 'blabla'),
+                    ('VAR', '%6'),
                     'PLUS',
-                    ('VAR', 'bla'),
+                    ('VAR', '%5'),
                     'SEMI'
                 ]
             },
             'function_that_returns_struct': {
+                'pseudonymous': '#2',
                 'type': 'my_struct',
-                'arguments': {'xyz': 'int'},
+                'arguments': {
+                    'xyz': {'type': 'int', 'pseudonymous': '%3'},
+                    'aaa': {'type': 'int', 'pseudonymous': '%4'}
+                },
                 'statements': [
+                    ('VAR_DEF', {'name': 'internal_guy', 'pseudonymous': '%5', 'type': 'int'}),
+                    'SEMI',
                     'RET_SYM',
-                    ('VAR', 'xyz'),
+                    ('VAR', '%3'),
+                    'PLUS',
+                    ('VAR', '%4'),
                     'SEMI'
                 ]
             },
             'main': {
+                'pseudonymous': '#3',
                 'type': 'int',
                 'arguments': {},
-                'statements': [
-                    ('VAR_DEF', {'name': 'x', 'type': 'int'}),
+                 'statements': [
+                    ('VAR_DEF', {'name': 'x', 'pseudonymous': '%3', 'type': 'int'}),
                     'ASSIGN',
-                    ('FUNC_CALL', {'function': 'abc', 'parameters': []}),
-                    'LPAR',
-                    'RPAR',
+                    ('FUNC_CALL', {'function': '#1', 'parameters': []}),
                     'SEMI',
-                    ('VAR_DEF', {'name': 'array', 'type': 'int', 'length': 10}),
+                    ('VAR_DEF', {'name': 'array', 'pseudonymous': '%4', 'type': 'int', 'length': 10}),
                     'LBRA',
                     ('CST', {'type': 'int', 'value': 10}),
                     'RBRA',
                     'SEMI',
-                    ('VAR', 'array'),
+                    ('VAR', '%4'),
                     'LBRA',
                     ('CST', {'type': 'int', 'value': 5}),
                     'RBRA',
                     'ASSIGN',
                     ('CST', {'type': 'int', 'value': 1}),
                     'SEMI',
+                    ('VAR_DEF', {'name': 'y', 'pseudonymous': '%5', 'type': 'int'}),
+                    'SEMI',
                     'IF_SYM',
                     'LPAR',
                     'LPAR',
                     'LPAR',
-                    ('VAR', 'x'),
+                    ('VAR', '%3'),
                     'LSHIFT',
                     ('CST', {'type': 'int', 'value': 4}),
                     'RPAR',
                     'EQUAL',
                     ('CST', {'type': 'int', 'value': 1}),
                     'OR',
-                    ('VAR', 'x'),
+                    ('VAR', '%3'),
                     'GREATER',
                     ('CST', {'type': 'int', 'value': 1}),
                     'RPAR',
                     'AND',
                     'LPAR',
-                    ('VAR', 'x'),
+                    ('VAR', '%3'),
                     'LESS',
                     ('CST', {'type': 'int', 'value': 10}),
                     'RPAR',
                     'RPAR',
                     'LCBRA',
-                    ('VAR_DEF', {'name': 'y', 'type': 'int'}),
+                    ('VAR', '%5'),
                     'ASSIGN',
-                    ('VAR', 'x'),
+                    ('VAR', '%3'),
                     'BITAND',
                     ('CST', {'type': 'int', 'value': 1}),
                     'SEMI',
                     'RCBRA',
                     'ELSE_SYM',
                     'LCBRA',
-                    ('VAR', 'y'),
+                    ('VAR', '%5'),
                     'ASSIGN',
-                    ('VAR', 'x'),
+                    ('VAR', '%3'),
                     'BITOR',
                     ('CST', {'type': 'int', 'value': 1}),
                     'SEMI',
@@ -223,9 +246,9 @@ def test_parse_source_code():
                     'RET_SYM',
                     'LPAR',
                     'LPAR',
-                    ('VAR', 'x'),
+                    ('VAR', '%3'),
                     'MULT',
-                    ('VAR', 'y'),
+                    ('VAR', '%5'),
                     'RPAR',
                     'DIV',
                     ('CST', {'type': 'int', 'value': 2}),
@@ -276,6 +299,8 @@ def test_split_source():
         '(',
         'int',
         'asda',
+        'int',
+        'abcdef',
         ')',
         '{',
         'int',
@@ -305,6 +330,7 @@ def test_split_source():
         'function_that_returns_struct',
         '(',
         'blabla',
+        '123',
         ')',
         ';',
         'return',
@@ -318,10 +344,17 @@ def test_split_source():
         '(',
         'int',
         'xyz',
+        'int',
+        'aaa',
         ')',
         '{',
+        'int',
+        'internal_guy',
+        ';',
         'return',
         'xyz',
+        '+',
+        'aaa',
         ';',
         '}',
         'struct',
@@ -359,6 +392,9 @@ def test_split_source():
         '=',
         '1',
         ';',
+        'int',
+        'y',
+        ';',
         'if',
         '(',
         '(',
@@ -382,7 +418,6 @@ def test_split_source():
         ')',
         ')',
         '{',
-        'int',
         'y',
         '=',
         'x',
@@ -392,7 +427,6 @@ def test_split_source():
         '}',
         'else',
         '{',
-        'int',
         'y',
         '=',
         'x',

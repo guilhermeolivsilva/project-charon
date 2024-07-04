@@ -133,17 +133,27 @@ class Lexer:
             symbol_collection=symbol_collection
         )
 
-        # Register the functions
+        # Register the functions and its definitions' relative position (i.e.,
+        # the pseudonymous)
         self.functions = {
-            func_name: {}
-            for func_name in functions_scopes.keys()
+            func_name: {
+                "pseudonymous": f"#{func_pseudonymous}"
+            }
+            for func_name, func_pseudonymous
+            in zip(
+                functions_scopes.keys(),
+                range(1, len(functions_scopes) + 1)
+            )
         }
 
         for function in functions_scopes:
-            self.functions[function] = self._parse_function_scope(
+            function_data: dict[str, str] = self._parse_function_scope(
                 symbol_collection,
                 **functions_scopes.get(function)
             )
+
+            # Extend the registered functions with the parsed function data
+            self.functions[function].update(function_data)
 
         return {
             "globals": self.globals,
@@ -257,11 +267,18 @@ class Lexer:
             if not len(curly_brackets_stack):
 
                 if token == "struct":
-                    struct_name, struct_attributes, _ = self._handle_struct_definition(
+                    struct_name, struct_attributes = self._handle_struct_definition(
                         symbol_collection=symbol_collection,
                         struct_idx=idx
                     )
-                    self.globals["structs"][struct_name] = struct_attributes
+
+                    struct_pseudonymous_offset = len(self.globals["structs"]) + 1
+                    struct_pseudonymous = f"%struct.{struct_pseudonymous_offset}"
+
+                    self.globals["structs"][struct_name] = {
+                        "pseudonymous": struct_pseudonymous,
+                        "attributes": struct_attributes
+                    }
 
                 elif token in self.globals["structs"]:
                     continue
@@ -276,10 +293,12 @@ class Lexer:
                     # if the current token is not a variable. Thus, only add it
                     # to the `globals` dict if the returned value is not valid.
                     if definition_metadata:
-                        variable_metadata = definition_metadata
-
-                        variable_name, variable_type = variable_metadata
-                        self.globals["variables"][variable_name] = variable_type
+                        variable_name, variable_metadata = definition_metadata
+                        
+                        # Add the pseudonymous here!
+                        var_pseudonymous = len(self.globals["variables"]) + 1
+                        variable_metadata["pseudonymous"] = f"%{var_pseudonymous}"
+                        self.globals["variables"][variable_name] = variable_metadata
 
     def _parse_function_scope(
         self,
@@ -345,7 +364,8 @@ class Lexer:
                 idx += 1
                 
             elif curr_token in local_variables:
-                statements.append(("VAR", curr_token))
+                var_pseudonymous = local_variables[curr_token]["pseudonymous"]
+                statements.append(("VAR", var_pseudonymous))
                 idx += 1
 
             # Handle struct attributes
@@ -368,13 +388,18 @@ class Lexer:
                         token_idx=idx
                     )
 
-                    local_variables[variable_name] = variable_type
+                    curr_pseudonymous_counter = (
+                        len(self.globals["variables"]) + len(local_variables) + 1
+                    )
+                    var_pseudonymous = f"%{curr_pseudonymous_counter}"
 
                     variable_metadata = {
                         "name": variable_name,
+                        "pseudonymous": var_pseudonymous,
                         **variable_type
                     }
 
+                    local_variables[variable_name] = variable_metadata
                     statements.append(("VAR_DEF", variable_metadata))
 
                 # If not, check if it is a function call. If it is not either,
@@ -382,15 +407,27 @@ class Lexer:
                 except (SyntaxError, TypeError):
                     function_name, parameters = self._handle_function_call(
                         symbol_collection=function_symbol_collection,
+                        local_variables=local_variables,
                         function_call_idx=idx
                     )
 
+                    function_pseudonymous = (
+                        self.functions.get(function_name)
+                                      .get("pseudonymous")
+                    )
+
                     function_call_metadata = {
-                        "function": function_name,
+                        "function": function_pseudonymous,
                         "parameters": parameters
                     }
 
                     statements.append(("FUNC_CALL", function_call_metadata))
+
+                    # As the parameters of the function call have already been
+                    # accounted for in `function_call_metadata`, we'll skip
+                    # their tokens. Thus, increment `idx` by 2 (the number of
+                    # parenthesis) plus the number of parameters passed.
+                    idx += 2 + len(function_call_metadata["parameters"])
 
                 idx += 1
 
@@ -428,11 +465,10 @@ class Lexer:
 
         Returns
         -------
-        struct_metadata : tuple of (<struct_name>, <attributes>, <idx>)
+        struct_metadata : tuple of (<struct_name>, <attributes>)
             A tuple containing the name of the struct at the first position,
             and the dictionary of its attributes (mapping of
-            `attr_name`: `attr_type`). The tuple also contains the index of the
-            curly bracket that closes the struct definition.
+            `attr_name`: `attr_type`).
 
         Raises
         ------
@@ -467,7 +503,10 @@ class Lexer:
                 )
                 raise SyntaxError(err_msg)
 
-            attributes[attr_name] = attr_type
+            attributes[attr_name] = {
+                "type": attr_type,
+                "attr_pointer": len(attributes) + 1
+            }
 
             # Expected format: `<attr_type>` `<attr_name>` `;`.
             # Thus, offset 3 tokens
@@ -479,7 +518,9 @@ class Lexer:
             err_msg = f"Invalid struct name '{struct_name}'"
             raise SyntaxError(err_msg)
 
-        for attr_name, attr_type in attributes.items():
+        for attr_name, attr_metadata in attributes.items():
+
+            attr_type = attr_metadata["type"]
 
             # 2. Check if all the types are valid
             if attr_type not in self.types:
@@ -497,7 +538,7 @@ class Lexer:
                 )
                 raise SyntaxError(err_msg)
 
-        struct_metadata = (struct_name, attributes, struct_start + idx)
+        struct_metadata = (struct_name, attributes)
 
         return struct_metadata
 
@@ -568,7 +609,8 @@ class Lexer:
                 ";",
                 "=",
                 "[",
-                "]"
+                "]",
+                *available_types
             ]
 
             if not next_token_is_valid:
@@ -579,7 +621,8 @@ class Lexer:
                 raise SyntaxError(err_msg)
 
             if previous_token_is_valid_type and simple_variable_definition:
-                return variable_name, {"type": variable_type}
+                variable_metadata = {"type": variable_type}
+                return variable_name, variable_metadata
             
             elif previous_token_is_valid_type and array_definition:
                 array_length = _handle_constant(
@@ -620,20 +663,27 @@ class Lexer:
 
         # Check if the struct type has the attribute of interest
         struct_type = local_variables[struct_var]["type"]
-        if struct_attr not in self.globals["structs"][struct_type]:
+        if struct_attr not in self.globals["structs"][struct_type]["attributes"]:
             err_msg = f"Access of unknown attribute '{struct_attr}' of"
             err_msg += f" variable '{struct_var}'"
             raise SyntaxError(err_msg)
-        
+
+        attr_pointer = (
+            list(self.globals["structs"][struct_type]["attributes"])
+                .index(struct_attr)
+                + 1
+            )
+
         return [
             ("VAR", struct_var),
             "DOT",
-            ("STRUCT_ATTR", struct_attr)
+            ("STRUCT_ATTR", attr_pointer)
         ]
 
     def _handle_function_call(
         self,
         symbol_collection: list[str],
+        local_variables: dict[str, str],
         function_call_idx: int
     ) -> tuple[str, list[str]]:
         """
@@ -643,6 +693,9 @@ class Lexer:
         ----------
         symbol_collection : list of str
             The collection of symbols generated by the `split_source` method.
+        local_variables : dict
+            A dictionary containing the variables available at the scope where
+            the function was called.
         struct_idx : int
             The index of the function call in the `symbol_collection` list.
 
@@ -665,8 +718,17 @@ class Lexer:
 
             elif token == ")":
                 break
+
+            # Use the parameter pseudonymous instead of the actual name
+            if token in local_variables:
+                parameter = local_variables[token]["pseudonymous"]
+
+            # If not a variable, then it's a constant. Thus, save it to the
+            # `parameters` list after extracting its actual value.
+            else:
+                parameter = _handle_constant(token, number_only=True)
             
-            parameters.append(token)
+            parameters.append(parameter)
 
         return function_name, parameters
 
@@ -801,7 +863,15 @@ class Lexer:
                         )
                         raise SyntaxError(err_msg)
 
-                    arguments[param_name] = param_type
+                    pseudonymous_offset = (
+                        len(self.globals["variables"]) + len(arguments)
+                    )
+                    argument_pseudonymous = f"%{pseudonymous_offset + 1}"
+
+                    arguments[param_name] = {
+                        "type": param_type,
+                        "pseudonymous": argument_pseudonymous
+                    }
                     curr_idx += 2
 
         except IndexError:
