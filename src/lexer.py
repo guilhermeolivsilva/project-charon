@@ -334,7 +334,7 @@ class Lexer:
         )
 
         # Parse the statements
-        statements: list[tuple[str, Any]] = []
+        statements: list[tuple[str, dict]] = []
         statements_start_idx = (
             symbol_collection[start_idx : end_idx].index("{") + 1
         )
@@ -434,7 +434,7 @@ class Lexer:
             # If not any of the above (but syntatically correct), it is a
             # known symbol or reserved word of the language
             else:
-                statements.append((self.reserved_words.get(curr_token)))
+                statements.append((self.reserved_words.get(curr_token), {}))
                 idx += 1
 
         function_metadata = {
@@ -676,7 +676,7 @@ class Lexer:
 
         return [
             ("VAR", struct_var),
-            "DOT",
+            ("DOT", {}),
             ("STRUCT_ATTR", attr_pointer)
         ]
 
