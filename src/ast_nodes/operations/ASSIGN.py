@@ -4,7 +4,7 @@ from typing import Union
 
 from typing_extensions import override
 
-from src.utils import get_variable_name_symbol, next_prime
+from src.utils import next_prime
 
 from src.ast_nodes.node import Node
 from src.ast_nodes.operations.operation import Operation
@@ -31,7 +31,7 @@ class ASSIGN(Operation):
         self.value: Union[str, int, None] = lhs.value
 
         self.instruction: str = "ISTORE"
-        self.symbol: str = f"(30^{get_variable_name_symbol(self.value)})"
+        self.symbol: str = f"{self.symbol}^{self.value}"
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -98,8 +98,7 @@ class ASSIGN(Operation):
         Compute the certificate of the current `ASSIGN`, and set this attribute.
 
         For `ASSIGN` nodes, certificate the `rhs` first. Then, certificate the
-        `ASSIGN` itself with `symbol ^ variable_name_symbol`. The
-        `variable_name_symbol` is obtained with utils.get_variable_name_symbol.
+        `ASSIGN` itself with `symbol ^ variable declaration relative position`.
 
         Parameters
         ----------

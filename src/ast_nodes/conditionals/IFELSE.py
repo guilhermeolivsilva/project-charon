@@ -37,7 +37,6 @@ class IFELSE(Conditional):
         super().__init__(id, parenthesis_expression, statement_if_true)
 
         self.statement_if_false: Node = statement_if_false
-        self.symbol: str = "(37)"
 
     @override
     def get_certificate_label(self) -> list[str]:

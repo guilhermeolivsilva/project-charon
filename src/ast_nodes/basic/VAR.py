@@ -3,8 +3,6 @@
 from string import ascii_lowercase
 from typing_extensions import override
 
-from src.utils import get_variable_name_symbol
-
 from src.ast_nodes.node import Node
 
 
@@ -34,4 +32,4 @@ class VAR(Node):
         super().__init__(id, value)
 
         self.instruction: str = "IFETCH"
-        self.symbol: str = f"(28^{get_variable_name_symbol(self.value)})"
+        self.symbol: str = f"{self.symbol}^{self.value}"

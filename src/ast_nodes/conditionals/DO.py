@@ -29,8 +29,6 @@ class DO(Conditional):
     def __init__(self, id: int, parenthesis_expression: Node, loop: Node) -> None:
         super().__init__(id, parenthesis_expression, loop)
 
-        self.symbol: str = "(39)"
-
     @override
     def get_certificate_label(self) -> list[str]:
         """

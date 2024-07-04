@@ -20,5 +20,3 @@ class EMPTY(Node):
     @override
     def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
         super().__init__(id, value)
-
-        self.symbol: str = "(27)"

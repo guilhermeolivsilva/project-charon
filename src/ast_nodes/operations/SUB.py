@@ -26,4 +26,3 @@ class SUB(Operation):
         super().__init__(id, lhs, rhs, **kwargs)
 
         self.instruction: str = "ISUB"
-        self.symbol: str = "(33)"

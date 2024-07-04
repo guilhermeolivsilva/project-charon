@@ -26,4 +26,3 @@ class LT(Operation):
         super().__init__(id, lhs, rhs, **kwargs)
 
         self.instruction: str = "ILT"
-        self.symbol: str = "(34)"

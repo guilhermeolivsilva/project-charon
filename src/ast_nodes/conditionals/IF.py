@@ -29,8 +29,6 @@ class IF(Conditional):
     ) -> None:
         super().__init__(id, parenthesis_expression, statement_if_true)
 
-        self.symbol: str = "(36)"
-
     @override
     def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
         """

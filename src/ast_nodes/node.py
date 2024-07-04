@@ -2,6 +2,7 @@
 
 from typing import Union
 
+from src.ast_nodes.certificate_mapping import CERTIFICATE_SYMBOLS_MAP
 from src.utils import next_prime
 
 
@@ -25,7 +26,7 @@ class Node:
         # Each `Node` specialization must set its own `instruction` and
         # `symbol`.
         self.instruction: str = None
-        self.symbol: str = None
+        self.symbol: str = get_node_certificate_symbol(self)
 
     def __eq__(self, other: "Node") -> bool:
         """
@@ -171,3 +172,21 @@ class Node:
         self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
 
         return next_prime(prime)
+
+
+def get_node_certificate_symbol(node: "Node") -> str:
+    """
+    Get the certificate symbol associated with the given AST Node.
+
+    Parameters
+    ----------
+    node : Node
+        A subclass of the `Node` class.
+
+    Returns
+    -------
+    : str
+        The associated certificate symbol.
+    """
+    
+    return CERTIFICATE_SYMBOLS_MAP.get(type(node).__name__)

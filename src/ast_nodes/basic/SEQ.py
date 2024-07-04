@@ -22,7 +22,6 @@ class SEQ(Node):
         super().__init__(id)
 
         self.children: list[Node] = []
-        self.symbol: str = "(27)"
 
     def add_child(self, child: Node) -> None:
         """
