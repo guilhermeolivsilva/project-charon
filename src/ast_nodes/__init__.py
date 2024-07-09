@@ -11,7 +11,7 @@ from src.ast_nodes.basic.EMPTY import EMPTY
 from src.ast_nodes.basic.EXPR import EXPR
 from src.ast_nodes.basic.PROG import PROG
 from src.ast_nodes.basic.SEQ import SEQ
-from src.ast_nodes.basic.VAR import VAR
+from src.ast_nodes.variables.VAR import VAR
 
 # Conditional nodes (control flow, loops etc.)
 from src.ast_nodes.conditionals.DO import DO
