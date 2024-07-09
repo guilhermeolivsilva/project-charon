@@ -40,10 +40,11 @@ class Lexer:
         "==": "EQUAL"
     }
 
+    # Map built-in types to pseudonymous
     types: dict[str, str] = {
-        "int": "INT_TYPE",
-        "float": "FLOAT_TYPE",
-        "long": "LONG_TYPE"
+        "int": "2",
+        "float": "3",
+        "long": "4"
     }
 
     reserved_words: dict[str, str] = {
@@ -71,8 +72,8 @@ class Lexer:
         self.source_code: str = source_code
         self.functions: dict[str, dict] = {}
         self.globals: dict[str, dict] = {
-            "variables": {},
-            "structs": {}
+            "structs": {},
+            "variables": {}
         }
 
     def parse_source_code(self) -> dict[str, dict]:
@@ -620,22 +621,34 @@ class Lexer:
                 )
                 raise SyntaxError(err_msg)
 
-            if previous_token_is_valid_type and simple_variable_definition:
-                variable_metadata = {"type": variable_type}
-                return variable_name, variable_metadata
-            
-            elif previous_token_is_valid_type and array_definition:
-                array_length = _handle_constant(
-                    annotated_constant=symbol_collection[token_idx + 2],
-                    number_only=True
-                )
+            if previous_token_is_valid_type:
+                # Compute the type pseudonymous
+                is_builtin_type = variable_type in self.types
+                if is_builtin_type:
+                    type_pseudonymous = self.types.get(variable_type)
+                else:
+                    type_pseudonymous = self.globals["structs"][variable_type]["pseudonymous"]
 
-                array_metadata = {
+                variable_metadata = {
                     "type": variable_type,
-                    "length": array_length
+                    "type_pseudonymous": type_pseudonymous
                 }
 
-                return variable_name, array_metadata
+                if simple_variable_definition:
+                    return variable_name, variable_metadata
+            
+                elif array_definition:
+                    array_length = _handle_constant(
+                        annotated_constant=symbol_collection[token_idx + 2],
+                        number_only=True
+                    )
+
+                    array_metadata = {
+                        **variable_metadata,
+                        "length": array_length
+                    }
+
+                    return variable_name, array_metadata
             
             elif not previous_token_is_valid_type:
                 err_msg = (

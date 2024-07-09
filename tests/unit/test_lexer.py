@@ -103,10 +103,6 @@ def test_parse_source_code():
 
     expected_parsed_code = {
         'globals': {
-            'variables': {
-                'a': {'type': 'int', 'pseudonymous': '%1'},
-                'global_var': {'type': 'my_struct', 'pseudonymous': '%2'}
-            },
             'structs': {
                 'my_struct': {
                     'pseudonymous': '%struct.1',
@@ -122,6 +118,10 @@ def test_parse_source_code():
                         'xyz': {'type': 'int', 'attr_pointer': 2}
                     }
                 }
+            },
+            'variables': {
+                'a': {'type': 'int', 'pseudonymous': '%1', 'type_pseudonymous': '2'},
+                'global_var': {'type': 'my_struct', 'pseudonymous': '%2', 'type_pseudonymous': '%struct.1'}
             }
         },
         'functions': {
@@ -133,17 +133,17 @@ def test_parse_source_code():
                     'abcdef': {'type': 'int', 'pseudonymous': '%4'}
                 },
                 'statements': [
-                    ('VAR_DEF', {'name': 'bla', 'pseudonymous': '%5', 'type': 'int'}),
+                    ('VAR_DEF', {'name': 'bla', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
                     ('ASSIGN', {}),
                     ('CST', {'type': 'int', 'value': 1}),
                     ('SEMI', {}),
-                    ('VAR_DEF', {'name': 'blabla', 'pseudonymous': '%6', 'type': 'float'}),
+                    ('VAR_DEF', {'name': 'blabla', 'pseudonymous': '%6', 'type': 'float', 'type_pseudonymous': '3'}),
                     ('ASSIGN', {}),
                     ('CST', {'type': 'float', 'value': 2.0}),
                     ('SEMI', {}),
-                    ('VAR_DEF', {'name': 'xaxaxa', 'pseudonymous': '%7', 'type': 'long'}),
+                    ('VAR_DEF', {'name': 'xaxaxa', 'pseudonymous': '%7', 'type': 'long', 'type_pseudonymous': '4'}),
                     ('SEMI', {}),
-                    ('VAR_DEF', {'name': 'internal_struct_var', 'pseudonymous': '%8', 'type': 'my_struct'}),
+                    ('VAR_DEF', {'name': 'internal_struct_var', 'pseudonymous': '%8', 'type': 'my_struct', 'type_pseudonymous': '%struct.1'}),
                     ('SEMI', {}),
                     ('VAR', 'internal_struct_var'),
                     ('DOT', {}),
@@ -172,7 +172,7 @@ def test_parse_source_code():
                     'aaa': {'type': 'int', 'pseudonymous': '%4'}
                 },
                 'statements': [
-                    ('VAR_DEF', {'name': 'internal_guy', 'pseudonymous': '%5', 'type': 'int'}),
+                    ('VAR_DEF', {'name': 'internal_guy', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
                     ('SEMI', {}),
                     ('RET_SYM', {}),
                     ('VAR', '%3'),
@@ -186,11 +186,11 @@ def test_parse_source_code():
                 'type': 'int',
                 'arguments': {},
                  'statements': [
-                    ('VAR_DEF', {'name': 'x', 'pseudonymous': '%3', 'type': 'int'}),
+                    ('VAR_DEF', {'name': 'x', 'pseudonymous': '%3', 'type': 'int', 'type_pseudonymous': '2'}),
                     ('ASSIGN', {}),
                     ('FUNC_CALL', {'function': '#1', 'parameters': []}),
                     ('SEMI', {}),
-                    ('VAR_DEF', {'name': 'array', 'pseudonymous': '%4', 'type': 'int', 'length': 10}),
+                    ('VAR_DEF', {'name': 'array', 'pseudonymous': '%4', 'type': 'int', 'type_pseudonymous': '2', 'length': 10}),
                     ('LBRA', {}),
                     ('CST', {'type': 'int', 'value': 10}),
                     ('RBRA', {}),
@@ -202,7 +202,7 @@ def test_parse_source_code():
                     ('ASSIGN', {}),
                     ('CST', {'type': 'int', 'value': 1}),
                     ('SEMI', {}),
-                    ('VAR_DEF', {'name': 'y', 'pseudonymous': '%5', 'type': 'int'}),
+                    ('VAR_DEF', {'name': 'y', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
                     ('SEMI', {}),
                     ('IF_SYM', {}),
                     ('LPAR', {}),
