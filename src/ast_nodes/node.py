@@ -18,9 +18,9 @@ class Node:
         The value the Node holds, if any. Defaults to None.
     """
 
-    def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
+    def __init__(self, id: int, value: Union[int, str, float, None] = None) -> None:
         self.id: int = id
-        self.value: Union[int, str, None] = value
+        self.value: Union[int, str, float, None] = value
         self.certificate_label: str = None
 
         # Each `Node` specialization must set its own `instruction` and
