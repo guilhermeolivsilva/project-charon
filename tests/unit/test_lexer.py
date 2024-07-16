@@ -109,14 +109,16 @@ def test_parse_source_code():
                     'attributes': {
                         'x': {'type': 'int', 'attr_pointer': 1},
                         'y': {'type': 'float', 'attr_pointer': 2}
-                    }
+                    },
+                    'active': True
                 },
                 'test_struct': {
                     'pseudonymous': '%struct.2',
                     'attributes': {
                         'abcd': {'type': 'int', 'attr_pointer': 1},
                         'xyz': {'type': 'int', 'attr_pointer': 2}
-                    }
+                    },
+                    'active': False
                 }
             },
             'variables': {

@@ -278,7 +278,8 @@ class Lexer:
 
                     self.globals["structs"][struct_name] = {
                         "pseudonymous": struct_pseudonymous,
-                        "attributes": struct_attributes
+                        "attributes": struct_attributes,
+                        "active": False
                     }
 
                 elif token in self.globals["structs"]:
@@ -628,6 +629,11 @@ class Lexer:
                     type_pseudonymous = self.types.get(variable_type)
                 else:
                     type_pseudonymous = self.globals["structs"][variable_type]["pseudonymous"]
+
+                    # Flag the struct type to be `active`, as a variable of its
+                    # type is being defined
+                    self.globals["structs"][variable_type]["active"] = True
+                    
 
                 variable_metadata = {
                     "type": variable_type,
