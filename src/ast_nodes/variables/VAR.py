@@ -27,4 +27,4 @@ class VAR(Node):
         super().__init__(id, _relative_position)
 
         self.instruction: str = "FETCH"
-        self.symbol: str = f"{self.symbol}^{self.value}"
+        self.symbol: str = f"({self.symbol})^({self.value})"

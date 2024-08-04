@@ -56,7 +56,7 @@ class CST(Node):
 
         _exponent: int = CONSTANT_TYPES[type]["exponent"]
         self.symbol: str = (
-            f"{self.symbol}^{self.value}^{_exponent}"
+            f"({self.symbol})^({self.value})^({_exponent})"
         )
 
     @override
