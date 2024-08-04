@@ -169,7 +169,7 @@ class Node:
             A prime number that comes after the given `prime`.
         """
 
-        self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
+        self.set_certificate_label(certificate_label=f"({prime})^({self.symbol})")
 
         return next_prime(prime)
 
