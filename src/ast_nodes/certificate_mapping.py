@@ -7,9 +7,8 @@ __STARTING_SYMBOL = 2
 
 __CERTIFICATE_SYMBOLS = [
     "CST",
-    "VAR",
     "VAR_DEF",
-    "STRUCT_DEF",
+    "VAR",
     "ELEMENT_ACCESS",
     "FUNC_CALL",
     "RET_SYM",
@@ -34,7 +33,8 @@ __CERTIFICATE_SYMBOLS = [
     "PROG",
     "EXPR",
     "SEQ",
-    "EMPTY"
+    "EMPTY",
+    "STRUCT_DEF"
 ]
 
 CERTIFICATE_SYMBOLS_MAP = {
