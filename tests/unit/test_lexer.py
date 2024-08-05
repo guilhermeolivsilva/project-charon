@@ -151,7 +151,7 @@ def test_parse_source_code():
                     ('SEMI', {}),
                     ('VAR', '%8'),
                     ('DOT', {}),
-                    ('CST', {'type': 'int', 'value': 1}),
+                    ('CST', {'type': 'int', 'value': 0}),
                     ('ASSIGN', {}),
                     ('CST', {'type': 'int', 'value': 1}),
                     ('SEMI', {}),

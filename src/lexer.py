@@ -696,7 +696,6 @@ class Lexer:
         attr_pointer = (
             list(self.globals["structs"][struct_type]["attributes"])
                 .index(struct_attr)
-                + 1
             )
 
         return [
