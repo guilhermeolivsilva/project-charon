@@ -72,7 +72,7 @@ class Operation(Node):
         self.rhs.print(indent + 1)
 
     @override
-    def generate_code(self) -> list[tuple[str, Union[int, str, None]]]:
+    def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
         """
         Generate the code associated with this `Operation`.
 
