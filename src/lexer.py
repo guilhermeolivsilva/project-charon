@@ -649,6 +649,11 @@ class Lexer:
                         number_only=True
                     )
 
+                    # Remove the left and right brackets, and the array length
+                    # from the `symbol_collection` so array definitions will
+                    # not be mistaken with array item accesses.
+                    del symbol_collection[token_idx + 1 : token_idx + 4]
+
                     array_metadata = {
                         **variable_metadata,
                         "length": array_length
@@ -687,6 +692,7 @@ class Lexer:
             err_msg += f" variable '{struct_var}'"
             raise SyntaxError(err_msg)
 
+        var_pseudonymous = local_variables[struct_var]["pseudonymous"]
         attr_pointer = (
             list(self.globals["structs"][struct_type]["attributes"])
                 .index(struct_attr)
@@ -694,9 +700,9 @@ class Lexer:
             )
 
         return [
-            ("VAR", struct_var),
+            ("VAR", var_pseudonymous),
             ("DOT", {}),
-            ("STRUCT_ATTR", attr_pointer)
+            ("CST", {"type": "int", "value": attr_pointer})
         ]
 
     def _handle_function_call(

@@ -25,6 +25,8 @@ int abc(int asda, int abcdef) {
 
     bla = bla + function_that_returns_struct(blabla, 123);
 
+    abc(1, 2);
+
     return blabla + bla;
 }
 
@@ -147,9 +149,9 @@ def test_parse_source_code():
                     ('SEMI', {}),
                     ('VAR_DEF', {'name': 'internal_struct_var', 'pseudonymous': '%8', 'type': 'my_struct', 'type_pseudonymous': '%struct.1'}),
                     ('SEMI', {}),
-                    ('VAR', 'internal_struct_var'),
+                    ('VAR', '%8'),
                     ('DOT', {}),
-                    ('STRUCT_ATTR', 1),
+                    ('CST', {'type': 'int', 'value': 1}),
                     ('ASSIGN', {}),
                     ('CST', {'type': 'int', 'value': 1}),
                     ('SEMI', {}),
@@ -157,7 +159,9 @@ def test_parse_source_code():
                     ('ASSIGN', {}),
                     ('VAR', '%5'),
                     ('PLUS', {}),
-                    ('FUNC_CALL', {'function': '#2', 'parameters': ['%6', 123]}),
+                    ('FUNC_CALL', {'function': '#2', 'parameters': [{'type': 'variable', 'value': '%6'}, {'type': 'int', 'value': 123}]}),
+                    ('SEMI', {}),
+                    ('FUNC_CALL', {'function': '#1', 'parameters': [{'type': 'int', 'value': 1}, {'type': 'int', 'value': 2}]}),
                     ('SEMI', {}),
                     ('RET_SYM', {}),
                     ('VAR', '%6'),
@@ -193,9 +197,6 @@ def test_parse_source_code():
                     ('FUNC_CALL', {'function': '#1', 'parameters': []}),
                     ('SEMI', {}),
                     ('VAR_DEF', {'name': 'array', 'pseudonymous': '%4', 'type': 'int', 'type_pseudonymous': '2', 'length': 10}),
-                    ('LBRA', {}),
-                    ('CST', {'type': 'int', 'value': 10}),
-                    ('RBRA', {}),
                     ('SEMI', {}),
                     ('VAR', '%4'),
                     ('LBRA', {}),
@@ -333,6 +334,12 @@ def test_split_source():
         '(',
         'blabla',
         '123',
+        ')',
+        ';',
+        'abc',
+        '(',
+        '1',
+        '2',
         ')',
         ';',
         'return',
