@@ -740,12 +740,15 @@ class Lexer:
 
             # Use the parameter pseudonymous instead of the actual name
             if token in local_variables:
-                parameter = local_variables[token]["pseudonymous"]
+                parameter = {
+                    "type": "variable",
+                    "value": local_variables[token]["pseudonymous"]
+                }
 
             # If not a variable, then it's a constant. Thus, save it to the
             # `parameters` list after extracting its actual value.
             else:
-                parameter = _handle_constant(token, number_only=True)
+                parameter = _handle_constant(token)
             
             parameters.append(parameter)
 
