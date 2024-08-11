@@ -28,3 +28,4 @@ class VAR(Node):
 
         self.instruction: str = "FETCH"
         self.symbol: str = f"({self.symbol})^({self.value})"
+        self.relative_position: int = _relative_position
