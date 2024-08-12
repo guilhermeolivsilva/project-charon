@@ -18,7 +18,7 @@ from src.ast_nodes.variables.ELEMENT_ACCESS import ELEMENT_ACCESS
 
 # Functions
 from src.ast_nodes.functions.FUNC_CALL import FUNC_CALL
-# from src.ast_nodes.basic.PROG import PROG
+from src.ast_nodes.functions.RET_SYM import RET_SYM
 
 # Conditional nodes (control flow, loops etc.)
 from src.ast_nodes.conditionals.DO import DO
