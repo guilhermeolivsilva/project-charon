@@ -1,4 +1,4 @@
-"""Representation of LT nodes for the Abstract Syntax Tree."""
+"""Representation of LESS nodes for the Abstract Syntax Tree."""
 
 from typing_extensions import override
 
@@ -7,7 +7,7 @@ from src.ast_nodes.node import Node
 from src.ast_nodes.operations.operation import Operation
 
 
-class LT(Operation):
+class LESS(Operation):
     """
     Implement the representation of a "less than" (<) comparison for the AST.
 
@@ -25,4 +25,4 @@ class LT(Operation):
     def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
         super().__init__(id, lhs, rhs, **kwargs)
 
-        self.instruction: str = "ILT"
+        self.instruction: str = "LT"
