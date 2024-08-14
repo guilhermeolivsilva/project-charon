@@ -9,7 +9,7 @@ from src.ast_nodes.operations.operation import Operation
 
 class BITOR(Operation):
     """
-    Implement the representation of a bit-wise or operation (|) for the AST.
+    Implement the representation of a bitwise or operation (|) for the AST.
 
     Parameters
     ----------

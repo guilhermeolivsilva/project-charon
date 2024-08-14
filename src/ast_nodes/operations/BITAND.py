@@ -9,7 +9,7 @@ from src.ast_nodes.operations.operation import Operation
 
 class BITAND(Operation):
     """
-    Implement the representation of a bit-wise and operation (&) for the AST.
+    Implement the representation of a bitwise and operation (&) for the AST.
 
     Parameters
     ----------
