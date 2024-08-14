@@ -25,7 +25,7 @@ class EXPR(Node):
 
         self.child_expression: Node = child_expression
 
-        self.instruction: str = "IPOP"
+        self.instruction: str = "POP"
 
     @override
     def get_certificate_label(self) -> list[str]:

@@ -21,6 +21,7 @@ class SEQ(Node):
     def __init__(self, id: int) -> None:
         super().__init__(id)
 
+        self.instruction: str = "SEQ"
         self.children: list[Node] = []
 
     def add_child(self, child: Node) -> None:
@@ -90,7 +91,11 @@ class SEQ(Node):
             `instruction`, and node `id`, and `value`.
         """
 
-        _dummy_instruction = {"instruction": "SEQ", "id": self.id, "value": None}
+        _dummy_instruction = {
+            "instruction": self.instruction,
+            "id": self.id,
+            "value": None
+        }
 
         # Flatten the code of the children in a single, one dimensional list of
         # code metadata (dicts), as each child.generate_code call returns a

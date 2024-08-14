@@ -30,7 +30,7 @@ class ASSIGN(Operation):
 
         self.value: Union[str, int, None] = lhs.value
 
-        self.instruction: str = "ISTORE"
+        self.instruction: str = "STORE"
         self.symbol: str = f"{self.symbol}^{self.value}"
 
     @override

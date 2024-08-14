@@ -19,8 +19,10 @@ class PROG(Node):
 
     @override
     def __init__(self, id: int) -> None:
+
         super().__init__(id)
 
+        self.instruction: str = "HALT"
         self.first_statement: Node = None
 
     def set_first_statement(self, first_statement: Node) -> None:
@@ -89,7 +91,11 @@ class PROG(Node):
             `instruction`, and node `id`, and `value`.
         """
 
-        _program_end = {"instruction": "HALT", "id": self.id, "value": None}
+        _program_end = {
+            "instruction": self.instruction,
+            "id": self.id,
+            "value": None
+        }
 
         _program_code = self.first_statement.generate_code()
 
