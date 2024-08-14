@@ -7,11 +7,14 @@ __STARTING_SYMBOL = 2
 
 __CERTIFICATE_SYMBOLS = [
     "CST",
+    "EXPR",
+    "SEQ",
     "VAR_DEF",
     "VAR",
     "ELEMENT_ACCESS",
     "FUNC_CALL",
     "RET_SYM",
+    "PROG",
     "ASSIGN",
     "ADD",
     "SUB",
@@ -19,22 +22,19 @@ __CERTIFICATE_SYMBOLS = [
     "DIV",
     "LESS",
     "GREATER",
+    "EQUAL",
     "AND",
     "OR",
     "LSHIFT",
     "RSHIFT",
     "BITAND",
     "BITOR",
-    "EQUAL",
     "IF",
     "IFELSE",
     "WHILE",
-    "DOWHILE",
-    "PROG",
-    "EXPR",
-    "SEQ",
-    "EMPTY",
-    "STRUCT_DEF"
+    "DO",
+    "STRUCT_DEF",
+    "EMPTY"
 ]
 
 CERTIFICATE_SYMBOLS_MAP = {
