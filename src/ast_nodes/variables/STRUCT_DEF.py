@@ -55,7 +55,7 @@ class STRUCT_DEF(Node):
             for attribute in self.struct_metadata.get("attributes").values()
         )
 
-        print(" " * (indent + 1) + f"Attributes: {_attribute_types}")
+        print(f"{' ' * (indent + 1)} Attributes: {_attribute_types}")
 
     @override
     def certificate(self, prime: int) -> int:
@@ -87,7 +87,7 @@ class STRUCT_DEF(Node):
     @override
     def generate_code(self) -> list:
         """
-        Generate the code associated with this `EXPR`.
+        Generate the code associated with this `STRUCT_DEF`.
 
         For this node specialization, there is no code to be generated -- the
         struct definition is just an abstraction.
@@ -99,3 +99,15 @@ class STRUCT_DEF(Node):
         """
 
         return []
+
+    def get_symbol(self) -> str:
+        """
+        Get the `symbol` attribute from this `STRUCT_DEF`.
+
+        Returns
+        -------
+        : str
+            The `symbol` attribute.
+        """
+
+        return self.symbol
