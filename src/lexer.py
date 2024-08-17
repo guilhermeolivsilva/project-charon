@@ -504,10 +504,28 @@ class Lexer:
                     f" '{struct_name}'"
                 )
                 raise SyntaxError(err_msg)
+            
+            is_builtin_type = attr_type in self.types
+            if is_builtin_type:
+                type_pseudonymous = self.types.get(attr_type)
+            else:
+                try:
+                    type_pseudonymous = (
+                        self.globals.get("structs")
+                                    .get(attr_type)
+                                    .get("pseudonymous")
+                    )
+
+                    # Flag the struct type to be `active`, as a variable of its
+                    # type is being defined
+                    self.globals["structs"][attr_type]["active"] = True
+                except (KeyError, AttributeError):
+                    type_pseudonymous = None
 
             attributes[attr_name] = {
                 "type": attr_type,
-                "attr_pointer": len(attributes) + 1
+                "attr_pointer": len(attributes) + 1,
+                "type_pseudonymous": type_pseudonymous
             }
 
             # Expected format: `<attr_type>` `<attr_name>` `;`.
@@ -521,11 +539,10 @@ class Lexer:
             raise SyntaxError(err_msg)
 
         for attr_name, attr_metadata in attributes.items():
-
             attr_type = attr_metadata["type"]
 
             # 2. Check if all the types are valid
-            if attr_type not in self.types:
+            if attr_type not in self.types or attr_type is None:
                 err_msg = (
                     f"Unknown type '{attr_type}' of struct attribute"
                     f" '{attr_name}'"
@@ -628,12 +645,15 @@ class Lexer:
                 if is_builtin_type:
                     type_pseudonymous = self.types.get(variable_type)
                 else:
-                    type_pseudonymous = self.globals["structs"][variable_type]["pseudonymous"]
+                    type_pseudonymous = (
+                        self.globals.get("structs")
+                                    .get(variable_type)
+                                    .get("pseudonymous")
+                    )
 
                     # Flag the struct type to be `active`, as a variable of its
                     # type is being defined
                     self.globals["structs"][variable_type]["active"] = True
-                    
 
                 variable_metadata = {
                     "type": variable_type,
