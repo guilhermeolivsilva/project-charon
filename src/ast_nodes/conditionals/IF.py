@@ -27,7 +27,6 @@ class IF(Conditional):
     def __init__(
         self, id: int, parenthesis_expression: Node, statement_if_true: Node
     ) -> None:
-
         super().__init__(id, parenthesis_expression, statement_if_true)
 
     @override

@@ -18,11 +18,7 @@ class VAR_DEF(Node):
     """
 
     @override
-    def __init__(
-        self,
-        id: int,
-        variable_metadata: dict
-    ) -> None:
+    def __init__(self, id: int, variable_metadata: dict) -> None:
         # Clip the `%` sign from the pseudonymous computed by the Lexer,
         # and cast it to `int`.
         _pseudonymous: str = variable_metadata.get("pseudonymous")
@@ -32,7 +28,7 @@ class VAR_DEF(Node):
 
         self.instruction: str = "ALLOC"
         self.type_certificate = variable_metadata.get("type_certificate")
-        self.length = variable_metadata.get("length")
+        self.length = variable_metadata.get("length", 1)
 
         self.symbol: str = (
             f"({self.symbol})^"

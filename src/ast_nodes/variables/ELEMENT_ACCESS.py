@@ -32,15 +32,8 @@ class ELEMENT_ACCESS(Node):
 
         self.instruction = "ELEMENT_PTR"
 
-        self.variable = VAR(
-            id=id + 1,
-            pseudonymous=variable
-        )
-        self.element = CST(
-            id=id + 2,
-            value=element,
-            type="int"
-        )
+        self.variable = VAR(id=id + 1, pseudonymous=variable)
+        self.element = CST(id=id + 2, value=element, type="int")
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -60,7 +53,7 @@ class ELEMENT_ACCESS(Node):
         certificate_label: list = [
             *self.variable.get_certificate_label(),
             *self.element.get_certificate_label(),
-            *super().get_certificate_label()
+            *super().get_certificate_label(),
         ]
 
         return certificate_label
@@ -103,7 +96,7 @@ class ELEMENT_ACCESS(Node):
         code_metadata: list[dict] = [
             *self.variable.generate_code(),
             *self.element.generate_code(),
-            *super().generate_code()
+            *super().generate_code(),
         ]
 
         return code_metadata

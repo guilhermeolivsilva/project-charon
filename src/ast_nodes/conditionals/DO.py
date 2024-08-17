@@ -47,7 +47,7 @@ class DO(Conditional):
         return [
             *self.statement_if_true.get_certificate_label(),
             *self.parenthesis_expression.get_certificate_label(),
-            self.certificate_label
+            self.certificate_label,
         ]
 
     @override

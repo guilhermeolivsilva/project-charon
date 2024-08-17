@@ -7,19 +7,11 @@ from src.ast_nodes.node import Node
 
 
 CONSTANT_TYPES = {
-    "int": {
-        "enforce": int,
-        "exponent": 2
-    },
-    "float": {
-        "enforce": float,
-        "exponent": 3
-    },
-    "long": {
-        "enforce": int,
-        "exponent": 4
-    }
+    "int": {"enforce": int, "exponent": 2},
+    "float": {"enforce": float, "exponent": 3},
+    "long": {"enforce": int, "exponent": 4},
 }
+
 
 class CST(Node):
     """
@@ -55,9 +47,7 @@ class CST(Node):
         self.instruction: str = "PUSH"
 
         _exponent: int = CONSTANT_TYPES[type]["exponent"]
-        self.symbol: str = (
-            f"({self.symbol})^({self.value})^({_exponent})"
-        )
+        self.symbol: str = f"({self.symbol})^({self.value})^({_exponent})"
 
     @override
     def __str__(self) -> str:

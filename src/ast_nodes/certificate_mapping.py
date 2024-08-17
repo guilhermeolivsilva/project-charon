@@ -34,16 +34,13 @@ __CERTIFICATE_SYMBOLS = [
     "IFELSE",
     "WHILE",
     "DO",
-    "EMPTY"
+    "EMPTY",
 ]
 
 CERTIFICATE_SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
         __CERTIFICATE_SYMBOLS,
-        range(
-            __STARTING_SYMBOL,
-            __STARTING_SYMBOL + len(__CERTIFICATE_SYMBOLS)
-        )
+        range(__STARTING_SYMBOL, __STARTING_SYMBOL + len(__CERTIFICATE_SYMBOLS)),
     )
 }

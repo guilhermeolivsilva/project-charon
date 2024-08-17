@@ -34,7 +34,6 @@ class IFELSE(Conditional):
         statement_if_true: Node,
         statement_if_false: Node,
     ) -> None:
-
         super().__init__(id, parenthesis_expression, statement_if_true)
 
         self.statement_if_false: Node = statement_if_false

@@ -136,17 +136,10 @@ class FUNC_CALL(Node):
             _value = parameter.get("value")
 
             if _type == "variable":
-                new_node = VAR(
-                    id=current_id + 1,
-                    pseudonymous=_value
-                )
+                new_node = VAR(id=current_id + 1, pseudonymous=_value)
 
             else:
-                new_node = CST(
-                    id=current_id + 1,
-                    value=_value,
-                    type=_type
-                )
+                new_node = CST(id=current_id + 1, value=_value, type=_type)
 
             current_id += 1
             children_nodes.append(new_node)

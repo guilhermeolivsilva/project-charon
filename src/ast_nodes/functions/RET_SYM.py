@@ -42,7 +42,7 @@ class RET_SYM(Node):
 
         certificate_label: list[str] = [
             *self.returned_value.get_certificate_label(),
-            *super().get_certificate_label()
+            *super().get_certificate_label(),
         ]
 
         return certificate_label
@@ -82,7 +82,7 @@ class RET_SYM(Node):
 
         code_metadata: list[dict] = [
             *self.returned_value.generate_code(),
-            *super().generate_code()
+            *super().generate_code(),
         ]
 
         return code_metadata

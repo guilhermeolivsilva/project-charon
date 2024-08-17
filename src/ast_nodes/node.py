@@ -18,8 +18,10 @@ class Node:
         The value the Node holds, if any. Defaults to None.
     """
 
-    def __init__(self, id: int, value: Union[int, str, float, None] = None) -> None:
-        self.id: int = id
+    def __init__(
+        self, id: Union[int, str], value: Union[int, str, float, None] = None
+    ) -> None:
+        self.id: Union[int, str] = id
         self.value: Union[int, str, float, None] = value
         self.certificate_label: str = None
 
@@ -188,5 +190,5 @@ def get_node_certificate_symbol(node: "Node") -> str:
     : str
         The associated certificate symbol.
     """
-    
+
     return CERTIFICATE_SYMBOLS_MAP.get(type(node).__name__)

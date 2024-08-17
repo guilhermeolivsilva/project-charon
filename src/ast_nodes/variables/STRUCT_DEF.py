@@ -18,11 +18,7 @@ class STRUCT_DEF(Node):
     """
 
     @override
-    def __init__(
-        self,
-        id: int,
-        struct_metadata: dict[str, dict[str, dict]]
-    ) -> None:
+    def __init__(self, id: int, struct_metadata: dict[str, dict[str, dict]]) -> None:
         # Clip the `%` sign from the pseudonymous computed by the Lexer,
         # and cast it to `int`.
         _pseudonymous: str = struct_metadata.get("pseudonymous")
@@ -37,7 +33,7 @@ class STRUCT_DEF(Node):
 
         self.struct_metadata = struct_metadata
         self.symbol: str = f"({self.symbol})^{_attribute_types}"
-        
+
     @override
     def print(self, indent: int = 0) -> None:
         """

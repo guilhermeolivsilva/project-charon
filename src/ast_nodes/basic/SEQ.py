@@ -94,7 +94,7 @@ class SEQ(Node):
         _dummy_instruction = {
             "instruction": self.instruction,
             "id": self.id,
-            "value": None
+            "value": None,
         }
 
         # Flatten the code of the children in a single, one dimensional list of
