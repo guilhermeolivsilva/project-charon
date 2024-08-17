@@ -2,7 +2,7 @@
 
 from typing import Union
 
-from src.ast_nodes.certificate_mapping import CERTIFICATE_SYMBOLS_MAP
+from src.ast_nodes.certificate_mapping import NODE_SYMBOLS_MAP
 from src.utils import next_prime
 
 
@@ -191,4 +191,4 @@ def get_node_certificate_symbol(node: "Node") -> str:
         The associated certificate symbol.
     """
 
-    return CERTIFICATE_SYMBOLS_MAP.get(type(node).__name__)
+    return NODE_SYMBOLS_MAP.get(type(node).__name__)

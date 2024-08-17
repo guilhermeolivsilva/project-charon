@@ -1,4 +1,4 @@
-"""Map each AST Node to a certificate."""
+"""Manage the mapping from symbols to base certificates."""
 
 
 # First symbol is 2 because, if it were 1, any operation using it as the base
@@ -37,10 +37,26 @@ __CERTIFICATE_SYMBOLS = [
     "EMPTY",
 ]
 
-CERTIFICATE_SYMBOLS_MAP = {
+__TYPES_SYMBOLS = [
+    "int",
+    "float",
+    "long"
+]
+
+
+NODE_SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
         __CERTIFICATE_SYMBOLS,
         range(__STARTING_SYMBOL, __STARTING_SYMBOL + len(__CERTIFICATE_SYMBOLS)),
+    )
+}
+
+
+TYPE_SYMBOLS_MAP = {
+    certificate: str(base)
+    for certificate, base in zip(
+        __TYPES_SYMBOLS,
+        range(__STARTING_SYMBOL, __STARTING_SYMBOL + len(__TYPES_SYMBOLS))
     )
 }
