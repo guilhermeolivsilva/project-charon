@@ -10,6 +10,7 @@ __CERTIFICATE_SYMBOLS = [
     "EXPR",
     "SEQ",
     "VAR_DEF",
+    "STRUCT_DEF",
     "VAR",
     "ELEMENT_ACCESS",
     "FUNC_CALL",
@@ -33,7 +34,6 @@ __CERTIFICATE_SYMBOLS = [
     "IFELSE",
     "WHILE",
     "DO",
-    "STRUCT_DEF",
     "EMPTY"
 ]
 

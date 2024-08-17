@@ -12,8 +12,9 @@ from src.ast_nodes.basic.EXPR import EXPR
 from src.ast_nodes.basic.SEQ import SEQ
 
 # Variables
-from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.variables.VAR_DEF import VAR_DEF
+from src.ast_nodes.variables.STRUCT_DEF import STRUCT_DEF
+from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.variables.ELEMENT_ACCESS import ELEMENT_ACCESS
 
 # Functions
