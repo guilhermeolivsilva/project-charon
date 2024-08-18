@@ -26,13 +26,40 @@ class VAR_DEF(Node):
 
         super().__init__(id, _relative_position)
 
+        self.variable_metadata: dict = variable_metadata
         self.instruction: str = "ALLOC"
-        self.type_certificate = variable_metadata.get("type_certificate")
-        self.length = variable_metadata.get("length", 1)
+
+        _type_certificate = self.variable_metadata.get("type_certificate")
+        _length = self.variable_metadata.get("length", 1)
 
         self.symbol: str = (
             f"({self.symbol})^"
             + f"({_relative_position})^"
-            + f"({self.type_certificate})^"
-            + f"({self.length})"
+            + f"({_type_certificate})^"
+            + f"({_length})"
         )
+
+    @override
+    def print(self, indent: int = 0) -> None:
+        """
+        Print the string representation of this `VAR_DEF`.
+
+        The node itself is aligned with `indent`, and the information about its
+        attributes is padded with an additional left space.
+
+        Parameters
+        ----------
+        indent : int (optional, default = 0)
+            The number of left padding spaces to indent.
+        """
+
+        super().print(indent)
+
+        var_def_metadata: str = ""
+        var_def_metadata += f"Name: {self.variable_metadata.get('name')}, "
+        var_def_metadata += f"Type: {self.variable_metadata.get('type')}"
+
+        if self.variable_metadata.get("length"):
+            var_def_metadata += f" (array), Length: {self.variable_metadata.get('length')}"
+
+        print(f"{' ' * (indent + 1)} {var_def_metadata}")
