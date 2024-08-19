@@ -13,15 +13,17 @@ class VAR(Node):
     ----------
     id : int
         The ID of the Node.
-    pseudonymous : str
-        The pseudonymous of the variable, that reflects the relative position
-        where it was first declared in the original source code.
+    variable_metadata : dict[str, str]
+        A dictionary containing the pseudonymous of the variable, that reflects
+        the relative position where it was first declared in the original source
+        code.
     """
 
     @override
-    def __init__(self, id: int, pseudonymous: str) -> None:
+    def __init__(self, id: int, variable_metadata: dict[str, str]) -> None:
         # Clip the `%` sign from the pseudonymous computed by the Lexer,
         # and cast it to `int`.
+        pseudonymous = variable_metadata.get("pseudonymous")
         _relative_position: int = int(pseudonymous[1:])
 
         super().__init__(id, _relative_position)

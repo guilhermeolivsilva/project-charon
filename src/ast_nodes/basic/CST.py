@@ -21,10 +21,8 @@ class CST(Node):
     ----------
     id : int
         The ID of the Node.
-    value : int or float
-        The value of the constant.
-    type : str
-        The type of the constant.
+    constant_metadata : dict[str, str]
+        A dictionary containing metadata (type and value) about this constant.
 
     Raises
     ------
@@ -34,7 +32,10 @@ class CST(Node):
     """
 
     @override
-    def __init__(self, id: int, value: Union[int, float], type: str) -> None:
+    def __init__(self, id: int, constant_metadata: dict[str, str]) -> None:
+        value = constant_metadata.get("value")
+        type = constant_metadata.get("type")
+
         if type not in CONSTANT_TYPES:
             raise TypeError(f"Constant has invalid type '{type}'")
 
