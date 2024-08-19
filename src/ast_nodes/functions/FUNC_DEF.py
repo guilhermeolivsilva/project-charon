@@ -39,19 +39,20 @@ class FUNC_DEF(Node):
         self.pseudonymous: str = function_metadata.get("pseudonymous")
         self.type: str = function_metadata.get("type")
         self.arguments: dict = function_metadata.get("arguments")
-        self.statements = SEQ(id=id)
+        self.statements: SEQ = None
 
-    def add_statement(self, statement: Node) -> None:
+    def set_statements(self, statements: SEQ) -> None:
         """
-        Add a statement Node to the `self.SEQ.children` list.
+        Set the `statements` attribute.
 
         Parameters
         ----------
-        statement : Node
-            The statement to be added to the list.
+        statements : SEQ
+            The statements to be added to object. Must be a `SEQ` -- i.e., the
+            root of a subtree with the statements of this function.
         """
 
-        self.statements.add_child(statement)
+        self.statements = statements
 
     @override
     def get_certificate_label(self) -> list[str]:
