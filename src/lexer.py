@@ -368,7 +368,7 @@ class Lexer:
                 
             elif curr_token in local_variables:
                 var_pseudonymous = local_variables[curr_token]["pseudonymous"]
-                statements.append(("VAR", var_pseudonymous))
+                statements.append(("VAR", {"pseudonymous": var_pseudonymous}))
                 idx += 1
 
             # Handle struct attributes
@@ -724,7 +724,7 @@ class Lexer:
             )
 
         return [
-            ("VAR", var_pseudonymous),
+            ("VAR", {"pseudonymous": var_pseudonymous}),
             ("DOT", {}),
             ("CST", {"type": "int", "value": attr_pointer})
         ]
