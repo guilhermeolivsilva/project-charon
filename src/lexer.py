@@ -25,8 +25,8 @@ class Lexer:
 
     operators: dict[str, str] = {
         "=": "ASSIGN",
-        "+": "PLUS",
-        "-": "MINUS",
+        "+": "ADD",
+        "-": "SUB",
         "*": "MULT",
         "/": "DIV",
         "<": "LESS",
