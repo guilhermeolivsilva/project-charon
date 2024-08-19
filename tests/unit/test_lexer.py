@@ -137,6 +137,7 @@ def test_parse_source_code():
                     'abcdef': {'type': 'int', 'pseudonymous': '%4'}
                 },
                 'statements': [
+                    ('LCBRA', {}),
                     ('VAR_DEF', {'name': 'bla', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
                     ('ASSIGN', {}),
                     ('CST', {'type': 'int', 'value': 1}),
@@ -167,7 +168,8 @@ def test_parse_source_code():
                     ('VAR', '%6'),
                     ('PLUS', {}),
                     ('VAR', '%5'),
-                    ('SEMI', {})
+                    ('SEMI', {}),
+                    ('RCBRA', {})
                 ]
             },
             'function_that_returns_struct': {
@@ -178,20 +180,23 @@ def test_parse_source_code():
                     'aaa': {'type': 'int', 'pseudonymous': '%4'}
                 },
                 'statements': [
+                    ('LCBRA', {}),
                     ('VAR_DEF', {'name': 'internal_guy', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
                     ('SEMI', {}),
                     ('RET_SYM', {}),
                     ('VAR', '%3'),
                     ('PLUS', {}),
                     ('VAR', '%4'),
-                    ('SEMI', {})
+                    ('SEMI', {}),
+                    ('RCBRA', {})
                 ]
             },
             'main': {
                 'pseudonymous': '#3',
                 'type': 'int',
                 'arguments': {},
-                 'statements': [
+                'statements': [
+                    ('LCBRA', {}),
                     ('VAR_DEF', {'name': 'x', 'pseudonymous': '%3', 'type': 'int', 'type_pseudonymous': '2'}),
                     ('ASSIGN', {}),
                     ('FUNC_CALL', {'function': '#1', 'parameters': []}),
@@ -258,7 +263,8 @@ def test_parse_source_code():
                     ('RPAR', {}),
                     ('RSHIFT', {}),
                     ('CST', {'type': 'int', 'value': 1}),
-                    ('SEMI', {})
+                    ('SEMI', {}),
+                    ('RCBRA', {})
                 ]
             }
         }

@@ -335,8 +335,9 @@ class Lexer:
             function_idx=start_idx
         )
 
-        # Parse the statements
-        statements: list[tuple[str, dict]] = []
+        # Parse the statements, and initialize the list of statements with a
+        # left curly bracket ({ -- `LCBRA`)
+        statements: list[tuple[str, dict]] = [("LCBRA", {})]
         statements_start_idx = (
             symbol_collection[start_idx : end_idx].index("{") + 1
         )
@@ -438,6 +439,10 @@ class Lexer:
             else:
                 statements.append((self.reserved_words.get(curr_token), {}))
                 idx += 1
+
+        # Add a closing right curly bracket (} -- `RCBRA`) to the statements
+        # list.
+        statements.append(("RCBRA", {}))
 
         function_metadata = {
             "type": function_type,
