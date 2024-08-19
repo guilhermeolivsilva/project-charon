@@ -27,13 +27,13 @@ class ELEMENT_ACCESS(Node):
     """
 
     @override
-    def __init__(self, id: int, variable: str, element: int) -> None:
+    def __init__(self, id: int, variable: VAR, element: CST) -> None:
         super().__init__(id)
 
         self.instruction = "ELEMENT_PTR"
 
-        self.variable = VAR(id=id + 1, pseudonymous=variable)
-        self.element = CST(id=id + 2, value=element, type="int")
+        self.variable: VAR = variable
+        self.element: CST = element
 
     @override
     def get_certificate_label(self) -> list[str]:
