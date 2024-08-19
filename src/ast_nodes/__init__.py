@@ -20,6 +20,7 @@ from src.ast_nodes.variables.ELEMENT_ACCESS import ELEMENT_ACCESS
 
 # Functions
 from src.ast_nodes.functions.FUNC_CALL import FUNC_CALL
+from src.ast_nodes.functions.FUNC_DEF import FUNC_DEF
 from src.ast_nodes.functions.RET_SYM import RET_SYM
 from src.ast_nodes.functions.PROG import PROG
 
