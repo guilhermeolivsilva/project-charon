@@ -53,7 +53,7 @@ int main() {
     array[5] = 1;
     int y;
 
-    if(((x << 4) == 1 or (x > 1)) and (x < 10)) {
+    if((((x << 4) == 1) or (x > 1)) and (x < 10)) {
         y = x & 1;
     }
     else {
@@ -228,12 +228,14 @@ def test_parse_source_code():
                     ('LPAR', {}),
                     ('LPAR', {}),
                     ('LPAR', {}),
+                    ('LPAR', {}),
                     ('VAR', {'pseudonymous': '%3'}),
                     ('LSHIFT', {}),
                     ('CST', {'type': 'int', 'value': 4}),
                     ('RPAR', {}),
                     ('EQUAL', {}),
                     ('CST', {'type': 'int', 'value': 1}),
+                    ('RPAR', {}),
                     ('OR', {}),
                     ('LPAR', {}),
                     ('VAR', {'pseudonymous': '%3'}),
@@ -434,12 +436,14 @@ def test_split_source():
         '(',
         '(',
         '(',
+        '(',
         'x',
         '<<',
         '4',
         ')',
         '==',
         '1',
+        ')',
         'or',
         '(',
         'x',
