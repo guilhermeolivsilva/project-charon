@@ -16,8 +16,12 @@ struct my_struct {
 my_struct global_var;
 
 int abc(int asda, int abcdef) {
-    int bla = 1;
-    float blabla = 2.0;
+    int bla;
+    bla = 1;
+
+    float blabla;
+    blabla = 2.0;
+
     long int xaxaxa;
 
     my_struct internal_struct_var;
@@ -41,13 +45,15 @@ struct test_struct {
 }
 
 int main() {
-    int x = abc();
+    int x;
+    x = abc();
+
     int array[10];
 
     array[5] = 1;
     int y;
 
-    if(((x << 4) == 1 or x > 1) and (x < 10)) {
+    if(((x << 4) == 1 or (x > 1)) and (x < 10)) {
         y = x & 1;
     }
     else {
@@ -139,10 +145,14 @@ def test_parse_source_code():
                 'statements': [
                     ('LCBRA', {}),
                     ('VAR_DEF', {'name': 'bla', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
+                    ('SEMI', {}),
+                    ('VAR', {'pseudonymous': '%5'}),
                     ('ASSIGN', {}),
                     ('CST', {'type': 'int', 'value': 1}),
                     ('SEMI', {}),
                     ('VAR_DEF', {'name': 'blabla', 'pseudonymous': '%6', 'type': 'float', 'type_pseudonymous': '3'}),
+                    ('SEMI', {}),
+                    ('VAR', {'pseudonymous': '%6'}),
                     ('ASSIGN', {}),
                     ('CST', {'type': 'float', 'value': 2.0}),
                     ('SEMI', {}),
@@ -198,6 +208,8 @@ def test_parse_source_code():
                 'statements': [
                     ('LCBRA', {}),
                     ('VAR_DEF', {'name': 'x', 'pseudonymous': '%3', 'type': 'int', 'type_pseudonymous': '2'}),
+                    ('SEMI', {}),
+                    ('VAR', {'pseudonymous': '%3'}),
                     ('ASSIGN', {}),
                     ('FUNC_CALL', {'function': '#1', 'parameters': []}),
                     ('SEMI', {}),
@@ -223,9 +235,11 @@ def test_parse_source_code():
                     ('EQUAL', {}),
                     ('CST', {'type': 'int', 'value': 1}),
                     ('OR', {}),
+                    ('LPAR', {}),
                     ('VAR', {'pseudonymous': '%3'}),
                     ('GREATER', {}),
                     ('CST', {'type': 'int', 'value': 1}),
+                    ('RPAR', {}),
                     ('RPAR', {}),
                     ('AND', {}),
                     ('LPAR', {}),
@@ -314,10 +328,14 @@ def test_split_source():
         '{',
         'int',
         'bla',
+        ';',
+        'bla',
         '=',
         '1',
         ';',
         'float',
+        'blabla',
+        ';',
         'blabla',
         '=',
         '2.0',
@@ -389,6 +407,8 @@ def test_split_source():
         '{',
         'int',
         'x',
+        ';',
+        'x',
         '=',
         'abc',
         '(',
@@ -421,9 +441,11 @@ def test_split_source():
         '==',
         '1',
         'or',
+        '(',
         'x',
         '>',
         '1',
+        ')',
         ')',
         'and',
         '(',
