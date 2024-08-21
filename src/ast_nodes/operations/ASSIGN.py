@@ -26,20 +26,17 @@ class ASSIGN(Operation):
 
     @override
     def __init__(self, id: int, lhs: Node, rhs: Node) -> None:
-        super().__init__(id, lhs=None, rhs=rhs)
-
-        self.value: Union[str, int, None] = lhs.value
+        super().__init__(id, lhs=lhs, rhs=rhs)
 
         self.instruction: str = "STORE"
-        self.symbol: str = f"{self.symbol}^{self.value}"
 
     @override
     def get_certificate_label(self) -> list[str]:
         """
         Get the contents of `certificate_label`.
 
-        For `ASSIGN` nodes, first obtain the certificate from the `rhs`
-        subtree, recursively, and then from the `ASSIGN` node itself.
+        For `ASSIGN` nodes, first obtain the certificate from the `lhs` and
+        `rhs` subtrees, recursively, and then from the `ASSIGN` node itself.
 
         Returns
         -------
@@ -47,7 +44,11 @@ class ASSIGN(Operation):
             A list containing the certificate label of the `Node`.
         """
 
-        return [*self.rhs.get_certificate_label(), self.certificate_label]
+        return [
+            *self.lhs.get_certificate_label(),
+            *self.rhs.get_certificate_label(),
+            self.certificate_label
+        ]
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -65,6 +66,7 @@ class ASSIGN(Operation):
 
         print("  " * indent + str(self))
 
+        self.lhs.print(indent + 1)
         self.rhs.print(indent + 1)
 
     @override
@@ -72,8 +74,8 @@ class ASSIGN(Operation):
         """
         Generate the code associated with this `ASSIGN`.
 
-        For this node specialization, generate code from the `rhs` first, and
-        then from the node itself.
+        For this node specialization, generate code from the `lhs` and `rhs`
+        subtrees first, and then from the node itself.
 
         Returns
         -------
@@ -88,7 +90,11 @@ class ASSIGN(Operation):
             "value": self.value,
         }
 
-        code_metadata = [*self.rhs.generate_code(), _this_metadata]
+        code_metadata = [
+            *self.lhs.generate_code(),
+            *self.rhs.generate_code(),
+            _this_metadata
+        ]
 
         return code_metadata
 
@@ -97,8 +103,9 @@ class ASSIGN(Operation):
         """
         Compute the certificate of the current `ASSIGN`, and set this attribute.
 
-        For `ASSIGN` nodes, certificate the `rhs` first. Then, certificate the
-        `ASSIGN` itself with `symbol ^ variable declaration relative position`.
+        For `ASSIGN` nodes, certificate the `lhs` and `rhs` subtrees first.
+        Then, certificate the `ASSIGN` itself with `symbol ^ variable
+        declaration relative position`.
 
         Parameters
         ----------
@@ -112,6 +119,7 @@ class ASSIGN(Operation):
             A prime number that comes after the given `prime`.
         """
 
+        prime = self.lhs.certificate(prime)
         prime = self.rhs.certificate(prime)
 
         self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
