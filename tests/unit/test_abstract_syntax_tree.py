@@ -3,104 +3,300 @@
 from pytest import fixture
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
-from src.ast_nodes.basic.PROG import PROG
+from src.ast_nodes.basic.SCOPE import SCOPE
 
 
-SOURCE_CODE = [
-    ("LCBRA", None),
-    ("ID", "a"),
-    ("ASSIGN", None),
-    ("INT", 5),
-    ("SEMI", None),
-    ("ID", "b"),
-    ("ASSIGN", None),
-    ("ID", "a"),
-    ("MINUS", None),
-    ("INT", 1),
-    ("SEMI", None),
-    ("DO_SYM", None),
-    ("LCBRA", None),
-    ("ID", "c"),
-    ("ASSIGN", None),
-    ("ID", "a"),
-    ("MINUS", None),
-    ("ID", "b"),
-    ("SEMI", None),
-    ("ID", "b"),
-    ("ASSIGN", None),
-    ("ID", "b"),
-    ("PLUS", None),
-    ("INT", 1),
-    ("SEMI", None),
-    ("IF_SYM", None),
-    ("LPAR", None),
-    ("ID", "a"),
-    ("LESS", None),
-    ("ID", "c"),
-    ("RPAR", None),
-    ("LCBRA", None),
-    ("ID", "d"),
-    ("ASSIGN", None),
-    ("INT", 10),
-    ("SEMI", None),
-    ("RCBRA", None),
-    ("ELSE_SYM", None),
-    ("LCBRA", None),
-    ("ID", "d"),
-    ("ASSIGN", None),
-    ("INT", 0),
-    ("SEMI", None),
-    ("RCBRA", None),
-    ("RCBRA", None),
-    ("WHILE_SYM", None),
-    ("LPAR", None),
-    ("ID", "b"),
-    ("LESS", None),
-    ("ID", "a"),
-    ("RPAR", None),
-    ("SEMI", None),
-    ("RCBRA", None),
-]
-
+SOURCE_CODE = {
+    'globals': {
+        'structs': {
+            'my_struct': {
+                'pseudonymous': '%struct.1',
+                'attributes': {
+                    'x': {'type': 'int', 'attr_pointer': 1, 'type_pseudonymous': '2'},
+                    'y': {'type': 'float', 'attr_pointer': 2, 'type_pseudonymous': '3'}
+                },
+                'active': True
+            },
+            'test_struct': {
+                'pseudonymous': '%struct.2',
+                'attributes': {
+                    'abcd': {'type': 'int', 'attr_pointer': 1, 'type_pseudonymous': '2'},
+                    'xyz': {'type': 'int', 'attr_pointer': 2, 'type_pseudonymous': '2'}
+                },
+                'active': False
+            }
+        },
+        'variables': {
+            'a': {'type': 'int', 'pseudonymous': '%1', 'type_pseudonymous': '2'},
+            'global_var': {'type': 'my_struct', 'pseudonymous': '%2', 'type_pseudonymous': '%struct.1'}
+        }
+    },
+    'functions': {
+        'abc': {
+            'pseudonymous': '#1',
+            'type': 'int',
+            'arguments': {
+                'asda': {'type': 'int', 'pseudonymous': '%3'},
+                'abcdef': {'type': 'int', 'pseudonymous': '%4'}
+            },
+            'statements': [
+                ('LCBRA', {}),
+                ('VAR_DEF', {'name': 'bla', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
+                ('SEMI', {}),
+                ('VAR', {'pseudonymous': '%5'}),
+                ('ASSIGN', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('SEMI', {}),
+                ('VAR_DEF', {'name': 'blabla', 'pseudonymous': '%6', 'type': 'float', 'type_pseudonymous': '3'}),
+                ('SEMI', {}),
+                ('VAR', {'pseudonymous': '%6'}),
+                ('ASSIGN', {}),
+                ('CST', {'type': 'float', 'value': 2.0}),
+                ('SEMI', {}),
+                ('VAR_DEF', {'name': 'xaxaxa', 'pseudonymous': '%7', 'type': 'long', 'type_pseudonymous': '4'}),
+                ('SEMI', {}),
+                ('VAR_DEF', {'name': 'internal_struct_var', 'pseudonymous': '%8', 'type': 'my_struct', 'type_pseudonymous': '%struct.1'}),
+                ('SEMI', {}),
+                ('VAR', {'pseudonymous': '%8'}),
+                ('DOT', {}),
+                ('CST', {'type': 'int', 'value': 0}),
+                ('ASSIGN', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('SEMI', {}),
+                ('VAR', {'pseudonymous': '%5'}),
+                ('ASSIGN', {}),
+                ('VAR', {'pseudonymous': '%5'}),
+                ('ADD', {}),
+                ('FUNC_CALL', {'function': '#2', 'parameters': [{'type': 'variable', 'value': '%6'}, {'type': 'int', 'value': 123}]}),
+                ('SEMI', {}),
+                ('FUNC_CALL', {'function': '#1', 'parameters': [{'type': 'int', 'value': 1}, {'type': 'int', 'value': 2}]}),
+                ('SEMI', {}),
+                ('RET_SYM', {}),
+                ('VAR', {'pseudonymous': '%6'}),
+                ('ADD', {}),
+                ('VAR', {'pseudonymous': '%5'}),
+                ('SEMI', {}),
+                ('RCBRA', {})
+            ]
+        },
+        'function_that_returns_struct': {
+            'pseudonymous': '#2',
+            'type': 'my_struct',
+            'arguments': {
+                'xyz': {'type': 'int', 'pseudonymous': '%3'},
+                'aaa': {'type': 'int', 'pseudonymous': '%4'}
+            },
+            'statements': [
+                ('LCBRA', {}),
+                ('VAR_DEF', {'name': 'internal_guy', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
+                ('SEMI', {}),
+                ('RET_SYM', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('ADD', {}),
+                ('VAR', {'pseudonymous': '%4'}),
+                ('SEMI', {}),
+                ('RCBRA', {})
+            ]
+        },
+        'main': {
+            'pseudonymous': '#3',
+            'type': 'int',
+            'arguments': {},
+            'statements': [
+                ('LCBRA', {}),
+                ('VAR_DEF', {'name': 'x', 'pseudonymous': '%3', 'type': 'int', 'type_pseudonymous': '2'}),
+                ('SEMI', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('ASSIGN', {}),
+                ('FUNC_CALL', {'function': '#1', 'parameters': []}),
+                ('SEMI', {}),
+                ('VAR_DEF', {'name': 'array', 'pseudonymous': '%4', 'type': 'int', 'type_pseudonymous': '2', 'length': 10}),
+                ('SEMI', {}),
+                ('VAR', {'pseudonymous': '%4'}),
+                ('LBRA', {}),
+                ('CST', {'type': 'int', 'value': 5}),
+                ('RBRA', {}),
+                ('ASSIGN', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('SEMI', {}),
+                ('VAR_DEF', {'name': 'y', 'pseudonymous': '%5', 'type': 'int', 'type_pseudonymous': '2'}),
+                ('SEMI', {}),
+                ('IF_SYM', {}),
+                ('LPAR', {}),
+                ('LPAR', {}),
+                ('LPAR', {}),
+                ('LPAR', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('LSHIFT', {}),
+                ('CST', {'type': 'int', 'value': 4}),
+                ('RPAR', {}),
+                ('EQUAL', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('RPAR', {}),
+                ('OR', {}),
+                ('LPAR', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('GREATER', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('RPAR', {}),
+                ('RPAR', {}),
+                ('AND', {}),
+                ('LPAR', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('LESS', {}),
+                ('CST', {'type': 'int', 'value': 10}),
+                ('RPAR', {}),
+                ('RPAR', {}),
+                ('LCBRA', {}),
+                ('VAR', {'pseudonymous': '%5'}),
+                ('ASSIGN', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('BITAND', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('SEMI', {}),
+                ('RCBRA', {}),
+                ('ELSE_SYM', {}),
+                ('LCBRA', {}),
+                ('VAR', {'pseudonymous': '%5'}),
+                ('ASSIGN', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('BITOR', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('SEMI', {}),
+                ('RCBRA', {}),
+                ('RET_SYM', {}),
+                ('LPAR', {}),
+                ('LPAR', {}),
+                ('VAR', {'pseudonymous': '%3'}),
+                ('MULT', {}),
+                ('VAR', {'pseudonymous': '%5'}),
+                ('RPAR', {}),
+                ('DIV', {}),
+                ('CST', {'type': 'int', 'value': 2}),
+                ('RPAR', {}),
+                ('RSHIFT', {}),
+                ('CST', {'type': 'int', 'value': 1}),
+                ('SEMI', {}),
+                ('RCBRA', {})
+            ]
+        }
+    }
+}
 
 EXPECTED_PRINT_TREE = """
-ID: 0, Value: None, Kind: PROG
-  ID: 14, Value: None, Kind: SEQ
-    ID: 3, Value: None, Kind: EXPR
-      ID: 5, Value: a, Kind: SET
-        ID: 6, Value: 5, Kind: CST
-    ID: 8, Value: None, Kind: EXPR
-      ID: 10, Value: b, Kind: SET
-        ID: 12, Value: None, Kind: SUB
-          ID: 11, Value: a, Kind: VAR
-          ID: 13, Value: 1, Kind: CST
-    ID: 15, Value: None, Kind: DO
-      ID: 49, Value: None, Kind: LT
-        ID: 48, Value: b, Kind: VAR
-        ID: 50, Value: a, Kind: VAR
-      ID: 31, Value: None, Kind: SEQ
-        ID: 18, Value: None, Kind: EXPR
-          ID: 20, Value: c, Kind: SET
-            ID: 22, Value: None, Kind: SUB
-              ID: 21, Value: a, Kind: VAR
-              ID: 23, Value: b, Kind: VAR
-        ID: 25, Value: None, Kind: EXPR
-          ID: 27, Value: b, Kind: SET
-            ID: 29, Value: None, Kind: ADD
-              ID: 28, Value: b, Kind: VAR
-              ID: 30, Value: 1, Kind: CST
-        ID: 32, Value: None, Kind: IFELSE
-          ID: 34, Value: None, Kind: LT
-            ID: 33, Value: a, Kind: VAR
-            ID: 35, Value: c, Kind: VAR
-          ID: 37, Value: None, Kind: SEQ
-            ID: 38, Value: None, Kind: EXPR
-              ID: 40, Value: d, Kind: SET
-                ID: 41, Value: 10, Kind: CST
-          ID: 43, Value: None, Kind: SEQ
-            ID: 44, Value: None, Kind: EXPR
-              ID: 46, Value: d, Kind: SET
-                ID: 47, Value: 0, Kind: CST
+ID: global, Value: None, Kind: SCOPE
+  ID: 1, Value: 1, Kind: STRUCT_DEF
+   Attributes: int, float
+  ID: 2, Value: 2, Kind: STRUCT_DEF
+   Attributes: int, int
+  ID: 3, Value: 1, Kind: VAR_DEF
+    Name: a, Type: int
+  ID: 4, Value: 2, Kind: VAR_DEF
+    Name: global_var, Type: my_struct
+  ID: abc, Value: None, Kind: FUNC_DEF
+    ID: 51, Value: None, Kind: SEQ
+      ID: 8, Value: 5, Kind: VAR_DEF
+        Name: bla, Type: int
+      ID: 12, Value: None, Kind: EXPR
+        ID: 14, Value: None, Kind: ASSIGN
+          ID: 13, Value: 5, Kind: VAR
+          ID: 15, Value: 1, Kind: CST, Type: int
+      ID: 17, Value: 6, Kind: VAR_DEF
+        Name: blabla, Type: float
+      ID: 21, Value: None, Kind: EXPR
+        ID: 23, Value: None, Kind: ASSIGN
+          ID: 22, Value: 6, Kind: VAR
+          ID: 24, Value: 2.0, Kind: CST, Type: float
+      ID: 26, Value: 7, Kind: VAR_DEF
+        Name: xaxaxa, Type: long
+      ID: 30, Value: 8, Kind: VAR_DEF
+        Name: internal_struct_var, Type: my_struct
+      ID: 34, Value: None, Kind: EXPR
+        ID: 38, Value: None, Kind: ASSIGN
+          ID: 36, Value: None, Kind: ELEMENT_ACCESS
+            ID: 35, Value: 8, Kind: VAR
+            ID: 37, Value: 0, Kind: CST, Type: int
+          ID: 39, Value: 1, Kind: CST, Type: int
+      ID: 41, Value: None, Kind: EXPR
+        ID: 43, Value: None, Kind: ASSIGN
+          ID: 42, Value: 5, Kind: VAR
+          ID: 45, Value: None, Kind: ADD
+            ID: 44, Value: 5, Kind: VAR
+            ID: 46, Value: 2, Kind: FUNC_CALL
+              ID: 47, Value: 6, Kind: VAR
+              ID: 48, Value: 123, Kind: CST, Type: int
+      ID: 48, Value: 1, Kind: FUNC_CALL
+        ID: 49, Value: 1, Kind: CST, Type: int
+        ID: 50, Value: 2, Kind: CST, Type: int
+      ID: 52, Value: None, Kind: RET_SYM
+        ID: 53, Value: None, Kind: EXPR
+          ID: 55, Value: None, Kind: ADD
+            ID: 54, Value: 6, Kind: VAR
+            ID: 56, Value: 5, Kind: VAR
+  ID: function_that_returns_struct, Value: None, Kind: FUNC_DEF
+    ID: 63, Value: None, Kind: SEQ
+      ID: 60, Value: 5, Kind: VAR_DEF
+        Name: internal_guy, Type: int
+      ID: 64, Value: None, Kind: RET_SYM
+        ID: 65, Value: None, Kind: EXPR
+          ID: 67, Value: None, Kind: ADD
+            ID: 66, Value: 3, Kind: VAR
+            ID: 68, Value: 4, Kind: VAR
+  ID: main, Value: None, Kind: FUNC_DEF
+    ID: 126, Value: None, Kind: SEQ
+      ID: 72, Value: 3, Kind: VAR_DEF
+        Name: x, Type: int
+      ID: 76, Value: None, Kind: EXPR
+        ID: 78, Value: None, Kind: ASSIGN
+          ID: 77, Value: 3, Kind: VAR
+          ID: 79, Value: 1, Kind: FUNC_CALL
+      ID: 81, Value: 4, Kind: VAR_DEF
+        Name: array, Type: int (array), Length: 10
+      ID: 85, Value: None, Kind: EXPR
+        ID: 89, Value: None, Kind: ASSIGN
+          ID: 87, Value: None, Kind: ELEMENT_ACCESS
+            ID: 86, Value: 4, Kind: VAR
+            ID: 88, Value: 5, Kind: CST, Type: int
+          ID: 90, Value: 1, Kind: CST, Type: int
+      ID: 92, Value: 5, Kind: VAR_DEF
+        Name: y, Type: int
+      ID: 96, Value: None, Kind: IFELSE
+        ID: 106, Value: None, Kind: AND
+          ID: 102, Value: None, Kind: OR
+            ID: 100, Value: None, Kind: EQUAL
+              ID: 98, Value: None, Kind: LSHIFT
+                ID: 97, Value: 3, Kind: VAR
+                ID: 99, Value: 4, Kind: CST, Type: int
+              ID: 101, Value: 1, Kind: CST, Type: int
+            ID: 104, Value: None, Kind: GREATER
+              ID: 103, Value: 3, Kind: VAR
+              ID: 105, Value: 1, Kind: CST, Type: int
+          ID: 108, Value: None, Kind: LESS
+            ID: 107, Value: 3, Kind: VAR
+            ID: 109, Value: 10, Kind: CST, Type: int
+        ID: 111, Value: None, Kind: SEQ
+          ID: 112, Value: None, Kind: EXPR
+            ID: 114, Value: None, Kind: ASSIGN
+              ID: 113, Value: 5, Kind: VAR
+              ID: 116, Value: None, Kind: BITAND
+                ID: 115, Value: 3, Kind: VAR
+                ID: 117, Value: 1, Kind: CST, Type: int
+        ID: 119, Value: None, Kind: SEQ
+          ID: 120, Value: None, Kind: EXPR
+            ID: 122, Value: None, Kind: ASSIGN
+              ID: 121, Value: 5, Kind: VAR
+              ID: 124, Value: None, Kind: BITOR
+                ID: 123, Value: 3, Kind: VAR
+                ID: 125, Value: 1, Kind: CST, Type: int
+      ID: 127, Value: None, Kind: RET_SYM
+        ID: 128, Value: None, Kind: EXPR
+          ID: 134, Value: None, Kind: RSHIFT
+            ID: 132, Value: None, Kind: DIV
+              ID: 130, Value: None, Kind: MULT
+                ID: 129, Value: 3, Kind: VAR
+                ID: 131, Value: 5, Kind: VAR
+              ID: 133, Value: 2, Kind: CST, Type: int
+            ID: 135, Value: 1, Kind: CST, Type: int
 """
 
 
@@ -112,8 +308,8 @@ def test_init() -> None:
     assert ast.node_id_manager == 1
     assert ast.source_code == SOURCE_CODE
     assert ast.current_symbol is None
-    assert ast.current_value is None
-    assert ast.root == PROG(id=0)
+    assert ast.current_value == {}
+    assert ast.root == SCOPE(scope_name="global")
 
 
 def test_build(capfd: fixture) -> None:
