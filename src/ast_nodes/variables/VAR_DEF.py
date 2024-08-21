@@ -55,11 +55,10 @@ class VAR_DEF(Node):
 
         super().print(indent)
 
-        var_def_metadata: str = ""
-        var_def_metadata += f"Name: {self.variable_metadata.get('name')}, "
+        var_def_metadata: str = f"Name: {self.variable_metadata.get('name')}, "
         var_def_metadata += f"Type: {self.variable_metadata.get('type')}"
 
         if self.variable_metadata.get("length"):
             var_def_metadata += f" (array), Length: {self.variable_metadata.get('length')}"
 
-        print(f"{' ' * (indent + 1)} {var_def_metadata}")
+        print(f"{'  ' * (indent + 1)}{var_def_metadata}")
