@@ -2,6 +2,7 @@
 .vscode/
 
 # Local tests/experiments
+debug/
 notebooks/
 
 # Prerequisites
