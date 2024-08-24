@@ -367,8 +367,8 @@ class Lexer:
                 idx += 1
                 
             elif curr_token in local_variables:
-                var_pseudonymous = local_variables[curr_token]["pseudonymous"]
-                statements.append(("VAR", {"pseudonymous": var_pseudonymous}))
+                var_metadata = local_variables[curr_token]
+                statements.append(("VAR", var_metadata))
                 idx += 1
 
             # Handle struct attributes
@@ -717,14 +717,14 @@ class Lexer:
             err_msg += f" variable '{struct_var}'"
             raise SyntaxError(err_msg)
 
-        var_pseudonymous = local_variables[struct_var]["pseudonymous"]
+        var_metadata = local_variables[struct_var]
         attr_pointer = (
             list(self.globals["structs"][struct_type]["attributes"])
                 .index(struct_attr)
             )
 
         return [
-            ("VAR", {"pseudonymous": var_pseudonymous}),
+            ("VAR", var_metadata),
             ("DOT", {}),
             ("CST", {"type": "int", "value": attr_pointer})
         ]
