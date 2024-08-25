@@ -40,7 +40,7 @@ __CERTIFICATE_SYMBOLS = [
 __TYPES_SYMBOLS = [
     "int",
     "float",
-    "long"
+    "short"
 ]
 
 

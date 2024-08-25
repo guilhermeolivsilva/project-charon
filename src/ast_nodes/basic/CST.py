@@ -9,7 +9,7 @@ from src.ast_nodes.node import Node
 CONSTANT_TYPES = {
     "int": {"enforce": int, "exponent": 2},
     "float": {"enforce": float, "exponent": 3},
-    "long": {"enforce": int, "exponent": 4},
+    "short": {"enforce": int, "exponent": 4},
 }
 
 
