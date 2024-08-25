@@ -131,25 +131,19 @@ class FUNC_CALL(Node):
         children_nodes: list[Node] = []
         current_id = self.id
 
-        for parameter in parameters:
-            _type = parameter.get("type")
-            _value = parameter.get("value")
+        for parameter_metadata in parameters:
+            _is_variable = parameter_metadata.get("variable")
 
-            if _type == "variable":
-                variable_metadata = {"pseudonymous": _value}
+            if _is_variable:
                 new_node = VAR(
                     id=current_id + 1,
-                    variable_metadata=variable_metadata
+                    variable_metadata=parameter_metadata
                 )
 
             else:
-                constant_metadata = {
-                    "value": _value,
-                    "type": _type
-                }
                 new_node = CST(
                     id=current_id + 1,
-                    constant_metadata=constant_metadata
+                    constant_metadata=parameter_metadata
                 )
 
             current_id += 1

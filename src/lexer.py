@@ -44,7 +44,7 @@ class Lexer:
     types: dict[str, str] = {
         "int": "2",
         "float": "3",
-        "long": "4"
+        "short": "4"
     }
 
     reserved_words: dict[str, str] = {
@@ -177,9 +177,6 @@ class Lexer:
 
         # Remove line breaks
         source_code = self.source_code.replace("\n", "")
-
-        # Collapse `long int` to just `long`
-        source_code = source_code.replace("long int", "long")
 
         # Replace commas with spaces
         source_code = source_code.replace(",", " ")
@@ -768,17 +765,20 @@ class Lexer:
             elif token == ")":
                 break
 
-            # Use the parameter pseudonymous instead of the actual name
+            # Export the variable metadata
             if token in local_variables:
                 parameter = {
-                    "type": "variable",
-                    "value": local_variables[token]["pseudonymous"]
+                    "variable": True,
+                    **local_variables[token]
                 }
 
             # If not a variable, then it's a constant. Thus, save it to the
             # `parameters` list after extracting its actual value.
             else:
-                parameter = _handle_constant(token)
+                parameter = {
+                    "variable": False,
+                    **_handle_constant(token)
+                }
             
             parameters.append(parameter)
 

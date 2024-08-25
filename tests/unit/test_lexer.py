@@ -22,7 +22,7 @@ int abc(int asda, int abcdef) {
     float blabla;
     blabla = 2.0;
 
-    long int xaxaxa;
+    short xaxaxa;
 
     my_struct internal_struct_var;
     internal_struct_var.x = 1;
@@ -201,7 +201,7 @@ def test_parse_source_code():
                         {
                             "name": "xaxaxa",
                             "pseudonymous": "%7",
-                            "type": "long",
+                            "type": "short",
                             "type_pseudonymous": "4",
                         },
                     ),
@@ -255,8 +255,8 @@ def test_parse_source_code():
                         {
                             "function": "#2",
                             "parameters": [
-                                {"type": "variable", "value": "%6"},
-                                {"type": "int", "value": 123},
+                                {"variable": True, "name": "blabla", "pseudonymous": "%6", "type": "float", "type_pseudonymous": "3", },
+                                {"variable": False, "type": "int", "value": 123},
                             ],
                         },
                     ),
@@ -266,8 +266,8 @@ def test_parse_source_code():
                         {
                             "function": "#1",
                             "parameters": [
-                                {"type": "int", "value": 1},
-                                {"type": "int", "value": 2},
+                                {"variable": False, "type": "int", "value": 1},
+                                {"variable": False, "type": "int", "value": 2},
                             ],
                         },
                     ),
@@ -576,7 +576,7 @@ def test_split_source():
         '=',
         '2.0',
         ';',
-        'long',
+        'short',
         'xaxaxa',
         ';',
         'my_struct',
