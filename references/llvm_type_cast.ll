@@ -18,6 +18,30 @@ define noundef i32 @_Z7int_sumii(i32 noundef %0, i32 noundef %1) #0 {
 }
 
 ; Function Attrs: mustprogress noinline nounwind optnone ssp uwtable(sync)
+define void @_Z10int_othersv() #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca i16, align 2
+  %3 = alloca float, align 4
+  %4 = load i32, ptr %1, align 4
+  %5 = load i16, ptr %2, align 2
+  %6 = sext i16 %5 to i32
+  %7 = add nsw i32 %4, %6
+  %8 = load i16, ptr %2, align 2
+  %9 = sext i16 %8 to i32
+  %10 = load i32, ptr %1, align 4
+  %11 = add nsw i32 %9, %10
+  %12 = load i32, ptr %1, align 4
+  %13 = sitofp i32 %12 to float
+  %14 = load float, ptr %3, align 4
+  %15 = fadd float %13, %14
+  %16 = load float, ptr %3, align 4
+  %17 = load i32, ptr %1, align 4
+  %18 = sitofp i32 %17 to float
+  %19 = fadd float %16, %18
+  ret void
+}
+
+; Function Attrs: mustprogress noinline nounwind optnone ssp uwtable(sync)
 define noundef float @_Z9float_sumff(float noundef %0, float noundef %1) #0 {
   %3 = alloca float, align 4
   %4 = alloca float, align 4
@@ -30,30 +54,70 @@ define noundef float @_Z9float_sumff(float noundef %0, float noundef %1) #0 {
 }
 
 ; Function Attrs: mustprogress noinline nounwind optnone ssp uwtable(sync)
-define noundef signext i8 @_Z8char_sumcc(i8 noundef signext %0, i8 noundef signext %1) #0 {
-  %3 = alloca i8, align 1
-  %4 = alloca i8, align 1
-  store i8 %0, ptr %3, align 1
-  store i8 %1, ptr %4, align 1
-  %5 = load i8, ptr %3, align 1
-  %6 = sext i8 %5 to i32
-  %7 = load i8, ptr %4, align 1
-  %8 = sext i8 %7 to i32
-  %9 = add nsw i32 %6, %8
-  %10 = trunc i32 %9 to i8
-  ret i8 %10
+define void @_Z12float_othersv() #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca i16, align 2
+  %3 = alloca float, align 4
+  %4 = load float, ptr %3, align 4
+  %5 = load i16, ptr %2, align 2
+  %6 = sext i16 %5 to i32
+  %7 = sitofp i32 %6 to float
+  %8 = fadd float %4, %7
+  %9 = load i16, ptr %2, align 2
+  %10 = sext i16 %9 to i32
+  %11 = sitofp i32 %10 to float
+  %12 = load float, ptr %3, align 4
+  %13 = fadd float %11, %12
+  %14 = load float, ptr %3, align 4
+  %15 = load i32, ptr %1, align 4
+  %16 = sitofp i32 %15 to float
+  %17 = fadd float %14, %16
+  %18 = load i32, ptr %1, align 4
+  %19 = sitofp i32 %18 to float
+  %20 = load float, ptr %3, align 4
+  %21 = fadd float %19, %20
+  ret void
 }
 
 ; Function Attrs: mustprogress noinline nounwind optnone ssp uwtable(sync)
-define noundef i64 @_Z8long_sumll(i64 noundef %0, i64 noundef %1) #0 {
-  %3 = alloca i64, align 8
-  %4 = alloca i64, align 8
-  store i64 %0, ptr %3, align 8
-  store i64 %1, ptr %4, align 8
-  %5 = load i64, ptr %3, align 8
-  %6 = load i64, ptr %4, align 8
-  %7 = add nsw i64 %5, %6
-  ret i64 %7
+define noundef signext i16 @_Z9short_sumss(i16 noundef signext %0, i16 noundef signext %1) #0 {
+  %3 = alloca i16, align 2
+  %4 = alloca i16, align 2
+  store i16 %0, ptr %3, align 2
+  store i16 %1, ptr %4, align 2
+  %5 = load i16, ptr %3, align 2
+  %6 = sext i16 %5 to i32
+  %7 = load i16, ptr %4, align 2
+  %8 = sext i16 %7 to i32
+  %9 = add nsw i32 %6, %8
+  %10 = trunc i32 %9 to i16
+  ret i16 %10
+}
+
+; Function Attrs: mustprogress noinline nounwind optnone ssp uwtable(sync)
+define void @_Z12short_othersv() #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca i16, align 2
+  %3 = alloca float, align 4
+  %4 = load i16, ptr %2, align 2
+  %5 = sext i16 %4 to i32
+  %6 = sitofp i32 %5 to float
+  %7 = load float, ptr %3, align 4
+  %8 = fadd float %6, %7
+  %9 = load float, ptr %3, align 4
+  %10 = load i16, ptr %2, align 2
+  %11 = sext i16 %10 to i32
+  %12 = sitofp i32 %11 to float
+  %13 = fadd float %9, %12
+  %14 = load i16, ptr %2, align 2
+  %15 = sext i16 %14 to i32
+  %16 = load i32, ptr %1, align 4
+  %17 = add nsw i32 %15, %16
+  %18 = load i32, ptr %1, align 4
+  %19 = load i16, ptr %2, align 2
+  %20 = sext i16 %19 to i32
+  %21 = add nsw i32 %18, %20
+  ret void
 }
 
 ; Function Attrs: mustprogress noinline norecurse optnone ssp uwtable(sync)
@@ -61,30 +125,24 @@ define noundef i32 @main() #1 {
   %1 = alloca i32, align 4
   %2 = alloca i32, align 4
   %3 = alloca float, align 4
-  %4 = alloca i8, align 1
-  %5 = alloca i64, align 8
+  %4 = alloca i16, align 2
   store i32 0, ptr %1, align 4
-  %6 = call noundef i32 @_Z7int_sumii(i32 noundef 23, i32 noundef 13)
-  store i32 %6, ptr %2, align 4
-  %7 = call noundef float @_Z9float_sumff(float noundef 0x40091EB860000000, float noundef 0x4005AE1480000000)
-  store float %7, ptr %3, align 4
-  %8 = call noundef signext i8 @_Z8char_sumcc(i8 noundef signext 1, i8 noundef signext 2)
-  store i8 %8, ptr %4, align 1
-  %9 = call noundef i64 @_Z8long_sumll(i64 noundef 123, i64 noundef 321)
-  store i64 %9, ptr %5, align 8
-  %10 = load i32, ptr %2, align 4
-  %11 = sitofp i32 %10 to float
-  %12 = load float, ptr %3, align 4
-  %13 = fadd float %11, %12
-  %14 = load i8, ptr %4, align 1
-  %15 = sext i8 %14 to i32
-  %16 = sitofp i32 %15 to float
-  %17 = fadd float %13, %16
-  %18 = load i64, ptr %5, align 8
-  %19 = sitofp i64 %18 to float
-  %20 = fadd float %17, %19
-  %21 = fptosi float %20 to i32
-  %22 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %21)
+  %5 = call noundef i32 @_Z7int_sumii(i32 noundef 23, i32 noundef 13)
+  store i32 %5, ptr %2, align 4
+  %6 = call noundef float @_Z9float_sumff(float noundef 0x40091EB860000000, float noundef 0x4005AE1480000000)
+  store float %6, ptr %3, align 4
+  %7 = call noundef signext i16 @_Z9short_sumss(i16 noundef signext 1, i16 noundef signext 2)
+  store i16 %7, ptr %4, align 2
+  %8 = load i32, ptr %2, align 4
+  %9 = sitofp i32 %8 to float
+  %10 = load float, ptr %3, align 4
+  %11 = fadd float %9, %10
+  %12 = load i16, ptr %4, align 2
+  %13 = sext i16 %12 to i32
+  %14 = sitofp i32 %13 to float
+  %15 = fadd float %11, %14
+  %16 = fptosi float %15 to i32
+  %17 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %16)
   ret i32 0
 }
 
