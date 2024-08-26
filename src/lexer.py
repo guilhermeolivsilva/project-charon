@@ -126,7 +126,7 @@ class Lexer:
         symbol_collection = self._annotate_constants(symbol_collection)
 
         # Parse the global scope first
-        self._parse_global_scope(symbol_collection)
+        self._parse_globals(symbol_collection)
 
         # Then, compute the bounding indices of each function, and parse them
         # one by one.
@@ -148,7 +148,7 @@ class Lexer:
         }
 
         for function in functions_scopes:
-            function_data: dict[str, str] = self._parse_function_scope(
+            function_data: dict[str, str] = self._parse_function(
                 symbol_collection,
                 **functions_scopes.get(function)
             )
@@ -236,7 +236,7 @@ class Lexer:
 
         return symbol_collection
     
-    def _parse_global_scope(self, symbol_collection: list[str]) -> None:
+    def _parse_globals(self, symbol_collection: list[str]) -> None:
         """
         Parse the struct types and variables to be available globally.
 
@@ -288,9 +288,10 @@ class Lexer:
                         token_idx=idx
                     )
 
-                    # The `_handle_variable_definition` method will return an empty tuple
-                    # if the current token is not a variable. Thus, only add it
-                    # to the `globals` dict if the returned value is not valid.
+                    # The `_handle_variable_definition` method will return an
+                    # empty tuple if the current token is not a variable. Thus,
+                    # only add it to the `globals` dict if the returned value is
+                    # not valid.
                     if definition_metadata:
                         variable_name, variable_metadata = definition_metadata
                         
@@ -299,7 +300,7 @@ class Lexer:
                         variable_metadata["pseudonymous"] = f"%{var_pseudonymous}"
                         self.globals["variables"][variable_name] = variable_metadata
 
-    def _parse_function_scope(
+    def _parse_function(
         self,
         symbol_collection: list[str],
         start_idx: int,
@@ -811,7 +812,7 @@ class Lexer:
             try:
                 if self._is_function_definition(symbol_collection, idx):
                     start_idx = idx - 1
-                    end_idx = _find_function_scope_end(symbol_collection, idx)
+                    end_idx = _find_function_bounds(symbol_collection, idx)
                     function_name = token
 
                     scopes_limits[function_name] = {
@@ -934,9 +935,10 @@ class Lexer:
         return arguments
 
 
-def _find_function_scope_end(symbol_collection: list[str], token_idx: int) -> int:
+def _find_function_bounds(symbol_collection: list[str], token_idx: int) -> int:
     curly_brackets_stack = []
     parsing_started = False
+    parsing_ended = False
 
     for idx, token in enumerate(symbol_collection[token_idx:]):
         if token == "{":
@@ -947,7 +949,11 @@ def _find_function_scope_end(symbol_collection: list[str], token_idx: int) -> in
             curly_brackets_stack.pop()
 
         if parsing_started and not len(curly_brackets_stack):
+            parsing_ended = True
             break
+
+    if not parsing_ended:
+        raise SyntaxError("Missing closing curly brace ('}')")
 
     scope_end = idx + token_idx
 

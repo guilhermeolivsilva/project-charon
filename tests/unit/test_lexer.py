@@ -92,6 +92,9 @@ INVALID_FUNCTIONS = [
 
     # 2. Malformed function definitions
     "int abc(int) { return x; }",
+
+    # 3. Unclosed function definition
+    "int main() { int abc; return abc; "
 ]
 
 
