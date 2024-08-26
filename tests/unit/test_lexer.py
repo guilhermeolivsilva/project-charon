@@ -83,7 +83,16 @@ INVALID_VARIABLES = [
     "unknown_type var;",
 
     # 2. Invalid variable definition
-    "int var ." 
+    "int var .",
+
+    # 3. Variable redefinition (globals)
+    "int abc; int xyz; int abc;",
+
+    # 4. Variable redefinition (local)
+    "int main() { int abc; int xyz; int abc; }",
+
+    # 5. Variable redefinition (global + local)
+    "int xyz; int main() { int abc; int xyz; }",
 ]
 
 INVALID_FUNCTIONS = [
