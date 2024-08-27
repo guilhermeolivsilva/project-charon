@@ -22,28 +22,27 @@ class PROG(Node):
         super().__init__(id)
 
         self.instruction: str = "HALT"
-        self.first_statement: Node = None
+        self.children: list[Node] = []
 
-    def set_first_statement(self, first_statement: Node) -> None:
+    def add_child(self, child: Node) -> None:
         """
-        Set the first statement of the program.
+        Add a child Node to the `self.children` list.
 
         Parameters
         ----------
-        first_statement : Node
-            The node that represents the first statement.
+        child : Node
+            The child to be added to the list.
         """
 
-        self.first_statement = first_statement
+        self.children.append(child)
 
     @override
     def get_certificate_label(self) -> list[str]:
         """
         Get the contents of `certificate_label`.
 
-        For `PROG` nodes, first obtain the certificate from the
-        `first_statement` subtree, recursively, and then from the `PROG` node
-        itself.
+        For `PROG` nodes, first obtain the certificate from each `child`
+        subtree, recursively, and then from the `PROG` node itself.
 
         Returns
         -------
@@ -51,10 +50,14 @@ class PROG(Node):
             A list containing the certificate label of the `Node`.
         """
 
-        return [
-            *self.first_statement.get_certificate_label(),
-            *super().get_certificate_label(),
-        ]
+        certificate_label: list[str] = []
+
+        for child in self.children:
+            certificate_label.extend(child.get_certificate_label())
+
+        certificate_label.extend(super().get_certificate_label())
+
+        return certificate_label
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -72,7 +75,8 @@ class PROG(Node):
 
         super().print(indent)
 
-        self.first_statement.print(indent + 1)
+        for child in self.children:
+            child.print(indent + 1)
 
     @override
     def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
@@ -90,11 +94,18 @@ class PROG(Node):
             `instruction`, and node `id`, and `value`.
         """
 
-        _program_end = {"instruction": self.instruction, "id": self.id, "value": None}
+        code_metadata: list[dict[str, Union[int, str, None]]] = []
 
-        _program_code = self.first_statement.generate_code()
+        for child in self.children:
+            code_metadata.extend(child.generate_code())
 
-        return [*_program_code, _program_end]
+        code_metadata.append({
+            "instruction": self.instruction,
+            "id": self.id,
+            "value": None
+        })
+
+        return code_metadata
 
     @override
     def certificate(self, prime: int) -> int:
@@ -116,6 +127,7 @@ class PROG(Node):
             A prime number that comes after the given `prime`.
         """
 
-        prime = self.first_statement.certificate(prime)
+        for child in self.children:
+            prime = child.certificate(prime)
 
         return super().certificate(prime)

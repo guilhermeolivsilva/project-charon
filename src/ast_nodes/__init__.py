@@ -9,7 +9,7 @@ from src.ast_nodes.operations.operation import Operation
 from src.ast_nodes.basic.CST import CST
 from src.ast_nodes.basic.EMPTY import EMPTY
 from src.ast_nodes.basic.EXPR import EXPR
-from src.ast_nodes.basic.SCOPE import SCOPE
+from src.ast_nodes.basic.PROG import PROG
 from src.ast_nodes.basic.SEQ import SEQ
 
 # Variables
@@ -22,7 +22,6 @@ from src.ast_nodes.variables.ELEMENT_ACCESS import ELEMENT_ACCESS
 from src.ast_nodes.functions.FUNC_CALL import FUNC_CALL
 from src.ast_nodes.functions.FUNC_DEF import FUNC_DEF
 from src.ast_nodes.functions.RET_SYM import RET_SYM
-from src.ast_nodes.functions.PROG import PROG
 
 # Conditional nodes (control flow, loops etc.)
 from src.ast_nodes.conditionals.DO import DO

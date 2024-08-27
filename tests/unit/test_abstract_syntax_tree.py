@@ -3,7 +3,7 @@
 from pytest import fixture
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
-from src.ast_nodes.basic.SCOPE import SCOPE
+from src.ast_nodes.basic.PROG import PROG
 
 
 SOURCE_CODE = {
@@ -421,7 +421,7 @@ SOURCE_CODE = {
 
 
 EXPECTED_PRINT_TREE = """
-ID: global, Value: None, Kind: SCOPE
+ID: 0, Value: None, Kind: PROG
   ID: 1, Value: 1, Kind: STRUCT_DEF
    Attributes: int, float
   ID: 2, Value: 2, Kind: STRUCT_DEF
@@ -546,7 +546,7 @@ def test_init() -> None:
     assert ast.source_code == SOURCE_CODE
     assert ast.current_symbol is None
     assert ast.current_value == {}
-    assert ast.root == SCOPE(scope_name="global")
+    assert ast.root == PROG(id=0)
 
 
 def test_build(capfd: fixture) -> None:

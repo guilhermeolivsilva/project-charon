@@ -20,7 +20,7 @@ class AbstractSyntaxTree:
     def __init__(self, source_code: list) -> None:
         self.node_id_manager: int = 1
         self.source_code: dict[str, dict] = source_code
-        self.root: SCOPE = SCOPE(scope_name="global")
+        self.root: PROG = PROG(id=0)
 
         # Attributes to be used later
         self.type_certificates: dict[str, str] = {**TYPE_SYMBOLS_MAP}
