@@ -38,9 +38,9 @@ __CERTIFICATE_SYMBOLS = [
 ]
 
 __TYPES_SYMBOLS = [
+    "short",
     "int",
-    "float",
-    "short"
+    "float"
 ]
 
 
@@ -54,8 +54,12 @@ NODE_SYMBOLS_MAP = {
 
 
 TYPE_SYMBOLS_MAP = {
-    certificate: str(base)
-    for certificate, base in zip(
+    _type: {
+        "type_symbol": base,
+        "enforce": float if _type == "float" else int
+    }
+
+    for _type, base in zip(
         __TYPES_SYMBOLS,
         range(__STARTING_SYMBOL, __STARTING_SYMBOL + len(__TYPES_SYMBOLS))
     )

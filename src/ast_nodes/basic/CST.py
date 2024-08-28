@@ -1,16 +1,9 @@
 """Representation of CST nodes for the Abstract Syntax Tree."""
 
 from typing_extensions import override
-from typing import Union
 
 from src.ast_nodes.node import Node
-
-
-CONSTANT_TYPES = {
-    "int": {"enforce": int, "exponent": 2},
-    "float": {"enforce": float, "exponent": 3},
-    "short": {"enforce": int, "exponent": 4},
-}
+from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 
 
 class CST(Node):
@@ -36,19 +29,18 @@ class CST(Node):
         value = constant_metadata.get("value")
         type = constant_metadata.get("type")
 
-        if type not in CONSTANT_TYPES:
+        if type not in TYPE_SYMBOLS_MAP:
             raise TypeError(f"Constant has invalid type '{type}'")
 
+        _type_symbol: int
         _type_to_enforce: callable
-        _exponent: int
-        _type_to_enforce, _exponent = CONSTANT_TYPES[type].values()
+
+        _type_symbol, _type_to_enforce = TYPE_SYMBOLS_MAP[type].values()
         super().__init__(id, _type_to_enforce(value))
 
         self.type = type
         self.instruction: str = "PUSH"
-
-        _exponent: int = CONSTANT_TYPES[type]["exponent"]
-        self.symbol: str = f"({self.symbol})^({self.value})^({_exponent})"
+        self.symbol: str = f"({self.symbol})^({self.value})^({_type_symbol})"
 
     @override
     def __str__(self) -> str:

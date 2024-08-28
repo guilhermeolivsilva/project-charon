@@ -1,7 +1,9 @@
 """Implement a lexer for the Tiny C compiler."""
 
 from copy import deepcopy
-from typing import Any, Union
+from typing import Union
+
+from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 
 
 class Lexer:
@@ -42,9 +44,8 @@ class Lexer:
 
     # Map built-in types to pseudonymous
     types: dict[str, str] = {
-        "int": "2",
-        "float": "3",
-        "short": "4"
+        _type: TYPE_SYMBOLS_MAP[_type].get("type_symbol")
+        for _type in TYPE_SYMBOLS_MAP.keys()
     }
 
     reserved_words: dict[str, str] = {
