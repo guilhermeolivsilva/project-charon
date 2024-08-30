@@ -14,15 +14,21 @@ class Node:
     ----------
     id : int
         The ID of the Node.
-    value : int or None, optional (default = None)
+    value : str, int, float, or None, optional (default = None)
         The value the Node holds, if any. Defaults to None.
+    type : str or None (default = None)
+        The type of the Node, if any. Defaults to None.
     """
 
     def __init__(
-        self, id: Union[int, str], value: Union[int, str, float, None] = None
+        self,
+        id: Union[int, str],
+        value: Union[int, str, float, None] = None,
+        type: Union[str, None] = None
     ) -> None:
         self.id: Union[int, str] = id
         self.value: Union[int, str, float, None] = value
+        self.type: Union[str, None] = None
         self.certificate_label: str = None
 
         # Each `Node` specialization must set its own `instruction` and
@@ -67,10 +73,25 @@ class Node:
 
         _str = f"ID: {self.id}, Value: {self.value}, Kind: {type(self).__name__}"
 
+        if self.type is not None:
+            _str += f", Type: {self.type}"
+
         if self.certificate_label is not None:
             _str += f", Certificate Label: {self.certificate_label}"
 
         return _str
+    
+    def get_type(self) -> Union[str, None]:
+        """
+        Get the type of this Node.
+
+        Returns
+        -------
+        : Union[str, None]
+            The type of the Node.
+        """
+
+        return self.type
 
     def set_certificate_label(self, certificate_label: str) -> None:
         """

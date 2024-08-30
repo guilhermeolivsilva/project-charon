@@ -41,7 +41,3 @@ class CST(Node):
         self.type = type
         self.instruction: str = "PUSH"
         self.symbol: str = f"({self.symbol})^({self.value})^({_type_symbol})"
-
-    @override
-    def __str__(self) -> str:
-        return super().__str__() + f", Type: {self.type}"

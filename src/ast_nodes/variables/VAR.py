@@ -38,7 +38,7 @@ class VAR(Node):
 
     @override
     def __str__(self) -> str:
-        new_str: str = super().__str__() + f", Type: {self.type}"
+        new_str: str = super().__str__()
 
         array_length: Union[int, None] = self.variable_metadata.get("length")
         if array_length:
