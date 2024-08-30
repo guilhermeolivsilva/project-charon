@@ -5,6 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
+from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 
 
 class Operation(Node):
@@ -30,6 +31,7 @@ class Operation(Node):
 
         self.lhs: Node = lhs
         self.rhs: Node = rhs
+        self.type: str = self._compute_operation_type()
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -118,3 +120,23 @@ class Operation(Node):
         prime = self.rhs.certificate(prime)
 
         return super().certificate(prime)
+    
+    def _compute_operation_type(self) -> str:
+        """
+        Compute the type this `Operation` will return.
+
+        The type is set to be the least restrictive between the `lhs` and `rhs`
+        children Nodes -- i.e., if `lhs` is `float`, and `rhs` is `int`, return
+        `float`.
+        """
+
+        lhs_type = self.lhs.type
+        lhs_type_symbol = TYPE_SYMBOLS_MAP.get(lhs_type).get("type_symbol")
+
+        rhs_type = self.rhs.type
+        rhs_type_symbol = TYPE_SYMBOLS_MAP.get(rhs_type).get("type_symbol")
+
+        if lhs_type_symbol > rhs_type_symbol:
+            return lhs_type
+        
+        return rhs_type
