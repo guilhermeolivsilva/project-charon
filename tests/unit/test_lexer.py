@@ -232,6 +232,19 @@ def test_parse_source_code():
                     (
                         "VAR",
                         {
+                            'active': True,
+                            'attributes': {
+                                'x': {
+                                    'attr_pointer': 1,
+                                    'type': 'int',
+                                    'type_pseudonymous': 3,
+                                },
+                                'y': {
+                                    'attr_pointer': 2,
+                                    'type': 'float',
+                                    'type_pseudonymous': 4,
+                                },
+                            },
                             "name": "internal_struct_var",
                             "pseudonymous": "%8",
                             "type": "my_struct",

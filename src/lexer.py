@@ -716,7 +716,7 @@ class Lexer:
     def _handle_struct_attribute(
         self,
         token: str,
-        local_variables: dict[str, str]
+        local_variables: dict[str, dict[str, str]]
     ) -> list[str, tuple]:
 
         struct_var, struct_attr = token.split(".")
@@ -735,13 +735,20 @@ class Lexer:
             raise SyntaxError(err_msg)
 
         var_metadata = local_variables[struct_var]
+        struct_metadata = self.globals["structs"][struct_type]
+
+        struct_attribute_metadata = {
+            **struct_metadata,
+            **var_metadata
+        }
+
         attr_pointer = (
             list(self.globals["structs"][struct_type]["attributes"])
                 .index(struct_attr)
-            )
+        )
 
         return [
-            ("VAR", var_metadata),
+            ("VAR", struct_attribute_metadata),
             ("DOT", {}),
             ("CST", {"type": "int", "value": attr_pointer})
         ]
