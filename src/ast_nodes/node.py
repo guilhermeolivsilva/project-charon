@@ -81,6 +81,18 @@ class Node:
 
         return _str
     
+    def get_value(self) -> Union[int, str, float, None]:
+        """
+        Get the value of this Node.
+
+        Returns
+        -------
+        : Union[int, str, float, None]
+            The value of this Node.
+        """
+
+        return self.value
+    
     def get_type(self) -> Union[str, None]:
         """
         Get the type of this Node.

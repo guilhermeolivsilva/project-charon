@@ -45,3 +45,15 @@ class VAR(Node):
             new_str += f" (array), Length: {array_length}"
 
         return new_str
+    
+    def get_metadata(self) -> dict[str, str]:
+        """
+        Get the metadata of this `VAR`.
+
+        Returns
+        -------
+        : dict[str, str]
+            The variable metadata.
+        """
+
+        return self.variable_metadata

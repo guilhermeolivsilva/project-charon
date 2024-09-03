@@ -7,6 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.basic.CST import CST
+from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 
 
 class ELEMENT_ACCESS(Node):
@@ -27,13 +28,21 @@ class ELEMENT_ACCESS(Node):
     """
 
     @override
-    def __init__(self, id: int, variable: VAR, element: CST) -> None:
+    def __init__(
+        self,
+        id: int,
+        variable: VAR,
+        element: CST,
+        variable_metadata: dict[str, str]
+    ) -> None:
         super().__init__(id)
 
         self.instruction = "ELEMENT_PTR"
 
         self.variable: VAR = variable
         self.element: CST = element
+        self.variable_metadata: dict[str, str] = variable_metadata
+        self.type: str = self._compute_element_type()
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -125,3 +134,33 @@ class ELEMENT_ACCESS(Node):
         prime = self.element.certificate(prime)
 
         return super().certificate(prime)
+    
+    def _compute_element_type(self) -> str:
+        """
+        Compute the type of this `ELEMENT_ACCESS`.
+
+        The type of this Node is the type of the element being accessed as
+        declared in its `variable_metadata`.
+
+        Returns
+        -------
+        : str
+            The type of the accessed element.
+        """
+
+        variable_type: str = self.variable_metadata["type"]
+
+        # If the type of the struct-like variable is in this mapping, then it is
+        # an array.
+        if variable_type in TYPE_SYMBOLS_MAP:
+            return variable_type
+        
+        # If not, then it is an "actual" struct. Thus, get the type of the
+        # element being accessed.
+        struct_attributes = self.variable_metadata["attributes"]
+        accessed_attribute_index: int = self.element.get_value()
+        accessed_attribute_name: str = list(struct_attributes)[accessed_attribute_index]
+        accessed_attribute_type: str = struct_attributes[accessed_attribute_name]["type"]
+
+        return accessed_attribute_type
+

@@ -31,8 +31,9 @@ class FUNC_CALL(Node):
         super().__init__(id, _relative_position)
 
         self.instruction: str = "CALL"
-        self.function_call_metadata = function_call_metadata
-        self.parameters = self._build_children_nodes()
+        self.function_call_metadata: dict = function_call_metadata
+        self.parameters: list[Node] = self._build_children_nodes()
+        self.type: str = self.function_call_metadata.get("return_type")
 
     @override
     def get_certificate_label(self) -> list[str]:

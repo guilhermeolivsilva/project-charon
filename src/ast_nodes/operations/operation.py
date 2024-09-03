@@ -32,6 +32,7 @@ class Operation(Node):
         self.lhs: Node = lhs
         self.rhs: Node = rhs
         self.type: str = self._compute_operation_type()
+        self.symbol: str = self._compute_symbol()
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -130,13 +131,34 @@ class Operation(Node):
         `float`.
         """
 
-        lhs_type = self.lhs.type
+        lhs_type = self.lhs.get_type()
         lhs_type_symbol = TYPE_SYMBOLS_MAP.get(lhs_type).get("type_symbol")
 
-        rhs_type = self.rhs.type
+        rhs_type = self.rhs.get_type()
         rhs_type_symbol = TYPE_SYMBOLS_MAP.get(rhs_type).get("type_symbol")
 
         if lhs_type_symbol > rhs_type_symbol:
             return lhs_type
         
         return rhs_type
+
+    def _compute_symbol(self) -> str:
+        """
+        Compute the symbol of this `Operation`.
+
+        The symbol is composed by the basic symbol of the operation itself,
+        plus the types of its left and right hand sides.
+
+        Returns
+        -------
+        : str
+            The symbol computed with left and right hand sides types.
+        """
+
+        lhs_type = self.lhs.get_type()
+        lhs_type_symbol = TYPE_SYMBOLS_MAP.get(lhs_type).get("type_symbol")
+
+        rhs_type = self.rhs.get_type()
+        rhs_type_symbol = TYPE_SYMBOLS_MAP.get(rhs_type).get("type_symbol")
+
+        return f"{self.symbol}^{lhs_type_symbol}^{rhs_type_symbol}"
