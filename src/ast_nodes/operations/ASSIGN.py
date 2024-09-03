@@ -31,45 +31,6 @@ class ASSIGN(Operation):
         self.instruction: str = "STORE"
 
     @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `ASSIGN` nodes, first obtain the certificate from the `lhs` and
-        `rhs` subtrees, recursively, and then from the `ASSIGN` node itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `Node`.
-        """
-
-        return [
-            *self.lhs.get_certificate_label(),
-            *self.rhs.get_certificate_label(),
-            self.certificate_label
-        ]
-
-    @override
-    def print(self, indent: int = 0) -> None:
-        """
-        Print the string representation of this `Conditional`.
-
-        The node itself is aligned with `indent`, and its children are padded
-        with an additional left space.
-
-        Parameters
-        ----------
-        indent : int (optional, default = 0)
-            The number of left padding spaces to indent.
-        """
-
-        print("  " * indent + str(self))
-
-        self.lhs.print(indent + 1)
-        self.rhs.print(indent + 1)
-
-    @override
     def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
         """
         Generate the code associated with this `ASSIGN`.
