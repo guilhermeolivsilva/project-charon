@@ -15,6 +15,15 @@ struct my_struct {
 
 my_struct global_var;
 
+my_struct function_that_returns_struct(int xyz, int aaa) {
+    int internal_guy;
+    return xyz + aaa;
+}
+
+int some_simple_function(float param_1, int param_2) {
+    return param_1 / param_2;
+}
+
 int abc(int asda, int abcdef) {
     int bla;
     bla = 1;
@@ -27,16 +36,11 @@ int abc(int asda, int abcdef) {
     my_struct internal_struct_var;
     internal_struct_var.x = 1;
 
-    bla = bla + function_that_returns_struct(blabla, 123);
+    bla = bla + some_simple_function(blabla, 123);
 
     abc(1, 2);
 
     return blabla + bla;
-}
-
-my_struct function_that_returns_struct(int xyz, int aaa) {
-    int internal_guy;
-    return xyz + aaa;
 }
 
 struct test_struct {
@@ -156,8 +160,52 @@ def test_parse_source_code():
             },
         },
         "functions": {
-            "abc": {
+            "function_that_returns_struct": {
                 "pseudonymous": "#1",
+                "type": "my_struct",
+                "arguments": {
+                    "xyz": {"type": "int", "pseudonymous": "%3"},
+                    "aaa": {"type": "int", "pseudonymous": "%4"},
+                },
+                "statements": [
+                    ("LCBRA", {}),
+                    (
+                        "VAR_DEF",
+                        {
+                            "name": "internal_guy",
+                            "pseudonymous": "%5",
+                            "type": "int",
+                            "type_pseudonymous": 3,
+                        },
+                    ),
+                    ("SEMI", {}),
+                    ("RET_SYM", {}),
+                    ("VAR", {"type": "int", "pseudonymous": "%3"}),
+                    ("ADD", {}),
+                    ("VAR", {"type": "int", "pseudonymous": "%4"}),
+                    ("SEMI", {}),
+                    ("RCBRA", {}),
+                ],
+            },
+            "some_simple_function": {
+                "pseudonymous": "#2",
+                "type": "int",
+                "arguments": {
+                    "param_1": {"type": "float", "pseudonymous": "%3"},
+                    "param_2": {"type": "int", "pseudonymous": "%4"},
+                },
+                "statements": [
+                    ("LCBRA", {}),
+                    ("RET_SYM", {}),
+                    ("VAR", {"type": "float", "pseudonymous": "%3"}),
+                    ("DIV", {}),
+                    ("VAR", {"type": "int", "pseudonymous": "%4"}),
+                    ("SEMI", {}),
+                    ("RCBRA", {}),
+                ],
+            },
+            "abc": {
+                "pseudonymous": "#3",
                 "type": "int",
                 "arguments": {
                     "asda": {"type": "int", "pseudonymous": "%3"},
@@ -232,21 +280,21 @@ def test_parse_source_code():
                     (
                         "VAR",
                         {
-                            'active': True,
-                            'attributes': {
-                                'x': {
-                                    'attr_pointer': 1,
-                                    'type': 'int',
-                                    'type_pseudonymous': 3,
+                            "pseudonymous": "%8",
+                            "attributes": {
+                                "x": {
+                                    "type": "int",
+                                    "attr_pointer": 1,
+                                    "type_pseudonymous": 3,
                                 },
-                                'y': {
-                                    'attr_pointer': 2,
-                                    'type': 'float',
-                                    'type_pseudonymous': 4,
+                                "y": {
+                                    "type": "float",
+                                    "attr_pointer": 2,
+                                    "type_pseudonymous": 4,
                                 },
                             },
+                            "active": True,
                             "name": "internal_struct_var",
-                            "pseudonymous": "%8",
                             "type": "my_struct",
                             "type_pseudonymous": "%struct.1",
                         },
@@ -280,6 +328,7 @@ def test_parse_source_code():
                         "FUNC_CALL",
                         {
                             "function": "#2",
+                            "return_type": "int",
                             "parameters": [
                                 {
                                     "variable": True,
@@ -296,7 +345,8 @@ def test_parse_source_code():
                     (
                         "FUNC_CALL",
                         {
-                            "function": "#1",
+                            "function": "#3",
+                            "return_type": "int",
                             "parameters": [
                                 {"variable": False, "type": "int", "value": 1},
                                 {"variable": False, "type": "int", "value": 2},
@@ -328,35 +378,8 @@ def test_parse_source_code():
                     ("RCBRA", {}),
                 ],
             },
-            "function_that_returns_struct": {
-                "pseudonymous": "#2",
-                "type": "my_struct",
-                "arguments": {
-                    "xyz": {"type": "int", "pseudonymous": "%3"},
-                    "aaa": {"type": "int", "pseudonymous": "%4"},
-                },
-                "statements": [
-                    ("LCBRA", {}),
-                    (
-                        "VAR_DEF",
-                        {
-                            "name": "internal_guy",
-                            "pseudonymous": "%5",
-                            "type": "int",
-                            "type_pseudonymous": 3,
-                        },
-                    ),
-                    ("SEMI", {}),
-                    ("RET_SYM", {}),
-                    ("VAR", {"type": "int", "pseudonymous": "%3"}),
-                    ("ADD", {}),
-                    ("VAR", {"type": "int", "pseudonymous": "%4"}),
-                    ("SEMI", {}),
-                    ("RCBRA", {}),
-                ],
-            },
             "main": {
-                "pseudonymous": "#3",
+                "pseudonymous": "#4",
                 "type": "int",
                 "arguments": {},
                 "statements": [
@@ -381,7 +404,10 @@ def test_parse_source_code():
                         },
                     ),
                     ("ASSIGN", {}),
-                    ("FUNC_CALL", {"function": "#1", "parameters": []}),
+                    (
+                        "FUNC_CALL",
+                        {"function": "#3", "return_type": "int", "parameters": []},
+                    ),
                     ("SEMI", {}),
                     (
                         "VAR_DEF",
@@ -560,7 +586,7 @@ def test_parse_source_code():
     assert lexer_parsed_code == expected_parsed_code
 
 
-def test_split_source():
+def test_split_source(): 
     """
     Test the `Lexer.split_source` method.
 
@@ -588,6 +614,39 @@ def test_split_source():
         'my_struct',
         'global_var',
         ';',
+        'my_struct',
+        'function_that_returns_struct',
+        '(',
+        'int',
+        'xyz',
+        'int',
+        'aaa',
+        ')',
+        '{',
+        'int',
+        'internal_guy',
+        ';',
+        'return',
+        'xyz',
+        '+',
+        'aaa',
+        ';',
+        '}',
+        'int',
+        'some_simple_function',
+        '(',
+        'float',
+        'param_1',
+        'int',
+        'param_2',
+        ')',
+        '{',
+        'return',
+        'param_1',
+        '/',
+        'param_2',
+        ';',
+        '}',
         'int',
         'abc',
         '(',
@@ -625,7 +684,7 @@ def test_split_source():
         '=',
         'bla',
         '+',
-        'function_that_returns_struct',
+        'some_simple_function',
         '(',
         'blabla',
         '123',
@@ -641,24 +700,6 @@ def test_split_source():
         'blabla',
         '+',
         'bla',
-        ';',
-        '}',
-        'my_struct',
-        'function_that_returns_struct',
-        '(',
-        'int',
-        'xyz',
-        'int',
-        'aaa',
-        ')',
-        '{',
-        'int',
-        'internal_guy',
-        ';',
-        'return',
-        'xyz',
-        '+',
-        'aaa',
         ';',
         '}',
         'struct',

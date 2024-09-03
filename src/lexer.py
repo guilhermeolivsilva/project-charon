@@ -418,19 +418,28 @@ class Lexer:
                 # If not, check if it is a function call. If it is not either,
                 # `_handle_function_call` will raise a SyntaxError
                 except (SyntaxError, TypeError):
-                    function_name, parameters = self._handle_function_call(
+                    called_function_name, parameters = self._handle_function_call(
                         symbol_collection=function_symbol_collection,
                         local_variables=local_variables,
                         function_call_idx=idx
                     )
 
                     function_pseudonymous = (
-                        self.functions.get(function_name)
+                        self.functions.get(called_function_name)
                                       .get("pseudonymous")
                     )
 
+                    if function_name == called_function_name:
+                        function_return_type = function_type
+                    else:
+                        function_return_type = (
+                            self.functions.get(called_function_name)
+                                        .get("type")
+                        )
+
                     function_call_metadata = {
                         "function": function_pseudonymous,
+                        "return_type": function_return_type,
                         "parameters": parameters
                     }
 
