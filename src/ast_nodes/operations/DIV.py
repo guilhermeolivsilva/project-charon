@@ -25,4 +25,4 @@ class DIV(Operation):
     def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
         super().__init__(id, lhs, rhs, **kwargs)
 
-        self.instruction: str = "DIV"
+        self.instruction: str = self._compute_instruction("DIV")

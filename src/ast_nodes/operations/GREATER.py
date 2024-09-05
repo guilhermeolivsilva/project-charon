@@ -25,4 +25,4 @@ class GREATER(Operation):
     def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
         super().__init__(id, lhs, rhs, **kwargs)
 
-        self.instruction: str = "GT"
+        self.instruction: str = self._compute_instruction("GT")

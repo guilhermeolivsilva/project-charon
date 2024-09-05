@@ -23,6 +23,6 @@ class LSHIFT(Operation):
 
     @override
     def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
-        super().__init__(id, lhs, rhs, **kwargs)
+        super().__init__(id, lhs, rhs, supports_float=False, **kwargs)
 
         self.instruction: str = "LSHIFT"

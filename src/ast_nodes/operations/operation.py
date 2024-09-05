@@ -23,14 +23,18 @@ class Operation(Node):
         The Node representation of the left hand side of the operation.
     rhs : Node
         The Node representation of the right hand side of the operation.
+    supports_float : bool (optional, default = True)
+        Whether the operation supports floating point numbers.
     """
 
     @override
-    def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
+    def __init__(self, id: int, lhs: Node, rhs: Node, supports_float: bool = True, **kwargs) -> None:
         super().__init__(id)
 
         self.lhs: Node = lhs
         self.rhs: Node = rhs
+        self.supports_float: bool = supports_float
+
         self.type: str = self._compute_operation_type()
         self.symbol: str = self._compute_symbol()
 
@@ -129,7 +133,23 @@ class Operation(Node):
         The type is set to be the least restrictive between the `lhs` and `rhs`
         children Nodes -- i.e., if `lhs` is `float`, and `rhs` is `int`, return
         `float`.
+
+        This method also type checks: if the node does not support floating
+        point numbers, but its type is `float`, it will raise a TypeError.
+
+        Returns
+        -------
+        operation_type : str
+            The type of this Operation.
+
+        Raises
+        ------
+        TypeError
+            - Raised if the `type` is detected to be `float`, but
+            `supports_float` is set to `False`.
         """
+
+        operation_type: str = ""
 
         lhs_type = self.lhs.get_type()
         lhs_type_symbol = TYPE_SYMBOLS_MAP.get(lhs_type).get("type_symbol")
@@ -138,9 +158,17 @@ class Operation(Node):
         rhs_type_symbol = TYPE_SYMBOLS_MAP.get(rhs_type).get("type_symbol")
 
         if lhs_type_symbol > rhs_type_symbol:
-            return lhs_type
+            operation_type = lhs_type
+        else:
+            operation_type = rhs_type
+
+        if operation_type == "float" and not self.supports_float:
+            raise TypeError(
+                f"{type(self).__name__} does not support floating point "
+                "numbers. Check the parameters."
+            )
         
-        return rhs_type
+        return operation_type
 
     def _compute_symbol(self) -> str:
         """
@@ -162,3 +190,28 @@ class Operation(Node):
         rhs_type_symbol = TYPE_SYMBOLS_MAP.get(rhs_type).get("type_symbol")
 
         return f"{self.symbol}^{lhs_type_symbol}^{rhs_type_symbol}"
+    
+    def _compute_instruction(self, base_instruction: str) -> str:
+        """
+        Compute `instruction` attribute to be used by an Operation node.
+
+        Parameters
+        ----------
+        base_instruction : str
+            The base instruction. It will receive an `F` as preffix if the
+            Operation supports floating point numbers and is of `float` type.
+
+        Returns
+        -------
+        instruction : str
+            The instruction to be used by the Operation node.
+        """
+
+        instruction: str = ""
+
+        if self.type == "float":
+            instruction = f"F{base_instruction}"
+        else:
+            instruction = base_instruction
+
+        return instruction
