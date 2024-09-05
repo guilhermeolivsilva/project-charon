@@ -48,3 +48,32 @@ def next_prime(number: int) -> int:
             return next_number
 
         next_number += 1
+
+
+def primes_list(length: int) -> list[int]:
+    """
+    Compute a list of prime numbers with a given `length`.
+
+    The list always starts at 2.
+
+    Parameters
+    ----------
+    length : int
+        The length of the list.
+
+    Returns
+    -------
+    primes : list[int]
+        A list of integers containing the specified amount of primes.
+    """
+
+    _primes: set[int] = set()
+    current_number = 1
+
+    while len(_primes) < length:
+        _primes.add(next_prime(current_number))
+        current_number += 1
+
+    primes = list(_primes)
+
+    return primes

@@ -1,5 +1,6 @@
 """Manage the mapping from symbols to base certificates."""
 
+from src.utils import primes_list
 
 # First symbol is 2 because, if it were 1, any operation using it as the base
 # would be an identity.
@@ -61,6 +62,6 @@ TYPE_SYMBOLS_MAP = {
 
     for _type, base in zip(
         __TYPES_SYMBOLS,
-        range(__STARTING_SYMBOL, __STARTING_SYMBOL + len(__TYPES_SYMBOLS))
+        primes_list(len(__TYPES_SYMBOLS))
     )
 }
