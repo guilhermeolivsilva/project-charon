@@ -39,5 +39,5 @@ class CST(Node):
         super().__init__(id, _type_to_enforce(value))
 
         self.type = type
-        self.instruction: str = "PUSH"
+        self.instruction: str = "CONSTANT"
         self.symbol: str = f"({self.symbol})^({self.value})^({_type_symbol})"

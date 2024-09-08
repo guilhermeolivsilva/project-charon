@@ -19,7 +19,7 @@ class SEQ(Node):
 
     @override
     def __init__(self, id: int) -> None:
-        super().__init__(id)
+        super().__init__(id, uses_register=False)
 
         self.instruction: str = "SEQ"
         self.children: list[Node] = []
@@ -77,12 +77,19 @@ class SEQ(Node):
             child.print(indent + 1)
 
     @override
-    def generate_code(self) -> list[dict[str, Union[int, str, None]]]:
+    def generate_code(self, register: int) -> tuple[
+        int,
+        list[dict[str, Union[int, str, None]]]
+    ]:
         """
         Generate the code associated with this `SEQ`.
 
         For this node specialization, return a dummy instruction and the code
         regarding the `children`.
+
+        Notice that the register may only be incremented by the children nodes'
+        `generate_code` method. This Node does not increment the `register`,
+        as it only adds a `SEQ` to the instructions list.
 
         Returns
         -------
@@ -91,22 +98,16 @@ class SEQ(Node):
             `instruction`, and node `id`, and `value`.
         """
 
-        _dummy_instruction = {
-            "instruction": self.instruction,
-            "id": self.id,
-            "value": None,
-        }
+        code_metadata: list[dict[str, Union[int, str, None]]] = []
 
-        # Flatten the code of the children in a single, one dimensional list of
-        # code metadata (dicts), as each child.generate_code call returns a
-        # list of dicts.
-        _children_code = [
-            code_metadata
-            for child in self.children
-            for code_metadata in child.generate_code()
-        ]
+        _, _dummy_instruction = super().generate_code(register=register)
+        code_metadata.extend(_dummy_instruction)
 
-        return [_dummy_instruction, *_children_code]
+        for child in self.children:
+            register, child_code = child.generate_code(register=register)
+            code_metadata.extend(child_code)
+
+        return register, code_metadata
 
     def certificate(self, prime: int) -> int:
         """
