@@ -1,5 +1,7 @@
 """General purpose utilities."""
 
+from typing import Union
+
 
 def is_prime(number: int) -> bool:
     """
@@ -77,3 +79,56 @@ def primes_list(length: int) -> list[int]:
     primes = list(_primes)
 
     return primes
+
+
+def type_cast(original_type: str, target_type: str, register: int) -> tuple[
+    int,
+    list[dict[str, str]]
+]:
+    """
+    Compute a TYPECAST instruction from some `original_type` to a `target_type`.
+
+    Parameters
+    ----------
+    original_type : str
+        The original type, to cast from.
+    target_type : str
+        The target type, to cast to.
+    register : int
+        The register to be allocated to this instruction.
+
+    Returns
+    -------
+    register : int
+        The number of the next register available.
+    code : dict
+        The code metadata of the `TYPECAST` instruction.
+
+    TODO
+    ----
+    Implement the actual type cast instructions:
+
+    from short
+    - to int: signext i16 to i32
+    - to float: signext i16 to i32, sitofp
+
+    from int
+    - to short: trunc i32 to i16
+    - to float: sitofp
+
+    from float
+    - to short: fptosi float to i16
+    - to int: fptosi float to i32
+    """
+
+    code: dict[str, Union[str, dict]] = {
+        "instruction": "TYPECAST",
+        "metadata": {
+            "original_register": register - 1,
+            "original_type": original_type,
+            "target_register": register,
+            "target_type": target_type
+        }
+    }
+
+    return register + 1, [code]
