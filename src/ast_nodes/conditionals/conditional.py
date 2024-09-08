@@ -24,7 +24,7 @@ class Conditional(Node):
     def __init__(
         self, id: int, parenthesis_expression: Node, statement_if_true: Node
     ) -> None:
-        super().__init__(id)
+        super().__init__(id, uses_register=False)
 
         self.parenthesis_expression: Node = parenthesis_expression
         self.statement_if_true: Node = statement_if_true
