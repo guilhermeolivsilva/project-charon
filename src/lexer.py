@@ -135,13 +135,12 @@ class Lexer:
             symbol_collection=symbol_collection
         )
 
-        # Register the functions and its definitions' relative position (i.e.,
-        # the pseudonymous)
+        # Register the functions and its definitions' relative position
         self.functions = {
             func_name: {
-                "pseudonymous": f"#{func_pseudonymous}"
+                "relative_position": func_relative_position
             }
-            for func_name, func_pseudonymous
+            for func_name, func_relative_position
             in zip(
                 functions_scopes.keys(),
                 range(1, len(functions_scopes) + 1)
@@ -271,11 +270,10 @@ class Lexer:
                         struct_idx=idx
                     )
 
-                    struct_pseudonymous_offset = len(self.globals["structs"]) + 1
-                    struct_pseudonymous = f"%struct.{struct_pseudonymous_offset}"
+                    struct_relative_position = len(self.globals["structs"]) + 1
 
                     self.globals["structs"][struct_name] = {
-                        "pseudonymous": struct_pseudonymous,
+                        "relative_position": struct_relative_position,
                         "attributes": struct_attributes,
                         "active": False
                     }
@@ -296,10 +294,9 @@ class Lexer:
                     # not valid.
                     if definition_metadata:
                         variable_name, variable_metadata = definition_metadata
-                        
-                        # Add the pseudonymous here!
-                        var_pseudonymous = len(self.globals["variables"]) + 1
-                        variable_metadata["pseudonymous"] = f"%{var_pseudonymous}"
+
+                        var_relative_position = len(self.globals["variables"]) + 1
+                        variable_metadata["relative_position"] = var_relative_position
                         self.globals["variables"][variable_name] = variable_metadata
 
     def _parse_function(
@@ -401,14 +398,13 @@ class Lexer:
                     )
                     existing_variables.append(variable_name)
 
-                    curr_pseudonymous_counter = (
+                    var_relative_position = (
                         len(self.globals["variables"]) + len(local_variables) + 1
                     )
-                    var_pseudonymous = f"%{curr_pseudonymous_counter}"
 
                     variable_metadata = {
                         "name": variable_name,
-                        "pseudonymous": var_pseudonymous,
+                        "relative_position": var_relative_position,
                         **variable_type
                     }
 
@@ -424,9 +420,9 @@ class Lexer:
                         function_call_idx=idx
                     )
 
-                    function_pseudonymous = (
+                    function_relative_position = (
                         self.functions.get(called_function_name)
-                                      .get("pseudonymous")
+                                      .get("relative_position")
                     )
 
                     if function_name == called_function_name:
@@ -438,7 +434,7 @@ class Lexer:
                         )
 
                     function_call_metadata = {
-                        "function": function_pseudonymous,
+                        "function": function_relative_position,
                         "return_type": function_return_type,
                         "parameters": parameters
                     }
@@ -530,26 +526,20 @@ class Lexer:
                 raise SyntaxError(err_msg)
             
             is_builtin_type = attr_type in self.types
-            if is_builtin_type:
-                type_pseudonymous = self.types.get(attr_type)
-            else:
+            if not is_builtin_type:
+                # Flag the struct type to be `active`, as a variable of its
+                # type is being defined
                 try:
-                    type_pseudonymous = (
-                        self.globals.get("structs")
-                                    .get(attr_type)
-                                    .get("pseudonymous")
-                    )
-
-                    # Flag the struct type to be `active`, as a variable of its
-                    # type is being defined
                     self.globals["structs"][attr_type]["active"] = True
-                except (KeyError, AttributeError):
-                    type_pseudonymous = None
+                except KeyError:
+                    raise SyntaxError(
+                        f"Attribute {attr_name} of struct {struct_name}"
+                        + f" is being declared with unknown type {attr_type}."
+                    )
 
             attributes[attr_name] = {
                 "type": attr_type,
-                "attr_pointer": len(attributes) + 1,
-                "type_pseudonymous": type_pseudonymous
+                "attr_pointer": len(attributes)
             }
 
             # Expected format: `<attr_type>` `<attr_name>` `;`.
@@ -671,24 +661,20 @@ class Lexer:
                 raise SyntaxError(err_msg)
 
             if previous_token_is_valid_type:
-                # Compute the type pseudonymous
                 is_builtin_type = variable_type in self.types
-                if is_builtin_type:
-                    type_pseudonymous = self.types.get(variable_type)
-                else:
-                    type_pseudonymous = (
-                        self.globals.get("structs")
-                                    .get(variable_type)
-                                    .get("pseudonymous")
-                    )
-
+                if not is_builtin_type:
                     # Flag the struct type to be `active`, as a variable of its
                     # type is being defined
-                    self.globals["structs"][variable_type]["active"] = True
+                    try:
+                        self.globals["structs"][variable_type]["active"] = True
+                    except (KeyError, IndexError):
+                        raise SyntaxError(
+                            f"Variable {variable_name} is being declared with"
+                            + f" unknown type {variable_type}."
+                        )
 
                 variable_metadata = {
-                    "type": variable_type,
-                    "type_pseudonymous": type_pseudonymous
+                    "type": variable_type
                 }
 
                 if simple_variable_definition:
@@ -951,14 +937,13 @@ class Lexer:
                         )
                         raise SyntaxError(err_msg)
 
-                    pseudonymous_offset = (
-                        len(self.globals["variables"]) + len(arguments)
+                    argument_relative_position = (
+                        len(self.globals["variables"]) + len(arguments) + 1
                     )
-                    argument_pseudonymous = f"%{pseudonymous_offset + 1}"
 
                     arguments[param_name] = {
                         "type": param_type,
-                        "pseudonymous": argument_pseudonymous
+                        "relative_position": argument_relative_position
                     }
                     curr_idx += 2
 

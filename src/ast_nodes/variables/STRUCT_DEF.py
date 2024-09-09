@@ -19,12 +19,8 @@ class STRUCT_DEF(Node):
 
     @override
     def __init__(self, id: int, struct_metadata: dict[str, dict[str, dict]]) -> None:
-        # Clip the `%` sign from the pseudonymous computed by the Lexer,
-        # and cast it to `int`.
-        _pseudonymous: str = struct_metadata.get("pseudonymous")
-        _relative_position: int = int(_pseudonymous[8:])
-
-        super().__init__(id, _relative_position)
+        relative_position: int = struct_metadata.get("relative_position")
+        super().__init__(id, relative_position)
 
         _attribute_types: str = "^".join(
             f'({attribute.get("type_pseudonymous")})'
