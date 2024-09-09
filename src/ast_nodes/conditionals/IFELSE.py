@@ -126,7 +126,7 @@ class IFELSE(Conditional):
         conditional_jump = {
             "instruction": "JZ",
             "metadata": {
-                "instructions_to_jump": instructions_to_jump_over_if
+                "jump_size": instructions_to_jump_over_if
             }
         }
 
@@ -137,7 +137,7 @@ class IFELSE(Conditional):
         unconditional_jump = {
             "instruction": "JMP",
             "metadata": {
-                "instructions_to_jump": instructions_to_jump_over_else
+                "jump_size": instructions_to_jump_over_else
             }
         }
 

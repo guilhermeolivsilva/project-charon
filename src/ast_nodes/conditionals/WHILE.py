@@ -96,7 +96,7 @@ class WHILE(Conditional):
         conditional_jump = {
             "instruction": "JZ",
             "metadata": {
-                "instructions_to_jump": instructions_to_jump_over_loop
+                "jump_size": instructions_to_jump_over_loop
             }
         }
 
@@ -106,7 +106,7 @@ class WHILE(Conditional):
         unconditional_jump = {
             "instruction": "JMP",
             "metadata": {
-                "instructions_to_jump": instructions_to_jump_back_to_expression
+                "jump_size": instructions_to_jump_back_to_expression
             }
         }
 

@@ -92,7 +92,7 @@ class DO(Conditional):
         conditional_jump = {
             "instruction": "JNZ",
             "metadata": {
-                "instructions_to_jump": instructions_to_jump
+                "jump_size": instructions_to_jump
             }
         }
 
