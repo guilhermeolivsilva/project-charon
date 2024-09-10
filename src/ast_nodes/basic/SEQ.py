@@ -8,18 +8,11 @@ from src.ast_nodes.node import Node
 
 
 class SEQ(Node):
-    """
-    Implement the representation of a sequence of statements for the AST.
-
-    Parameters
-    ----------
-    id : int
-        The ID of the Node.
-    """
+    """Implement the representation of a sequence of statements for the AST."""
 
     @override
-    def __init__(self, id: int) -> None:
-        super().__init__(id, uses_register=False)
+    def __init__(self, **kwargs) -> None:
+        super().__init__(id=None, uses_register=False)
 
         self.instruction: str = "SEQ"
         self.children: list[Node] = []
