@@ -76,7 +76,15 @@ class Node:
             The string representation of a Node object.
         """
 
-        _str = f"ID: {self.id}, Value: {self.value}, Kind: {type(self).__name__}"
+        _str = ""
+
+        if self.id is not None:
+            _str += f"ID: {self.id}, "
+
+        if self.value is not None:
+            _str += f"Value: {self.value}, "
+
+        _str += f"Kind: {type(self).__name__}"
 
         if self.type is not None:
             _str += f", Type: {self.type}"
@@ -198,10 +206,11 @@ class Node:
 
         code_metadata = {
             "instruction": self.instruction,
-            "metadata": {
-                "id": self.id
-            }
+            "metadata": {}
         }
+
+        if self.id is not None:
+            code_metadata["metadata"]["id"] = self.id
 
         if self.uses_register:
             code_metadata["metadata"]["register"] = register
