@@ -444,7 +444,6 @@ class AbstractSyntaxTree:
             # Handle access to elements of a struct or an array
             elif self.current_symbol in ["LBRA", "DOT"]:
                 variable = expression_node
-                variable_metadata = variable.get_metadata()
 
                 element_access_node_id = self._get_next_id()
                 self._next_symbol()
@@ -454,8 +453,7 @@ class AbstractSyntaxTree:
                 expression_node = ELEMENT_ACCESS(
                     id=element_access_node_id,
                     variable=variable,
-                    element=element,
-                    variable_metadata=variable_metadata
+                    element=element
                 )
 
                 if self.current_symbol == "RBRA":
