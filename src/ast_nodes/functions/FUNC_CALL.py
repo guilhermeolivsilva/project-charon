@@ -100,12 +100,24 @@ class FUNC_CALL(Node):
         """
 
         code_metadata: list[dict] = []
+        parameters_registers: list[int] = []
 
         for parameter in self.parameters:
             register, parameter_code = parameter.generate_code(register=register)
+
+            # Keep track of the registers containing the parameters values
+            parameters_registers.append(
+                parameter_code[0].get("metadata").get("register")
+            )
+
             code_metadata.extend(parameter_code)
 
         register, this_code = super().generate_code(register=register)
+
+        # ...and add the parameters registers information to the function call
+        # instruction
+        this_code[0]["metadata"]["parameters_registers"] = parameters_registers
+
         code_metadata.extend(this_code)
 
         return register, code_metadata
