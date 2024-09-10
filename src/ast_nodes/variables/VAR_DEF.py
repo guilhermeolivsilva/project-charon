@@ -25,13 +25,14 @@ class VAR_DEF(Node):
         self.variable_metadata: dict = variable_metadata
         self.instruction: str = "ALLOC"
 
-        _type_certificate = self.variable_metadata.get("type_certificate")
         _length = self.variable_metadata.get("length", 1)
 
+        # The `type_certificate` is a placeholder! The `frontend` certificator
+        # is responsible for filling it later.
         self.symbol: str = (
             f"({self.symbol})^"
             + f"({relative_position})^"
-            + f"({_type_certificate})^"
+            + "({type_certificate})^"
             + f"({_length})"
         )
 
