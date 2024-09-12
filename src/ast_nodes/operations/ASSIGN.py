@@ -36,7 +36,7 @@ class ASSIGN(Operation):
                 "Left-hand side of ASSIGN operation is not a Variable."
             )
 
-        super().__init__(id, lhs=lhs, rhs=rhs)
+        super().__init__(id, lhs=lhs, rhs=rhs, type=lhs.type)
 
         self.instruction: str = "STORE"
 

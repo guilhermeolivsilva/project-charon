@@ -29,14 +29,26 @@ class Operation(Node):
     """
 
     @override
-    def __init__(self, id: int, lhs: Node, rhs: Node, supports_float: bool = True, **kwargs) -> None:
+    def __init__(
+        self,
+        id: int,
+        lhs: Node,
+        rhs: Node,
+        supports_float: bool = True,
+        type: str = None,
+        **kwargs
+    ) -> None:
         super().__init__(id)
 
         self.lhs: Node = lhs
         self.rhs: Node = rhs
         self.supports_float: bool = supports_float
 
-        self.type: str = self._compute_operation_type()
+        if type is not None:
+            self.type = type
+        else:
+            self.type: str = self._compute_operation_type()
+
         self.symbol: str = self._compute_symbol()
 
     @override
