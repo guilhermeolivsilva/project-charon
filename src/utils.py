@@ -86,7 +86,15 @@ def type_cast(original_type: str, target_type: str, register: int) -> tuple[
     list[dict[str, str]]
 ]:
     """
-    Compute a TYPECAST instruction from some `original_type` to a `target_type`.
+    Compute a type cast instruction from `original_type` to `target_type`.
+
+    Notice that casts from `short` to `float` (and vice-and-versa) are not
+    direct. First, we must cast to `int`, and then to the actual `target_type`.
+    Thus, the returned `code` list will contain two instructions.
+
+    The other possible casts (`short` to `int`, `int` to `short`, `int` to
+    `float`, and `float` to `int`) happen directly, and only generate a single
+    instruction. (`code`, in this case, is a list with a single item.)
 
     Parameters
     ----------
@@ -101,34 +109,72 @@ def type_cast(original_type: str, target_type: str, register: int) -> tuple[
     -------
     register : int
         The number of the next register available.
-    code : dict
+    code : list[dict]
         The code metadata of the `TYPECAST` instruction.
-
-    TODO
-    ----
-    Implement the actual type cast instructions:
-
-    from short
-    - to int: signext i16 to i32
-    - to float: signext i16 to i32, sitofp
-
-    from int
-    - to short: trunc i32 to i16
-    - to float: sitofp
-
-    from float
-    - to short: fptosi float to i16
-    - to int: fptosi float to i32
     """
 
-    code: dict[str, Union[str, dict]] = {
-        "instruction": "TYPECAST",
+    # Direct casts
+    _default_metadata = {
         "metadata": {
-            "original_register": register - 1,
-            "original_type": original_type,
-            "target_register": register,
-            "target_type": target_type
+            "source_register": register - 1,
+            "destination_register": register
         }
     }
 
-    return register + 1, [code]
+    cast_instruction_map: dict[dict, Union[str, dict]] = {
+        "short": {
+            "int": {
+                "instruction": "SIGNEXT",
+                **_default_metadata
+            }
+        },
+        "int": {
+            "short": {
+                "instruction": "TRUNC",
+                **_default_metadata
+            },
+            "float": {
+                "instruction": "SITOFP",
+                **_default_metadata
+            }
+        },
+        "float": {
+            "int": {
+                "instruction": "FPTOSI",
+                **_default_metadata
+            }
+        }
+    }
+
+    code: list[dict[str, str]] = []
+
+    # Short <-> float is indirect. Thus, use a recursive approach to address
+    # the registers numbers
+    if original_type == "short" and target_type == "float":
+        short_to_int = cast_instruction_map["short"]["int"]
+        code.append(short_to_int)
+
+        register, int_to_float = type_cast(
+            original_type="int",
+            target_type="float",
+            register=register + 1
+        )
+        code.extend(int_to_float)
+
+    elif original_type == "float" and target_type == "short":
+        float_to_int = cast_instruction_map["float"]["int"]
+        code.append(float_to_int)
+
+        register, int_to_short = type_cast(
+            original_type="int",
+            target_type="short",
+            register=register + 1
+        )
+        code.extend(int_to_short)
+
+    else:
+        direct_cast = cast_instruction_map[original_type][target_type]
+        code.append(direct_cast)
+        register += 1
+
+    return register, code
