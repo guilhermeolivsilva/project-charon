@@ -48,13 +48,13 @@ class AbstractSyntaxTree:
 
         for struct_name, struct_metadata in struct_definitions.items():
             current_id = self._get_next_id()
+            struct_metadata["type"] = struct_name
 
             struct_def_node = STRUCT_DEF(
                 id=current_id,
                 struct_metadata=struct_metadata
             )
 
-            self.type_certificates[struct_name] = struct_def_node.get_symbol()
             self.root.add_child(struct_def_node)
 
     def parse_global_variables(self) -> None:

@@ -22,7 +22,9 @@ class STRUCT_DEF(Node):
     @override
     def __init__(self, id: int, struct_metadata: dict[str, dict[str, dict]]) -> None:
         relative_position: int = struct_metadata.get("relative_position")
-        super().__init__(id, relative_position)
+        _type: str = struct_metadata.get("type")
+
+        super().__init__(id, relative_position, type=_type)
 
         _attribute_types: str = "^".join(
             f'({attribute.get("type_pseudonymous")})'
