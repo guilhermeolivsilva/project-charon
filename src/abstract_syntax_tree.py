@@ -23,7 +23,6 @@ class AbstractSyntaxTree:
         self.root: PROG = PROG(id=0)
 
         # Attributes to be used later
-        self.type_certificates: dict[str, str] = {**TYPE_SYMBOLS_MAP}
         self.current_symbol: str = None
         self.current_value: dict = {}
         self.current_statement_list: list[tuple[str, dict]] = []
@@ -68,9 +67,6 @@ class AbstractSyntaxTree:
 
         for variable_name, variable_metadata in global_variables.items():
             current_id = self._get_next_id()
-
-            _type_certificate = self.type_certificates.get(variable_metadata.get("type"))
-            variable_metadata["type_certificate"] = _type_certificate
             variable_metadata["name"] = variable_name
 
             var_def_node = VAR_DEF(
