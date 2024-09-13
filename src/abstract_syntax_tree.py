@@ -28,8 +28,15 @@ class AbstractSyntaxTree:
         self.current_statement_list: list[tuple[str, dict]] = []
         self.current_node: Node = None
 
-    def build(self) -> None:
-        """Build the Abstract Syntax Tree from the source code."""
+    def build(self) -> PROG:
+        """
+        Build the Abstract Syntax Tree (AST) from the source code.
+
+        Returns
+        -------
+        root : PROG
+            The root of the built AST.
+        """
 
         # Build the node representations of globals
         self.parse_struct_definitions()
@@ -37,6 +44,8 @@ class AbstractSyntaxTree:
 
         # Parse each function and add it to the `global` scope
         self.parse_functions()
+
+        return self.root
         
     def parse_struct_definitions(self) -> None:
         """Parse struct definitions and add it to the Abstract Syntax Tree."""
@@ -118,6 +127,18 @@ class AbstractSyntaxTree:
         """
 
         self.root.print(indent=indent)
+
+    def get_root(self) -> PROG:
+        """
+        Get the root of this Abstract Syntax Tree.
+
+        Returns
+        -------
+        root : PROG
+            The root of the tree.
+        """
+
+        return self.root
 
     def _statement(self) -> Node:
         """

@@ -426,7 +426,7 @@ def test_build(capfd: fixture) -> None:
     """
 
     ast = AbstractSyntaxTree(source_code=SOURCE_CODE)
-    ast.build()
+    _ = ast.build()
 
     ast.print_tree()
 
