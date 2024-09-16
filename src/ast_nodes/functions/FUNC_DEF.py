@@ -203,3 +203,17 @@ class FUNC_DEF(Node):
             )
 
         return variables
+    
+    def get_function_name(self) -> str:
+        """
+        Get the name of this function.
+
+        Returns
+        -------
+        function_name : str
+            The name of the function.
+        """
+
+        function_name: str = self.value
+
+        return function_name
