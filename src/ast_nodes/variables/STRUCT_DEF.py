@@ -50,10 +50,7 @@ class STRUCT_DEF(Node):
 
         super().print(indent)
 
-        _attribute_types = ", ".join(
-            attribute.get("type")
-            for attribute in self.struct_metadata.get("attributes").values()
-        )
+        _attribute_types = ", ".join(self.get_attribute_types())
 
         print(f"{' ' * (indent + 1)} Attributes: {_attribute_types}")
 
@@ -123,3 +120,23 @@ class STRUCT_DEF(Node):
         """
 
         return self.symbol
+    
+    def get_attribute_types(self) -> list[str]:
+        """
+        Get the types of the attributes of this struct.
+
+        The types are returned in the same order as they have been declared in
+        the struct definition.
+
+        Returns
+        -------
+        attribute_types : list[str]
+            A list containing the attributes types.
+        """
+
+        attribute_types: list[str] = [
+            attribute.get("type")
+            for attribute in self.struct_metadata.get("attributes").values()
+        ]
+
+        return attribute_types
