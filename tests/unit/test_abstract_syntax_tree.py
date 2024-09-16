@@ -4,271 +4,10 @@ from pytest import fixture
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.ast_nodes.basic.PROG import PROG
+from tests.unit.common import TOKENIZED_SOURCE_CODE
 
 
-SOURCE_CODE = {
-    "globals": {
-        "structs": {
-            "my_struct": {
-                "relative_position": 1,
-                "attributes": {
-                    "x": {"type": "int", "attr_pointer": 0},
-                    "y": {"type": "float", "attr_pointer": 1},
-                },
-                "active": True,
-            },
-            "test_struct": {
-                "relative_position": 2,
-                "attributes": {
-                    "abcd": {"type": "int", "attr_pointer": 0},
-                    "xyz": {"type": "int", "attr_pointer": 1},
-                },
-                "active": False,
-            },
-        },
-        "variables": {
-            "a": {"type": "int", "length": 10, "relative_position": 1},
-            "global_var": {"type": "my_struct", "relative_position": 2},
-        },
-    },
-    "functions": {
-        "function_that_returns_struct": {
-            "relative_position": 1,
-            "type": "my_struct",
-            "arguments": {
-                "xyz": {"type": "int", "relative_position": 3},
-                "aaa": {"type": "int", "relative_position": 4},
-            },
-            "statements": [
-                ("LCBRA", {}),
-                (
-                    "VAR_DEF",
-                    {"name": "internal_guy", "relative_position": 5, "type": "int"},
-                ),
-                ("SEMI", {}),
-                ("RET_SYM", {}),
-                ("VAR", {"type": "int", "relative_position": 3}),
-                ("ADD", {}),
-                ("VAR", {"type": "int", "relative_position": 4}),
-                ("SEMI", {}),
-                ("RCBRA", {}),
-            ],
-        },
-        "some_simple_function": {
-            "relative_position": 2,
-            "type": "int",
-            "arguments": {
-                "param_1": {"type": "float", "relative_position": 3},
-                "param_2": {"type": "int", "relative_position": 4},
-            },
-            "statements": [
-                ("LCBRA", {}),
-                ("RET_SYM", {}),
-                ("VAR", {"type": "float", "relative_position": 3}),
-                ("DIV", {}),
-                ("VAR", {"type": "int", "relative_position": 4}),
-                ("SEMI", {}),
-                ("RCBRA", {}),
-            ],
-        },
-        "abc": {
-            "relative_position": 3,
-            "type": "int",
-            "arguments": {
-                "asda": {"type": "int", "relative_position": 3},
-                "abcdef": {"type": "int", "relative_position": 4},
-            },
-            "statements": [
-                ("LCBRA", {}),
-                ("VAR_DEF", {"name": "bla", "relative_position": 5, "type": "int"}),
-                ("SEMI", {}),
-                ("VAR", {"name": "bla", "relative_position": 5, "type": "int"}),
-                ("ASSIGN", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("SEMI", {}),
-                (
-                    "VAR_DEF",
-                    {"name": "blabla", "relative_position": 6, "type": "float"},
-                ),
-                ("SEMI", {}),
-                ("VAR", {"name": "blabla", "relative_position": 6, "type": "float"}),
-                ("ASSIGN", {}),
-                ("CST", {"type": "float", "value": 2.0}),
-                ("SEMI", {}),
-                (
-                    "VAR_DEF",
-                    {"name": "xaxaxa", "relative_position": 7, "type": "short"},
-                ),
-                ("SEMI", {}),
-                (
-                    "VAR_DEF",
-                    {
-                        "name": "internal_struct_var",
-                        "relative_position": 8,
-                        "type": "my_struct",
-                    },
-                ),
-                ("SEMI", {}),
-                (
-                    "VAR",
-                    {
-                        "relative_position": 8,
-                        "attributes": {
-                            "x": {"type": "int", "attr_pointer": 0},
-                            "y": {"type": "float", "attr_pointer": 1},
-                        },
-                        "active": True,
-                        "name": "internal_struct_var",
-                        "type": "my_struct",
-                    },
-                ),
-                ("DOT", {}),
-                ("CST", {"type": "int", "value": 0}),
-                ("ASSIGN", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("SEMI", {}),
-                ("VAR", {"name": "bla", "relative_position": 5, "type": "int"}),
-                ("ASSIGN", {}),
-                ("VAR", {"name": "bla", "relative_position": 5, "type": "int"}),
-                ("ADD", {}),
-                (
-                    "FUNC_CALL",
-                    {
-                        "function": 2,
-                        "return_type": "int",
-                        "parameters": [
-                            {
-                                "variable": True,
-                                "name": "blabla",
-                                "relative_position": 6,
-                                "type": "float",
-                            },
-                            {"variable": False, "type": "int", "value": 123},
-                        ],
-                    },
-                ),
-                ("SEMI", {}),
-                (
-                    "FUNC_CALL",
-                    {
-                        "function": 3,
-                        "return_type": "int",
-                        "parameters": [
-                            {"variable": False, "type": "int", "value": 1},
-                            {"variable": False, "type": "int", "value": 2},
-                        ],
-                    },
-                ),
-                ("SEMI", {}),
-                ("RET_SYM", {}),
-                ("VAR", {"name": "blabla", "relative_position": 6, "type": "float"}),
-                ("ADD", {}),
-                ("VAR", {"name": "bla", "relative_position": 5, "type": "int"}),
-                ("SEMI", {}),
-                ("RCBRA", {}),
-            ],
-        },
-        "main": {
-            "relative_position": 4,
-            "type": "int",
-            "arguments": {},
-            "statements": [
-                ("LCBRA", {}),
-                ("VAR_DEF", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("SEMI", {}),
-                ("VAR", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("ASSIGN", {}),
-                ("FUNC_CALL", {"function": 3, "return_type": "int", "parameters": []}),
-                ("SEMI", {}),
-                (
-                    "VAR_DEF",
-                    {
-                        "name": "array",
-                        "relative_position": 4,
-                        "type": "int",
-                        "length": 10,
-                    },
-                ),
-                ("SEMI", {}),
-                (
-                    "VAR",
-                    {
-                        "name": "array",
-                        "relative_position": 4,
-                        "type": "int",
-                        "length": 10,
-                    },
-                ),
-                ("LBRA", {}),
-                ("CST", {"type": "int", "value": 5}),
-                ("RBRA", {}),
-                ("ASSIGN", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("SEMI", {}),
-                ("VAR_DEF", {"name": "y", "relative_position": 5, "type": "int"}),
-                ("SEMI", {}),
-                ("IF_SYM", {}),
-                ("LPAR", {}),
-                ("LPAR", {}),
-                ("LPAR", {}),
-                ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("LSHIFT", {}),
-                ("CST", {"type": "int", "value": 4}),
-                ("RPAR", {}),
-                ("EQUAL", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("RPAR", {}),
-                ("OR", {}),
-                ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("GREATER", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("RPAR", {}),
-                ("RPAR", {}),
-                ("AND", {}),
-                ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("LESS", {}),
-                ("CST", {"type": "int", "value": 10}),
-                ("RPAR", {}),
-                ("RPAR", {}),
-                ("LCBRA", {}),
-                ("VAR", {"name": "y", "relative_position": 5, "type": "int"}),
-                ("ASSIGN", {}),
-                ("VAR", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("BITAND", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("SEMI", {}),
-                ("RCBRA", {}),
-                ("ELSE_SYM", {}),
-                ("LCBRA", {}),
-                ("VAR", {"name": "y", "relative_position": 5, "type": "int"}),
-                ("ASSIGN", {}),
-                ("VAR", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("BITOR", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("SEMI", {}),
-                ("RCBRA", {}),
-                ("RET_SYM", {}),
-                ("LPAR", {}),
-                ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 3, "type": "int"}),
-                ("MULT", {}),
-                ("VAR", {"name": "y", "relative_position": 5, "type": "int"}),
-                ("RPAR", {}),
-                ("DIV", {}),
-                ("CST", {"type": "int", "value": 2}),
-                ("RPAR", {}),
-                ("RSHIFT", {}),
-                ("CST", {"type": "int", "value": 1}),
-                ("SEMI", {}),
-                ("RCBRA", {}),
-            ],
-        },
-    },
-}
-
+# Defined here just because of identation
 EXPECTED_PRINT_TREE = """
 ID: 0, Kind: PROG
   ID: 1, Value: 1, Kind: STRUCT_DEF, Type: my_struct
@@ -407,10 +146,10 @@ ID: 0, Kind: PROG
 def test_init() -> None:
     """Test the instantiation of AbstractSyntaxTree objects."""
 
-    ast = AbstractSyntaxTree(source_code=SOURCE_CODE)
+    ast = AbstractSyntaxTree(source_code=TOKENIZED_SOURCE_CODE)
 
     assert ast.node_id_manager == 1
-    assert ast.source_code == SOURCE_CODE
+    assert ast.source_code == TOKENIZED_SOURCE_CODE
     assert ast.current_symbol is None
     assert ast.current_value == {}
     assert ast.root == PROG(id=0)
@@ -425,7 +164,7 @@ def test_build(capfd: fixture) -> None:
     the console output with pytest's `capfd` fixture.
     """
 
-    ast = AbstractSyntaxTree(source_code=SOURCE_CODE)
+    ast = AbstractSyntaxTree(source_code=TOKENIZED_SOURCE_CODE)
     _ = ast.build()
 
     ast.print_tree()
@@ -433,4 +172,5 @@ def test_build(capfd: fixture) -> None:
     out, _ = capfd.readouterr()
     out = "\n" + out
 
-    assert out == EXPECTED_PRINT_TREE
+    expected_tree = EXPECTED_PRINT_TREE
+    assert out == expected_tree
