@@ -1,49 +1,68 @@
 """Implement unit tests for the `src.code_generator` module."""
 
+from copy import deepcopy
+
 from src.code_generator import CodeGenerator
-from src.ast_nodes import *
+from tests.unit.common import ABSTRACT_SYNTAX_TREE_ROOT, MACHINE_CODE
 
 
 def test_init() -> None:
     """Test the instantiation of CodeGenerator objects."""
 
-    cg = CodeGenerator()
+    _ast_root = deepcopy(ABSTRACT_SYNTAX_TREE_ROOT)
+    cg = CodeGenerator(root=_ast_root)
 
-    assert cg.code_collection == []
+    assert cg.root == ABSTRACT_SYNTAX_TREE_ROOT
+    assert cg.program == {
+        "structs": {},
+        "global_vars": [],
+        "functions": {}
+    }
+    assert cg.register == 0
 
-def test_str() -> None:
-    """Test the string representation of CodeGenerator objects."""
-
-    cg = CodeGenerator()
-
-    first_statement = SEQ(id=1)
-    first_statement.add_child(
-        ADD(
-            id=2,
-            lhs=CST(id=3, value=1),
-            rhs=VAR(id=4, value="a")
-        )
-    )
-
-    program = PROG(id=0)
-    program.set_first_statement(first_statement)
-
-    cg.generate_code(program)
-
-    expected_result = "Instruction: SEQ, ID: 1, Value: None\n"
-    expected_result += "Instruction: IPUSH, ID: 3, Value: 1\n"
-    expected_result += "Instruction: IFETCH, ID: 4, Value: a\n"
-    expected_result += "Instruction: IADD, ID: 2, Value: None\n"
-    expected_result += "Instruction: HALT, ID: 0, Value: None"
-
-    assert str(cg) == expected_result
 
 def test_generate_code() -> None:
-    """
-    Test the `CodeGenerator.generate_code` method.
-    
-    This test is omitted because all of its possibilities are covered by the
-    following tests.
-    """
-    
-    ...
+    """Test the `CodeGenerator.generate_code` method."""
+
+    _ast_root = deepcopy(ABSTRACT_SYNTAX_TREE_ROOT)
+    cg = CodeGenerator(root=_ast_root)
+    generated_code = cg.generate_code()
+
+    expected_generated_code = MACHINE_CODE
+    assert generated_code == expected_generated_code
+
+
+def test_parse_struct_definitions() -> None:
+    """Test the `CodeGenerator.parse_struct_definitions` method."""
+
+    _ast_root = deepcopy(ABSTRACT_SYNTAX_TREE_ROOT)
+    cg = CodeGenerator(root=_ast_root)
+    cg.parse_struct_definitions()
+
+    expected_parsed_structs = MACHINE_CODE["structs"]
+    assert cg.program["structs"] == expected_parsed_structs
+
+
+def test_parse_global_variables() -> None:
+    """Test the `CodeGenerator.parse_global_variables` method."""
+
+    _ast_root = deepcopy(ABSTRACT_SYNTAX_TREE_ROOT)
+    cg = CodeGenerator(root=_ast_root)
+    cg.parse_global_variables()
+
+    expected_parsed_global_vars = MACHINE_CODE["global_vars"]
+    assert cg.program["global_vars"] == expected_parsed_global_vars
+
+
+def test_parse_functions() -> None:
+    """Test the `CodeGenerator.parse_functions` method."""
+
+    _ast_root = deepcopy(ABSTRACT_SYNTAX_TREE_ROOT)
+    cg = CodeGenerator(root=_ast_root)
+
+    # Mock the `register` to offset the global variables
+    cg.register = 2
+    cg.parse_functions()
+
+    expected_parsed_functions = MACHINE_CODE["functions"]
+    assert cg.program["functions"] == expected_parsed_functions
