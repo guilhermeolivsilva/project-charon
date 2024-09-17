@@ -404,9 +404,7 @@ class Lexer:
                     )
                     existing_variables.append(variable_name)
 
-                    var_relative_position = (
-                        len(self.globals["variables"]) + len(available_variables) + 1
-                    )
+                    var_relative_position = len(available_variables) + 1
 
                     variable_metadata = {
                         "name": variable_name,
