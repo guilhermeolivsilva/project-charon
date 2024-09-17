@@ -8,13 +8,17 @@ from src.ast_nodes.node import Node
 
 
 class SEQ(Node):
-    """Implement the representation of a sequence of statements for the AST."""
+    """
+    Implement the representation of a sequence of statements for the AST.
+
+    The node doesn't have any semantics itself, `instruction`, or has a
+    certificate. Its only purpose is to help structuring the AST.
+    """
 
     @override
     def __init__(self, **kwargs) -> None:
         super().__init__(id=None, uses_register=False)
 
-        self.instruction: str = "SEQ"
         self.children: list[Node] = []
 
     def add_child(self, child: Node) -> None:
@@ -34,8 +38,8 @@ class SEQ(Node):
         """
         Get the contents of `certificate_label`.
 
-        For `SEQ` nodes, obtain the certificate from the `SEQ` node itself
-        first, and then from the `children` subtrees, recursively.
+        For `SEQ` nodes, obtain the certificate from the `children` subtrees,
+        recursively. The `SEQ` node itself does not have a certificate.
 
         Returns
         -------
@@ -43,7 +47,7 @@ class SEQ(Node):
             A list containing the certificate label of the `Node`.
         """
 
-        certificate_label: list[str] = super().get_certificate_label()
+        certificate_label: list[str] = []
 
         for child in self.children:
             certificate_label.extend(child.get_certificate_label())
@@ -77,12 +81,10 @@ class SEQ(Node):
         """
         Generate the code associated with this `SEQ`.
 
-        For this node specialization, return a dummy instruction and the code
-        regarding the `children`.
-
-        Notice that the register may only be incremented by the children nodes'
-        `generate_code` method. This Node does not increment the `register`,
-        as it only adds a `SEQ` to the instructions list.
+        For this node specialization, return a list with the children's code,
+        generated in the same order as they appear in the `children` attribute.
+        The `SEQ` node itself does not generate code, for it has no associated
+        `instruction`.
 
         Returns
         -------
@@ -92,9 +94,6 @@ class SEQ(Node):
         """
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []
-
-        _, _dummy_instruction = super().generate_code(register=register)
-        code_metadata.extend(_dummy_instruction)
 
         for child in self.children:
             register, child_code = child.generate_code(register=register)
@@ -106,8 +105,8 @@ class SEQ(Node):
         """
         Compute the certificate of the current `SEQ`, and set this attribute.
 
-        For `SEQ` nodes, certificate the `SEQ` node itself first, and then its
-        children in the same order as they appear in the `children` list.
+        For `SEQ` nodes, certificate the child nodes in the same order as they
+        appear in the `children` list. The `SEQ` node itself is not certified.
 
         Parameters
         ----------
@@ -120,8 +119,6 @@ class SEQ(Node):
         : int
             A prime number that comes after the given `prime`.
         """
-
-        prime = super().certificate(prime)
 
         for child in self.children:
             prime = child.certificate(prime)
