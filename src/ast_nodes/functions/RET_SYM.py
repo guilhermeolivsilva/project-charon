@@ -5,6 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
+from src.utils import type_cast
 
 
 class RET_SYM(Node):
@@ -17,14 +18,17 @@ class RET_SYM(Node):
         The ID of the Node.
     function_call_metadata : dict
         Dictionary of function call metadata exported by the Lexer.
+    type : str
+        The type of the function this `RET_SYM` belongs to.
     """
 
     @override
-    def __init__(self, id: int, returned_value: Node) -> None:
+    def __init__(self, id: int, returned_value: Node, type: str) -> None:
         super().__init__(id, uses_register=False)
 
         self.instruction: str = "RET"
         self.returned_value: Node = returned_value
+        self.type: str = type
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -76,6 +80,9 @@ class RET_SYM(Node):
         For this node specialization, generate code from the `returned_value`
         child node first, and then from the `RET_SYM` itself.
 
+        Notice that, if `RET_SYM.type` is different from `returned_value.type`,
+        type cast instructions will be added to the generated code.
+
         Parameters
         ----------
         register : int
@@ -96,9 +103,22 @@ class RET_SYM(Node):
         register, returned_value_code = self.returned_value.generate_code(
             register=register
         )
-        returned_value_code_register = register - 1
-
         code_metadata.extend(returned_value_code)
+
+        # Add a type cast to enforce the returned value to have the same type
+        # as the function it is located in.
+        returned_value_type = self.returned_value.get_type()
+        function_return_type = self.get_type()
+
+        if returned_value_type != function_return_type:
+            register, returned_value_typecast = type_cast(
+                original_type=returned_value_type,
+                target_type=function_return_type,
+                register=register
+            )
+            code_metadata.extend(returned_value_typecast)
+
+        returned_value_code_register = register - 1
 
         register, return_symbol_code = super().generate_code(
             register=register

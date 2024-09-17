@@ -121,7 +121,6 @@ class Operation(Node):
 
         register, lhs_code = self.lhs.generate_code(register=register)
         code_metadata.extend(lhs_code)
-        lhs_register = register - 1
 
         if self.lhs.get_type() != self.get_type():
             register, lhs_typecast = type_cast(
@@ -131,12 +130,10 @@ class Operation(Node):
             )
             code_metadata.extend(lhs_typecast)
 
-            # Update the left-hand side register for it to use the cast value
-            lhs_register = register - 1
+        lhs_register = register - 1
 
         register, rhs_code = self.rhs.generate_code(register=register)
         code_metadata.extend(rhs_code)
-        rhs_register = register - 1
 
         if self.rhs.get_type() != self.get_type():
             register, rhs_typecast = type_cast(
@@ -146,8 +143,7 @@ class Operation(Node):
             )
             code_metadata.extend(rhs_typecast)
 
-            # Update the right-hand side register for it to use the cast value
-            rhs_register = register - 1
+        rhs_register = register - 1
 
         this_code = {
             "instruction": self.instruction,

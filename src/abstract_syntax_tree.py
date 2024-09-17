@@ -27,6 +27,7 @@ class AbstractSyntaxTree:
         self.current_value: dict = {}
         self.current_statement_list: list[tuple[str, dict]] = []
         self.current_node: Node = None
+        self.current_function_type: str = None
 
     def build(self) -> PROG:
         """
@@ -108,6 +109,7 @@ class AbstractSyntaxTree:
                 function_metadata=function_metadata
             )
 
+            self.current_function_type = function_def_node.get_type()
             self.current_statement_list = function_data.get("statements")
 
             self._next_symbol()
@@ -207,9 +209,9 @@ class AbstractSyntaxTree:
 
         ret_sym_node = RET_SYM(
             id=ret_sym_node_id,
-            returned_value=self._handle_eol()
+            returned_value=self._handle_eol(),
+            type=self.current_function_type
         )
-
 
         return ret_sym_node
 
@@ -389,17 +391,16 @@ class AbstractSyntaxTree:
 
         return statement_node
 
-    def _handle_eol(self) -> EXPR:
+    def _handle_eol(self) -> Operation:
         """
         Parse an expression terminated by a semicolon: `<expression> ;`
 
         Returns
         -------
-        statement_node : EXPR
-            The parent node of an expression.
+        statement_node : Operation
+            The expression itself.
         """
 
-        expression_node_id = self._get_next_id()
         child_expression = self._expression()
 
         if self.current_symbol == "SEMI":
@@ -407,10 +408,7 @@ class AbstractSyntaxTree:
         else:
             raise SyntaxError("Missing semicolon at the end of expression.")
 
-        return EXPR(
-            id=expression_node_id,
-            child_expression=child_expression
-        )
+        return child_expression
 
     def _parenthesis_expression(self) -> Node:
         """
