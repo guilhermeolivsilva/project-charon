@@ -1,5 +1,7 @@
 """Implement unit tests for the `src.lexer.Lexer` class."""
 
+from copy import deepcopy
+
 import pytest
 
 from src.lexer import Lexer
@@ -65,7 +67,8 @@ def test_parse_source_code():
 
     expected_parsed_code = TOKENIZED_SOURCE_CODE
 
-    lexer = Lexer(SOURCE_CODE)
+    _source = deepcopy(SOURCE_CODE)
+    lexer = Lexer(source_code=_source)
     lexer_parsed_code = lexer.parse_source_code()
 
     assert lexer_parsed_code == expected_parsed_code
@@ -286,7 +289,8 @@ def test_split_source():
         '}'
     ]
 
-    lexer = Lexer(SOURCE_CODE)
+    _source = deepcopy(SOURCE_CODE)
+    lexer = Lexer(source_code=_source)
 
     assert lexer.split_source() == expected_split_source
 
@@ -303,5 +307,5 @@ def test_validate_source_code_syntax(source_code: str):
     """
 
     with pytest.raises(SyntaxError):
-        lexer = Lexer(source_code)
+        lexer = Lexer(source_code=source_code)
         _ = lexer.parse_source_code()

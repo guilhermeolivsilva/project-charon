@@ -1,5 +1,7 @@
 """Implement unit tests for the `src.abstract_syntax_tree.AbstractSyntaxTree` class."""
 
+from copy import deepcopy
+
 from pytest import fixture
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
@@ -146,7 +148,8 @@ ID: 0, Kind: PROG
 def test_init() -> None:
     """Test the instantiation of AbstractSyntaxTree objects."""
 
-    ast = AbstractSyntaxTree(source_code=TOKENIZED_SOURCE_CODE)
+    _source = deepcopy(TOKENIZED_SOURCE_CODE)
+    ast = AbstractSyntaxTree(source_code=_source)
 
     assert ast.node_id_manager == 1
     assert ast.source_code == TOKENIZED_SOURCE_CODE
@@ -164,7 +167,8 @@ def test_build(capfd: fixture) -> None:
     the console output with pytest's `capfd` fixture.
     """
 
-    ast = AbstractSyntaxTree(source_code=TOKENIZED_SOURCE_CODE)
+    _source = deepcopy(TOKENIZED_SOURCE_CODE)
+    ast = AbstractSyntaxTree(source_code=_source)
     _ = ast.build()
 
     ast.print_tree()
