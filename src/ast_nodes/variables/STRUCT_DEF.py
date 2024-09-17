@@ -31,6 +31,7 @@ class STRUCT_DEF(Node):
             for attribute in struct_metadata.get("attributes").values()
         )
 
+        self.active: bool = struct_metadata.get("active")
         self.struct_metadata = struct_metadata
         self.symbol: str = f"({self.symbol})^{_attribute_types}"
 
@@ -140,3 +141,18 @@ class STRUCT_DEF(Node):
         ]
 
         return attribute_types
+    
+    def is_active(self) -> bool:
+        """
+        Tell whether this struct definition is `active` or not.
+
+        A struct is `active` if at least one variable of its type has been
+        defined in the source code.
+
+        Returns
+        -------
+        active : bool
+            Wheter the struct is active or not.
+        """
+
+        return self.active

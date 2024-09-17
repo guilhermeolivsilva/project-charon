@@ -126,7 +126,7 @@ class CodeGenerator:
 
         struct_def_nodes: list[STRUCT_DEF] = [
             node for node in self.root.children
-            if isinstance(node, STRUCT_DEF)
+            if isinstance(node, STRUCT_DEF) and node.is_active()
         ]
 
         for struct_def in struct_def_nodes:
