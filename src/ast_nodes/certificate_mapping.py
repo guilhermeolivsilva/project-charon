@@ -8,10 +8,7 @@ __STARTING_SYMBOL = 2
 
 __CERTIFICATE_SYMBOLS = [
     "CST",
-    "EXPR",
-    "SEQ",
     "VAR_DEF",
-    "STRUCT_DEF",
     "VAR",
     "ELEMENT_ACCESS",
     "FUNC_CALL",
@@ -34,8 +31,7 @@ __CERTIFICATE_SYMBOLS = [
     "IF",
     "IFELSE",
     "WHILE",
-    "DO",
-    "EMPTY",
+    "DO"
 ]
 
 __TYPES_SYMBOLS = [
