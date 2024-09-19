@@ -35,12 +35,14 @@ from src.ast_nodes.operations.ADD import ADD
 from src.ast_nodes.operations.SUB import SUB
 from src.ast_nodes.operations.MULT import MULT
 from src.ast_nodes.operations.DIV import DIV
-from src.ast_nodes.operations.LSHIFT import LSHIFT
-from src.ast_nodes.operations.RSHIFT import RSHIFT
 from src.ast_nodes.operations.AND import AND
 from src.ast_nodes.operations.OR import OR
+
+# Bit-wise operations
 from src.ast_nodes.operations.BITAND import BITAND
 from src.ast_nodes.operations.BITOR import BITOR
+from src.ast_nodes.operations.LSHIFT import LSHIFT
+from src.ast_nodes.operations.RSHIFT import RSHIFT
 
 # Comparisons
 from src.ast_nodes.operations.EQUAL import EQUAL

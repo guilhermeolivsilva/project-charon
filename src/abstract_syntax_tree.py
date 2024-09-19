@@ -1,9 +1,6 @@
 """Implement the Abstract Syntax Tree (AST)."""
 
-from typing import Union
-
 from src.ast_nodes import *
-from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 
 
 class AbstractSyntaxTree:
