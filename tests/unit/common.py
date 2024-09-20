@@ -422,15 +422,15 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 12, "register": 5, "value": 5, "type": "int"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 14, "register": 6, "value": 3, "type": "int"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 16, "register": 7, "value": 4, "type": "int"},
             },
             {
@@ -447,7 +447,7 @@ MACHINE_CODE = {
                 "metadata": {"id": 13, "lhs_register": 5, "rhs_register": 8},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 18, "register": 9, "value": 2, "type": "my_struct"},
             },
             {
@@ -464,7 +464,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 22, "register": 12, "value": 5, "type": "int"},
             },
             {
@@ -472,7 +472,7 @@ MACHINE_CODE = {
                 "metadata": {"id": 21, "lhs_register": 11, "rhs_register": 12},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 25, "register": 13, "value": 2, "type": "my_struct"},
             },
             {
@@ -502,11 +502,11 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 30, "register": 4, "value": 3, "type": "float"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 32, "register": 5, "value": 4, "type": "int"},
             },
             {
@@ -563,7 +563,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 40, "register": 5, "value": 5, "type": "int"},
             },
             {
@@ -585,7 +585,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 48, "register": 8, "value": 6, "type": "float"},
             },
             {
@@ -617,7 +617,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 60, "register": 12, "value": 8, "type": "my_struct"},
             },
             {
@@ -642,15 +642,15 @@ MACHINE_CODE = {
                 "metadata": {"id": 63, "lhs_register": 14, "rhs_register": 15},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 66, "register": 16, "value": 5, "type": "int"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 68, "register": 17, "value": 5, "type": "int"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 71, "register": 18, "value": 6, "type": "float"},
             },
             {
@@ -699,11 +699,11 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 77, "register": 25, "value": 6, "type": "float"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 79, "register": 26, "value": 5, "type": "int"},
             },
             {
@@ -740,7 +740,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 87, "register": 3, "value": 3, "type": "int"},
             },
             {
@@ -768,7 +768,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 95, "register": 6, "value": 4, "type": "int"},
             },
             {
@@ -803,7 +803,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 106, "register": 11, "value": 3, "type": "int"},
             },
             {
@@ -833,7 +833,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 112, "register": 16, "value": 3, "type": "int"},
             },
             {
@@ -859,7 +859,7 @@ MACHINE_CODE = {
                 },
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 116, "register": 20, "value": 3, "type": "int"},
             },
             {
@@ -886,11 +886,11 @@ MACHINE_CODE = {
             },
             {"instruction": "JZ", "metadata": {"jump_size": 7}},
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 121, "register": 24, "value": 5, "type": "int"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 123, "register": 25, "value": 3, "type": "int"},
             },
             {
@@ -912,11 +912,11 @@ MACHINE_CODE = {
             },
             {"instruction": "JMP", "metadata": {"jump_size": 6}},
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 128, "register": 28, "value": 5, "type": "int"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 130, "register": 29, "value": 3, "type": "int"},
             },
             {
@@ -937,11 +937,11 @@ MACHINE_CODE = {
                 "metadata": {"id": 129, "lhs_register": 28, "rhs_register": 31},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 135, "register": 32, "value": 3, "type": "int"},
             },
             {
-                "instruction": "FETCH",
+                "instruction": "LOAD",
                 "metadata": {"id": 137, "register": 33, "value": 5, "type": "int"},
             },
             {

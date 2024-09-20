@@ -25,7 +25,7 @@ class VAR(Node):
         relative_position = variable_metadata.get("relative_position")
         super().__init__(id, relative_position)
 
-        self.instruction: str = "FETCH"
+        self.instruction: str = "LOAD"
         self.symbol: str = f"({self.symbol})^({self.value})"
         self.relative_position: int = relative_position
         self.variable_metadata: dict[str, str] = variable_metadata
