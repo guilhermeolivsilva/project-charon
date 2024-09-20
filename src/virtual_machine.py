@@ -63,8 +63,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -82,8 +82,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -108,8 +108,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         ...
@@ -124,8 +124,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -143,8 +143,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -160,8 +160,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         ...
@@ -174,8 +174,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         ...
@@ -190,8 +190,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -207,8 +207,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         ...
@@ -223,8 +223,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -246,8 +246,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -264,8 +264,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -290,8 +290,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -308,8 +308,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -332,8 +332,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -356,8 +356,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -380,8 +380,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -398,8 +398,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -416,6 +416,24 @@ class VirtualMachine:
             1 if (lhs or rhs) > 0 else 0
         )
 
+    def FPTOSI(self, instruction_metadata: dict[str, dict]) -> None:
+        """
+        Handle a `FPTOSI` bytecode.
+
+        This method type casts a floating point to signed integer. For the sake
+        of simplicity, we'll use Python's conversion.
+
+        Parameters
+        ----------
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
+        """
+
+        source_register: int = instruction_metadata.get("source_register")
+        destination_register: int = instruction_metadata.get("destination_register")
+
+        self.registers[destination_register] = int(self.registers[source_register])
+
     def FSUB(self, instruction_metadata: dict[str, dict]) -> None:
         """
         Handle a `FSUB` bytecode.
@@ -424,8 +442,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -443,8 +461,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -466,11 +484,11 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
-        ...
+        return
 
     def JMP(self, instruction_metadata: dict[str, dict]) -> None:
         """
@@ -480,11 +498,12 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
-        ...
+        jump_size: int = instruction_metadata.get("jump_size")
+        self.program_counter += jump_size - 1
 
     def JNZ(self, instruction_metadata: dict[str, dict]) -> None:
         """
@@ -495,11 +514,15 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
-        ...
+        condition: int = self.stack.pop()
+
+        if condition:
+            jump_size: int = instruction_metadata.get("jump_size")
+            self.program_counter += jump_size - 1
 
     def JZ(self, instruction_metadata: dict[str, dict]) -> None:
         """
@@ -510,11 +533,15 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
-        ...
+        condition: int = self.stack.pop()
+
+        if not condition:
+            jump_size: int = instruction_metadata.get("jump_size")
+            self.program_counter += jump_size - 1
 
     def LSHIFT(self, instruction_metadata: dict[str, dict]) -> None:
         """
@@ -526,8 +553,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -545,8 +572,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -570,8 +597,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
@@ -589,8 +616,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
 
         Notes
         -----
@@ -615,8 +642,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         ...
@@ -631,14 +658,51 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
         rhs = self.registers[instruction_metadata.get("rhs_register")]
 
         self.registers[instruction_metadata.get("register")] = lhs >> rhs
+
+    def SIGNEXT(self, instruction_metadata: dict[str, dict]) -> None:
+        """
+        Handle a `SIGNEXT` bytecode.
+
+        This method extends a 16-bit value to 32 bits. As we are dealing with
+        registers, and not the memory directly, the value to extend is simply
+        copied to the destination register.
+
+        Parameters
+        ----------
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
+        """
+
+        source_register: int = instruction_metadata.get("source_register")
+        destination_register: int = instruction_metadata.get("destination_register")
+
+        self.registers[destination_register] = self.registers[source_register]
+
+    def SITOFP(self, instruction_metadata: dict[str, dict]) -> None:
+        """
+        Handle a `SITOFP` bytecode.
+
+        This method type casts a signed integer to floating point. For the sake
+        of simplicity, we'll use Python's conversion.
+
+        Parameters
+        ----------
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
+        """
+
+        source_register: int = instruction_metadata.get("source_register")
+        destination_register: int = instruction_metadata.get("destination_register")
+
+        self.registers[destination_register] = float(self.registers[source_register])
 
     def STORE(self, instruction_metadata: dict[str, dict]) -> None:
         """
@@ -648,8 +712,8 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         ...
@@ -664,11 +728,34 @@ class VirtualMachine:
 
         Parameters
         ----------
-        bytecode : dict[str, dict]
-            The bytecode containing the instruction and its metadata.
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
         """
 
         lhs = self.registers[instruction_metadata.get("lhs_register")]
         rhs = self.registers[instruction_metadata.get("rhs_register")]
 
         self.registers[instruction_metadata.get("register")] = lhs - rhs
+
+    def TRUNC(self, instruction_metadata: dict[str, dict]) -> None:
+        """
+        Handle a `TRUNC` bytecode.
+
+        This method truncates a 32-bit value to 16 bits.
+
+        Parameters
+        ----------
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
+        """
+
+        source_register: int = instruction_metadata.get("source_register")
+        destination_register: int = instruction_metadata.get("destination_register")
+
+        value_to_truncate: int = self.registers[source_register]
+        truncated_value: int = value_to_truncate & 0xFFFF
+
+        if truncated_value & 0x8000:
+            truncated_value -= 0x100000
+
+        self.registers[destination_register] = truncated_value
