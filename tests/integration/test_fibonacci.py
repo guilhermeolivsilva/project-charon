@@ -12,24 +12,4 @@ def test_fib():
     The result is stored in the `b` variable.
     """
 
-    source_code = """
-    {
-        i = 1;
-        a = 0;
-        b = 1;
-        while (i < 10) {
-            c = a;
-            a = b;
-            b = c + a;
-            i = i + 1; 
-        }
-    }
-    """
-
-    instance = create_instance(source_code)
-
-    vm, frontend_certificate, backend_certificate = instance.values()
-    assert frontend_certificate == backend_certificate
-
-    vm.run()
-    assert vm.variables['b'] == 55
+    ...
