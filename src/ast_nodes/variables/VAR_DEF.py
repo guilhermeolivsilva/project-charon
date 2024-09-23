@@ -25,7 +25,7 @@ class VAR_DEF(Node):
         relative_position: int = variable_metadata.get("relative_position")
         type: str = variable_metadata.get("type")
 
-        super().__init__(id, relative_position, type)
+        super().__init__(id, relative_position, type, uses_register=False)
 
         self.variable_metadata: dict = variable_metadata
         self.instruction: str = "ALLOC"
@@ -99,14 +99,12 @@ class VAR_DEF(Node):
             "instruction": self.instruction,
             "metadata": {
                 "id": self.id,
-                "register": register,
                 "type": self.type,
                 "relative_position": self.value,
                 "length": self.variable_metadata.get("length", 1)
             }
         }
 
-        register += 1
         code_metadata.append(var_def_code)
 
         return register, code_metadata

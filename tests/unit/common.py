@@ -376,19 +376,12 @@ MACHINE_CODE = {
     "code": [
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 3,
-                "register": 0,
-                "type": "int",
-                "relative_position": 1,
-                "length": 10,
-            },
+            "metadata": {"id": 3, "type": "int", "relative_position": 1, "length": 10},
         },
         {
             "instruction": "ALLOC",
             "metadata": {
                 "id": 4,
-                "register": 1,
                 "type": "my_struct",
                 "relative_position": 2,
                 "length": 1,
@@ -398,7 +391,6 @@ MACHINE_CODE = {
             "instruction": "PARAM",
             "metadata": {
                 "id": None,
-                "register": 2,
                 "type": "int",
                 "relative_position": 3,
                 "length": 1,
@@ -408,7 +400,6 @@ MACHINE_CODE = {
             "instruction": "PARAM",
             "metadata": {
                 "id": None,
-                "register": 3,
                 "type": "int",
                 "relative_position": 4,
                 "length": 1,
@@ -416,72 +407,65 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 8,
-                "register": 4,
-                "type": "int",
-                "relative_position": 5,
-                "length": 1,
-            },
+            "metadata": {"id": 8, "type": "int", "relative_position": 5, "length": 1},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 12, "register": 5, "value": 5, "type": "int"},
+            "metadata": {"id": 12, "register": 0, "value": 5, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 14, "register": 6, "value": 3, "type": "int"},
+            "metadata": {"id": 14, "register": 1, "value": 3, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 16, "register": 7, "value": 4, "type": "int"},
+            "metadata": {"id": 16, "register": 2, "value": 4, "type": "int"},
         },
         {
             "instruction": "ADD",
-            "metadata": {"id": 15, "register": 8, "lhs_register": 6, "rhs_register": 7},
+            "metadata": {"id": 15, "register": 3, "lhs_register": 1, "rhs_register": 2},
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 13, "lhs_register": 5, "rhs_register": 8},
+            "metadata": {"id": 13, "lhs_register": 0, "rhs_register": 3},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 18, "register": 9, "value": 2, "type": "my_struct"},
+            "metadata": {"id": 18, "register": 4, "value": 2, "type": "my_struct"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 20, "register": 10, "value": 0, "type": "int"},
+            "metadata": {"id": 20, "register": 5, "value": 0, "type": "int"},
         },
         {
             "instruction": "ELEMENT_PTR",
             "metadata": {
                 "id": 19,
-                "register": 11,
-                "variable_register": 9,
-                "element_register": 10,
+                "register": 6,
+                "variable_register": 4,
+                "element_register": 5,
             },
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 22, "register": 12, "value": 5, "type": "int"},
+            "metadata": {"id": 22, "register": 7, "value": 5, "type": "int"},
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 21, "lhs_register": 11, "rhs_register": 12},
+            "metadata": {"id": 21, "lhs_register": 6, "rhs_register": 7},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 25, "register": 13, "value": 2, "type": "my_struct"},
+            "metadata": {"id": 25, "register": 8, "value": 2, "type": "my_struct"},
         },
         {
             "instruction": "RET",
-            "metadata": {"id": 24, "type": "my_struct", "register": 13},
+            "metadata": {"id": 24, "type": "my_struct", "register": 8},
         },
         {
             "instruction": "PARAM",
             "metadata": {
                 "id": None,
-                "register": 2,
                 "type": "float",
                 "relative_position": 6,
                 "length": 1,
@@ -491,7 +475,6 @@ MACHINE_CODE = {
             "instruction": "PARAM",
             "metadata": {
                 "id": None,
-                "register": 3,
                 "type": "int",
                 "relative_position": 7,
                 "length": 1,
@@ -499,30 +482,29 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 30, "register": 4, "value": 6, "type": "float"},
+            "metadata": {"id": 30, "register": 0, "value": 6, "type": "float"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 32, "register": 5, "value": 7, "type": "int"},
+            "metadata": {"id": 32, "register": 1, "value": 7, "type": "int"},
         },
         {
             "instruction": "SITOFP",
-            "metadata": {"source_register": 5, "destination_register": 6},
+            "metadata": {"source_register": 1, "destination_register": 2},
         },
         {
             "instruction": "FDIV",
-            "metadata": {"id": 31, "register": 7, "lhs_register": 4, "rhs_register": 6},
+            "metadata": {"id": 31, "register": 3, "lhs_register": 0, "rhs_register": 2},
         },
         {
             "instruction": "FPTOSI",
-            "metadata": {"source_register": 7, "destination_register": 8},
+            "metadata": {"source_register": 3, "destination_register": 4},
         },
-        {"instruction": "RET", "metadata": {"id": 29, "type": "int", "register": 8}},
+        {"instruction": "RET", "metadata": {"id": 29, "type": "int", "register": 4}},
         {
             "instruction": "PARAM",
             "metadata": {
                 "id": None,
-                "register": 2,
                 "type": "int",
                 "relative_position": 8,
                 "length": 1,
@@ -532,7 +514,6 @@ MACHINE_CODE = {
             "instruction": "PARAM",
             "metadata": {
                 "id": None,
-                "register": 3,
                 "type": "int",
                 "relative_position": 9,
                 "length": 1,
@@ -540,31 +521,24 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 36,
-                "register": 4,
-                "type": "int",
-                "relative_position": 10,
-                "length": 1,
-            },
+            "metadata": {"id": 36, "type": "int", "relative_position": 10, "length": 1},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 40, "register": 5, "value": 10, "type": "int"},
+            "metadata": {"id": 40, "register": 0, "value": 10, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 42, "register": 6, "value": 1, "type": "int"},
+            "metadata": {"id": 42, "register": 1, "value": 1, "type": "int"},
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 41, "lhs_register": 5, "rhs_register": 6},
+            "metadata": {"id": 41, "lhs_register": 0, "rhs_register": 1},
         },
         {
             "instruction": "ALLOC",
             "metadata": {
                 "id": 44,
-                "register": 7,
                 "type": "float",
                 "relative_position": 11,
                 "length": 1,
@@ -572,21 +546,20 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 48, "register": 8, "value": 11, "type": "float"},
+            "metadata": {"id": 48, "register": 2, "value": 11, "type": "float"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 50, "register": 9, "value": 2.0, "type": "float"},
+            "metadata": {"id": 50, "register": 3, "value": 2.0, "type": "float"},
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 49, "lhs_register": 8, "rhs_register": 9},
+            "metadata": {"id": 49, "lhs_register": 2, "rhs_register": 3},
         },
         {
             "instruction": "ALLOC",
             "metadata": {
                 "id": 52,
-                "register": 10,
                 "type": "short",
                 "relative_position": 12,
                 "length": 1,
@@ -596,7 +569,6 @@ MACHINE_CODE = {
             "instruction": "ALLOC",
             "metadata": {
                 "id": 56,
-                "register": 11,
                 "type": "my_struct",
                 "relative_position": 13,
                 "length": 1,
@@ -604,131 +576,125 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 60, "register": 12, "value": 13, "type": "my_struct"},
+            "metadata": {"id": 60, "register": 4, "value": 13, "type": "my_struct"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 62, "register": 13, "value": 0, "type": "int"},
+            "metadata": {"id": 62, "register": 5, "value": 0, "type": "int"},
         },
         {
             "instruction": "ELEMENT_PTR",
             "metadata": {
                 "id": 61,
-                "register": 14,
-                "variable_register": 12,
-                "element_register": 13,
+                "register": 6,
+                "variable_register": 4,
+                "element_register": 5,
             },
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 64, "register": 15, "value": 1, "type": "int"},
+            "metadata": {"id": 64, "register": 7, "value": 1, "type": "int"},
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 63, "lhs_register": 14, "rhs_register": 15},
+            "metadata": {"id": 63, "lhs_register": 6, "rhs_register": 7},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 66, "register": 16, "value": 10, "type": "int"},
+            "metadata": {"id": 66, "register": 8, "value": 10, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 68, "register": 17, "value": 10, "type": "int"},
+            "metadata": {"id": 68, "register": 9, "value": 10, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 71, "register": 18, "value": 11, "type": "float"},
+            "metadata": {"id": 71, "register": 10, "value": 11, "type": "float"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 72, "register": 19, "value": 123, "type": "int"},
+            "metadata": {"id": 72, "register": 11, "value": 123, "type": "int"},
         },
         {
             "instruction": "CALL",
             "metadata": {
                 "id": 70,
-                "register": 20,
+                "register": 12,
                 "value": 2,
                 "type": "int",
-                "parameters_registers": [18, 19],
+                "parameters_registers": [10, 11],
             },
         },
         {
             "instruction": "ADD",
             "metadata": {
                 "id": 69,
-                "register": 21,
-                "lhs_register": 17,
-                "rhs_register": 20,
+                "register": 13,
+                "lhs_register": 9,
+                "rhs_register": 12,
             },
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 67, "lhs_register": 16, "rhs_register": 21},
+            "metadata": {"id": 67, "lhs_register": 8, "rhs_register": 13},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 73, "register": 22, "value": 1, "type": "int"},
+            "metadata": {"id": 73, "register": 14, "value": 1, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 74, "register": 23, "value": 2, "type": "int"},
+            "metadata": {"id": 74, "register": 15, "value": 2, "type": "int"},
         },
         {
             "instruction": "CALL",
             "metadata": {
                 "id": 72,
-                "register": 24,
+                "register": 16,
                 "value": 3,
                 "type": "int",
-                "parameters_registers": [22, 23],
+                "parameters_registers": [14, 15],
             },
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 77, "register": 25, "value": 11, "type": "float"},
+            "metadata": {"id": 77, "register": 17, "value": 11, "type": "float"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 79, "register": 26, "value": 10, "type": "int"},
+            "metadata": {"id": 79, "register": 18, "value": 10, "type": "int"},
         },
         {
             "instruction": "SITOFP",
-            "metadata": {"source_register": 26, "destination_register": 27},
+            "metadata": {"source_register": 18, "destination_register": 19},
         },
         {
             "instruction": "FADD",
             "metadata": {
                 "id": 78,
-                "register": 28,
-                "lhs_register": 25,
-                "rhs_register": 27,
+                "register": 20,
+                "lhs_register": 17,
+                "rhs_register": 19,
             },
         },
         {
             "instruction": "FPTOSI",
-            "metadata": {"source_register": 28, "destination_register": 29},
+            "metadata": {"source_register": 20, "destination_register": 21},
         },
-        {"instruction": "RET", "metadata": {"id": 76, "type": "int", "register": 29}},
+        {"instruction": "RET", "metadata": {"id": 76, "type": "int", "register": 21}},
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 83,
-                "register": 2,
-                "type": "int",
-                "relative_position": 14,
-                "length": 1,
-            },
+            "metadata": {"id": 83, "type": "int", "relative_position": 14, "length": 1},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 87, "register": 3, "value": 14, "type": "int"},
+            "metadata": {"id": 87, "register": 0, "value": 14, "type": "int"},
         },
         {
             "instruction": "CALL",
             "metadata": {
                 "id": 89,
-                "register": 4,
+                "register": 1,
                 "value": 3,
                 "type": "int",
                 "parameters_registers": [],
@@ -736,13 +702,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 88, "lhs_register": 3, "rhs_register": 4},
+            "metadata": {"id": 88, "lhs_register": 0, "rhs_register": 1},
         },
         {
             "instruction": "ALLOC",
             "metadata": {
                 "id": 91,
-                "register": 5,
                 "type": "int",
                 "relative_position": 15,
                 "length": 10,
@@ -750,34 +715,33 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 95, "register": 6, "value": 15, "type": "int"},
+            "metadata": {"id": 95, "register": 2, "value": 15, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 97, "register": 7, "value": 5, "type": "int"},
+            "metadata": {"id": 97, "register": 3, "value": 5, "type": "int"},
         },
         {
             "instruction": "ELEMENT_PTR",
             "metadata": {
                 "id": 96,
-                "register": 8,
-                "variable_register": 6,
-                "element_register": 7,
+                "register": 4,
+                "variable_register": 2,
+                "element_register": 3,
             },
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 99, "register": 9, "value": 1, "type": "int"},
+            "metadata": {"id": 99, "register": 5, "value": 1, "type": "int"},
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 98, "lhs_register": 8, "rhs_register": 9},
+            "metadata": {"id": 98, "lhs_register": 4, "rhs_register": 5},
         },
         {
             "instruction": "ALLOC",
             "metadata": {
                 "id": 101,
-                "register": 10,
                 "type": "int",
                 "relative_position": 16,
                 "length": 1,
@@ -785,182 +749,183 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 106, "register": 11, "value": 14, "type": "int"},
+            "metadata": {"id": 106, "register": 6, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 108, "register": 12, "value": 4, "type": "int"},
+            "metadata": {"id": 108, "register": 7, "value": 4, "type": "int"},
         },
         {
             "instruction": "LSHIFT",
             "metadata": {
                 "id": 107,
+                "register": 8,
+                "lhs_register": 6,
+                "rhs_register": 7,
+            },
+        },
+        {
+            "instruction": "CONSTANT",
+            "metadata": {"id": 110, "register": 9, "value": 1, "type": "int"},
+        },
+        {
+            "instruction": "EQ",
+            "metadata": {
+                "id": 109,
+                "register": 10,
+                "lhs_register": 8,
+                "rhs_register": 9,
+            },
+        },
+        {
+            "instruction": "LOAD",
+            "metadata": {"id": 112, "register": 11, "value": 14, "type": "int"},
+        },
+        {
+            "instruction": "CONSTANT",
+            "metadata": {"id": 114, "register": 12, "value": 1, "type": "int"},
+        },
+        {
+            "instruction": "GT",
+            "metadata": {
+                "id": 113,
                 "register": 13,
                 "lhs_register": 11,
                 "rhs_register": 12,
             },
         },
         {
-            "instruction": "CONSTANT",
-            "metadata": {"id": 110, "register": 14, "value": 1, "type": "int"},
-        },
-        {
-            "instruction": "EQ",
-            "metadata": {
-                "id": 109,
-                "register": 15,
-                "lhs_register": 13,
-                "rhs_register": 14,
-            },
-        },
-        {
-            "instruction": "LOAD",
-            "metadata": {"id": 112, "register": 16, "value": 14, "type": "int"},
-        },
-        {
-            "instruction": "CONSTANT",
-            "metadata": {"id": 114, "register": 17, "value": 1, "type": "int"},
-        },
-        {
-            "instruction": "GT",
-            "metadata": {
-                "id": 113,
-                "register": 18,
-                "lhs_register": 16,
-                "rhs_register": 17,
-            },
-        },
-        {
             "instruction": "OR",
             "metadata": {
                 "id": 111,
-                "register": 19,
-                "lhs_register": 15,
-                "rhs_register": 18,
+                "register": 14,
+                "lhs_register": 10,
+                "rhs_register": 13,
             },
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 116, "register": 20, "value": 14, "type": "int"},
+            "metadata": {"id": 116, "register": 15, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 118, "register": 21, "value": 10, "type": "int"},
+            "metadata": {"id": 118, "register": 16, "value": 10, "type": "int"},
         },
         {
             "instruction": "LT",
             "metadata": {
                 "id": 117,
-                "register": 22,
-                "lhs_register": 20,
-                "rhs_register": 21,
+                "register": 17,
+                "lhs_register": 15,
+                "rhs_register": 16,
             },
         },
         {
             "instruction": "AND",
             "metadata": {
                 "id": 115,
-                "register": 23,
-                "lhs_register": 19,
-                "rhs_register": 22,
+                "register": 18,
+                "lhs_register": 14,
+                "rhs_register": 17,
             },
         },
         {"instruction": "JZ", "metadata": {"jump_size": 7}},
         {
             "instruction": "LOAD",
-            "metadata": {"id": 121, "register": 24, "value": 16, "type": "int"},
+            "metadata": {"id": 121, "register": 19, "value": 16, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 123, "register": 25, "value": 14, "type": "int"},
+            "metadata": {"id": 123, "register": 20, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 125, "register": 26, "value": 1, "type": "int"},
+            "metadata": {"id": 125, "register": 21, "value": 1, "type": "int"},
         },
         {
             "instruction": "BITAND",
             "metadata": {
                 "id": 124,
-                "register": 27,
-                "lhs_register": 25,
-                "rhs_register": 26,
+                "register": 22,
+                "lhs_register": 20,
+                "rhs_register": 21,
             },
         },
         {
             "instruction": "STORE",
-            "metadata": {"id": 122, "lhs_register": 24, "rhs_register": 27},
+            "metadata": {"id": 122, "lhs_register": 19, "rhs_register": 22},
         },
         {"instruction": "JMP", "metadata": {"jump_size": 6}},
         {
             "instruction": "LOAD",
-            "metadata": {"id": 128, "register": 28, "value": 16, "type": "int"},
+            "metadata": {"id": 128, "register": 23, "value": 16, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {"id": 130, "register": 29, "value": 14, "type": "int"},
+            "metadata": {"id": 130, "register": 24, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"id": 132, "register": 30, "value": 1, "type": "int"},
+            "metadata": {"id": 132, "register": 25, "value": 1, "type": "int"},
         },
         {
             "instruction": "BITOR",
             "metadata": {
                 "id": 131,
+                "register": 26,
+                "lhs_register": 24,
+                "rhs_register": 25,
+            },
+        },
+        {
+            "instruction": "STORE",
+            "metadata": {"id": 129, "lhs_register": 23, "rhs_register": 26},
+        },
+        {
+            "instruction": "LOAD",
+            "metadata": {"id": 135, "register": 27, "value": 14, "type": "int"},
+        },
+        {
+            "instruction": "LOAD",
+            "metadata": {"id": 137, "register": 28, "value": 16, "type": "int"},
+        },
+        {
+            "instruction": "MULT",
+            "metadata": {
+                "id": 136,
+                "register": 29,
+                "lhs_register": 27,
+                "rhs_register": 28,
+            },
+        },
+        {
+            "instruction": "CONSTANT",
+            "metadata": {"id": 139, "register": 30, "value": 2, "type": "int"},
+        },
+        {
+            "instruction": "DIV",
+            "metadata": {
+                "id": 138,
                 "register": 31,
                 "lhs_register": 29,
                 "rhs_register": 30,
             },
         },
         {
-            "instruction": "STORE",
-            "metadata": {"id": 129, "lhs_register": 28, "rhs_register": 31},
-        },
-        {
-            "instruction": "LOAD",
-            "metadata": {"id": 135, "register": 32, "value": 14, "type": "int"},
-        },
-        {
-            "instruction": "LOAD",
-            "metadata": {"id": 137, "register": 33, "value": 16, "type": "int"},
-        },
-        {
-            "instruction": "MULT",
-            "metadata": {
-                "id": 136,
-                "register": 34,
-                "lhs_register": 32,
-                "rhs_register": 33,
-            },
-        },
-        {
             "instruction": "CONSTANT",
-            "metadata": {"id": 139, "register": 35, "value": 2, "type": "int"},
-        },
-        {
-            "instruction": "DIV",
-            "metadata": {
-                "id": 138,
-                "register": 36,
-                "lhs_register": 34,
-                "rhs_register": 35,
-            },
-        },
-        {
-            "instruction": "CONSTANT",
-            "metadata": {"id": 141, "register": 37, "value": 1, "type": "int"},
+            "metadata": {"id": 141, "register": 32, "value": 1, "type": "int"},
         },
         {
             "instruction": "RSHIFT",
             "metadata": {
                 "id": 140,
-                "register": 38,
-                "lhs_register": 36,
-                "rhs_register": 37,
+                "register": 33,
+                "lhs_register": 31,
+                "rhs_register": 32,
             },
         },
-        {"instruction": "RET", "metadata": {"id": 134, "type": "int", "register": 38}},
+        {"instruction": "RET", "metadata": {"id": 134, "type": "int", "register": 33}},
+        {"instruction": "HALT", "metadata": {}},
     ],
 }
 
