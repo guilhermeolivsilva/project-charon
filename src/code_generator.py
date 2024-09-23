@@ -118,6 +118,12 @@ class CodeGenerator:
         self.parse_global_variables()
         self.parse_functions()
 
+        # Add the HALT instruction at the end of the generated code.
+        self.program["code"].append({
+            "instruction": "HALT",
+            "metadata": {}
+        })
+
         return self.program
 
     def parse_struct_definitions(self) -> None:
