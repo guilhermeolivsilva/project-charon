@@ -12,6 +12,7 @@ __CERTIFICATE_SYMBOLS = [
     "VAR",
     "ELEMENT_ACCESS",
     "FUNC_CALL",
+    "PARAM",
     "RET_SYM",
     "PROG",
     "ASSIGN",

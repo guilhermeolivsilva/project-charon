@@ -96,7 +96,7 @@ class VAR_DEF(Node):
         code_metadata: list[dict[str, Union[int, str]]] = []
 
         var_def_code = {
-            "instruction": "ALLOC",
+            "instruction": self.instruction,
             "metadata": {
                 "id": self.id,
                 "register": register,

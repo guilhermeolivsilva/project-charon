@@ -395,7 +395,7 @@ MACHINE_CODE = {
             },
         },
         {
-            "instruction": "ALLOC",
+            "instruction": "PARAM",
             "metadata": {
                 "id": None,
                 "register": 2,
@@ -405,7 +405,7 @@ MACHINE_CODE = {
             },
         },
         {
-            "instruction": "ALLOC",
+            "instruction": "PARAM",
             "metadata": {
                 "id": None,
                 "register": 3,
@@ -478,7 +478,7 @@ MACHINE_CODE = {
             "metadata": {"id": 24, "type": "my_struct", "register": 13},
         },
         {
-            "instruction": "ALLOC",
+            "instruction": "PARAM",
             "metadata": {
                 "id": None,
                 "register": 2,
@@ -488,7 +488,7 @@ MACHINE_CODE = {
             },
         },
         {
-            "instruction": "ALLOC",
+            "instruction": "PARAM",
             "metadata": {
                 "id": None,
                 "register": 3,
@@ -519,7 +519,7 @@ MACHINE_CODE = {
         },
         {"instruction": "RET", "metadata": {"id": 29, "type": "int", "register": 8}},
         {
-            "instruction": "ALLOC",
+            "instruction": "PARAM",
             "metadata": {
                 "id": None,
                 "register": 2,
@@ -529,7 +529,7 @@ MACHINE_CODE = {
             },
         },
         {
-            "instruction": "ALLOC",
+            "instruction": "PARAM",
             "metadata": {
                 "id": None,
                 "register": 3,

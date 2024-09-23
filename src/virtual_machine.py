@@ -606,6 +606,20 @@ class VirtualMachine:
 
         self.registers[instruction_metadata.get("register")] = lhs * rhs
 
+    def PARAM(self, instruction_metadata: dict[str, dict]) -> None:
+        """
+        Handle a `PARAM` bytecode.
+
+        This method handles the passing of arguments to functions.
+
+        Parameters
+        ----------
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
+        """
+
+        ...
+
     def OR(self, instruction_metadata: dict[str, dict]) -> None:
         """
         Handle a `OR` bytecode.

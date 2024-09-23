@@ -6,7 +6,7 @@ from typing_extensions import override
 
 from src.ast_nodes.node import Node
 from src.ast_nodes.basic.SEQ import SEQ
-from src.ast_nodes.variables.VAR_DEF import VAR_DEF
+from src.ast_nodes.functions.PARAM import PARAM
 
 
 class FUNC_DEF(Node):
@@ -39,7 +39,7 @@ class FUNC_DEF(Node):
 
         self.pseudonymous: str = function_metadata.get("pseudonymous")
         self.type: str = function_metadata.get("type")
-        self.arguments: list[VAR_DEF] = self._define_vars_from_args(
+        self.arguments: list[PARAM] = self._define_vars_from_args(
             arguments=function_metadata.get("arguments")
         )
         self.statements: SEQ = None
@@ -171,23 +171,23 @@ class FUNC_DEF(Node):
 
         return self.statements.certificate(prime)
     
-    def _define_vars_from_args(self, arguments: dict[str, dict]) -> list[VAR_DEF]:
+    def _define_vars_from_args(self, arguments: dict[str, dict]) -> list[PARAM]:
         """
-        Create `VAR_DEF` nodes to be contain the received arguments.
+        Create `PARAM` nodes to be contain the received arguments.
 
         Parameters
         ----------
         arguments : dict
-            A dict with variable metadata to generate `VAR_DEF` nodes from.
+            A dict with variable metadata to generate `PARAM` nodes from.
 
         Returns
         -------
-        variables : list[VAR_DEF]
-            A list of `VAR_DEF` nodes. Might be empty, if the function does not
+        variables : list[PARAM]
+            A list of `PARAM` nodes. Might be empty, if the function does not
             take any parameters.
         """
 
-        variables: list[VAR_DEF] = []
+        variables: list[PARAM] = []
 
         for argument_name, argument_metadata in arguments.items():
             variable_metadata = {
@@ -196,7 +196,7 @@ class FUNC_DEF(Node):
             }
 
             variables.append(
-                VAR_DEF(
+                PARAM(
                     id=None,
                     variable_metadata=variable_metadata
                 )

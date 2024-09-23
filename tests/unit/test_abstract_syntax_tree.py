@@ -21,9 +21,9 @@ ID: 0, Kind: PROG
   ID: 4, Value: 2, Kind: VAR_DEF, Type: my_struct
     Name: global_var, Type: my_struct
   ID: 5, Value: function_that_returns_struct, Kind: FUNC_DEF, Type: my_struct
-    Value: 3, Kind: VAR_DEF, Type: int
+    Value: 3, Kind: PARAM, Type: int
       Name: xyz, Type: int
-    Value: 4, Kind: VAR_DEF, Type: int
+    Value: 4, Kind: PARAM, Type: int
       Name: aaa, Type: int
     Kind: SEQ
       ID: 8, Value: 5, Kind: VAR_DEF, Type: int
@@ -41,9 +41,9 @@ ID: 0, Kind: PROG
       ID: 24, Kind: RET_SYM, Type: my_struct
         ID: 25, Value: 2, Kind: VAR, Type: my_struct
   ID: 26, Value: some_simple_function, Kind: FUNC_DEF, Type: int
-    Value: 3, Kind: VAR_DEF, Type: float
+    Value: 3, Kind: PARAM, Type: float
       Name: param_1, Type: float
-    Value: 4, Kind: VAR_DEF, Type: int
+    Value: 4, Kind: PARAM, Type: int
       Name: param_2, Type: int
     Kind: SEQ
       ID: 29, Kind: RET_SYM, Type: int
@@ -51,9 +51,9 @@ ID: 0, Kind: PROG
           ID: 30, Value: 3, Kind: VAR, Type: float
           ID: 32, Value: 4, Kind: VAR, Type: int
   ID: 33, Value: abc, Kind: FUNC_DEF, Type: int
-    Value: 3, Kind: VAR_DEF, Type: int
+    Value: 3, Kind: PARAM, Type: int
       Name: asda, Type: int
-    Value: 4, Kind: VAR_DEF, Type: int
+    Value: 4, Kind: PARAM, Type: int
       Name: abcdef, Type: int
     Kind: SEQ
       ID: 36, Value: 5, Kind: VAR_DEF, Type: int
