@@ -77,6 +77,8 @@ class Lexer:
             "variables": {}
         }
 
+        self.variable_count: int = 0
+
     def parse_source_code(self) -> dict[str, dict]:
         """
         Parse the scopes and functions from the given source code.
@@ -295,9 +297,11 @@ class Lexer:
                     if definition_metadata:
                         variable_name, variable_metadata = definition_metadata
 
-                        var_relative_position = len(self.globals["variables"]) + 1
+                        var_relative_position = self.variable_count + 1
                         variable_metadata["relative_position"] = var_relative_position
                         self.globals["variables"][variable_name] = variable_metadata
+
+                        self.variable_count += 1
 
     def _parse_function(
         self,
@@ -404,7 +408,8 @@ class Lexer:
                     )
                     existing_variables.append(variable_name)
 
-                    var_relative_position = len(available_variables) + 1
+                    var_relative_position = self.variable_count + 1
+                    self.variable_count += 1
 
                     variable_metadata = {
                         "name": variable_name,
@@ -941,9 +946,8 @@ class Lexer:
                         )
                         raise SyntaxError(err_msg)
 
-                    argument_relative_position = (
-                        len(self.globals["variables"]) + len(arguments) + 1
-                    )
+                    argument_relative_position = self.variable_count + 1
+                    self.variable_count += 1
 
                     arguments[param_name] = {
                         "type": param_type,
