@@ -28,8 +28,8 @@ class CodeGenerator:
         self.root: PROG = root
         self.program: dict[str, Union[list, dict]] = {
             "structs": {},
-            "global_vars": [],
-            "functions": {}
+            "functions": {},
+            "code": []
         }
         self.register: int = 0
 
@@ -65,26 +65,30 @@ class CodeGenerator:
 
         _str += "Code:"
 
-        global_vars = self.program["global_vars"]
-        for instruction in global_vars:
-            _str += "\n"
-            _str += "  " * indent
-            _str += str(instruction)
+        # Print the global variables
+        first_function_indices = next(iter(self.program["functions"].values()))
+        first_function_start = first_function_indices["start"]
 
-        # Add a line break between the global vars instructions and the
-        # functions scopes
+        for index in range(first_function_start):
+            _str += "\n"
+            _str += str(self.program["code"][index])
+
+        # Add a line break after the global vars, if any
         if len(_str) > len("Code:"):
             _str += "\n"
 
         functions = self.program["functions"]
-        for function_name, function_code in functions.items():
+        for function_name, function_indices in functions.items():
             _str += "\n"
-            _str += "  " * indent
             _str += f"{function_name}:"
 
-            for instruction in function_code:
+            start_index = function_indices["start"]
+            end_index = function_indices["end"]
+
+            for index in range(start_index, end_index):
+                instruction = self.program["code"][index]
                 _str += "\n"
-                _str += "  " * (indent + 1)
+                _str += "  " * indent
                 _str += str(instruction)
 
             _str += "\n"
@@ -149,12 +153,14 @@ class CodeGenerator:
             self.register, code = global_var_def.generate_code(
                 register=self.register
             )
-            self.program["global_vars"].extend(code)
+            self.program["code"].extend(code)
 
     def parse_functions(self) -> None:
         """
         Generate code for each function and add it to the generated program.
         """
+
+        index: int = len(self.program["code"])
 
         function_def_nodes: list[FUNC_DEF] = [
             node for node in self.root.children
@@ -163,11 +169,19 @@ class CodeGenerator:
 
         for function_def in function_def_nodes:
             function_name = function_def.get_function_name()
+            function_indices = {
+                "start": index
+            }
+
             _, function_code = function_def.generate_code(
                 register=self.register
             )
+            self.program["code"].extend(function_code)
 
-            self.program["functions"][function_name] = function_code
+            index += len(function_code)
+
+            function_indices["end"] = index
+            self.program["functions"][function_name] = function_indices
 
     def get_program(self) -> dict[str, dict]:
         """

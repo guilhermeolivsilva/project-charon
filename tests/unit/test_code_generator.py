@@ -3,7 +3,7 @@
 from copy import deepcopy
 
 from src.code_generator import CodeGenerator
-from tests.unit.common import ABSTRACT_SYNTAX_TREE_ROOT, MACHINE_CODE
+from tests.unit.common import ABSTRACT_SYNTAX_TREE_ROOT, MACHINE_CODE, GLOBAL_VARS_COUNT
 
 
 def test_init() -> None:
@@ -15,8 +15,8 @@ def test_init() -> None:
     assert cg.root == ABSTRACT_SYNTAX_TREE_ROOT
     assert cg.program == {
         "structs": {},
-        "global_vars": [],
-        "functions": {}
+        "functions": {},
+        "code": []
     }
     assert cg.register == 0
 
@@ -50,8 +50,8 @@ def test_parse_global_variables() -> None:
     cg = CodeGenerator(root=_ast_root)
     cg.parse_global_variables()
 
-    expected_parsed_global_vars = MACHINE_CODE["global_vars"]
-    assert cg.program["global_vars"] == expected_parsed_global_vars
+    expected_parsed_global_vars = MACHINE_CODE["code"][:GLOBAL_VARS_COUNT]
+    assert cg.program["code"] == expected_parsed_global_vars
 
 
 def test_parse_functions() -> None:
@@ -61,8 +61,16 @@ def test_parse_functions() -> None:
     cg = CodeGenerator(root=_ast_root)
 
     # Mock the `register` to offset the global variables
-    cg.register = 2
+    cg.register = GLOBAL_VARS_COUNT
     cg.parse_functions()
 
-    expected_parsed_functions = MACHINE_CODE["functions"]
-    assert cg.program["functions"] == expected_parsed_functions
+    _expected_functions_indices = MACHINE_CODE["functions"]
+    expected_functions_indices = {}
+
+    for function in _expected_functions_indices:
+        expected_functions_indices[function] = {
+            key: value - GLOBAL_VARS_COUNT
+            for key, value in _expected_functions_indices[function].items()
+        }
+
+    assert cg.program["functions"] == expected_functions_indices
