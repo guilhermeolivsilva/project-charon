@@ -29,6 +29,7 @@ class CodeGenerator:
         self.program: dict[str, Union[list, dict]] = {
             "structs": {},
             "functions": {},
+            "global_vars": [],
             "code": []
         }
         self.register: int = 0
@@ -66,12 +67,9 @@ class CodeGenerator:
         _str += "Code:"
 
         # Print the global variables
-        first_function_indices = next(iter(self.program["functions"].values()))
-        first_function_start = first_function_indices["start"]
-
-        for index in range(first_function_start):
+        for instruction in self.program["global_vars"]:
             _str += "\n"
-            _str += str(self.program["code"][index])
+            _str += str(instruction)
 
         # Add a line break after the global vars, if any
         if len(_str) > len("Code:"):
@@ -159,7 +157,7 @@ class CodeGenerator:
             self.register, code = global_var_def.generate_code(
                 register=self.register
             )
-            self.program["code"].extend(code)
+            self.program["global_vars"].extend(code)
 
     def parse_functions(self) -> None:
         """

@@ -368,12 +368,12 @@ ABSTRACT_SYNTAX_TREE_ROOT = ast.build()
 MACHINE_CODE = {
     "structs": {"my_struct": ["int", "float"]},
     "functions": {
-        "function_that_returns_struct": {"start": 2, "end": 17},
-        "some_simple_function": {"start": 17, "end": 25},
-        "abc": {"start": 25, "end": 58},
-        "main": {"start": 58, "end": 102},
+        "function_that_returns_struct": {"start": 0, "end": 15},
+        "some_simple_function": {"start": 15, "end": 23},
+        "abc": {"start": 23, "end": 56},
+        "main": {"start": 56, "end": 100},
     },
-    "code": [
+    "global_vars": [
         {
             "instruction": "ALLOC",
             "metadata": {"id": 3, "type": "int", "relative_position": 1, "length": 10},
@@ -387,6 +387,8 @@ MACHINE_CODE = {
                 "length": 1,
             },
         },
+    ],
+    "code": [
         {
             "instruction": "PARAM",
             "metadata": {

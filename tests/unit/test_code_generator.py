@@ -16,6 +16,7 @@ def test_init() -> None:
     assert cg.program == {
         "structs": {},
         "functions": {},
+        "global_vars": [],
         "code": []
     }
     assert cg.register == 0
@@ -50,8 +51,8 @@ def test_parse_global_variables() -> None:
     cg = CodeGenerator(root=_ast_root)
     cg.parse_global_variables()
 
-    expected_parsed_global_vars = MACHINE_CODE["code"][:GLOBAL_VARS_COUNT]
-    assert cg.program["code"] == expected_parsed_global_vars
+    expected_parsed_global_vars = MACHINE_CODE["global_vars"]
+    assert cg.program["global_vars"] == expected_parsed_global_vars
 
 
 def test_parse_functions() -> None:
@@ -64,13 +65,6 @@ def test_parse_functions() -> None:
     cg.register = GLOBAL_VARS_COUNT
     cg.parse_functions()
 
-    _expected_functions_indices = MACHINE_CODE["functions"]
-    expected_functions_indices = {}
-
-    for function in _expected_functions_indices:
-        expected_functions_indices[function] = {
-            key: value - GLOBAL_VARS_COUNT
-            for key, value in _expected_functions_indices[function].items()
-        }
+    expected_functions_indices = MACHINE_CODE["functions"]
 
     assert cg.program["functions"] == expected_functions_indices
