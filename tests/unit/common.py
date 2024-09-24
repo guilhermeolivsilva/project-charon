@@ -933,6 +933,3 @@ MACHINE_CODE = {
         {"instruction": "HALT", "metadata": {}},
     ],
 }
-
-first_function_indices = next(iter(MACHINE_CODE["functions"].values()))
-GLOBAL_VARS_COUNT = first_function_indices["start"]

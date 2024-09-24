@@ -3,7 +3,7 @@
 from copy import deepcopy
 
 from src.code_generator import CodeGenerator
-from tests.unit.common import ABSTRACT_SYNTAX_TREE_ROOT, MACHINE_CODE, GLOBAL_VARS_COUNT
+from tests.unit.common import ABSTRACT_SYNTAX_TREE_ROOT, MACHINE_CODE
 
 
 def test_init() -> None:
@@ -62,7 +62,7 @@ def test_parse_functions() -> None:
     cg = CodeGenerator(root=_ast_root)
 
     # Mock the `register` to offset the global variables
-    cg.register = GLOBAL_VARS_COUNT
+    cg.register = len(MACHINE_CODE["global_vars"])
     cg.parse_functions()
 
     expected_functions_indices = MACHINE_CODE["functions"]
