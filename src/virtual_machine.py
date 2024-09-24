@@ -225,13 +225,16 @@ class VirtualMachine:
         lhs = self.registers[instruction_metadata.get("lhs_register")]
         rhs = self.registers[instruction_metadata.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs / rhs
+        self.registers[instruction_metadata.get("register")] = int(lhs / rhs)
 
     def ELEMENT_PTR(self, instruction_metadata: dict[str, dict]) -> None:
         """
         Handle a `ELEMENT_PTR` bytecode.
 
-        This method gets the pointer of an array or struct element.
+        This method loads the contents of an element from an array or struct
+        into a register. It can handle both static (when accessing a struct
+        attribute or an array element with a constant index) and dynamic (when
+        accessing an array element with a variable as index) accesses.
 
         Parameters
         ----------
@@ -239,7 +242,25 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        ...
+        offset_mode: str = instruction_metadata.get("offset_mode")
+        variable_relative_position: int = instruction_metadata.get("variable_relative_position")
+        variable_initial_address: int = self.variables[variable_relative_position]
+
+        if offset_mode == "static":
+            element_offset: int = instruction_metadata.get("offset_size")
+
+        else:
+            index_variable_register: int = instruction_metadata.get("element_register")
+            index_variable_value: int = self.registers[index_variable_register]
+            variable_type_size: int = instruction_metadata.get("variable_type_size")
+
+            element_offset: int = index_variable_value * variable_type_size
+
+        element_address: int = variable_initial_address + element_offset
+        value_to_load: Union[int, float] = self.memory[hex(element_address)]
+
+        register_to_write: int = instruction_metadata.get("register")
+        self.registers[register_to_write] = value_to_load
 
     def EQ(self, instruction_metadata: dict[str, dict]) -> None:
         """
