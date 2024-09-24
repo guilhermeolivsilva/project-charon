@@ -444,8 +444,9 @@ MACHINE_CODE = {
             "metadata": {
                 "id": 19,
                 "register": 6,
-                "variable_register": 4,
-                "element_register": 5,
+                "variable_relative_position": 2,
+                "offset_size": 0,
+                "offset_mode": "static",
             },
         },
         {
@@ -589,8 +590,9 @@ MACHINE_CODE = {
             "metadata": {
                 "id": 61,
                 "register": 6,
-                "variable_register": 4,
-                "element_register": 5,
+                "variable_relative_position": 13,
+                "offset_size": 0,
+                "offset_mode": "static",
             },
         },
         {
@@ -728,8 +730,9 @@ MACHINE_CODE = {
             "metadata": {
                 "id": 96,
                 "register": 4,
-                "variable_register": 2,
-                "element_register": 3,
+                "variable_relative_position": 15,
+                "offset_size": 20,
+                "offset_mode": "static",
             },
         },
         {
