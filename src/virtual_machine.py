@@ -2,6 +2,8 @@
 
 from typing import Union
 
+from src.utils import builtin_types
+
 
 class VirtualMachine:
     """
@@ -102,8 +104,10 @@ class VirtualMachine:
         self.variables[variable_relative_position] = self.memory_pointer
 
         variable_type = instruction_metadata.get("type")
-        variable_size = self.get_type_size(variable_type)
+        variable_size = self.get_variable_size(variable_type)
         variable_length = instruction_metadata.get("length", 1)
+
+        # TODO: handle structs
 
         self.memory_pointer += variable_size * variable_length
 
@@ -783,6 +787,8 @@ class VirtualMachine:
         value_to_store_register: int = instruction_metadata.get("rhs_register")
         value_to_store: Union[int, float] = self.registers[value_to_store_register]
 
+        # TODO: handle arrays and structs
+
         self.memory[variable_address] = value_to_store
 
     def SUB(self, instruction_metadata: dict[str, dict]) -> None:
@@ -828,9 +834,9 @@ class VirtualMachine:
         self.registers[destination_register] = truncated_value
 
 
-    def get_type_size(self, type: str) -> int:
+    def get_variable_size(self, type: str) -> int:
         """
-        Get the size of a variable type in bytes.
+        Get the size of a variable, in bytes, from its type.
 
         Parameters
         ----------
@@ -842,12 +848,6 @@ class VirtualMachine:
         type_size : int
             The size of the variable type, in bytes.
         """
-
-        builtin_types: dict[str, int] = {
-            "short": 2,
-            "int": 4,
-            "float": 4
-        }
 
         type_size: int = 0
 
@@ -861,6 +861,6 @@ class VirtualMachine:
         struct_types = self.program["structs"][type]
 
         for attr_type in struct_types:
-            type_size += self.get_type_size(attr_type)
+            type_size += self.get_variable_size(attr_type)
 
         return type_size

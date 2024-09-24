@@ -3,6 +3,13 @@
 from typing import Union
 
 
+builtin_types: dict[str, int] = {
+    "short": 2,
+    "int": 4,
+    "float": 4
+}
+
+
 def is_prime(number: int) -> bool:
     """
     Check whether the given `number` is a prime.
