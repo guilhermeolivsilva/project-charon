@@ -37,6 +37,7 @@ class VirtualMachine:
             hex(_byte): None
             for _byte in range(memory_size)
         }
+        self.memory_size: int = memory_size
         self.memory_pointer: int = 0x0
 
         # Program execution variables
@@ -95,10 +96,18 @@ class VirtualMachine:
         ----------
         instruction_metadata : dict[str, dict]
             The bytecode metadata.
+
+        Raises
+        ------
+        MemoryError
+            Raised if the memory is full when this method is called, or if the
+            available memory is not enough for the variable being allocated.
         """
 
-        if self.memory_pointer >= len(self.memory):
-            raise MemoryError("Cannot allocate memory: memory is full.")
+        if self.memory_pointer >= self.memory_size:
+            err_msg: str = "Cannot allocate memory: memory is full"
+            err_msg += f"\nInstruction: {instruction_metadata}"
+            raise MemoryError(err_msg)
 
         variable_relative_position = instruction_metadata.get("relative_position")
         self.variables[variable_relative_position] = self.memory_pointer
@@ -107,9 +116,16 @@ class VirtualMachine:
         variable_size = self.get_variable_size(variable_type)
         variable_length = instruction_metadata.get("length", 1)
 
-        # TODO: handle structs
+        updated_memory_pointer: int = self.memory_pointer
+        updated_memory_pointer += (variable_size * variable_length)
 
-        self.memory_pointer += variable_size * variable_length
+        if updated_memory_pointer >= self.memory_size:
+            err_msg: str = "Not enough memory to allocate a new variable."
+            err_msg += f"\nInstruction: {instruction_metadata}"
+
+            raise MemoryError(err_msg)
+        
+        self.memory_pointer = updated_memory_pointer
 
     def AND(self, instruction_metadata: dict[str, dict]) -> None:
         """

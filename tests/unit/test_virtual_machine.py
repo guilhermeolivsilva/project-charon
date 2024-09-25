@@ -1,5 +1,7 @@
 """Implement unit tests for the `src.virtual_machine.VirtualMachine` class."""
 
+import pytest
+
 from src.virtual_machine import VirtualMachine
 from tests.unit.common import MACHINE_CODE
 
@@ -41,11 +43,101 @@ def test_ADD() -> None:
 
     assert vm.registers[result_register] == expected_result
 
+@pytest.mark.parametrize(
+    "test_suite",
+    [
+        # Simple variable
+        {
+            "instruction_metadata": {
+                "id": 0,
+                "type": "int",
+                "relative_position": 0
+            },
+            "expected_result": {
+                "memory_pointer": 4,
+                "variables": {0: 0}
+            }
+        },
 
-def test_ALLOC() -> None:
-    """Test the `VirtualMachine.ALLOC` method."""
+        # Struct
+        {
+            "instruction_metadata": {
+                "id": 0,
+                "type": "my_struct",
+                "relative_position": 0
+            },
+            "expected_result": {
+                "memory_pointer": 8,
+                "variables": {0: 0}
+            }
+        },
 
-    ...
+        # Array
+        {
+            "instruction_metadata": {
+                "id": 0,
+                "type": "int",
+                "relative_position": 0,
+                "length": 3
+            },
+            "expected_result": {
+                "memory_pointer": 12,
+                "variables": {0: 0}
+            }
+        },
+    ]
+)
+def test_ALLOC_success(test_suite) -> None:
+    """Test the `VirtualMachine.ALLOC` method for successful allocations."""
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    instruction_metadata: dict = test_suite.get("instruction_metadata")
+    vm.ALLOC(instruction_metadata=instruction_metadata)
+
+    expected_result: dict = test_suite.get("expected_result")
+
+    assert vm.memory_pointer == expected_result["memory_pointer"]
+    assert vm.variables == expected_result["variables"]
+
+
+@pytest.mark.parametrize(
+    "test_suite",
+    [
+        # Upfront full memory
+        {
+            "instruction_metadata": {
+                "id": 0,
+                "type": "int",
+                "relative_position": 0
+            },
+            "vm_settings": {
+                "memory_size": 0
+            }
+        },
+
+        # Memory does not have enough space for the new variable
+        {
+            "instruction_metadata": {
+                "id": 0,
+                "type": "my_struct",
+                "relative_position": 0
+            },
+            "vm_settings": {
+                "memory_size": 4
+            }
+        },
+    ]
+)
+def test_ALLOC_failure(test_suite) -> None:
+    """Test the `VirtualMachine.ALLOC` method for failed allocations."""
+
+    vm_settings: dict = test_suite.get("vm_settings")
+    vm = VirtualMachine(program=MACHINE_CODE, **vm_settings)
+
+    with pytest.raises(MemoryError):
+        instruction_metadata: dict = test_suite.get("instruction_metadata")
+        vm.ALLOC(instruction_metadata=instruction_metadata)
 
 
 def test_AND() -> None:
