@@ -33,7 +33,7 @@ class VirtualMachine:
         self.stack_size: int = stack_size
 
         # Memory (i.e., storage for variables)
-        self.memory: dict[str, Union[int, float, None]] = {
+        self.memory: dict[str, Union[int, float, str, None]] = {
             hex(_byte): None
             for _byte in range(memory_size)
         }
@@ -110,7 +110,7 @@ class VirtualMachine:
             raise MemoryError(err_msg)
 
         variable_relative_position = instruction_metadata.get("relative_position")
-        self.variables[variable_relative_position] = self.memory_pointer
+        self.variables[variable_relative_position] = hex(self.memory_pointer)
 
         variable_type = instruction_metadata.get("type")
         variable_size = self.get_variable_size(variable_type)
@@ -247,7 +247,7 @@ class VirtualMachine:
         """
         Handle a `ELEMENT_PTR` bytecode.
 
-        This method loads the contents of an element from an array or struct
+        This method loads the address of an element from an array or struct
         into a register. It can handle both static (when accessing a struct
         attribute or an array element with a constant index) and dynamic (when
         accessing an array element with a variable as index) accesses.
@@ -260,7 +260,7 @@ class VirtualMachine:
 
         offset_mode: str = instruction_metadata.get("offset_mode")
         variable_relative_position: int = instruction_metadata.get("variable_relative_position")
-        variable_initial_address: int = self.variables[variable_relative_position]
+        variable_initial_address: int = int(self.variables[variable_relative_position], 16)
 
         if offset_mode == "static":
             element_offset: int = instruction_metadata.get("offset_size")
@@ -272,11 +272,10 @@ class VirtualMachine:
 
             element_offset: int = index_variable_value * variable_type_size
 
-        element_address: int = variable_initial_address + element_offset
-        value_to_load: Union[int, float] = self.memory[hex(element_address)]
+        element_address: str = hex(variable_initial_address + element_offset)
 
         register_to_write: int = instruction_metadata.get("register")
-        self.registers[register_to_write] = value_to_load
+        self.registers[register_to_write] = element_address
 
     def EQ(self, instruction_metadata: dict[str, dict]) -> None:
         """
@@ -621,11 +620,9 @@ class VirtualMachine:
         variable_to_load: int = instruction_metadata.get("value")
         destination_register: int = instruction_metadata.get("register")
 
-        variable_address: int = self.variables[variable_to_load]
+        variable_address: str = self.variables[variable_to_load]
 
-        print(variable_address)
-
-        variable_value: Union[int, float] = self.memory[hex(variable_address)]
+        variable_value: Union[int, float] = self.memory[variable_address]
 
         self.registers[destination_register] = variable_value
 
@@ -808,7 +805,14 @@ class VirtualMachine:
         """
         Handle a `STORE` bytecode.
 
-        This method stores some value in a variable.
+        This method stores some value into a variable.
+
+        There are two possible cases when storing data in a variable: the
+        variable is a simple variable, or the variable is an array or struct.
+        In the first case, the `lhs_register` will contain an integer -- the
+        variable identifier (i.e., its `relative_position`, that indexes the
+        `self.variables` dict); in the second case, it will contain the address
+        to the memory position to be written to.
 
         Parameters
         ----------
@@ -816,15 +820,21 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        variable_relative_position_register: int = instruction_metadata.get("lhs_register")
-        variable_address: str = hex(
-            self.variables[self.registers[variable_relative_position_register]]
-        )
+        lhs_register: int = instruction_metadata.get("lhs_register")
+        lhs_register_contents: Union[int, str] = self.registers[lhs_register]
+
+        # Case 1: writing to some simple variable (i.e., the `lhs_register`
+        # contains its `relative_position`)
+        if isinstance(lhs_register_contents, int):
+            variable_address: str = self.variables[lhs_register_contents]
+
+        # Case 2: writing to an element of an array or struct (i.e., the
+        # `lhs_register` contains the address of the element to write to)
+        else:
+            variable_address: str = lhs_register_contents
 
         value_to_store_register: int = instruction_metadata.get("rhs_register")
         value_to_store: Union[int, float] = self.registers[value_to_store_register]
-
-        # TODO: handle arrays and structs
 
         self.memory[variable_address] = value_to_store
 

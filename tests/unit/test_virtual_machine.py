@@ -55,7 +55,7 @@ def test_ADD() -> None:
             },
             "expected_result": {
                 "memory_pointer": 4,
-                "variables": {0: 0}
+                "variables": {0: "0x0"}
             }
         },
 
@@ -68,7 +68,7 @@ def test_ADD() -> None:
             },
             "expected_result": {
                 "memory_pointer": 8,
-                "variables": {0: 0}
+                "variables": {0: "0x0"}
             }
         },
 
@@ -82,7 +82,7 @@ def test_ADD() -> None:
             },
             "expected_result": {
                 "memory_pointer": 12,
-                "variables": {0: 0}
+                "variables": {0: "0x0"}
             }
         },
     ]
@@ -527,10 +527,60 @@ def test_RSHIFT() -> None:
     assert vm.registers[result_register] == expected_result
 
 
-def test_STORE() -> None:
-    """Test the `VirtualMachine.STORE` method."""
+def test_STORE_simple() -> None:
+    """
+    Test the `VirtualMachine.STORE` method when handling simple variables.
 
-    ...
+    In this case, the `lhs_register` contains the `relative_position` of the
+    variable to be written to.
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
+
+    instruction_metadata = {
+        "lhs_register": 0,
+        "rhs_register": 1
+    }
+
+    value_to_store = 23
+    vm.registers = {
+        0: 0,
+        1: value_to_store
+    }
+
+    store_address = "0x0"
+    vm.variables = {0: store_address}
+
+    vm.STORE(instruction_metadata)
+
+    assert vm.memory[store_address] == value_to_store
+
+
+def test_STORE_arrays_structs() -> None:
+    """
+    Test the `VirtualMachine.STORE` method when handling arrays/structs.
+    
+    In this case, the `lhs_register` contains the memory address to write to.
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
+
+    instruction_metadata = {
+        "lhs_register": 0,
+        "rhs_register": 1
+    }
+
+    value_to_store = 23
+    store_address = "0x8"
+
+    vm.registers = {
+        0: store_address,
+        1: value_to_store
+    }
+
+    vm.STORE(instruction_metadata)
+
+    assert vm.memory[store_address] == value_to_store
 
 
 def test_SUB() -> None:
