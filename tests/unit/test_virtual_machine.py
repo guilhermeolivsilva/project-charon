@@ -227,7 +227,20 @@ def test_CALL() -> None:
 def test_CONSTANT() -> None:
     """Test the `VirtualMachine.CONSTANT` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    expected_value = 23
+    result_register = 0
+
+    instruction_metadata = {
+        "register": result_register,
+        "value": expected_value,
+        "type": "int"
+    }
+
+    vm.CONSTANT(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_value
 
 
 def test_DIV() -> None:
