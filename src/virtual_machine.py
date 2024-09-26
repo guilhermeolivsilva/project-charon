@@ -820,18 +820,7 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs_register: int = instruction_metadata.get("lhs_register")
-        lhs_register_contents: Union[int, str] = self.registers[lhs_register]
-
-        # Case 1: writing to some simple variable (i.e., the `lhs_register`
-        # contains its `relative_position`)
-        if isinstance(lhs_register_contents, int):
-            variable_address: str = self.variables[lhs_register_contents]
-
-        # Case 2: writing to an element of an array or struct (i.e., the
-        # `lhs_register` contains the address of the element to write to)
-        else:
-            variable_address: str = lhs_register_contents
+        variable_address: str = self._get_variable_address(instruction_metadata)
 
         value_to_store_register: int = instruction_metadata.get("rhs_register")
         value_to_store: Union[int, float] = self.registers[value_to_store_register]
@@ -911,3 +900,39 @@ class VirtualMachine:
             type_size += self.get_variable_size(attr_type)
 
         return type_size
+    
+    def _get_variable_address(
+        self,
+        instruction_metadata: dict[str, Union[int, float, str]]
+    ) -> str:
+        """
+        Get the address of some variable from the instruction_metadata.
+
+        This method is intended to be used by the `LOAD` and `STORE`
+        instruction handlers.
+
+        Parameters
+        ----------
+        instruction_metadata : dict[str, dict]
+            The bytecode metadata.
+
+        Returns
+        -------
+        variable_address : str
+            The address of the variable in the `self.memory` dictionary.
+        """
+
+        lhs_register: int = instruction_metadata.get("lhs_register")
+        lhs_register_contents: Union[int, str] = self.registers[lhs_register]
+
+        # Case 1: writing to some simple variable (i.e., the `lhs_register`
+        # contains its `relative_position`)
+        if isinstance(lhs_register_contents, int):
+            variable_address: str = self.variables[lhs_register_contents]
+
+        # Case 2: writing to an element of an array or struct (i.e., the
+        # `lhs_register` contains the address of the element to write to)
+        else:
+            variable_address: str = lhs_register_contents
+
+        return variable_address
