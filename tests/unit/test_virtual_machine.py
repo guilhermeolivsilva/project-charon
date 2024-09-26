@@ -291,55 +291,232 @@ def test_EQ() -> None:
 def test_FADD() -> None:
     """Test the `VirtualMachine.FADD` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23.4, 0
+    rhs, rhs_register = 35.9, 1
+    result_register = 2
+
+    expected_result = lhs + rhs
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.FADD(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 
 def test_FAND() -> None:
     """Test the `VirtualMachine.FAND` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 1.12, 0
+    rhs, rhs_register = 0, 1
+    result_register = 2
+
+    expected_result = int(bool(lhs and rhs))
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.FAND(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 
 def test_FDIV() -> None:
     """Test the `VirtualMachine.FDIV` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
 
+    lhs, lhs_register = 23.4, 0
+    rhs, rhs_register = 3, 1
+    result_register = 2
+
+    expected_result = lhs / rhs
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.FDIV(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 def test_FEQ() -> None:
     """Test the `VirtualMachine.FEQ` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23.1, 0
+    rhs, rhs_register = 35.44, 1
+    result_register = 2
+
+    expected_result = int(lhs == rhs)
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.FEQ(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 
 def test_FGT() -> None:
     """Test the `VirtualMachine.FGT` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23.1, 0
+    rhs, rhs_register = 35.12, 1
+    result_register = 2
+
+    expected_result = int(lhs > rhs)
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.GT(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 
 def test_FLT() -> None:
     """Test the `VirtualMachine.FLT` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23.1, 0
+    rhs, rhs_register = 35.12, 1
+    result_register = 2
+
+    expected_result = int(lhs < rhs)
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.LT(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 
 def test_FMULT() -> None:
     """Test the `VirtualMachine.FMULT` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
 
+    lhs, lhs_register = 23.12, 0
+    rhs, rhs_register = 35.44, 1
+    result_register = 2
+
+    expected_result = lhs * rhs
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.MULT(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 def test_FOR() -> None:
     """Test the `VirtualMachine.FOR` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
 
+    lhs, lhs_register = 23.12, 0
+    rhs, rhs_register = 35.99, 1
+    result_register = 2
+
+    expected_result = int(bool(lhs or rhs))
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.OR(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 def test_FSUB() -> None:
     """Test the `VirtualMachine.FSUB` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23.12, 0
+    rhs, rhs_register = 35.99, 1
+    result_register = 2
+
+    expected_result = lhs - rhs
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_metadata = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.SUB(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[result_register] == expected_result
 
 
 def test_GT() -> None:
