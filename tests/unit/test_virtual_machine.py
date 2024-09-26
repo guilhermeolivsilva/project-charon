@@ -391,6 +391,45 @@ def test_JZ() -> None:
     ...
 
 
+def test_LOAD() -> None:
+    """Test the `VirtualMachine.LOAD` method."""
+
+    vm = VirtualMachine(program=MACHINE_CODE, memory_size=10)
+
+    expected_value = 77
+    expected_value_register = 3
+
+    # I.e., save the contents of the variable of relative position `2` to
+    # register `3`
+    instruction_metadata = {
+        "register": expected_value_register,
+        "value": 2
+    }
+
+    vm.variables = {
+        0: "0x0",
+        1: "0x4",
+        2: "0x8"
+    }
+
+    vm.memory = {
+        "0x0": 123,
+        "0x1": 321,
+        "0x2": 23,
+        "0x3": 35,
+        "0x4": 6,
+        "0x5": 13,
+        "0x6": 32,
+        "0x7": 34,
+        "0x8": expected_value,
+        "0x9": 7
+    }
+
+    vm.LOAD(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[expected_value_register] == expected_value
+
+
 def test_LSHIFT() -> None:
     """Test the `VirtualMachine.LSHIFT` method."""
 

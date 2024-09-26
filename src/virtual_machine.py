@@ -687,6 +687,10 @@ class VirtualMachine:
 
         This method loads the value of a variable into a register.
 
+        If an array or struct, it will load the value of the first element/
+        attribute to the register -- which is not a problem at all, as
+        `self.ELEMENT_PTR` will handle this later.
+
         Parameters
         ----------
         instruction_metadata : dict[str, Union[int, float, str]]
@@ -696,12 +700,10 @@ class VirtualMachine:
         # Value represents the variable to load's relative position in the
         # source code.
         variable_to_load: int = instruction_metadata.get("value")
-        destination_register: int = instruction_metadata.get("register")
-
         variable_address: str = self.variables[variable_to_load]
-
         variable_value: Union[int, float] = self.memory[variable_address]
 
+        destination_register: int = instruction_metadata.get("register")
         self.registers[destination_register] = variable_value
 
     def LSHIFT(
