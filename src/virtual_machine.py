@@ -44,6 +44,7 @@ class VirtualMachine:
         self.program_counter: int = 0
         self.registers: dict[int, Union[int, float]] = {}
         self.variables: dict[int, str] = {}
+        self.parameters: list[Union[int, float]] = []
 
     def __str__(self) -> str:
         """
@@ -116,7 +117,6 @@ class VirtualMachine:
             raise MemoryError(err_msg)
 
         variable_relative_position = instruction_metadata.get("relative_position")
-        self.variables[variable_relative_position] = hex(self.memory_pointer)
 
         variable_type = instruction_metadata.get("type")
         variable_size = self._get_variable_size(variable_type)
@@ -131,6 +131,7 @@ class VirtualMachine:
 
             raise MemoryError(err_msg)
         
+        self.variables[variable_relative_position] = hex(self.memory_pointer)
         self.memory_pointer = updated_memory_pointer
 
     def AND(
@@ -791,9 +792,36 @@ class VirtualMachine:
         ----------
         instruction_metadata : dict[str, Union[int, float, str]]
             The bytecode metadata.
+
+        Notes
+        -----
+        I hate this design. It does too much.
         """
 
-        ...
+        if self.memory_pointer >= self.memory_size:
+            err_msg: str = "Cannot allocate memory: memory is full"
+            err_msg += f"\nInstruction: {instruction_metadata}"
+            raise MemoryError(err_msg)
+
+        parameter_relative_position = instruction_metadata.get("relative_position")
+        parameter_type = instruction_metadata.get("type")
+        parameter_size = self._get_variable_size(parameter_type)
+        parameter_length = instruction_metadata.get("length", 1)
+
+        parameter_address: str = hex(self.memory_pointer)
+        updated_memory_pointer: int = self.memory_pointer + (parameter_size * parameter_length)
+
+        if updated_memory_pointer >= self.memory_size:
+            err_msg: str = "Not enough memory to allocate a new variable."
+            err_msg += f"\nInstruction: {instruction_metadata}"
+
+            raise MemoryError(err_msg)
+
+        self.variables[parameter_relative_position] = parameter_address
+        self.memory_pointer = updated_memory_pointer
+
+        parameter_value: Union[int, float] = self.parameters.pop()
+        self.memory[parameter_address] = parameter_value
 
     def OR(
         self,

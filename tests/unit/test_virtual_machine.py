@@ -508,6 +508,35 @@ def test_MULT() -> None:
     assert vm.registers[result_register] == expected_result
 
 
+def test_PARAM() -> None:
+    """Test the `VirtualMachine.PARAM` method."""
+
+    vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
+
+    expected_value_address = "0x8"
+    expected_value = 23
+    expected_value_relative_position = 1
+
+    vm.memory_pointer = int(expected_value_address, 16)
+    vm.variables = {0: "0x0", 2: "0xF"}
+    vm.memory = {
+        "0x0": 123321,
+        "0xF": -1
+    }
+    vm.parameters = [expected_value]
+
+    instruction_metadata = {
+        "type": "int",
+        "relative_position": expected_value_relative_position,
+        "length": 1,
+    }
+
+    vm.PARAM(instruction_metadata)
+
+    assert vm.variables[expected_value_relative_position] == expected_value_address
+    assert vm.memory[expected_value_address] == expected_value
+
+
 def test_OR() -> None:
     """Test the `VirtualMachine.OR` method."""
 
