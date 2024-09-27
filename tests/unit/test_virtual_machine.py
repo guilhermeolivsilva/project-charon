@@ -269,10 +269,70 @@ def test_DIV() -> None:
     assert vm.registers[result_register] == expected_result
 
 
-def test_ELEMENT_PTR() -> None:
-    """Test the `VirtualMachine.ELEMENT_PTR` method."""
+def test_ELEMENT_PTR_dynamic() -> None:
+    """
+    Test the `VirtualMachine.ELEMENT_PTR` method.
 
-    ...
+    For this test, the `ELEMENT_PTR` will handle a dynamic offset calculation.
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    element_register = 0
+    register_to_write = 1
+    variable_relative_position = 0
+    variable_address = 15
+    index_variable_value = 3
+    variable_type_size = 4
+    expected_value = hex(variable_address + index_variable_value * variable_type_size)
+
+    vm.variables = {
+        variable_relative_position: hex(variable_address)
+    }
+    vm.registers[element_register] = index_variable_value
+
+    instruction_metadata = {
+        "register": register_to_write,
+        "variable_relative_position": variable_relative_position,
+        "offset_mode": "dynamic",
+        "element_register": element_register,
+        "variable_type_size": variable_type_size
+    }
+
+    vm.ELEMENT_PTR(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[register_to_write] == expected_value
+
+
+def test_ELEMENT_PTR_static() -> None:
+    """
+    Test the `VirtualMachine.ELEMENT_PTR` method.
+
+    For this test, the `ELEMENT_PTR` will handle a static offset calculation.
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    register_to_write = 0
+    variable_relative_position = 0
+    variable_address = 15
+    offset_size = 4
+    expected_value = hex(variable_address + offset_size)
+
+    vm.variables = {
+        variable_relative_position: hex(variable_address)
+    }
+
+    instruction_metadata = {
+        "register": register_to_write,
+        "variable_relative_position": variable_relative_position,
+        "offset_size": offset_size,
+        "offset_mode": "static"
+    }
+
+    vm.ELEMENT_PTR(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[register_to_write] == expected_value
 
 
 def test_EQ() -> None:
