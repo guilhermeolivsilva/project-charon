@@ -567,18 +567,118 @@ def test_HALT() -> None:
 def test_JMP() -> None:
     """Test the `VirtualMachine.JMP` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    jump_size = 23
+    expected_program_counter = jump_size - 1
+
+    instruction_metadata = {
+        "jump_size": jump_size
+    }
+
+    vm.JMP(instruction_metadata=instruction_metadata)
+
+    assert vm.program_counter == expected_program_counter
 
 
-def test_JNZ() -> None:
-    """Test the `VirtualMachine.JNZ` method."""
-    ...
+def test_JNZ_true() -> None:
+    """
+    Test the `VirtualMachine.JNZ` method.
+
+    For this test, the `conditional_register` contains a `true` value (1).
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    jump_size = 23
+    expected_program_counter = jump_size - 1
+    conditional_register = 0
+
+    instruction_metadata = {
+        "conditional_register": conditional_register,
+        "jump_size": jump_size
+    }
+
+    vm.registers[conditional_register] = 1
+
+    vm.JNZ(instruction_metadata=instruction_metadata)
+
+    assert vm.program_counter == expected_program_counter
 
 
-def test_JZ() -> None:
-    """Test the `VirtualMachine.JZ` method."""
+def test_JNZ_false() -> None:
+    """
+    Test the `VirtualMachine.JNZ` method.
 
-    ...
+    For this test, the `conditional_register` contains a `false` value (1).
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    jump_size = 23
+    expected_program_counter = vm.program_counter
+    conditional_register = 0
+
+    instruction_metadata = {
+        "conditional_register": conditional_register,
+        "jump_size": jump_size
+    }
+
+    vm.registers[conditional_register] = 0
+
+    vm.JNZ(instruction_metadata=instruction_metadata)
+
+    assert vm.program_counter == expected_program_counter
+
+
+def test_JZ_true() -> None:
+    """
+    Test the `VirtualMachine.JZ` method.
+
+    For this test, the `conditional_register` contains a `true` value (1).
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    jump_size = 23
+    expected_program_counter = vm.program_counter
+    conditional_register = 0
+
+    instruction_metadata = {
+        "conditional_register": conditional_register,
+        "jump_size": jump_size
+    }
+
+    vm.registers[conditional_register] = 1
+
+    vm.JZ(instruction_metadata=instruction_metadata)
+
+    assert vm.program_counter == expected_program_counter
+
+
+def test_JZ_false() -> None:
+    """
+    Test the `VirtualMachine.JZ` method.
+
+    For this test, the `conditional_register` contains a `false` value (1).
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    jump_size = 23
+    expected_program_counter = jump_size - 1
+    conditional_register = 0
+
+    instruction_metadata = {
+        "conditional_register": conditional_register,
+        "jump_size": jump_size
+    }
+
+    vm.registers[conditional_register] = 0
+
+    vm.JZ(instruction_metadata=instruction_metadata)
+
+    assert vm.program_counter == expected_program_counter
 
 
 def test_LOAD() -> None:
