@@ -110,6 +110,7 @@ class IFELSE(Conditional):
         register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
             register=register
         )
+        conditional_register: int = register - 1
 
         register, statement_if_true_code = self.statement_if_true.generate_code(
             register=register
@@ -126,6 +127,7 @@ class IFELSE(Conditional):
         conditional_jump = {
             "instruction": "JZ",
             "metadata": {
+                "conditional_register": conditional_register,
                 "jump_size": instructions_to_jump_over_if
             }
         }
@@ -141,11 +143,6 @@ class IFELSE(Conditional):
             }
         }
 
-        # If `parenthesis_expression` evals to `False`, jump to the instruction
-        # with ID `_beginning_of_else_block_id`. If not, execute the
-        # `_statement_if_true_code`. However, add an unconditional jump right
-        # after the `_statement_if_true_code` in order to skip the
-        # `_statement_if_false_code`.
         ifelse_code: list[dict[str, Union[int, str]]] = [
             *parenthesis_expression_code,
             conditional_jump,

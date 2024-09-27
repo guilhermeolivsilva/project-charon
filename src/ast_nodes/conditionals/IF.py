@@ -61,12 +61,11 @@ class IF(Conditional):
         register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
             register=register
         )
+        conditional_register: int = register - 1
+
         register, statement_if_true_code = self.statement_if_true.generate_code(
             register=register
         )
-
-        _end_of_conditional_block = statement_if_true_code[-1]
-        _end_of_conditional_block_id = _end_of_conditional_block.get("metadata").get("id")
 
         # The jump target is the amount of instructions in the
         # `statement_if_true` block (add 1 to land right after the last
@@ -75,13 +74,13 @@ class IF(Conditional):
         conditional_jump = {
             "instruction": "JZ",
             "metadata": {
+                "conditional_register": conditional_register,
                 "jump_size": instructions_to_jump
             }
         }
 
-        # If `parenthesis_expression` evals to `False`, jump to the instruction
-        # with ID `_end_of_conditional_block_id`. If not, execute the
-        # `_statement_if_true_code`.
+        # If `parenthesis_expression` evals to `False`, jump a number of
+        # `instructions_to_jump`. If not, execute the `_statement_if_true_code`.
         if_code: list[dict[str, Union[int, str]]] = [
             *parenthesis_expression_code,
             conditional_jump,

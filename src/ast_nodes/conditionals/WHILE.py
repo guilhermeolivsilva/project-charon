@@ -85,6 +85,8 @@ class WHILE(Conditional):
         register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
             register=register
         )
+        conditional_register: int = register - 1
+
         register, loop_code = self.statement_if_true.generate_code(
             register=register
         )
@@ -96,6 +98,7 @@ class WHILE(Conditional):
         conditional_jump = {
             "instruction": "JZ",
             "metadata": {
+                "conditional_register": conditional_register,
                 "jump_size": instructions_to_jump_over_loop
             }
         }

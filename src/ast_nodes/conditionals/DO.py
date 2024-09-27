@@ -84,6 +84,7 @@ class DO(Conditional):
         register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
             register=register
         )
+        conditional_register: int = register - 1
 
         # The jump target is the amount of instructions to be jumped in order
         # to reenter the loop. It is negative as it will jump to a previous
@@ -92,6 +93,7 @@ class DO(Conditional):
         conditional_jump = {
             "instruction": "JNZ",
             "metadata": {
+                "conditional_register": conditional_register,
                 "jump_size": instructions_to_jump
             }
         }

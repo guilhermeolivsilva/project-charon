@@ -834,7 +834,7 @@ MACHINE_CODE = {
                 "rhs_register": 17,
             },
         },
-        {"instruction": "JZ", "metadata": {"jump_size": 7}},
+        {"instruction": "JZ", "metadata": {"conditional_register": 18, "jump_size": 7}},
         {
             "instruction": "LOAD",
             "metadata": {"id": 121, "register": 19, "value": 16, "type": "int"},
