@@ -66,7 +66,7 @@ class VirtualMachine:
 
     def ADD(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `ADD` bytecode.
@@ -77,18 +77,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs + rhs
+        self.registers[instruction_params.get("register")] = lhs + rhs
 
     def ALLOC(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `ALLOC` bytecode.
@@ -97,7 +97,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Raises
@@ -109,21 +109,21 @@ class VirtualMachine:
 
         if self.memory_pointer >= self.memory_size:
             err_msg: str = "Cannot allocate memory: memory is full"
-            err_msg += f"\nInstruction: {instruction_metadata}"
+            err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
 
-        variable_relative_position = instruction_metadata.get("relative_position")
+        variable_relative_position = instruction_params.get("relative_position")
 
-        variable_type = instruction_metadata.get("type")
+        variable_type = instruction_params.get("type")
         variable_size = self._get_variable_size(variable_type)
-        variable_length = instruction_metadata.get("length", 1)
+        variable_length = instruction_params.get("length", 1)
 
         updated_memory_pointer: int = self.memory_pointer
         updated_memory_pointer += (variable_size * variable_length)
 
         if updated_memory_pointer >= self.memory_size:
             err_msg: str = "Not enough memory to allocate a new variable."
-            err_msg += f"\nInstruction: {instruction_metadata}"
+            err_msg += f"\nInstruction: {instruction_params}"
 
             raise MemoryError(err_msg)
         
@@ -132,7 +132,7 @@ class VirtualMachine:
 
     def AND(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `AND` bytecode.
@@ -143,7 +143,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -154,16 +154,16 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = (
+        self.registers[instruction_params.get("register")] = (
             1 if (lhs and rhs) > 0 else 0
         )
 
     def BITAND(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `BITAND` bytecode.
@@ -174,18 +174,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs & rhs
+        self.registers[instruction_params.get("register")] = lhs & rhs
 
     def BITOR(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `BITOR` bytecode.
@@ -196,18 +196,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs | rhs
+        self.registers[instruction_params.get("register")] = lhs | rhs
 
     def CALL(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `CALL` bytecode.
@@ -216,12 +216,12 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
         # Handle the `program_counter` for it to point to the function code
-        called_function_relative_position: int = instruction_metadata.get("value")
+        called_function_relative_position: int = instruction_params.get("value")
         called_function_name: str = (
             list(self.program["functions"].keys())[called_function_relative_position]
         )
@@ -231,7 +231,7 @@ class VirtualMachine:
 
         # Save the parameters, if any, to the `function_call_parameters` register
         parameters_registers: list[int] = reversed(
-            instruction_metadata.get("parameters_registers")
+            instruction_params.get("parameters_registers")
         )
         for parameter_register in parameters_registers:
             parameter_value = self.registers[parameter_register]
@@ -242,12 +242,12 @@ class VirtualMachine:
         self.program_counter = called_function_start
 
         # And, finally, save the register to write the call result
-        return_value_register: int = instruction_metadata.get("register")
+        return_value_register: int = instruction_params.get("register")
         self.return_value_register = return_value_register
 
     def CONSTANT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `CONSTANT` bytecode.
@@ -256,18 +256,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        destination_register: int = instruction_metadata.get("register")
-        constant_value: int = instruction_metadata.get("value")
+        destination_register: int = instruction_params.get("register")
+        constant_value: int = instruction_params.get("value")
 
         self.registers[destination_register] = constant_value
 
     def DIV(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `DIV` bytecode.
@@ -278,18 +278,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = int(lhs / rhs)
+        self.registers[instruction_params.get("register")] = int(lhs / rhs)
 
     def ELEMENT_PTR(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `ELEMENT_PTR` bytecode.
@@ -301,32 +301,32 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        offset_mode: str = instruction_metadata.get("offset_mode")
-        variable_relative_position: int = instruction_metadata.get("variable_relative_position")
+        offset_mode: str = instruction_params.get("offset_mode")
+        variable_relative_position: int = instruction_params.get("variable_relative_position")
         variable_initial_address: int = int(self.variables[variable_relative_position], 16)
 
         if offset_mode == "static":
-            element_offset: int = instruction_metadata.get("offset_size")
+            element_offset: int = instruction_params.get("offset_size")
 
         else:
-            index_variable_register: int = instruction_metadata.get("element_register")
+            index_variable_register: int = instruction_params.get("element_register")
             index_variable_value: int = self.registers[index_variable_register]
-            variable_type_size: int = instruction_metadata.get("variable_type_size")
+            variable_type_size: int = instruction_params.get("variable_type_size")
 
             element_offset: int = index_variable_value * variable_type_size
 
         element_address: str = hex(variable_initial_address + element_offset)
 
-        register_to_write: int = instruction_metadata.get("register")
+        register_to_write: int = instruction_params.get("register")
         self.registers[register_to_write] = element_address
 
     def EQ(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `EQ` bytecode.
@@ -337,7 +337,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -347,14 +347,14 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = int(lhs == rhs)
+        self.registers[instruction_params.get("register")] = int(lhs == rhs)
 
     def FADD(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FADD` bytecode.
@@ -363,18 +363,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs + rhs
+        self.registers[instruction_params.get("register")] = lhs + rhs
 
     def FAND(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FAND` bytecode.
@@ -384,7 +384,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -395,16 +395,16 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = (
+        self.registers[instruction_params.get("register")] = (
             1 if (lhs and rhs) > 0 else 0
         )
 
     def FDIV(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FDIV` bytecode.
@@ -413,18 +413,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs / rhs
+        self.registers[instruction_params.get("register")] = lhs / rhs
 
     def FEQ(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FEQ` bytecode.
@@ -434,7 +434,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -444,14 +444,14 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = int(lhs == rhs)
+        self.registers[instruction_params.get("register")] = int(lhs == rhs)
 
     def FGT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FGT` bytecode.
@@ -461,7 +461,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -471,14 +471,14 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = int(lhs > rhs)
+        self.registers[instruction_params.get("register")] = int(lhs > rhs)
 
     def FLT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FLT` bytecode.
@@ -488,7 +488,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -498,14 +498,14 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = int(lhs < rhs)
+        self.registers[instruction_params.get("register")] = int(lhs < rhs)
 
     def FMULT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FMULT` bytecode.
@@ -515,18 +515,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs * rhs
+        self.registers[instruction_params.get("register")] = lhs * rhs
 
     def FOR(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FOR` bytecode.
@@ -536,7 +536,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -547,16 +547,16 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = (
+        self.registers[instruction_params.get("register")] = (
             1 if (lhs or rhs) > 0 else 0
         )
 
     def FPTOSI(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FPTOSI` bytecode.
@@ -566,18 +566,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        source_register: int = instruction_metadata.get("source_register")
-        destination_register: int = instruction_metadata.get("destination_register")
+        source_register: int = instruction_params.get("source_register")
+        destination_register: int = instruction_params.get("destination_register")
 
         self.registers[destination_register] = int(self.registers[source_register])
 
     def FSUB(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `FSUB` bytecode.
@@ -586,18 +586,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs - rhs
+        self.registers[instruction_params.get("register")] = lhs - rhs
 
     def GT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `GT` bytecode.
@@ -608,7 +608,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -618,27 +618,27 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = int(lhs > rhs)
+        self.registers[instruction_params.get("register")] = int(lhs > rhs)
 
     def HALT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `HALT` bytecode.
 
         This method handles the end of the execution of a program. For this
-        instruction, the `instruction_metadata` is ignored.
+        instruction, the `instruction_params` is ignored.
         """
 
         return
 
     def JMP(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `JMP` bytecode.
@@ -647,16 +647,16 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        jump_size: int = instruction_metadata.get("jump_size")
+        jump_size: int = instruction_params.get("jump_size")
         self.program_counter += jump_size - 1
 
     def JNZ(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `JNZ` bytecode.
@@ -666,20 +666,20 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        conditional_register: int = instruction_metadata.get("conditional_register")
+        conditional_register: int = instruction_params.get("conditional_register")
         condition: int = self.registers[conditional_register]
 
         if condition:
-            jump_size: int = instruction_metadata.get("jump_size")
+            jump_size: int = instruction_params.get("jump_size")
             self.program_counter += jump_size - 1
 
     def JZ(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `JZ` bytecode.
@@ -689,20 +689,20 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        conditional_register: int = instruction_metadata.get("conditional_register")
+        conditional_register: int = instruction_params.get("conditional_register")
         condition: int = self.registers[conditional_register]
 
         if not condition:
-            jump_size: int = instruction_metadata.get("jump_size")
+            jump_size: int = instruction_params.get("jump_size")
             self.program_counter += jump_size - 1
 
     def LOAD(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `LOAD` bytecode.
@@ -715,22 +715,22 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
         # Value represents the variable to load's relative position in the
         # source code.
-        variable_to_load: int = instruction_metadata.get("value")
+        variable_to_load: int = instruction_params.get("value")
         variable_address: str = self.variables[variable_to_load]
         variable_value: Union[int, float] = self.memory[variable_address]
 
-        destination_register: int = instruction_metadata.get("register")
+        destination_register: int = instruction_params.get("register")
         self.registers[destination_register] = variable_value
 
     def LSHIFT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `LSHIFT` bytecode.
@@ -741,18 +741,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs << rhs
+        self.registers[instruction_params.get("register")] = lhs << rhs
 
     def LT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `LT` bytecode.
@@ -763,7 +763,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -773,14 +773,14 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = int(lhs < rhs)
+        self.registers[instruction_params.get("register")] = int(lhs < rhs)
 
     def MULT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `MULT` bytecode.
@@ -791,18 +791,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs * rhs
+        self.registers[instruction_params.get("register")] = lhs * rhs
 
     def PARAM(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `PARAM` bytecode.
@@ -811,7 +811,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -821,20 +821,20 @@ class VirtualMachine:
 
         if self.memory_pointer >= self.memory_size:
             err_msg: str = "Cannot allocate memory: memory is full"
-            err_msg += f"\nInstruction: {instruction_metadata}"
+            err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
 
-        parameter_relative_position = instruction_metadata.get("relative_position")
-        parameter_type = instruction_metadata.get("type")
+        parameter_relative_position = instruction_params.get("relative_position")
+        parameter_type = instruction_params.get("type")
         parameter_size = self._get_variable_size(parameter_type)
-        parameter_length = instruction_metadata.get("length", 1)
+        parameter_length = instruction_params.get("length", 1)
 
         parameter_address: str = hex(self.memory_pointer)
         updated_memory_pointer: int = self.memory_pointer + (parameter_size * parameter_length)
 
         if updated_memory_pointer >= self.memory_size:
             err_msg: str = "Not enough memory to allocate a new variable."
-            err_msg += f"\nInstruction: {instruction_metadata}"
+            err_msg += f"\nInstruction: {instruction_params}"
 
             raise MemoryError(err_msg)
 
@@ -846,7 +846,7 @@ class VirtualMachine:
 
     def OR(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `OR` bytecode.
@@ -857,7 +857,7 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Notes
@@ -868,16 +868,16 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = (
+        self.registers[instruction_params.get("register")] = (
             1 if (lhs or rhs) > 0 else 0
         )
 
     def RET(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `RET` bytecode.
@@ -886,12 +886,12 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
         # Save the returned value to the appropriate register
-        register_with_value_to_return: int = instruction_metadata.get("register")
+        register_with_value_to_return: int = instruction_params.get("register")
         self.registers[self.return_value_register] = self.registers[register_with_value_to_return]
 
         # Restore the `program_counter`
@@ -899,7 +899,7 @@ class VirtualMachine:
 
     def RSHIFT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `RSHIFT` bytecode.
@@ -910,18 +910,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs >> rhs
+        self.registers[instruction_params.get("register")] = lhs >> rhs
 
     def SIGNEXT(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `SIGNEXT` bytecode.
@@ -932,18 +932,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        source_register: int = instruction_metadata.get("source_register")
-        destination_register: int = instruction_metadata.get("destination_register")
+        source_register: int = instruction_params.get("source_register")
+        destination_register: int = instruction_params.get("destination_register")
 
         self.registers[destination_register] = self.registers[source_register]
 
     def SITOFP(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `SITOFP` bytecode.
@@ -953,18 +953,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        source_register: int = instruction_metadata.get("source_register")
-        destination_register: int = instruction_metadata.get("destination_register")
+        source_register: int = instruction_params.get("source_register")
+        destination_register: int = instruction_params.get("destination_register")
 
         self.registers[destination_register] = float(self.registers[source_register])
 
     def STORE(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `STORE` bytecode.
@@ -980,20 +980,20 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        variable_address: str = self._get_variable_address(instruction_metadata)
+        variable_address: str = self._get_variable_address(instruction_params)
 
-        value_to_store_register: int = instruction_metadata.get("rhs_register")
+        value_to_store_register: int = instruction_params.get("rhs_register")
         value_to_store: Union[int, float] = self.registers[value_to_store_register]
 
         self.memory[variable_address] = value_to_store
 
     def SUB(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `SUB` bytecode.
@@ -1004,18 +1004,18 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_metadata.get("lhs_register")]
-        rhs = self.registers[instruction_metadata.get("rhs_register")]
+        lhs = self.registers[instruction_params.get("lhs_register")]
+        rhs = self.registers[instruction_params.get("rhs_register")]
 
-        self.registers[instruction_metadata.get("register")] = lhs - rhs
+        self.registers[instruction_params.get("register")] = lhs - rhs
 
     def TRUNC(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> None:
         """
         Handle a `TRUNC` bytecode.
@@ -1024,12 +1024,12 @@ class VirtualMachine:
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
         """
 
-        source_register: int = instruction_metadata.get("source_register")
-        destination_register: int = instruction_metadata.get("destination_register")
+        source_register: int = instruction_params.get("source_register")
+        destination_register: int = instruction_params.get("destination_register")
 
         value_to_truncate: int = self.registers[source_register]
         truncated_value: int = value_to_truncate & 0xFFFF
@@ -1072,17 +1072,17 @@ class VirtualMachine:
     
     def _get_variable_address(
         self,
-        instruction_metadata: dict[str, Union[int, float, str]]
+        instruction_params: dict[str, Union[int, float, str]]
     ) -> str:
         """
-        Get the address of some variable from the instruction_metadata.
+        Get the address of some variable from the instruction_params.
 
         This method is intended to be used by the `LOAD` and `STORE`
         instruction handlers.
 
         Parameters
         ----------
-        instruction_metadata : dict[str, Union[int, float, str]]
+        instruction_params : dict[str, Union[int, float, str]]
             The bytecode metadata.
 
         Returns
@@ -1091,7 +1091,7 @@ class VirtualMachine:
             The address of the variable in the `self.memory` dictionary.
         """
 
-        lhs_register: int = instruction_metadata.get("lhs_register")
+        lhs_register: int = instruction_params.get("lhs_register")
         lhs_register_contents: Union[int, str] = self.registers[lhs_register]
 
         # Case 1: writing to some simple variable (i.e., the `lhs_register`

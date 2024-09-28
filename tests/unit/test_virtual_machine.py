@@ -32,14 +32,14 @@ def test_ADD() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.ADD(instruction_metadata=instruction_metadata)
+    vm.ADD(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -48,7 +48,7 @@ def test_ADD() -> None:
     [
         # Simple variable
         {
-            "instruction_metadata": {
+            "instruction_params": {
                 "id": 0,
                 "type": "int",
                 "relative_position": 0
@@ -61,7 +61,7 @@ def test_ADD() -> None:
 
         # Struct
         {
-            "instruction_metadata": {
+            "instruction_params": {
                 "id": 0,
                 "type": "my_struct",
                 "relative_position": 0
@@ -74,7 +74,7 @@ def test_ADD() -> None:
 
         # Array
         {
-            "instruction_metadata": {
+            "instruction_params": {
                 "id": 0,
                 "type": "int",
                 "relative_position": 0,
@@ -92,8 +92,8 @@ def test_ALLOC_success(test_suite) -> None:
 
     vm = VirtualMachine(program=MACHINE_CODE)
 
-    instruction_metadata: dict = test_suite.get("instruction_metadata")
-    vm.ALLOC(instruction_metadata=instruction_metadata)
+    instruction_params: dict = test_suite.get("instruction_params")
+    vm.ALLOC(instruction_params=instruction_params)
 
     expected_result: dict = test_suite.get("expected_result")
 
@@ -106,7 +106,7 @@ def test_ALLOC_success(test_suite) -> None:
     [
         # Upfront full memory
         {
-            "instruction_metadata": {
+            "instruction_params": {
                 "id": 0,
                 "type": "int",
                 "relative_position": 0
@@ -118,7 +118,7 @@ def test_ALLOC_success(test_suite) -> None:
 
         # Memory does not have enough space for the new variable
         {
-            "instruction_metadata": {
+            "instruction_params": {
                 "id": 0,
                 "type": "my_struct",
                 "relative_position": 0
@@ -136,8 +136,8 @@ def test_ALLOC_failure(test_suite) -> None:
     vm = VirtualMachine(program=MACHINE_CODE, **vm_settings)
 
     with pytest.raises(MemoryError):
-        instruction_metadata: dict = test_suite.get("instruction_metadata")
-        vm.ALLOC(instruction_metadata=instruction_metadata)
+        instruction_params: dict = test_suite.get("instruction_params")
+        vm.ALLOC(instruction_params=instruction_params)
 
 
 def test_AND() -> None:
@@ -154,14 +154,14 @@ def test_AND() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.AND(instruction_metadata=instruction_metadata)
+    vm.AND(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -180,14 +180,14 @@ def test_BITAND() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.BITAND(instruction_metadata=instruction_metadata)
+    vm.BITAND(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -206,14 +206,14 @@ def test_BITOR() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.BITOR(instruction_metadata=instruction_metadata)
+    vm.BITOR(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -242,14 +242,14 @@ def test_CALL() -> None:
         param_2_register: param_2_value
     }
 
-    instruction_metadata = {
+    instruction_params = {
         "register": function_return_register,
         "value": function_relative_position,
         "type": "int",
         "parameters_registers": [param_1_register, param_2_register]
     }
 
-    vm.CALL(instruction_metadata)
+    vm.CALL(instruction_params)
 
     assert vm.function_call_parameters == [param_2_value, param_1_value]
     assert vm.program_counter == function_first_instruction_index
@@ -265,13 +265,13 @@ def test_CONSTANT() -> None:
     expected_value = 23
     result_register = 0
 
-    instruction_metadata = {
+    instruction_params = {
         "register": result_register,
         "value": expected_value,
         "type": "int"
     }
 
-    vm.CONSTANT(instruction_metadata=instruction_metadata)
+    vm.CONSTANT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_value
 
@@ -290,14 +290,14 @@ def test_DIV() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.DIV(instruction_metadata=instruction_metadata)
+    vm.DIV(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -324,7 +324,7 @@ def test_ELEMENT_PTR_dynamic() -> None:
     }
     vm.registers[element_register] = index_variable_value
 
-    instruction_metadata = {
+    instruction_params = {
         "register": register_to_write,
         "variable_relative_position": variable_relative_position,
         "offset_mode": "dynamic",
@@ -332,7 +332,7 @@ def test_ELEMENT_PTR_dynamic() -> None:
         "variable_type_size": variable_type_size
     }
 
-    vm.ELEMENT_PTR(instruction_metadata=instruction_metadata)
+    vm.ELEMENT_PTR(instruction_params=instruction_params)
 
     assert vm.registers[register_to_write] == expected_value
 
@@ -356,14 +356,14 @@ def test_ELEMENT_PTR_static() -> None:
         variable_relative_position: hex(variable_address)
     }
 
-    instruction_metadata = {
+    instruction_params = {
         "register": register_to_write,
         "variable_relative_position": variable_relative_position,
         "offset_size": offset_size,
         "offset_mode": "static"
     }
 
-    vm.ELEMENT_PTR(instruction_metadata=instruction_metadata)
+    vm.ELEMENT_PTR(instruction_params=instruction_params)
 
     assert vm.registers[register_to_write] == expected_value
 
@@ -382,14 +382,14 @@ def test_EQ() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.EQ(instruction_metadata=instruction_metadata)
+    vm.EQ(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -408,14 +408,14 @@ def test_FADD() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.FADD(instruction_metadata=instruction_metadata)
+    vm.FADD(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -434,14 +434,14 @@ def test_FAND() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.FAND(instruction_metadata=instruction_metadata)
+    vm.FAND(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -460,14 +460,14 @@ def test_FDIV() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.FDIV(instruction_metadata=instruction_metadata)
+    vm.FDIV(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -485,14 +485,14 @@ def test_FEQ() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.FEQ(instruction_metadata=instruction_metadata)
+    vm.FEQ(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -511,14 +511,14 @@ def test_FGT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.GT(instruction_metadata=instruction_metadata)
+    vm.GT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -537,14 +537,14 @@ def test_FLT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.LT(instruction_metadata=instruction_metadata)
+    vm.LT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -563,14 +563,14 @@ def test_FMULT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.MULT(instruction_metadata=instruction_metadata)
+    vm.MULT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -588,14 +588,14 @@ def test_FOR() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.OR(instruction_metadata=instruction_metadata)
+    vm.OR(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -613,14 +613,14 @@ def test_FSUB() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.SUB(instruction_metadata=instruction_metadata)
+    vm.SUB(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -639,14 +639,14 @@ def test_GT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.GT(instruction_metadata=instruction_metadata)
+    vm.GT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -665,11 +665,11 @@ def test_JMP() -> None:
     jump_size = 23
     expected_program_counter = jump_size - 1
 
-    instruction_metadata = {
+    instruction_params = {
         "jump_size": jump_size
     }
 
-    vm.JMP(instruction_metadata=instruction_metadata)
+    vm.JMP(instruction_params=instruction_params)
 
     assert vm.program_counter == expected_program_counter
 
@@ -687,14 +687,14 @@ def test_JNZ_true() -> None:
     expected_program_counter = jump_size - 1
     conditional_register = 0
 
-    instruction_metadata = {
+    instruction_params = {
         "conditional_register": conditional_register,
         "jump_size": jump_size
     }
 
     vm.registers[conditional_register] = 1
 
-    vm.JNZ(instruction_metadata=instruction_metadata)
+    vm.JNZ(instruction_params=instruction_params)
 
     assert vm.program_counter == expected_program_counter
 
@@ -712,14 +712,14 @@ def test_JNZ_false() -> None:
     expected_program_counter = vm.program_counter
     conditional_register = 0
 
-    instruction_metadata = {
+    instruction_params = {
         "conditional_register": conditional_register,
         "jump_size": jump_size
     }
 
     vm.registers[conditional_register] = 0
 
-    vm.JNZ(instruction_metadata=instruction_metadata)
+    vm.JNZ(instruction_params=instruction_params)
 
     assert vm.program_counter == expected_program_counter
 
@@ -737,14 +737,14 @@ def test_JZ_true() -> None:
     expected_program_counter = vm.program_counter
     conditional_register = 0
 
-    instruction_metadata = {
+    instruction_params = {
         "conditional_register": conditional_register,
         "jump_size": jump_size
     }
 
     vm.registers[conditional_register] = 1
 
-    vm.JZ(instruction_metadata=instruction_metadata)
+    vm.JZ(instruction_params=instruction_params)
 
     assert vm.program_counter == expected_program_counter
 
@@ -762,14 +762,14 @@ def test_JZ_false() -> None:
     expected_program_counter = jump_size - 1
     conditional_register = 0
 
-    instruction_metadata = {
+    instruction_params = {
         "conditional_register": conditional_register,
         "jump_size": jump_size
     }
 
     vm.registers[conditional_register] = 0
 
-    vm.JZ(instruction_metadata=instruction_metadata)
+    vm.JZ(instruction_params=instruction_params)
 
     assert vm.program_counter == expected_program_counter
 
@@ -784,7 +784,7 @@ def test_LOAD() -> None:
 
     # I.e., save the contents of the variable of relative position `2` to
     # register `3`
-    instruction_metadata = {
+    instruction_params = {
         "register": expected_value_register,
         "value": 2
     }
@@ -808,7 +808,7 @@ def test_LOAD() -> None:
         "0x9": 7
     }
 
-    vm.LOAD(instruction_metadata=instruction_metadata)
+    vm.LOAD(instruction_params=instruction_params)
 
     assert vm.registers[expected_value_register] == expected_value
 
@@ -827,14 +827,14 @@ def test_LSHIFT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.LSHIFT(instruction_metadata=instruction_metadata)
+    vm.LSHIFT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -853,14 +853,14 @@ def test_LT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.LT(instruction_metadata=instruction_metadata)
+    vm.LT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -879,14 +879,14 @@ def test_MULT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.MULT(instruction_metadata=instruction_metadata)
+    vm.MULT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -908,13 +908,13 @@ def test_PARAM() -> None:
     }
     vm.function_call_parameters = [expected_value]
 
-    instruction_metadata = {
+    instruction_params = {
         "type": "int",
         "relative_position": expected_value_relative_position,
         "length": 1,
     }
 
-    vm.PARAM(instruction_metadata)
+    vm.PARAM(instruction_params)
 
     assert vm.variables[expected_value_relative_position] == expected_value_address
     assert vm.memory[expected_value_address] == expected_value
@@ -934,14 +934,14 @@ def test_OR() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.OR(instruction_metadata=instruction_metadata)
+    vm.OR(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -963,12 +963,12 @@ def test_RET() -> None:
     vm.return_program_counter = address_to_return_to
     vm.return_value_register = function_call_result_register
 
-    instruction_metadata = {
+    instruction_params = {
         "type": "int",
         "register": returned_value_register
     }
 
-    vm.RET(instruction_metadata=instruction_metadata)
+    vm.RET(instruction_params=instruction_params)
 
     assert vm.registers[function_call_result_register] == vm.registers[returned_value_register]
     assert vm.program_counter == address_to_return_to + 1
@@ -988,14 +988,14 @@ def test_RSHIFT() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.RSHIFT(instruction_metadata=instruction_metadata)
+    vm.RSHIFT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
@@ -1010,7 +1010,7 @@ def test_STORE_simple() -> None:
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
 
-    instruction_metadata = {
+    instruction_params = {
         "lhs_register": 0,
         "rhs_register": 1
     }
@@ -1024,7 +1024,7 @@ def test_STORE_simple() -> None:
     store_address = "0x0"
     vm.variables = {0: store_address}
 
-    vm.STORE(instruction_metadata)
+    vm.STORE(instruction_params)
 
     assert vm.memory[store_address] == value_to_store
 
@@ -1038,7 +1038,7 @@ def test_STORE_arrays_structs() -> None:
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
 
-    instruction_metadata = {
+    instruction_params = {
         "lhs_register": 0,
         "rhs_register": 1
     }
@@ -1051,7 +1051,7 @@ def test_STORE_arrays_structs() -> None:
         1: value_to_store
     }
 
-    vm.STORE(instruction_metadata)
+    vm.STORE(instruction_params)
 
     assert vm.memory[store_address] == value_to_store
 
@@ -1070,13 +1070,13 @@ def test_SUB() -> None:
     vm.registers[lhs_register] = lhs
     vm.registers[rhs_register] = rhs
 
-    instruction_metadata = {
+    instruction_params = {
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
         "rhs_register": rhs_register
     }
 
-    vm.SUB(instruction_metadata=instruction_metadata)
+    vm.SUB(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
