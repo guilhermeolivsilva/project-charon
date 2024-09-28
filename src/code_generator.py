@@ -177,7 +177,9 @@ class CodeGenerator:
                 "start": index
             }
 
-            _, function_code = function_def.generate_code(
+            print(self.register)
+
+            self.register, function_code = function_def.generate_code(
                 register=self.register
             )
             self.program["code"].extend(function_code)
