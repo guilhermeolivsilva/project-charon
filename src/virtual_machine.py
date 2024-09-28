@@ -890,7 +890,12 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        ...
+        # Save the returned value to the appropriate register
+        register_with_value_to_return: int = instruction_metadata.get("register")
+        self.registers[self.return_value_register] = self.registers[register_with_value_to_return]
+
+        # Restore the `program_counter`
+        self.program_counter = self.return_program_counter + 1
 
     def RSHIFT(
         self,

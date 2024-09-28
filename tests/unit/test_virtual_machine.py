@@ -949,7 +949,29 @@ def test_OR() -> None:
 def test_RET() -> None:
     """Test the `VirtualMachine.RET` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    returned_value_register = 0
+    returned_value = 23
+
+    function_call_result_register = 1
+    address_to_return_to = 13
+
+    vm.registers = {
+        returned_value_register: returned_value
+    }
+    vm.return_program_counter = address_to_return_to
+    vm.return_value_register = function_call_result_register
+
+    instruction_metadata = {
+        "type": "int",
+        "register": returned_value_register
+    }
+
+    vm.RET(instruction_metadata=instruction_metadata)
+
+    assert vm.registers[function_call_result_register] == vm.registers[returned_value_register]
+    assert vm.program_counter == address_to_return_to + 1
 
 
 def test_RSHIFT() -> None:
