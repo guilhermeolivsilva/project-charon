@@ -906,7 +906,7 @@ def test_PARAM() -> None:
         "0x0": 123321,
         "0xF": -1
     }
-    vm.parameters = [expected_value]
+    vm.function_call_parameters = [expected_value]
 
     instruction_metadata = {
         "type": "int",
