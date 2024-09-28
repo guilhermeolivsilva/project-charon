@@ -62,7 +62,32 @@ class VirtualMachine:
     def run(self) -> None:
         """Run the program on the virtual machine."""
 
-        ...
+        # Run the instructions related to global vars (that are stored in a
+        # different section of the program text)
+        for global_var_instruction in self.program["global_vars"]:
+            instruction = global_var_instruction.get("instruction")
+            instruction_params = global_var_instruction.get("metadata")
+
+            instruction_handler = getattr(self, instruction)
+            instruction_handler(instruction_params)
+
+        # Set the `program_counter` to the beginning of the `main` function
+        self.program_counter = self.program["functions"]["main"]["start"]
+
+        # Run the actual program
+        while True:
+            code_metadata = self.program["code"][self.program_counter]
+
+            instruction = code_metadata.get("instruction")
+            instruction_params = code_metadata.get("metadata")
+
+            if instruction == "HALT":
+                break
+
+            instruction_handler = getattr(self, instruction)
+            instruction_handler(instruction_params)
+
+            self.program_counter += 1
 
     def ADD(
         self,
@@ -223,7 +248,7 @@ class VirtualMachine:
         # Handle the `program_counter` for it to point to the function code
         called_function_relative_position: int = instruction_params.get("value")
         called_function_name: str = (
-            list(self.program["functions"].keys())[called_function_relative_position]
+            list(self.program["functions"].keys())[called_function_relative_position - 1]
         )
         called_function_start: int = (
             self.program["functions"][called_function_name]["start"]
