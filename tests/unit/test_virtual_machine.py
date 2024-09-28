@@ -221,7 +221,40 @@ def test_BITOR() -> None:
 def test_CALL() -> None:
     """Test the `VirtualMachine.CALL` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+    initial_program_counter = vm.program_counter
+
+    param_1_value, param_1_register = 23, 0
+    param_2_value, param_2_register = 35, 1
+
+    function_return_register = 2
+    function_relative_position = 2
+    function_first_instruction_index = (
+        MACHINE_CODE["functions"][
+            list(MACHINE_CODE["functions"].keys())[
+                function_relative_position
+            ]
+        ].get("start")
+    )
+
+    vm.registers = {
+        param_1_register: param_1_value,
+        param_2_register: param_2_value
+    }
+
+    instruction_metadata = {
+        "register": function_return_register,
+        "value": function_relative_position,
+        "type": "int",
+        "parameters_registers": [param_1_register, param_2_register]
+    }
+
+    vm.CALL(instruction_metadata)
+
+    assert vm.function_call_parameters == [param_2_value, param_1_value]
+    assert vm.program_counter == function_first_instruction_index
+    assert vm.return_program_counter == initial_program_counter
+    assert vm.return_value_register == function_return_register
 
 
 def test_CONSTANT() -> None:

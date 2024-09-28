@@ -36,7 +36,11 @@ class VirtualMachine:
         self.program_counter: int = 0
         self.registers: dict[int, Union[int, float]] = {}
         self.variables: dict[int, str] = {}
-        self.parameters: list[Union[int, float]] = []
+
+        # Functions
+        self.function_call_parameters: list[Union[int, float]] = []
+        self.return_program_counter: int = 0
+        self.return_value_register: int = 0
 
     def __str__(self) -> str:
         """
@@ -216,7 +220,30 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        ...
+        # Handle the `program_counter` for it to point to the function code
+        called_function_relative_position: int = instruction_metadata.get("value")
+        called_function_name: str = (
+            list(self.program["functions"].keys())[called_function_relative_position]
+        )
+        called_function_start: int = (
+            self.program["functions"][called_function_name]["start"]
+        )
+
+        # Save the parameters, if any, to the `function_call_parameters` register
+        parameters_registers: list[int] = reversed(
+            instruction_metadata.get("parameters_registers")
+        )
+        for parameter_register in parameters_registers:
+            parameter_value = self.registers[parameter_register]
+            self.function_call_parameters.append(parameter_value)
+
+        # Save the current state (i.e., the `program_counter` and `registers`)
+        self.return_program_counter = self.program_counter
+        self.program_counter = called_function_start
+
+        # And, finally, save the register to write the call result
+        return_value_register: int = instruction_metadata.get("register")
+        self.return_value_register = return_value_register
 
     def CONSTANT(
         self,
@@ -814,7 +841,7 @@ class VirtualMachine:
         self.variables[parameter_relative_position] = parameter_address
         self.memory_pointer = updated_memory_pointer
 
-        parameter_value: Union[int, float] = self.parameters.pop()
+        parameter_value: Union[int, float] = self.function_call_parameters.pop()
         self.memory[parameter_address] = parameter_value
 
     def OR(
