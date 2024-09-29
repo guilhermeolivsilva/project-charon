@@ -82,63 +82,62 @@ ID: 0, Kind: PROG
           ID: 70, Value: 2, Kind: FUNC_CALL, Type: int
             ID: 71, Value: 11, Kind: VAR, Type: float
             ID: 72, Value: 123, Kind: CST, Type: int
-      ID: 72, Value: 3, Kind: FUNC_CALL, Type: int
-        ID: 73, Value: 1, Kind: CST, Type: int
-        ID: 74, Value: 2, Kind: CST, Type: int
-      ID: 76, Kind: RET_SYM, Type: int
-        ID: 78, Kind: ADD, Type: float
-          ID: 77, Value: 11, Kind: VAR, Type: float
-          ID: 79, Value: 10, Kind: VAR, Type: int
-  ID: 80, Value: main, Kind: FUNC_DEF, Type: int
+      ID: 72, Kind: RET_SYM, Type: int
+        ID: 74, Kind: ADD, Type: float
+          ID: 73, Value: 11, Kind: VAR, Type: float
+          ID: 75, Value: 10, Kind: VAR, Type: int
+  ID: 76, Value: main, Kind: FUNC_DEF, Type: int
     Kind: SEQ
-      ID: 83, Value: 14, Kind: VAR_DEF, Type: int
+      ID: 79, Value: 14, Kind: VAR_DEF, Type: int
         Name: x, Type: int
-      ID: 88, Kind: ASSIGN, Type: int
-        ID: 87, Value: 14, Kind: VAR, Type: int
-        ID: 89, Value: 3, Kind: FUNC_CALL, Type: int
-      ID: 91, Value: 15, Kind: VAR_DEF, Type: int
+      ID: 84, Kind: ASSIGN, Type: int
+        ID: 83, Value: 14, Kind: VAR, Type: int
+        ID: 85, Value: 3, Kind: FUNC_CALL, Type: int
+          ID: 86, Value: 1, Kind: CST, Type: int
+          ID: 87, Value: 2, Kind: CST, Type: int
+      ID: 87, Value: 15, Kind: VAR_DEF, Type: int
         Name: array, Type: int (array), Length: 10
-      ID: 98, Kind: ASSIGN, Type: int
-        ID: 96, Kind: ELEMENT_ACCESS, Type: int
-          ID: 95, Value: 15, Kind: VAR, Type: int (array), Length: 10
-          ID: 97, Value: 5, Kind: CST, Type: int
-        ID: 99, Value: 1, Kind: CST, Type: int
-      ID: 101, Value: 16, Kind: VAR_DEF, Type: int
+      ID: 94, Kind: ASSIGN, Type: int
+        ID: 92, Kind: ELEMENT_ACCESS, Type: int
+          ID: 91, Value: 15, Kind: VAR, Type: int (array), Length: 10
+          ID: 93, Value: 5, Kind: CST, Type: int
+        ID: 95, Value: 1, Kind: CST, Type: int
+      ID: 97, Value: 16, Kind: VAR_DEF, Type: int
         Name: y, Type: int
-      ID: 105, Kind: IFELSE
-        ID: 115, Kind: AND, Type: int
-          ID: 111, Kind: OR, Type: int
-            ID: 109, Kind: EQUAL, Type: int
-              ID: 107, Kind: LSHIFT, Type: int
-                ID: 106, Value: 14, Kind: VAR, Type: int
-                ID: 108, Value: 4, Kind: CST, Type: int
+      ID: 101, Kind: IFELSE
+        ID: 111, Kind: AND, Type: int
+          ID: 107, Kind: OR, Type: int
+            ID: 105, Kind: EQUAL, Type: int
+              ID: 103, Kind: LSHIFT, Type: int
+                ID: 102, Value: 14, Kind: VAR, Type: int
+                ID: 104, Value: 4, Kind: CST, Type: int
+              ID: 106, Value: 1, Kind: CST, Type: int
+            ID: 109, Kind: GREATER, Type: int
+              ID: 108, Value: 14, Kind: VAR, Type: int
               ID: 110, Value: 1, Kind: CST, Type: int
-            ID: 113, Kind: GREATER, Type: int
-              ID: 112, Value: 14, Kind: VAR, Type: int
-              ID: 114, Value: 1, Kind: CST, Type: int
-          ID: 117, Kind: LESS, Type: int
-            ID: 116, Value: 14, Kind: VAR, Type: int
-            ID: 118, Value: 10, Kind: CST, Type: int
+          ID: 113, Kind: LESS, Type: int
+            ID: 112, Value: 14, Kind: VAR, Type: int
+            ID: 114, Value: 10, Kind: CST, Type: int
         Kind: SEQ
-          ID: 122, Kind: ASSIGN, Type: int
-            ID: 121, Value: 16, Kind: VAR, Type: int
-            ID: 124, Kind: BITAND, Type: int
-              ID: 123, Value: 14, Kind: VAR, Type: int
-              ID: 125, Value: 1, Kind: CST, Type: int
+          ID: 118, Kind: ASSIGN, Type: int
+            ID: 117, Value: 16, Kind: VAR, Type: int
+            ID: 120, Kind: BITAND, Type: int
+              ID: 119, Value: 14, Kind: VAR, Type: int
+              ID: 121, Value: 1, Kind: CST, Type: int
         Kind: SEQ
-          ID: 129, Kind: ASSIGN, Type: int
-            ID: 128, Value: 16, Kind: VAR, Type: int
-            ID: 131, Kind: BITOR, Type: int
-              ID: 130, Value: 14, Kind: VAR, Type: int
-              ID: 132, Value: 1, Kind: CST, Type: int
-      ID: 134, Kind: RET_SYM, Type: int
-        ID: 140, Kind: RSHIFT, Type: int
-          ID: 138, Kind: DIV, Type: int
-            ID: 136, Kind: MULT, Type: int
-              ID: 135, Value: 14, Kind: VAR, Type: int
-              ID: 137, Value: 16, Kind: VAR, Type: int
-            ID: 139, Value: 2, Kind: CST, Type: int
-          ID: 141, Value: 1, Kind: CST, Type: int
+          ID: 125, Kind: ASSIGN, Type: int
+            ID: 124, Value: 16, Kind: VAR, Type: int
+            ID: 127, Kind: BITOR, Type: int
+              ID: 126, Value: 14, Kind: VAR, Type: int
+              ID: 128, Value: 1, Kind: CST, Type: int
+      ID: 130, Kind: RET_SYM, Type: int
+        ID: 136, Kind: RSHIFT, Type: int
+          ID: 134, Kind: DIV, Type: int
+            ID: 132, Kind: MULT, Type: int
+              ID: 131, Value: 14, Kind: VAR, Type: int
+              ID: 133, Value: 16, Kind: VAR, Type: int
+            ID: 135, Value: 2, Kind: CST, Type: int
+          ID: 137, Value: 1, Kind: CST, Type: int
 """
 
 def test_init() -> None:

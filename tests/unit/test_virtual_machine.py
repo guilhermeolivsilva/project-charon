@@ -232,7 +232,7 @@ def test_CALL() -> None:
     function_first_instruction_index = (
         MACHINE_CODE["functions"][
             list(MACHINE_CODE["functions"].keys())[
-                function_relative_position
+                function_relative_position - 1
             ]
         ].get("start")
     )
