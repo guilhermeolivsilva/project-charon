@@ -9,7 +9,8 @@ __STARTING_SYMBOL = 2
 __CERTIFICATE_SYMBOLS = [
     "CST",
     "VAR_DEF",
-    "VAR",
+    "VAR_READ",
+    "VAR_WRITE",
     "ELEMENT_ACCESS",
     "FUNC_CALL",
     "PARAM",

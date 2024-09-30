@@ -408,7 +408,7 @@ MACHINE_CODE = {
             "metadata": {"id": 8, "type": "int", "relative_position": 5, "length": 1},
         },
         {
-            "instruction": "LOAD",
+            "instruction": "ADDRESS",
             "metadata": {"id": 12, "register": 0, "value": 5, "type": "int"},
         },
         {
@@ -528,7 +528,7 @@ MACHINE_CODE = {
             "metadata": {"id": 36, "type": "int", "relative_position": 10, "length": 1},
         },
         {
-            "instruction": "LOAD",
+            "instruction": "ADDRESS",
             "metadata": {"id": 40, "register": 14, "value": 10, "type": "int"},
         },
         {
@@ -549,7 +549,7 @@ MACHINE_CODE = {
             },
         },
         {
-            "instruction": "LOAD",
+            "instruction": "ADDRESS",
             "metadata": {"id": 48, "register": 16, "value": 11, "type": "float"},
         },
         {
@@ -605,7 +605,7 @@ MACHINE_CODE = {
             "metadata": {"id": 63, "lhs_register": 20, "rhs_register": 21},
         },
         {
-            "instruction": "LOAD",
+            "instruction": "ADDRESS",
             "metadata": {"id": 66, "register": 22, "value": 10, "type": "int"},
         },
         {
@@ -674,7 +674,7 @@ MACHINE_CODE = {
             "metadata": {"id": 79, "type": "int", "relative_position": 14, "length": 1},
         },
         {
-            "instruction": "LOAD",
+            "instruction": "ADDRESS",
             "metadata": {"id": 83, "register": 33, "value": 14, "type": "int"},
         },
         {
@@ -822,7 +822,7 @@ MACHINE_CODE = {
         },
         {"instruction": "JZ", "metadata": {"conditional_register": 53, "jump_size": 7}},
         {
-            "instruction": "LOAD",
+            "instruction": "ADDRESS",
             "metadata": {"id": 117, "register": 54, "value": 16, "type": "int"},
         },
         {
@@ -848,7 +848,7 @@ MACHINE_CODE = {
         },
         {"instruction": "JMP", "metadata": {"jump_size": 6}},
         {
-            "instruction": "LOAD",
+            "instruction": "ADDRESS",
             "metadata": {"id": 124, "register": 58, "value": 16, "type": "int"},
         },
         {
@@ -919,4 +919,3 @@ MACHINE_CODE = {
         {"instruction": "HALT", "metadata": {}},
     ],
 }
-
