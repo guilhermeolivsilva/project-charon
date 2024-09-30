@@ -43,6 +43,34 @@ def test_ADD() -> None:
 
     assert vm.registers[result_register] == expected_result
 
+
+def test_ADDRESS() -> None:
+    """Test the `VirtualMachine.ADDRESS` method."""
+
+    vm = VirtualMachine(program=MACHINE_CODE, memory_size=10)
+
+    variable_relative_position = 2
+    expected_value_register = 3
+    expected_address = "0x8"
+
+    # I.e., save the contents of the variable of relative position `2` to
+    # register `3`
+    instruction_params = {
+        "register": expected_value_register,
+        "value": variable_relative_position
+    }
+
+    vm.variables = {
+        0: "0x0",
+        1: "0x4",
+        variable_relative_position: expected_address
+    }
+
+    vm.ADDRESS(instruction_params=instruction_params)
+
+    assert vm.registers[expected_value_register] == expected_address
+
+
 @pytest.mark.parametrize(
     "test_suite",
     [
