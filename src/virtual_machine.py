@@ -65,8 +65,8 @@ class VirtualMachine:
         # Run the instructions related to global vars (that are stored in a
         # different section of the program text)
         for global_var_instruction in self.program["global_vars"]:
-            instruction = global_var_instruction.get("instruction")
-            instruction_params = global_var_instruction.get("metadata")
+            instruction = global_var_instruction["instruction"]
+            instruction_params = global_var_instruction["metadata"]
 
             instruction_handler = getattr(self, instruction)
             instruction_handler(instruction_params)
@@ -77,9 +77,10 @@ class VirtualMachine:
         # Run the actual program
         while True:
             code_metadata = self.program["code"][self.program_counter]
+            self.program_counter += 1
 
-            instruction = code_metadata.get("instruction")
-            instruction_params = code_metadata.get("metadata")
+            instruction = code_metadata[("instruction")]
+            instruction_params = code_metadata[("metadata")]
 
             if instruction == "HALT":
                 break
@@ -87,7 +88,6 @@ class VirtualMachine:
             instruction_handler = getattr(self, instruction)
             instruction_handler(instruction_params)
 
-            self.program_counter += 1
 
     def ADD(
         self,
@@ -106,10 +106,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs + rhs
+        self.registers[instruction_params["register"]] = lhs + rhs
 
     def ALLOC(
         self,
@@ -137,9 +137,9 @@ class VirtualMachine:
             err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
 
-        variable_relative_position = instruction_params.get("relative_position")
+        variable_relative_position = instruction_params["relative_position"]
 
-        variable_type = instruction_params.get("type")
+        variable_type = instruction_params["type"]
         variable_size = self._get_variable_size(variable_type)
         variable_length = instruction_params.get("length", 1)
 
@@ -179,10 +179,10 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = (
+        self.registers[instruction_params["register"]] = (
             1 if (lhs and rhs) > 0 else 0
         )
 
@@ -203,10 +203,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs & rhs
+        self.registers[instruction_params["register"]] = lhs & rhs
 
     def BITOR(
         self,
@@ -225,10 +225,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs | rhs
+        self.registers[instruction_params["register"]] = lhs | rhs
 
     def CALL(
         self,
@@ -246,7 +246,7 @@ class VirtualMachine:
         """
 
         # Handle the `program_counter` for it to point to the function code
-        called_function_relative_position: int = instruction_params.get("value")
+        called_function_relative_position: int = instruction_params["value"]
         called_function_name: str = (
             list(self.program["functions"].keys())[called_function_relative_position - 1]
         )
@@ -256,7 +256,7 @@ class VirtualMachine:
 
         # Save the parameters, if any, to the `function_call_parameters` register
         parameters_registers: list[int] = reversed(
-            instruction_params.get("parameters_registers")
+            instruction_params["parameters_registers"]
         )
         for parameter_register in parameters_registers:
             parameter_value = self.registers[parameter_register]
@@ -267,7 +267,7 @@ class VirtualMachine:
         self.program_counter = called_function_start
 
         # And, finally, save the register to write the call result
-        return_value_register: int = instruction_params.get("register")
+        return_value_register: int = instruction_params["register"]
         self.return_value_register = return_value_register
 
     def CONSTANT(
@@ -285,8 +285,8 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        destination_register: int = instruction_params.get("register")
-        constant_value: int = instruction_params.get("value")
+        destination_register: int = instruction_params["register"]
+        constant_value: int = instruction_params["value"]
 
         self.registers[destination_register] = constant_value
 
@@ -307,10 +307,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = int(lhs / rhs)
+        self.registers[instruction_params["register"]] = int(lhs / rhs)
 
     def ELEMENT_PTR(
         self,
@@ -330,23 +330,23 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        offset_mode: str = instruction_params.get("offset_mode")
-        variable_relative_position: int = instruction_params.get("variable_relative_position")
+        offset_mode: str = instruction_params["offset_mode"]
+        variable_relative_position: int = instruction_params["variable_relative_position"]
         variable_initial_address: int = int(self.variables[variable_relative_position], 16)
 
         if offset_mode == "static":
-            element_offset: int = instruction_params.get("offset_size")
+            element_offset: int = instruction_params["offset_size"]
 
         else:
-            index_variable_register: int = instruction_params.get("element_register")
+            index_variable_register: int = instruction_params["element_register"]
             index_variable_value: int = self.registers[index_variable_register]
-            variable_type_size: int = instruction_params.get("variable_type_size")
+            variable_type_size: int = instruction_params["variable_type_size"]
 
             element_offset: int = index_variable_value * variable_type_size
 
         element_address: str = hex(variable_initial_address + element_offset)
 
-        register_to_write: int = instruction_params.get("register")
+        register_to_write: int = instruction_params["register"]
         self.registers[register_to_write] = element_address
 
     def EQ(
@@ -372,10 +372,10 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = int(lhs == rhs)
+        self.registers[instruction_params["register"]] = int(lhs == rhs)
 
     def FADD(
         self,
@@ -392,10 +392,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs + rhs
+        self.registers[instruction_params["register"]] = lhs + rhs
 
     def FAND(
         self,
@@ -420,10 +420,10 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = (
+        self.registers[instruction_params["register"]] = (
             1 if (lhs and rhs) > 0 else 0
         )
 
@@ -442,10 +442,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs / rhs
+        self.registers[instruction_params["register"]] = lhs / rhs
 
     def FEQ(
         self,
@@ -469,10 +469,10 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = int(lhs == rhs)
+        self.registers[instruction_params["register"]] = int(lhs == rhs)
 
     def FGT(
         self,
@@ -496,10 +496,10 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = int(lhs > rhs)
+        self.registers[instruction_params["register"]] = int(lhs > rhs)
 
     def FLT(
         self,
@@ -523,10 +523,10 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = int(lhs < rhs)
+        self.registers[instruction_params["register"]] = int(lhs < rhs)
 
     def FMULT(
         self,
@@ -544,10 +544,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs * rhs
+        self.registers[instruction_params["register"]] = lhs * rhs
 
     def FOR(
         self,
@@ -572,10 +572,10 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = (
+        self.registers[instruction_params["register"]] = (
             1 if (lhs or rhs) > 0 else 0
         )
 
@@ -595,8 +595,8 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params.get("source_register")
-        destination_register: int = instruction_params.get("destination_register")
+        source_register: int = instruction_params["source_register"]
+        destination_register: int = instruction_params["destination_register"]
 
         self.registers[destination_register] = int(self.registers[source_register])
 
@@ -615,10 +615,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs - rhs
+        self.registers[instruction_params["register"]] = lhs - rhs
 
     def GT(
         self,
@@ -643,10 +643,10 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = int(lhs > rhs)
+        self.registers[instruction_params["register"]] = int(lhs > rhs)
 
     def HALT(
         self,
@@ -676,7 +676,7 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        jump_size: int = instruction_params.get("jump_size")
+        jump_size: int = instruction_params["jump_size"]
         self.program_counter += jump_size - 1
 
     def JNZ(
@@ -695,11 +695,11 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        conditional_register: int = instruction_params.get("conditional_register")
+        conditional_register: int = instruction_params["conditional_register"]
         condition: int = self.registers[conditional_register]
 
         if condition:
-            jump_size: int = instruction_params.get("jump_size")
+            jump_size: int = instruction_params["jump_size"]
             self.program_counter += jump_size - 1
 
     def JZ(
@@ -718,11 +718,11 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        conditional_register: int = instruction_params.get("conditional_register")
+        conditional_register: int = instruction_params["conditional_register"]
         condition: int = self.registers[conditional_register]
 
         if not condition:
-            jump_size: int = instruction_params.get("jump_size")
+            jump_size: int = instruction_params["jump_size"]
             self.program_counter += jump_size - 1
 
     def LOAD(
@@ -746,11 +746,11 @@ class VirtualMachine:
 
         # Value represents the variable to load's relative position in the
         # source code.
-        variable_to_load: int = instruction_params.get("value")
+        variable_to_load: int = instruction_params["value"]
         variable_address: str = self.variables[variable_to_load]
         variable_value: Union[int, float] = self.memory[variable_address]
 
-        destination_register: int = instruction_params.get("register")
+        destination_register: int = instruction_params["register"]
         self.registers[destination_register] = variable_value
 
     def LSHIFT(
@@ -770,10 +770,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs << rhs
+        self.registers[instruction_params["register"]] = lhs << rhs
 
     def LT(
         self,
@@ -798,10 +798,10 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = int(lhs < rhs)
+        self.registers[instruction_params["register"]] = int(lhs < rhs)
 
     def MULT(
         self,
@@ -820,10 +820,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs * rhs
+        self.registers[instruction_params["register"]] = lhs * rhs
 
     def PARAM(
         self,
@@ -849,8 +849,8 @@ class VirtualMachine:
             err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
 
-        parameter_relative_position = instruction_params.get("relative_position")
-        parameter_type = instruction_params.get("type")
+        parameter_relative_position = instruction_params["relative_position"]
+        parameter_type = instruction_params["type"]
         parameter_size = self._get_variable_size(parameter_type)
         parameter_length = instruction_params.get("length", 1)
 
@@ -893,10 +893,10 @@ class VirtualMachine:
         `False`).
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = (
+        self.registers[instruction_params["register"]] = (
             1 if (lhs or rhs) > 0 else 0
         )
 
@@ -916,7 +916,7 @@ class VirtualMachine:
         """
 
         # Save the returned value to the appropriate register
-        register_with_value_to_return: int = instruction_params.get("register")
+        register_with_value_to_return: int = instruction_params["register"]
         self.registers[self.return_value_register] = self.registers[register_with_value_to_return]
 
         # Restore the `program_counter`
@@ -939,10 +939,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs >> rhs
+        self.registers[instruction_params["register"]] = lhs >> rhs
 
     def SIGNEXT(
         self,
@@ -961,8 +961,8 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params.get("source_register")
-        destination_register: int = instruction_params.get("destination_register")
+        source_register: int = instruction_params["source_register"]
+        destination_register: int = instruction_params["destination_register"]
 
         self.registers[destination_register] = self.registers[source_register]
 
@@ -982,8 +982,8 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params.get("source_register")
-        destination_register: int = instruction_params.get("destination_register")
+        source_register: int = instruction_params["source_register"]
+        destination_register: int = instruction_params["destination_register"]
 
         self.registers[destination_register] = float(self.registers[source_register])
 
@@ -1011,7 +1011,7 @@ class VirtualMachine:
 
         variable_address: str = self._get_variable_address(instruction_params)
 
-        value_to_store_register: int = instruction_params.get("rhs_register")
+        value_to_store_register: int = instruction_params["rhs_register"]
         value_to_store: Union[int, float] = self.registers[value_to_store_register]
 
         self.memory[variable_address] = value_to_store
@@ -1033,10 +1033,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs = self.registers[instruction_params.get("lhs_register")]
-        rhs = self.registers[instruction_params.get("rhs_register")]
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params.get("register")] = lhs - rhs
+        self.registers[instruction_params["register"]] = lhs - rhs
 
     def TRUNC(
         self,
@@ -1053,8 +1053,8 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params.get("source_register")
-        destination_register: int = instruction_params.get("destination_register")
+        source_register: int = instruction_params["source_register"]
+        destination_register: int = instruction_params["destination_register"]
 
         value_to_truncate: int = self.registers[source_register]
         truncated_value: int = value_to_truncate & 0xFFFF
@@ -1116,7 +1116,7 @@ class VirtualMachine:
             The address of the variable in the `self.memory` dictionary.
         """
 
-        lhs_register: int = instruction_params.get("lhs_register")
+        lhs_register: int = instruction_params["lhs_register"]
         lhs_register_contents: Union[int, str] = self.registers[lhs_register]
 
         # Case 1: writing to some simple variable (i.e., the `lhs_register`
