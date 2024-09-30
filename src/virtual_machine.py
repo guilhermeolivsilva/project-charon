@@ -39,8 +39,8 @@ class VirtualMachine:
 
         # Functions
         self.function_call_parameters: list[Union[int, float]] = []
-        self.return_program_counter: int = 0
-        self.return_value_register: int = 0
+        self.return_program_counter: list[int] = []
+        self.return_value_register: list[int] = []
 
     def __str__(self) -> str:
         """
@@ -77,7 +77,6 @@ class VirtualMachine:
         # Run the actual program
         while True:
             code_metadata = self.program["code"][self.program_counter]
-            self.program_counter += 1
 
             instruction = code_metadata[("instruction")]
             instruction_params = code_metadata[("metadata")]
@@ -85,9 +84,15 @@ class VirtualMachine:
             if instruction == "HALT":
                 break
 
-            instruction_handler = getattr(self, instruction)
-            instruction_handler(instruction_params)
+            self.program_counter += 1
 
+            instruction_handler = getattr(self, instruction)
+
+            try:
+                instruction_handler(instruction_params)
+            except Exception as e:
+                print("Bad instruction:", instruction, instruction_params)
+                raise e
 
     def ADD(
         self,
@@ -110,6 +115,32 @@ class VirtualMachine:
         rhs = self.registers[instruction_params["rhs_register"]]
 
         self.registers[instruction_params["register"]] = lhs + rhs
+
+    def ADDRESS(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `ADDRESS` bytecode.
+
+        This method loads the address of a variable into a register.
+
+        If an array or struct, it will load the address of the first element/
+        attribute to the register.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+        """
+
+        # Value represents the variable to load's relative position in the
+        # source code.
+        variable_to_load: int = instruction_params["value"]
+        variable_address: str = self.variables[variable_to_load]
+
+        destination_register: int = instruction_params["register"]
+        self.registers[destination_register] = variable_address
 
     def ALLOC(
         self,
@@ -263,12 +294,12 @@ class VirtualMachine:
             self.function_call_parameters.append(parameter_value)
 
         # Save the current state (i.e., the `program_counter` and `registers`)
-        self.return_program_counter = self.program_counter
+        self.return_program_counter.append(self.program_counter)
         self.program_counter = called_function_start
 
         # And, finally, save the register to write the call result
         return_value_register: int = instruction_params["register"]
-        self.return_value_register = return_value_register
+        self.return_value_register.append(return_value_register)
 
     def CONSTANT(
         self,
@@ -915,12 +946,16 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        # Save the returned value to the appropriate register
-        register_with_value_to_return: int = instruction_params["register"]
-        self.registers[self.return_value_register] = self.registers[register_with_value_to_return]
+        # Save the returned value to the appropriate register, if any
+        if self.return_value_register:
+            register_with_value_to_return: int = instruction_params["register"]
+            return_value_register: int = self.return_value_register.pop()
+
+            self.registers[return_value_register] = self.registers[register_with_value_to_return]
 
         # Restore the `program_counter`
-        self.program_counter = self.return_program_counter + 1
+        if self.return_program_counter:
+            self.program_counter = self.return_program_counter.pop()
 
     def RSHIFT(
         self,

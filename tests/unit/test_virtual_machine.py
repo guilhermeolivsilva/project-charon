@@ -281,8 +281,8 @@ def test_CALL() -> None:
 
     assert vm.function_call_parameters == [param_2_value, param_1_value]
     assert vm.program_counter == function_first_instruction_index
-    assert vm.return_program_counter == initial_program_counter
-    assert vm.return_value_register == function_return_register
+    assert vm.return_program_counter == [initial_program_counter]
+    assert vm.return_value_register == [function_return_register]
 
 
 def test_CONSTANT() -> None:
@@ -988,8 +988,8 @@ def test_RET() -> None:
     vm.registers = {
         returned_value_register: returned_value
     }
-    vm.return_program_counter = address_to_return_to
-    vm.return_value_register = function_call_result_register
+    vm.return_program_counter = [address_to_return_to]
+    vm.return_value_register = [function_call_result_register]
 
     instruction_params = {
         "type": "int",
@@ -999,7 +999,7 @@ def test_RET() -> None:
     vm.RET(instruction_params=instruction_params)
 
     assert vm.registers[function_call_result_register] == vm.registers[returned_value_register]
-    assert vm.program_counter == address_to_return_to + 1
+    assert vm.program_counter == address_to_return_to
 
 
 def test_RSHIFT() -> None:
