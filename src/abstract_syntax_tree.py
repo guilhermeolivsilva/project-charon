@@ -9,12 +9,12 @@ class AbstractSyntaxTree:
 
     Parameters
     ----------
-    source_code : list
+    source_code : dict[str, dict]
         A list of tuples created by the `Lexer` that contains the
         representation of the source code in (`symbol`, `value`) format.
     """
 
-    def __init__(self, source_code: list) -> None:
+    def __init__(self, source_code: dict[str, dict]) -> None:
         self.node_id_manager: int = 1
         self.source_code: dict[str, dict] = source_code
         self.root: PROG = PROG(id=0)
