@@ -1,6 +1,6 @@
 """Integration test for a simple `while` statement."""
 
-from src.interpreter import create_instance
+from src.runner import create_instance
 
 
 def test_simple_while():

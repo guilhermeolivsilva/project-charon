@@ -1,6 +1,6 @@
 """Integration test that checks if the control flow works correctly."""
 
-from src.interpreter import create_instance
+from src.runner import create_instance
 
 
 SOURCE_CODE = ...

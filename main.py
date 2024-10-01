@@ -1,6 +1,6 @@
 """Implement the main function of the Tiny C environment."""
 
-from src.interpreter import create_instance
+from src.runner import create_instance
 
 
 def main() -> int:

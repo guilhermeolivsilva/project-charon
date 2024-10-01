@@ -1,4 +1,4 @@
-"""Implement the Tiny C interpreter."""
+"""Generate a runner for Charon programs."""
 
 from typing import Union
 
@@ -31,29 +31,19 @@ def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
             The computed certificate of the backend code.
     """
 
-    lexer = Lexer(source_code)
+    lexer = Lexer(source_code=source_code)
     parsed_source = lexer.parse_source_code()
 
     ast = AbstractSyntaxTree(source_code=parsed_source)
     ast.build()
 
-    generator = CodeGenerator()
-    generator.generate_code(node=ast.root)
+    generator = CodeGenerator(root=ast.get_root())
+    program = generator.generate_code()
 
-    vm = VirtualMachine(code_collection=generator.code_collection)
-
-    frontend_certificator = FrontendCertificator(ast=ast)
-    frontend_certificator.certificate()
-
-    backend_certificator = BackendCertificator(
-        code_collection=generator.code_collection
-    )
-    backend_certificator.certificate()
+    vm = VirtualMachine(program=program)
 
     instance = {
-        "vm": vm,
-        "frontend_certificate": frontend_certificator.get_certificate(),
-        "backend_certificate": backend_certificator.get_certificate()
+        "vm": vm
     }
 
     return instance
