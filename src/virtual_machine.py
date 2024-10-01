@@ -42,6 +42,35 @@ class VirtualMachine:
         self.return_program_counter: list[int] = []
         self.return_value_register: list[int] = []
 
+    def __eq__(self, other: "VirtualMachine") -> bool:
+        """
+        Implement the equality comparison between VirtualMachine instances.
+
+        Parameters
+        ----------
+        other : VirtualMachine
+            The right hand side VirtualMachine of the comparison.
+
+        Returns
+        -------
+        is_equal : bool
+            `True` if all the attributes are equal, `False` otherwise.
+        """
+
+        is_equal: bool = (
+            self.program == other.program
+            and self.memory == other.memory
+            and self.memory_pointer == other.memory_pointer
+            and self.program_counter == other.program_counter
+            and self.registers == other.registers
+            and self.variables == other.variables
+            and self.function_call_parameters == other.function_call_parameters
+            and self.return_program_counter == other.return_program_counter
+            and self.return_value_register == other.return_value_register
+        )
+
+        return bool
+
     def __str__(self) -> str:
         """
         Generate a string representation of the VirtualMachine object.
