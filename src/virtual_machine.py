@@ -52,7 +52,36 @@ class VirtualMachine:
             The string representation.
         """
 
-        ...
+        _str: str = ""
+
+        # Internal variables
+        _str += "Internal Variables:"
+        _str += f"\n  Program Counter: {self.program_counter}"
+        _str += f"\n  Memory Pointer: {self.memory_pointer}"
+
+        _str += "\n\n"
+
+        # Program variables: values and addresses
+        variables_info = {
+            variable_relative_position: {
+                "address": variable_value
+            }
+
+            for variable_relative_position, variable_value
+            in self.variables.items()
+        }
+
+        for key, value in variables_info.items():
+            address = value["address"]
+            variables_info[key]["value"] = self.memory[address]
+
+        _str += "Variables:\n  "
+        _str += "\n  ".join(
+            f"Relative position: {relative_position}\n  Data: {data}\n"
+            for relative_position, data in variables_info.items()
+        )
+
+        return _str
 
     def print(self) -> None:
         """Print this VirtualMachine object."""
