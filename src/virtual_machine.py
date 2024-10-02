@@ -112,6 +112,27 @@ class VirtualMachine:
 
         return _str
 
+    def get_memory(self) -> dict[str, Union[int, float, str]]:
+        """
+        Get the `self.memory` dictionary.
+
+        This method only returns valid memory addresses: i.e., addresses that
+        do not contain `None`.
+
+        Returns
+        -------
+        memory : dict[str, Union[int, float, str]]
+            The memory dictionary, filtered out of `None` elements.
+        """
+
+        memory = {
+            address: value
+            for address, value in self.memory.items()
+            if value is not None
+        }
+
+        return memory
+
     def print(self) -> None:
         """Print this VirtualMachine object."""
 
