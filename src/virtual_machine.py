@@ -151,7 +151,10 @@ class VirtualMachine:
             instruction_handler(instruction_params)
 
         # Set the `program_counter` to the beginning of the `main` function
-        self.program_counter = self.program["functions"]["main"]["start"]
+        try:
+            self.program_counter = self.program["functions"]["main"]["start"]
+        except KeyError:
+            raise SyntaxError("No main function found. Execution aborted.")
 
         # Run the actual program
         while True:
