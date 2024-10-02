@@ -476,15 +476,15 @@ class AbstractSyntaxTree:
                 # I'm not proud of this :( but it works :)
                 if self.current_symbol == "ASSIGN":
                     expression_node = self.__handle_assign(expression_node)
-        
+
         return expression_node
     
     def __handle_assign(self, expression_node: Node) -> ASSIGN:
         lhs = expression_node
 
-        # Add context to the `VAR` node so it will generate a `ADDRESS`
-        # instruction instead of `LOAD`
-        if isinstance(lhs, VAR):
+        # Add context to the `VAR` or `ELEMENT_ACCESS` nodes so it will generate
+        # the adequate instruction (load the address rather than the value)
+        if isinstance(lhs, (VAR, ELEMENT_ACCESS)):
             lhs.add_context({"context": "write"})
 
         assign_node_id = self._get_next_id()

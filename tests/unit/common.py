@@ -436,7 +436,7 @@ MACHINE_CODE = {
             "metadata": {"id": 20, "register": 5, "value": 0, "type": "int"},
         },
         {
-            "instruction": "ELEMENT_PTR",
+            "instruction": "ELEMENT_ADDRESS",
             "metadata": {
                 "id": 19,
                 "register": 6,
@@ -587,7 +587,7 @@ MACHINE_CODE = {
             "metadata": {"id": 62, "register": 19, "value": 0, "type": "int"},
         },
         {
-            "instruction": "ELEMENT_PTR",
+            "instruction": "ELEMENT_ADDRESS",
             "metadata": {
                 "id": 61,
                 "register": 20,
@@ -717,7 +717,7 @@ MACHINE_CODE = {
             "metadata": {"id": 93, "register": 38, "value": 5, "type": "int"},
         },
         {
-            "instruction": "ELEMENT_PTR",
+            "instruction": "ELEMENT_ADDRESS",
             "metadata": {
                 "id": 92,
                 "register": 39,

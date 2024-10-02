@@ -382,11 +382,11 @@ def test_DIV() -> None:
     assert vm.registers[result_register] == expected_result
 
 
-def test_ELEMENT_PTR_dynamic() -> None:
+def test_ELEMENT_ADDRESS_dynamic() -> None:
     """
-    Test the `VirtualMachine.ELEMENT_PTR` method.
+    Test the `VirtualMachine.ELEMENT_ADDRESS` method.
 
-    For this test, the `ELEMENT_PTR` will handle a dynamic offset calculation.
+    For this test, the `ELEMENT_ADDRESS` will handle a dynamic offset calculation.
     """
 
     vm = VirtualMachine(program=MACHINE_CODE)
@@ -412,16 +412,16 @@ def test_ELEMENT_PTR_dynamic() -> None:
         "variable_type_size": variable_type_size
     }
 
-    vm.ELEMENT_PTR(instruction_params=instruction_params)
+    vm.ELEMENT_ADDRESS(instruction_params=instruction_params)
 
     assert vm.registers[register_to_write] == expected_value
 
 
-def test_ELEMENT_PTR_static() -> None:
+def test_ELEMENT_ADDRESS_static() -> None:
     """
-    Test the `VirtualMachine.ELEMENT_PTR` method.
+    Test the `VirtualMachine.ELEMENT_ADDRESS` method.
 
-    For this test, the `ELEMENT_PTR` will handle a static offset calculation.
+    For this test, the `ELEMENT_ADDRESS` will handle a static offset calculation.
     """
 
     vm = VirtualMachine(program=MACHINE_CODE)
@@ -443,7 +443,79 @@ def test_ELEMENT_PTR_static() -> None:
         "offset_mode": "static"
     }
 
-    vm.ELEMENT_PTR(instruction_params=instruction_params)
+    vm.ELEMENT_ADDRESS(instruction_params=instruction_params)
+
+    assert vm.registers[register_to_write] == expected_value
+
+
+def test_ELEMENT_VALUE_dynamic() -> None:
+    """
+    Test the `VirtualMachine.ELEMENT_VALUE` method.
+
+    For this test, the `ELEMENT_VALUE` will handle a dynamic offset calculation.
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    element_register = 0
+    register_to_write = 1
+    variable_relative_position = 0
+    variable_address = 15
+    index_variable_value = 3
+    variable_type_size = 4
+    expected_address = hex(
+        variable_address + index_variable_value * variable_type_size
+    )
+    expected_value: int = 23
+
+    vm.variables = {
+        variable_relative_position: hex(variable_address)
+    }
+    vm.memory[expected_address] = expected_value
+    vm.registers[element_register] = index_variable_value
+
+    instruction_params = {
+        "register": register_to_write,
+        "variable_relative_position": variable_relative_position,
+        "offset_mode": "dynamic",
+        "element_register": element_register,
+        "variable_type_size": variable_type_size
+    }
+
+    vm.ELEMENT_VALUE(instruction_params=instruction_params)
+
+    assert vm.registers[register_to_write] == expected_value
+
+
+def test_ELEMENT_VALUE_static() -> None:
+    """
+    Test the `VirtualMachine.ELEMENT_VALUE` method.
+
+    For this test, the `ELEMENT_VALUE` will handle a static offset calculation.
+    """
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    register_to_write = 0
+    variable_relative_position = 0
+    variable_address = 15
+    offset_size = 4
+    expected_address = hex(variable_address + offset_size)
+    expected_value = 23
+
+    vm.variables = {
+        variable_relative_position: hex(variable_address)
+    }
+    vm.memory[expected_address] = expected_value
+
+    instruction_params = {
+        "register": register_to_write,
+        "variable_relative_position": variable_relative_position,
+        "offset_size": offset_size,
+        "offset_mode": "static"
+    }
+
+    vm.ELEMENT_VALUE(instruction_params=instruction_params)
 
     assert vm.registers[register_to_write] == expected_value
 

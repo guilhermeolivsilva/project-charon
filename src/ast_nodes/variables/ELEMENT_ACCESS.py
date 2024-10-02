@@ -7,7 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.basic.CST import CST
-from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
+from src.ast_nodes.certificate_mapping import NODE_SYMBOLS_MAP, TYPE_SYMBOLS_MAP
 from src.utils import builtin_types
 
 
@@ -57,7 +57,7 @@ class ELEMENT_ACCESS(Node):
 
         super().__init__(id)
 
-        self.instruction = "ELEMENT_PTR"
+        self.instruction = "ELEMENT_VALUE"
 
         self.variable: VAR = variable
         self.element: Union[CST, VAR] = element
@@ -146,7 +146,7 @@ class ELEMENT_ACCESS(Node):
         element_register = register - 1
 
         element_access_code = {
-            "instruction": "ELEMENT_PTR",
+            "instruction": self.instruction,
             "metadata": {
                 "id": self.id,
                 "register": register,
@@ -194,6 +194,31 @@ class ELEMENT_ACCESS(Node):
         prime = self.element.certificate(prime)
 
         return super().certificate(prime)
+    
+    def add_context(self, context: dict[str, str]) -> None:
+        """
+        Add context to this `ELEMENT_ACCESS` node.
+
+        The context indicates whether this variable is being readed or written.
+
+        Parameters
+        ----------
+        context : dict[str, str]
+            A dictionary containing the relative position where it was first
+            declared in the original source code, and its type.
+        """
+
+        context: str = context.get("context", "read")
+
+        if context == "read":
+            self.instruction: str = "ELEMENT_VALUE"
+            symbol: str = NODE_SYMBOLS_MAP.get("ELEMENT_VALUE")
+
+        else:
+            self.instruction: str = "ELEMENT_ADDRESS"
+            symbol: str = NODE_SYMBOLS_MAP.get("ELEMENT_ADDRESS")
+
+        self.symbol: str = f"({symbol})^({self.value})"
     
     def _compute_element_type(self) -> str:
         """
