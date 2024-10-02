@@ -9,13 +9,65 @@ from tests.unit.common import MACHINE_CODE
 def test_init() -> None:
     """Test the instantiation of VirtualMachine objects."""
 
-    ...
+    memory_size = 20
+
+    vm = VirtualMachine(program=MACHINE_CODE, memory_size=memory_size)
+
+    assert vm.program == MACHINE_CODE
+    assert vm.memory == {hex(_byte): None for _byte in range(memory_size)}
+    assert vm.memory_size == memory_size
+    assert vm.memory_pointer == 0x0
+    assert vm.program_counter == 0
+    assert vm.registers == {}
+    assert vm.variables == {}
+    assert vm.function_call_parameters == []
+    assert vm.return_program_counter == []
+    assert vm.return_value_register == []
+
+
+def test_get_memory() -> None:
+    """Test the `VirtualMachine.get_memory` method."""
+
+    memory_size = 8
+
+    vm = VirtualMachine(program=MACHINE_CODE, memory_size=memory_size)
+    vm.memory = {
+        '0x0': 1,
+        '0x1': None,
+        '0x2': None,
+        '0x3': None,
+        '0x4': 2,
+        '0x5': None,
+        '0x6': 35,
+        '0x7': None
+    }
+
+    expected_memory = {'0x0': 1, '0x4': 2, '0x6': 35}
+
+    assert vm.get_memory() == expected_memory
 
 
 def test_run() -> None:
     """Test the `VirtualMachine.run` method."""
 
-    ...
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    vm.run()
+
+    expected_memory = {
+        '0x30': 3,
+        '0x34': 1,
+        '0x38': 2,
+        '0x3c': 1,
+        '0x40': 2.0,
+        '0x46': 1,
+        '0x4e': 2.0,
+        '0x52': 123,
+        '0x6a': 1,
+        '0x7e': 1
+    }
+
+    assert vm.get_memory() == expected_memory
 
 
 def test_ADD() -> None:
