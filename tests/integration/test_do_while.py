@@ -3,7 +3,26 @@
 from src.runner import create_instance
 
 
-def test_do_while():
+SOURCE_CODE = """
+int main() {
+    int i;
+    i = 1;
+
+    do {
+        i = i + 10;
+    }
+    while (i < 50); 
+
+    return 0;
+}
+"""
+
+def test_do_while() -> None:
     """Test the `do/while` statement."""
 
-    ...
+    instance = create_instance(source_code=SOURCE_CODE)
+    vm = instance.get("vm")
+    vm.run()
+
+    expected_memory = {'0x0': 51}
+    assert vm.get_memory() == expected_memory
