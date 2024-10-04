@@ -69,7 +69,7 @@ class VirtualMachine:
             and self.return_value_register == other.return_value_register
         )
 
-        return bool
+        return is_equal
 
     def __str__(self) -> str:
         """
@@ -700,6 +700,33 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs * rhs
 
+    def FNEQ(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `FNEQ` bytecode.
+
+        This method handles the "is not equal" comparison between two floating
+        point numbers.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+
+        Notes
+        -----
+        This method writes `1` in the target `register` if the expression
+        evaluates to `True`, and `0` other wise. This is due to the fact that
+        the language does not support boolean literals (`True` and `False`).
+        """
+
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
+
+        self.registers[instruction_params["register"]] = int(lhs != rhs)
+
     def FOR(
         self,
         instruction_params: dict[str, Union[int, float, str]]
@@ -954,6 +981,28 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs < rhs)
 
+    def MOD(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `MOD` bytecode.
+
+        This method handles the module operation between two integers.
+
+        `short`-typed values will also use this method.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+        """
+
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
+
+        self.registers[instruction_params["register"]] = lhs % rhs
+
     def MULT(
         self,
         instruction_params: dict[str, Union[int, float, str]]
@@ -975,6 +1024,34 @@ class VirtualMachine:
         rhs = self.registers[instruction_params["rhs_register"]]
 
         self.registers[instruction_params["register"]] = lhs * rhs
+
+    def NEQ(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `NEQ` bytecode.
+
+        This method handles the "is not equal" comparison between two integers.
+
+        `short`-typed values will also use this method.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+
+        Notes
+        -----
+        This method writes `1` in the target `register` if the expression
+        evaluates to `True`, and `0` other wise. This is due to the fact that
+        the language does not support boolean literals (`True` and `False`).
+        """
+
+        lhs = self.registers[instruction_params["lhs_register"]]
+        rhs = self.registers[instruction_params["rhs_register"]]
+
+        self.registers[instruction_params["register"]] = int(lhs != rhs)
 
     def PARAM(
         self,

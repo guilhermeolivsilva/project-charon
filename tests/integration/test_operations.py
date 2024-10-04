@@ -35,10 +35,10 @@ int main() {{
 BITWISE_SOURCE_CODE = """
 int {function_name}() {{
     short var_1;
-    var_1 = 10;
+    var_1 = 11;
 
     int var_2;
-    var_2 = 2;
+    var_2 = 3;
 
     short result_1;
     result_1 = var_1 {operator} var_2;
@@ -123,7 +123,7 @@ int main() {{
             }
         },
         {
-            "function_name": "equals",
+            "function_name": "equal",
             "operator": "==",
             "expected_memory": {
                 '0x0': 10,
@@ -131,6 +131,17 @@ int main() {{
                 '0x6': 2.3,
                 '0xa': 0,
                 '0xc': 0
+            }
+        },
+        {
+            "function_name": "not_equal",
+            "operator": "!=",
+            "expected_memory": {
+                '0x0': 10,
+                '0x2': 4,
+                '0x6': 2.3,
+                '0xa': 1,
+                '0xc': 1
             }
         },
         {
@@ -180,36 +191,45 @@ def test_operation(test_suite: dict) -> None:
             "function_name": "left_shift",
             "operator": "<<",
             "expected_memory": {
-                '0x0': 10,
-                '0x2': 2,
-                '0x6': 40
+                '0x0': 11,
+                '0x2': 3,
+                '0x6': 88
             }
         },
         {
             "function_name": "right_shift",
             "operator": ">>",
             "expected_memory": {
-                '0x0': 10,
-                '0x2': 2,
-                '0x6': 2
+                '0x0': 11,
+                '0x2': 3,
+                '0x6': 1
             }
         },
         {
             "function_name": "bitwise_and",
             "operator": "&",
             "expected_memory": {
-                '0x0': 10,
-                '0x2': 2,
-                '0x6': 2
+                '0x0': 11,
+                '0x2': 3,
+                '0x6': 3
             }
         },
         {
             "function_name": "bitwise_or",
             "operator": "|",
             "expected_memory": {
-                '0x0': 10,
-                '0x2': 2,
-                '0x6': 10
+                '0x0': 11,
+                '0x2': 3,
+                '0x6': 11
+            }
+        },
+        {
+            "function_name": "module",
+            "operator": "%",
+            "expected_memory": {
+                '0x0': 11,
+                '0x2': 3,
+                '0x6': 2
             }
         },
     ]
