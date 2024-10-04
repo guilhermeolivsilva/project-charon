@@ -520,6 +520,7 @@ class AbstractSyntaxTree:
 
         comparison_operators: dict[str, Operation] = {
             "EQUAL": EQUAL,
+            "DIFF": DIFF,
             "GREATER": GREATER,
             "LESS": LESS
         }
@@ -579,6 +580,7 @@ class AbstractSyntaxTree:
             "SUB": SUB,
             "MULT": MULT,
             "DIV": DIV,
+            "MOD": MOD,
             "LSHIFT": LSHIFT,
             "RSHIFT": RSHIFT,
             "AND": AND,

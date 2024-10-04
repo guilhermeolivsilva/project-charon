@@ -31,6 +31,7 @@ class Lexer:
         "-": "SUB",
         "*": "MULT",
         "/": "DIV",
+        "%": "MOD",
         "<": "LESS",
         ">": "GREATER",
         "&&": "AND",
@@ -39,7 +40,8 @@ class Lexer:
         ">>": "RSHIFT",
         "&": "BITAND",
         "|": "BITOR",
-        "==": "EQUAL"
+        "==": "EQUAL",
+        "!=": "DIFF"
     }
 
     # Map built-in types to pseudonymous

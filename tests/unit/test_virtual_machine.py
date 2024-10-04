@@ -623,6 +623,7 @@ def test_FDIV() -> None:
 
     assert vm.registers[result_register] == expected_result
 
+
 def test_FEQ() -> None:
     """Test the `VirtualMachine.FEQ` method."""
 
@@ -725,6 +726,33 @@ def test_FMULT() -> None:
     vm.MULT(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
+
+
+def test_FNEQ() -> None:
+    """Test the `VirtualMachine.FNEQ` method."""
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23.1, 0
+    rhs, rhs_register = 35.44, 1
+    result_register = 2
+
+    expected_result = int(lhs != rhs)
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_params = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.FNEQ(instruction_params=instruction_params)
+
+    assert vm.registers[result_register] == expected_result
+
 
 def test_FOR() -> None:
     """Test the `VirtualMachine.FOR` method."""
@@ -1017,6 +1045,32 @@ def test_LT() -> None:
     assert vm.registers[result_register] == expected_result
 
 
+def test_MOD() -> None:
+    """Test the `VirtualMachine.MOD` method."""
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23, 0
+    rhs, rhs_register = 35, 1
+    result_register = 2
+
+    expected_result = lhs % rhs
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_params = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.MOD(instruction_params=instruction_params)
+
+    assert vm.registers[result_register] == expected_result
+
+
 def test_MULT() -> None:
     """Test the `VirtualMachine.MULT` method."""
 
@@ -1039,6 +1093,32 @@ def test_MULT() -> None:
     }
 
     vm.MULT(instruction_params=instruction_params)
+
+    assert vm.registers[result_register] == expected_result
+
+
+def test_NEQ() -> None:
+    """Test the `VirtualMachine.NEQ` method."""
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    lhs, lhs_register = 23, 0
+    rhs, rhs_register = 35, 1
+    result_register = 2
+
+    expected_result = int(lhs != rhs)
+
+    vm.registers[lhs_register] = lhs
+    vm.registers[rhs_register] = rhs
+
+    instruction_params = {
+        "id": 15,
+        "register": 2,
+        "lhs_register": lhs_register,
+        "rhs_register": rhs_register
+    }
+
+    vm.NEQ(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
 
