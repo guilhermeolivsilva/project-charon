@@ -1,20 +1,22 @@
-"""Implement the main function of the Tiny C environment."""
+"""Implement the main function of the Project [C]haron environment."""
+
+import sys
 
 from src.runner import create_instance
 
 
 def main() -> int:
     """
-    Input the source code from the stdin and run it in the Virtual Machine.
+    Read the source code from the stdin, compile it and run it in the Virtual Machine.
 
     The variables of the VM are printed after the execution.
     """
 
-    source_code: str = input()
+    source_code: str = sys.stdin.read()
 
     instance = create_instance(source_code)
 
-    vm, frontend_certificate, backend_certificate = instance.values()
+    _, vm, frontend_certificate, backend_certificate = instance.values()
 
     print("Frontend certificate:")
     print(frontend_certificate)
@@ -30,7 +32,7 @@ def main() -> int:
         return 1
 
     vm.run()
-    print(vm.variables)
+    vm.print()
 
     return 0
 

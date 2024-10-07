@@ -43,7 +43,10 @@ def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
     vm = VirtualMachine(program=program)
 
     instance = {
-        "vm": vm
+        "ast": ast,
+        "vm": vm,
+        "frontend_certificate": ...,
+        "backend_certificate": ...,
     }
 
     return instance
