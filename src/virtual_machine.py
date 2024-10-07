@@ -262,6 +262,7 @@ class VirtualMachine:
         if updated_memory_pointer >= self.memory_size:
             err_msg: str = "Not enough memory to allocate a new variable."
             err_msg += f"\nInstruction: {instruction_params}"
+            err_msg += f"\nMemory dump:\n{str(self)}"
 
             raise MemoryError(err_msg)
         
