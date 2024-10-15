@@ -1,5 +1,6 @@
 """Generate a runner for Charon programs."""
 
+from copy import deepcopy
 from typing import Union
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
@@ -34,7 +35,8 @@ def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
     lexer = Lexer(source_code=source_code)
     parsed_source = lexer.parse_source_code()
 
-    ast = AbstractSyntaxTree(source_code=parsed_source)
+    _parsed_source = deepcopy(parsed_source)
+    ast = AbstractSyntaxTree(source_code=_parsed_source)
     ast.build()
 
     generator = CodeGenerator(root=ast.get_root())
@@ -43,6 +45,7 @@ def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
     vm = VirtualMachine(program=program)
 
     instance = {
+        "parsed_source": parsed_source,
         "ast": ast,
         "vm": vm,
         "frontend_certificate": ...,
