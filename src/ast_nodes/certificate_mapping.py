@@ -29,6 +29,7 @@ __CERTIFICATE_SYMBOLS = [
     "DIFF",
     "AND",
     "OR",
+    "NOT",
     "LSHIFT",
     "RSHIFT",
     "BITAND",
