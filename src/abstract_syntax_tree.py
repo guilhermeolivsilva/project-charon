@@ -23,7 +23,6 @@ class AbstractSyntaxTree:
         self.current_symbol: str = None
         self.current_value: dict = {}
         self.current_statement_list: list[tuple[str, dict]] = []
-        self.current_node: Node = None
         self.current_function_type: str = None
 
     def build(self) -> PROG:
@@ -407,36 +406,23 @@ class AbstractSyntaxTree:
 
         return child_expression
 
-    def _parenthesis_expression(self) -> Node:
-        """
-        Parse a `parenthesis_expression`.
-
-        A `parenthesis_expression` is formed by an `expression` embraced by
-        parenthesis -- `( <expression> )`.
-
-        Returns
-        -------
-        parenthesis_expression_node : Node
-            The node representation of the parenthesis expression.
-        """
-
-        if self.current_symbol == "LPAR":
-            self._next_symbol()
-            self.current_node = self._parenthesis_expression()
-        
-        parenthesis_expression_node = self._expression()
-
-        if self.current_symbol == "RPAR":
-            self._next_symbol()
-
-        return parenthesis_expression_node
-
     def _expression(self) -> Operation:
         """
         Evaluate an expression.
 
-        An `expression` is either a `comparison` or the assignment of a
-        `variable` to the result of an `expression` -- `<var> = <expression>`.
+        Expressions are evaluated with the following precedence order:
+
+        1. Array subscripting and structure member access.
+        2. Logical not.
+        3. Multiplication and division.
+        4. Addition and subtraction.
+        5. Bitwise left and right shifts.
+        6. Less/greater than operators.
+        7. Equal/not equal operators.
+        8. Bitwise and.
+        9. Bitwise or.
+        10. Logical and.
+        11. Logical or.
 
         Returns
         -------
@@ -444,10 +430,7 @@ class AbstractSyntaxTree:
             The node representation of the expression.
         """
 
-        if self.current_symbol != "VAR":
-            return self._comparison()
-
-        expression_node = self._comparison()
+        expression_node = self._logical_or()
 
         if isinstance(expression_node, VAR):
             if self.current_symbol == "ASSIGN":
@@ -478,7 +461,7 @@ class AbstractSyntaxTree:
                     expression_node = self.__handle_assign(expression_node)
 
         return expression_node
-    
+
     def __handle_assign(self, expression_node: Node) -> ASSIGN:
         lhs = expression_node
 
@@ -500,119 +483,329 @@ class AbstractSyntaxTree:
 
         return expression_node
 
+    def _logical_or(self) -> Operation:
+        """
+        Parse a `or` logical operation.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        expression = self._logical_and()
+
+        while self.current_symbol == "OR":
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            right_expression = self._logical_and()
+            expression = OR(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
+            )
+
+        return expression
+
+    def _logical_and(self) -> Operation:
+        """
+        Parse a `and` logical operation.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        expression = self._bitwise_or()
+
+        while self.current_symbol == "AND":
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            right_expression = self._bitwise_or()
+            expression = AND(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
+            )
+
+        return expression
+
+    def _bitwise_or(self) -> Operation:
+        """
+        Parse a bitwise `or` operation.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        expression = self._bitwise_and()
+
+        while self.current_symbol == "BITOR":
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            right_expression = self._bitwise_and()
+            expression = BITOR(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
+            )
+
+        return expression
+
+    def _bitwise_and(self) -> Operation:
+        """
+        Parse a bitwise `and` operation.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        expression = self._equality()
+
+        while self.current_symbol == "BITAND":
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            right_expression = self._equality()
+            expression = BITAND(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
+            )
+
+        return expression
+
+    def _equality(self) -> Operation:
+        """
+        Parse a `equal`/`not equal` comparison.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        expression = self._comparison()
+
+        _equality_nodes: dict[str, Operation] = {
+            "EQUAL": EQUAL,
+            "DIFF": DIFF
+        }
+
+        while self.current_symbol in _equality_nodes.keys():
+            _equality_class = _equality_nodes[self.current_symbol]
+
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            right_expression = self._comparison()
+
+            expression = _equality_class(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
+            )
+
+        return expression
+
     def _comparison(self) -> Operation:
         """
-        Evaluate a comparison.
-
-        A `comparison` is either a `binary_operation` or the comparison between
-        two sums -- `<binary_operation> ( < | > | == ) <binary_operation>`.
+        Parse a `less than`/`greater than` comparison.
 
         Returns
         -------
-        comparison_node : Operation
-            The node representation of the comparison.
+        expression : Operation
+            The node representation of the operation.
         """
 
-        comparison_node = self._binary_operation()
+        expression = self._bit_shift()
 
-        while self.current_symbol == "RPAR":
-            self._next_symbol()
-
-        comparison_operators: dict[str, Operation] = {
-            "EQUAL": EQUAL,
-            "DIFF": DIFF,
-            "GREATER": GREATER,
-            "LESS": LESS
+        _comparison_nodes: dict[str, Operation] = {
+            "LESS": LESS,
+            "GREATER": GREATER
         }
 
-        if self.current_symbol in comparison_operators:
-            _comparison_class = comparison_operators[self.current_symbol]
-            comparison_node_id = self._get_next_id()
-
-            left_operand = comparison_node
+        while self.current_symbol in _comparison_nodes.keys():
+            _comparison_class = _comparison_nodes[self.current_symbol]
 
             self._next_symbol()
+            expression_id = self._get_next_id()
 
-            right_operand = self._binary_operation()
+            right_expression = self._bit_shift()
 
-            comparison_node = _comparison_class(
-                id=comparison_node_id,
-                lhs=left_operand,
-                rhs=right_operand
+            expression = _comparison_class(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
             )
 
-        return comparison_node
+        return expression
 
-    def _binary_operation(self) -> Operation:
+    def _bit_shift(self) -> Operation:
         """
-        Evaluate a binary operation.
+        Parse a left/right bit shift.
 
         Returns
         -------
-        binary_operation_node : Operation
-            The node representation of the binary operation.
-
-        Notes
-        -----
-        The currently supported binary operations are:
-            - addition (+)
-            - subtraction (-)
-            - multiplication (*)
-            - division (/)
-            - left bitshift (<<)
-            - right bitshift (>>)
-            - logical and (&&)
-            - logical or (||)
-            - bitwise and (&)
-            - bitwise or (|)
+        expression : Operation
+            The node representation of the operation.
         """
 
-        if self.current_node:
-            term_node = self.current_node
-            self.current_node = None
-        else:
-            term_node = self._term()
+        expression = self._addition()
 
-        binary_operation_node = term_node
+        _bit_shift_nodes: dict[str, Operation] = {
+            "LSHIFT": LSHIFT,
+            "RSHIFT": RSHIFT
+        }
 
-        binary_operations: dict[str, Operation] = {
+        while self.current_symbol in _bit_shift_nodes.keys():
+            _bit_shift_class = _bit_shift_nodes[self.current_symbol]
+
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            right_expression = self._addition()
+
+            expression = _bit_shift_class(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
+            )
+
+        return expression
+
+    def _addition(self) -> Operation:
+        """
+        Parse an addition or subtraction operation.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        expression = self._multiplication()
+
+        _addition_nodes: dict[str, Operation] = {
             "ADD": ADD,
-            "SUB": SUB,
+            "SUB": SUB
+        }
+
+        while self.current_symbol in _addition_nodes.keys():
+            _addition_class = _addition_nodes[self.current_symbol]
+
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            right_expression = self._multiplication()
+
+            expression = _addition_class(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
+            )
+
+        return expression
+
+    def _multiplication(self) -> Operation:
+        """
+        Parse a multiplication or division operation.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        expression = self._unary_operation()
+
+        _multiplication_nodes: dict[str, Operation] = {
             "MULT": MULT,
             "DIV": DIV,
-            "MOD": MOD,
-            "LSHIFT": LSHIFT,
-            "RSHIFT": RSHIFT,
-            "AND": AND,
-            "OR": OR,
-            "BITAND": BITAND,
-            "BITOR": BITOR
+            "MOD": MOD
         }
 
-        while self.current_symbol in binary_operations:
-            left_operand = binary_operation_node
-
-            binary_operation_node_class = binary_operations[self.current_symbol]
-            binary_operation_node_id = self._get_next_id()
+        while self.current_symbol in _multiplication_nodes.keys():
+            _multiplication_class = _multiplication_nodes[self.current_symbol]
 
             self._next_symbol()
+            expression_id = self._get_next_id()
 
-            right_operand = self._term()
+            right_expression = self._unary_operation()
 
-            binary_operation_node = binary_operation_node_class(
-                id=binary_operation_node_id,
-                lhs=left_operand,
-                rhs=right_operand
+            expression = _multiplication_class(
+                id=expression_id,
+                lhs=expression,
+                rhs=right_expression
             )
 
-        return binary_operation_node
+        return expression
+
+    def _unary_operation(self) -> Operation:
+        """
+        Parse an unary operation.
+
+        Returns
+        -------
+        expression : Operation
+            The node representation of the operation.
+        """
+
+        if self.current_symbol == "NOT":
+            self._next_symbol()
+            expression_id = self._get_next_id()
+
+            expression = NOT(
+                id=expression_id,
+                expression=expression
+            )
+
+        else:
+            expression = self._parenthesis_expression()
+
+        return expression
+
+    def _parenthesis_expression(self) -> Node:
+        """
+        Parse a `parenthesis_expression`.
+
+        A `parenthesis_expression` is formed by an `expression` embraced by
+        parenthesis -- `( <expression> )`.
+
+        Returns
+        -------
+        expression : Node
+            The node representation of the expression.
+        """
+
+        if self.current_symbol == "LPAR":
+            self._next_symbol()
+
+            expression = self._expression()
+
+            if self.current_symbol == "RPAR":
+                self._next_symbol()
+                return expression
+            else:
+                _err_msg = "Missing closing right parenthesis in expression"
+                raise SyntaxError(_err_msg)
+        else:
+            return self._term()
 
     def _term(self) -> Node:
         """
         Evaluate a term.
 
         A term is either a variable -- `<var>` --, a constant -- `<cst>` --, or
-        a parenthesis expression.
+        a function call.
 
         Returns
         -------
@@ -626,18 +819,14 @@ class AbstractSyntaxTree:
             "VAR": VAR
         }
 
-        if self.current_symbol in terms_map:
-            term_handler = terms_map.get(self.current_symbol)
+        term_handler = terms_map.get(self.current_symbol)
 
-            term_node_id = self._get_next_id()
-            term_node = term_handler(
-                term_node_id,
-                self.current_value
-            )
+        term_node_id = self._get_next_id()
+        term_node = term_handler(
+            term_node_id,
+            self.current_value
+        )
 
-        else:
-            return self._parenthesis_expression()
-        
         self._next_symbol()
 
         return term_node
