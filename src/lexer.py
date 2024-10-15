@@ -41,7 +41,8 @@ class Lexer:
         "&": "BITAND",
         "|": "BITOR",
         "==": "EQUAL",
-        "!=": "DIFF"
+        "!=": "DIFF",
+        "!": "NOT"
     }
 
     # Map built-in types to pseudonymous
