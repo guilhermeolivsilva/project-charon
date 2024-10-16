@@ -765,7 +765,7 @@ class AbstractSyntaxTree:
 
             expression = NOT(
                 id=expression_id,
-                expression=expression
+                expression=self._unary_operation()
             )
 
         else:

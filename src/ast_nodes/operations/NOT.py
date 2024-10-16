@@ -5,11 +5,10 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
+from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 
-from src.ast_nodes.operations.operation import Operation
 
-
-class NOT(Operation):
+class NOT(Node):
     """
     Implement the representation of a negation (logical not) for the AST.
 
@@ -17,15 +16,18 @@ class NOT(Operation):
     ----------
     id : int
         The ID of the Node.
-    lhs : Node
+    expression : Node
         The Node representation of the term to be negated.
     """
 
     @override
-    def __init__(self, id: int, lhs: Node, **kwargs) -> None:
-        super().__init__(id, lhs, **kwargs)
+    def __init__(self, id: int, expression: Node, **kwargs) -> None:
+        super().__init__(id)
 
-        self.instruction: str = self._compute_instruction("NOT")
+        self.expression: Node = expression
+        self.symbol: str = self._compute_symbol()
+        self.instruction: str = "NOT"
+        self.type: str = "int"
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -33,7 +35,7 @@ class NOT(Operation):
         Get the contents of `certificate_label`.
 
         For `NOT` nodes, obtain the certificates, recursively, from the
-        `lhs` subtree first, and then from the `NOT` node itself.
+        `expression` subtree first, and then from the `NOT` node itself.
 
         Returns
         -------
@@ -42,7 +44,7 @@ class NOT(Operation):
         """
 
         return [
-            *self.lhs.get_certificate_label(),
+            *self.expression.get_certificate_label(),
             self.certificate_label
         ]
 
@@ -62,7 +64,7 @@ class NOT(Operation):
 
         super().print(indent)
 
-        self.lhs.print(indent + 1)
+        self.expression.print(indent + 1)
 
     @override
     def generate_code(self, register: int) -> tuple[
@@ -92,17 +94,17 @@ class NOT(Operation):
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []
 
-        register, lhs_code = self.lhs.generate_code(register=register)
-        code_metadata.extend(lhs_code)
+        register, expression_code = self.expression.generate_code(register=register)
+        code_metadata.extend(expression_code)
 
-        lhs_register = register - 1
+        expression_register = register - 1
 
         this_code = {
             "instruction": self.instruction,
             "metadata": {
                 "id": self.id,
                 "register": register,
-                "lhs_register": lhs_register
+                "expression_register": expression_register
             }
         }
         register += 1
@@ -110,3 +112,21 @@ class NOT(Operation):
         code_metadata.append(this_code)
 
         return register, code_metadata
+
+    def _compute_symbol(self) -> str:
+        """
+        Compute the symbol of this `Operation`.
+
+        The symbol is composed by the basic symbol of the operation itself,
+        plus the types of its left and right hand sides.
+
+        Returns
+        -------
+        : str
+            The symbol computed with left and right hand sides types.
+        """
+
+        expression_type = self.expression.get_type()
+        expression_type_symbol = TYPE_SYMBOLS_MAP.get(expression_type).get("type_symbol")
+
+        return f"{self.symbol}^{expression_type_symbol}"
