@@ -1054,6 +1054,33 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs != rhs)
 
+    def NOT(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `NOT` bytecode.
+
+        This method handles the "logical not" of an integer.
+
+        `short`-typed values will also use this method.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+
+        Notes
+        -----
+        This method writes `1` in the target `register` if the expression
+        evaluates to `False`, and `0` other wise. This is due to the fact that
+        the language does not support boolean literals (`True` and `False`).
+        """
+
+        expression = self.registers[instruction_params["expression_register"]]
+
+        self.registers[instruction_params["register"]] = int(not expression)
+
     def PARAM(
         self,
         instruction_params: dict[str, Union[int, float, str]]
