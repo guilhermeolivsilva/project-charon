@@ -26,8 +26,8 @@ class CST(Node):
 
     @override
     def __init__(self, id: int, constant_metadata: dict[str, str]) -> None:
-        value = constant_metadata.get("value")
-        type = constant_metadata.get("type")
+        value: int = constant_metadata.get("value")
+        type: str = constant_metadata.get("type")
 
         if type not in TYPE_SYMBOLS_MAP:
             raise TypeError(f"Constant has invalid type '{type}'")
@@ -40,4 +40,7 @@ class CST(Node):
 
         self.type = type
         self.instruction: str = "CONSTANT"
-        self.symbol: str = f"({self.symbol})^({self.value})^({_type_symbol})"
+
+        # We apply this linear transformation so we get rid of zeroes
+        value_exponent = value + 1 if value >= 0 else value
+        self.symbol: str = f"({self.symbol})^({value_exponent})^({_type_symbol})"
