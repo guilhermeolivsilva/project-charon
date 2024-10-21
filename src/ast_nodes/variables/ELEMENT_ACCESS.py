@@ -58,6 +58,7 @@ class ELEMENT_ACCESS(Node):
         super().__init__(id)
 
         self.instruction = "ELEMENT_VALUE"
+        self.symbol: str = NODE_SYMBOLS_MAP.get("ELEMENT_VALUE")
 
         self.variable: VAR = variable
         self.element: Union[CST, VAR] = element
@@ -208,17 +209,18 @@ class ELEMENT_ACCESS(Node):
             declared in the original source code, and its type.
         """
 
-        context: str = context.get("context", "read")
+        _context: str = context.get("context", "read")
+        symbol: str = ""
 
-        if context == "read":
+        if _context == "read":
             self.instruction: str = "ELEMENT_VALUE"
-            symbol: str = NODE_SYMBOLS_MAP.get("ELEMENT_VALUE")
+            symbol = NODE_SYMBOLS_MAP.get("ELEMENT_VALUE")
 
         else:
             self.instruction: str = "ELEMENT_ADDRESS"
-            symbol: str = NODE_SYMBOLS_MAP.get("ELEMENT_ADDRESS")
+            symbol = NODE_SYMBOLS_MAP.get("ELEMENT_ADDRESS")
 
-        self.symbol: str = f"({symbol})^({self.value})"
+        self.symbol = f"({symbol})"
     
     def _compute_element_type(self) -> str:
         """
