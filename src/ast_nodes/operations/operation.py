@@ -248,7 +248,7 @@ class Operation(Node):
         rhs_type = self.rhs.get_type()
         rhs_type_symbol = TYPE_SYMBOLS_MAP.get(rhs_type).get("type_symbol")
 
-        return f"{self.symbol}^{lhs_type_symbol}^{rhs_type_symbol}"
+        return f"({self.symbol})^({lhs_type_symbol})^({rhs_type_symbol})"
     
     def _compute_instruction(self, base_instruction: str) -> str:
         """
