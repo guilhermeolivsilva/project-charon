@@ -35,7 +35,7 @@ class VAR_DEF(Node):
         self.symbol: str = (
             f"({self.symbol})^"
             + f"({relative_position})^"
-            + "({type_certificate})"
+            + f"({type}_certificate)"
         )
 
         _length = self.variable_metadata.get("length")
