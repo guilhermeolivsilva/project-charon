@@ -78,8 +78,6 @@ class STRUCT_DEF(Node):
             A prime number that comes after the given `prime`.
         """
 
-        self.certificate_label = self.symbol
-
         return prime
 
     @override
