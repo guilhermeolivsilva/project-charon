@@ -53,7 +53,11 @@ class PROG(Node):
         certificate_label: list[str] = []
 
         for child in self.children:
-            certificate_label.extend(child.get_certificate_label())
+            certificate_label.extend([
+                label
+                for label in child.get_certificate_label()
+                if label is not None
+            ])
 
         certificate_label.extend(super().get_certificate_label())
 
