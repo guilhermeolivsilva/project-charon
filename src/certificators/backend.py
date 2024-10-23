@@ -3,11 +3,11 @@
 from string import ascii_lowercase
 from typing import Union
 
-from src.certificators.interface import Interface
+from src.certificators.abstract_certificator import AbstractCertificator
 from src.utils import next_prime
 
 
-class BackendCertificator(Interface):
+class BackendCertificator(AbstractCertificator):
     """
     Certificate the backend representation of some program.
 

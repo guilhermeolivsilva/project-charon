@@ -3,16 +3,15 @@
 from abc import abstractmethod
 
 
-class Interface:
-    """Interface for certificator classes."""
+class AbstractCertificator:
+    """Base class for certificator classes."""
 
     def __init__(self, **kwargs) -> None:
         self.computed_certificate: list[str] = []
 
     @abstractmethod
-    def certificate(self, **kwargs) -> None:
+    def certificate(self, **kwargs) -> list[str]:
         pass
 
-    @abstractmethod
     def get_certificate(self) -> list[str]:
-        pass
+        return self.computed_certificate
