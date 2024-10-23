@@ -40,7 +40,7 @@ class VAR_DEF(Node):
 
         _length = self.variable_metadata.get("length")
         if _length:
-            self.symbol += f"^{_length}"
+            self.symbol += f"^({_length})"
 
     @override
     def print(self, indent: int = 0) -> None:
