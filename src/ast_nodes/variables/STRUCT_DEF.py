@@ -4,6 +4,7 @@ from typing import Union
 
 from typing_extensions import override
 
+from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 from src.ast_nodes.node import Node
 
 
@@ -26,14 +27,9 @@ class STRUCT_DEF(Node):
 
         super().__init__(id, relative_position, type=_type)
 
-        _attribute_types: str = "^".join(
-            f'({attribute.get("type_pseudonymous")})'
-            for attribute in struct_metadata.get("attributes").values()
-        )
-
         self.active: bool = struct_metadata.get("active")
         self.struct_metadata = struct_metadata
-        self.symbol: str = f"({self.symbol})^{_attribute_types}"
+        self.symbol: str = self._compute_symbol()
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -66,6 +62,7 @@ class STRUCT_DEF(Node):
         This method does not manipulate the `prime` parameter, as the notion of
         relative position of this `STRUCT_DEF` in the code is already obtained
         from the `struct_metadata`. Thus, it returns the same given `prime`.
+
         Parameters
         ----------
         prime : int
@@ -154,3 +151,23 @@ class STRUCT_DEF(Node):
         """
 
         return self.active
+    
+    def _compute_symbol(self) -> str:
+        """
+        Compute the symbol of this struct.
+
+        The symbol is a string, created by joining subsequent exponentiations
+        ("^") of each of the attributes' type.
+
+        Returns
+        -------
+        attributes_symbol : str
+            The symbol of this struct.
+        """
+
+        attributes_symbol: str = "^".join(
+            f"({TYPE_SYMBOLS_MAP[attribute['type']]['type_symbol']})"
+            for attribute in self.struct_metadata["attributes"].values()
+        )
+
+        return attributes_symbol
