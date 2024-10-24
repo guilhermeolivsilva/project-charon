@@ -74,6 +74,7 @@ TOKENIZED_SOURCE_CODE = {
         "structs": {
             "my_struct": {
                 "relative_position": 1,
+                "prime": 2,
                 "attributes": {
                     "x": {"type": "int", "attr_pointer": 0},
                     "y": {"type": "float", "attr_pointer": 1},
@@ -82,6 +83,7 @@ TOKENIZED_SOURCE_CODE = {
             },
             "test_struct": {
                 "relative_position": 2,
+                "prime": 3,
                 "attributes": {
                     "abcd": {"type": "int", "attr_pointer": 0},
                     "xyz": {"type": "int", "attr_pointer": 1},
@@ -90,38 +92,50 @@ TOKENIZED_SOURCE_CODE = {
             },
         },
         "variables": {
-            "a": {"type": "int", "length": 10, "relative_position": 1},
-            "global_var": {"type": "my_struct", "relative_position": 2},
+            "a": {"type": "int", "length": 10, "relative_position": 1, "prime": 2},
+            "global_var": {"type": "my_struct", "relative_position": 2, "prime": 3},
         },
     },
     "functions": {
         "function_that_returns_struct": {
             "relative_position": 1,
+            "prime": 2,
             "type": "my_struct",
             "arguments": {
-                "xyz": {"type": "int", "relative_position": 3},
-                "aaa": {"type": "int", "relative_position": 4},
+                "xyz": {"type": "int", "relative_position": 3, "prime": 5},
+                "aaa": {"type": "int", "relative_position": 4, "prime": 7},
             },
             "statements": [
                 ("LCBRA", {}),
                 (
                     "VAR_DEF",
-                    {"name": "internal_guy", "relative_position": 5, "type": "int"},
+                    {
+                        "name": "internal_guy",
+                        "relative_position": 5,
+                        "prime": 11,
+                        "type": "int",
+                    },
                 ),
                 ("SEMI", {}),
                 (
                     "VAR",
-                    {"name": "internal_guy", "relative_position": 5, "type": "int"},
+                    {
+                        "name": "internal_guy",
+                        "relative_position": 5,
+                        "prime": 11,
+                        "type": "int",
+                    },
                 ),
                 ("ASSIGN", {}),
-                ("VAR", {"type": "int", "relative_position": 3}),
+                ("VAR", {"type": "int", "relative_position": 3, "prime": 5}),
                 ("ADD", {}),
-                ("VAR", {"type": "int", "relative_position": 4}),
+                ("VAR", {"type": "int", "relative_position": 4, "prime": 7}),
                 ("SEMI", {}),
                 (
                     "VAR",
                     {
                         "relative_position": 2,
+                        "prime": 3,
                         "attributes": {
                             "x": {"type": "int", "attr_pointer": 0},
                             "y": {"type": "float", "attr_pointer": 1},
@@ -135,59 +149,100 @@ TOKENIZED_SOURCE_CODE = {
                 ("ASSIGN", {}),
                 (
                     "VAR",
-                    {"name": "internal_guy", "relative_position": 5, "type": "int"},
+                    {
+                        "name": "internal_guy",
+                        "relative_position": 5,
+                        "prime": 11,
+                        "type": "int",
+                    },
                 ),
                 ("SEMI", {}),
                 ("RET_SYM", {}),
-                ("VAR", {"type": "my_struct", "relative_position": 2}),
+                ("VAR", {"type": "my_struct", "relative_position": 2, "prime": 3}),
                 ("SEMI", {}),
                 ("RCBRA", {}),
             ],
         },
         "some_simple_function": {
             "relative_position": 2,
+            "prime": 3,
             "type": "int",
             "arguments": {
-                "param_1": {"type": "float", "relative_position": 6},
-                "param_2": {"type": "int", "relative_position": 7},
+                "param_1": {"type": "float", "relative_position": 6, "prime": 13},
+                "param_2": {"type": "int", "relative_position": 7, "prime": 17},
             },
             "statements": [
                 ("LCBRA", {}),
                 ("RET_SYM", {}),
-                ("VAR", {"type": "float", "relative_position": 6}),
+                ("VAR", {"type": "float", "relative_position": 6, "prime": 13}),
                 ("DIV", {}),
-                ("VAR", {"type": "int", "relative_position": 7}),
+                ("VAR", {"type": "int", "relative_position": 7, "prime": 17}),
                 ("SEMI", {}),
                 ("RCBRA", {}),
             ],
         },
         "abc": {
             "relative_position": 3,
+            "prime": 5,
             "type": "int",
             "arguments": {
-                "asda": {"type": "int", "relative_position": 8},
-                "abcdef": {"type": "int", "relative_position": 9},
+                "asda": {"type": "int", "relative_position": 8, "prime": 19},
+                "abcdef": {"type": "int", "relative_position": 9, "prime": 23},
             },
             "statements": [
                 ("LCBRA", {}),
-                ("VAR_DEF", {"name": "bla", "relative_position": 10, "type": "int"}),
+                (
+                    "VAR_DEF",
+                    {
+                        "name": "bla",
+                        "relative_position": 10,
+                        "prime": 29,
+                        "type": "int",
+                    },
+                ),
                 ("SEMI", {}),
-                ("VAR", {"name": "bla", "relative_position": 10, "type": "int"}),
+                (
+                    "VAR",
+                    {
+                        "name": "bla",
+                        "relative_position": 10,
+                        "prime": 29,
+                        "type": "int",
+                    },
+                ),
                 ("ASSIGN", {}),
                 ("CST", {"type": "int", "value": 1}),
                 ("SEMI", {}),
                 (
                     "VAR_DEF",
-                    {"name": "blabla", "relative_position": 11, "type": "float"},
+                    {
+                        "name": "blabla",
+                        "relative_position": 11,
+                        "prime": 31,
+                        "type": "float",
+                    },
                 ),
                 ("SEMI", {}),
-                ("VAR", {"name": "blabla", "relative_position": 11, "type": "float"}),
+                (
+                    "VAR",
+                    {
+                        "name": "blabla",
+                        "relative_position": 11,
+                        "prime": 31,
+                        "type": "float",
+                    },
+                ),
                 ("ASSIGN", {}),
                 ("CST", {"type": "float", "value": 2.0}),
                 ("SEMI", {}),
                 (
                     "VAR_DEF",
-                    {"name": "xaxaxa", "relative_position": 12, "type": "short"},
+                    {
+                        "name": "xaxaxa",
+                        "relative_position": 12,
+                        "prime": 37,
+                        "type": "short",
+                    },
                 ),
                 ("SEMI", {}),
                 (
@@ -195,6 +250,7 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "internal_struct_var",
                         "relative_position": 13,
+                        "prime": 41,
                         "type": "my_struct",
                     },
                 ),
@@ -203,6 +259,7 @@ TOKENIZED_SOURCE_CODE = {
                     "VAR",
                     {
                         "relative_position": 13,
+                        "prime": 41,
                         "attributes": {
                             "x": {"type": "int", "attr_pointer": 0},
                             "y": {"type": "float", "attr_pointer": 1},
@@ -217,20 +274,38 @@ TOKENIZED_SOURCE_CODE = {
                 ("ASSIGN", {}),
                 ("CST", {"type": "int", "value": 1}),
                 ("SEMI", {}),
-                ("VAR", {"name": "bla", "relative_position": 10, "type": "int"}),
+                (
+                    "VAR",
+                    {
+                        "name": "bla",
+                        "relative_position": 10,
+                        "prime": 29,
+                        "type": "int",
+                    },
+                ),
                 ("ASSIGN", {}),
-                ("VAR", {"name": "bla", "relative_position": 10, "type": "int"}),
+                (
+                    "VAR",
+                    {
+                        "name": "bla",
+                        "relative_position": 10,
+                        "prime": 29,
+                        "type": "int",
+                    },
+                ),
                 ("ADD", {}),
                 (
                     "FUNC_CALL",
                     {
                         "function": 2,
+                        "prime": 3,
                         "return_type": "int",
                         "parameters": [
                             {
                                 "variable": True,
                                 "name": "blabla",
                                 "relative_position": 11,
+                                "prime": 31,
                                 "type": "float",
                             },
                             {"variable": False, "type": "int", "value": 123},
@@ -239,27 +314,51 @@ TOKENIZED_SOURCE_CODE = {
                 ),
                 ("SEMI", {}),
                 ("RET_SYM", {}),
-                ("VAR", {"name": "blabla", "relative_position": 11, "type": "float"}),
+                (
+                    "VAR",
+                    {
+                        "name": "blabla",
+                        "relative_position": 11,
+                        "prime": 31,
+                        "type": "float",
+                    },
+                ),
                 ("ADD", {}),
-                ("VAR", {"name": "bla", "relative_position": 10, "type": "int"}),
+                (
+                    "VAR",
+                    {
+                        "name": "bla",
+                        "relative_position": 10,
+                        "prime": 29,
+                        "type": "int",
+                    },
+                ),
                 ("SEMI", {}),
                 ("RCBRA", {}),
             ],
         },
         "main": {
             "relative_position": 4,
+            "prime": 7,
             "type": "int",
             "arguments": {},
             "statements": [
                 ("LCBRA", {}),
-                ("VAR_DEF", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR_DEF",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("SEMI", {}),
-                ("VAR", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("ASSIGN", {}),
                 (
                     "FUNC_CALL",
                     {
                         "function": 3,
+                        "prime": 5,
                         "return_type": "int",
                         "parameters": [
                             {"variable": False, "type": "int", "value": 1},
@@ -273,6 +372,7 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "array",
                         "relative_position": 15,
+                        "prime": 47,
                         "type": "int",
                         "length": 10,
                     },
@@ -283,6 +383,7 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "array",
                         "relative_position": 15,
+                        "prime": 47,
                         "type": "int",
                         "length": 10,
                     },
@@ -293,14 +394,20 @@ TOKENIZED_SOURCE_CODE = {
                 ("ASSIGN", {}),
                 ("CST", {"type": "int", "value": 1}),
                 ("SEMI", {}),
-                ("VAR_DEF", {"name": "y", "relative_position": 16, "type": "int"}),
+                (
+                    "VAR_DEF",
+                    {"name": "y", "relative_position": 16, "prime": 53, "type": "int"},
+                ),
                 ("SEMI", {}),
                 ("IF_SYM", {}),
                 ("LPAR", {}),
                 ("LPAR", {}),
                 ("LPAR", {}),
                 ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("LSHIFT", {}),
                 ("CST", {"type": "int", "value": 4}),
                 ("RPAR", {}),
@@ -309,31 +416,49 @@ TOKENIZED_SOURCE_CODE = {
                 ("RPAR", {}),
                 ("OR", {}),
                 ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("GREATER", {}),
                 ("CST", {"type": "int", "value": 1}),
                 ("RPAR", {}),
                 ("RPAR", {}),
                 ("AND", {}),
                 ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("LESS", {}),
                 ("CST", {"type": "int", "value": 10}),
                 ("RPAR", {}),
                 ("RPAR", {}),
                 ("LCBRA", {}),
-                ("VAR", {"name": "y", "relative_position": 16, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "y", "relative_position": 16, "prime": 53, "type": "int"},
+                ),
                 ("ASSIGN", {}),
-                ("VAR", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("BITAND", {}),
                 ("CST", {"type": "int", "value": 1}),
                 ("SEMI", {}),
                 ("RCBRA", {}),
                 ("ELSE_SYM", {}),
                 ("LCBRA", {}),
-                ("VAR", {"name": "y", "relative_position": 16, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "y", "relative_position": 16, "prime": 53, "type": "int"},
+                ),
                 ("ASSIGN", {}),
-                ("VAR", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("BITOR", {}),
                 ("CST", {"type": "int", "value": 1}),
                 ("SEMI", {}),
@@ -341,9 +466,15 @@ TOKENIZED_SOURCE_CODE = {
                 ("RET_SYM", {}),
                 ("LPAR", {}),
                 ("LPAR", {}),
-                ("VAR", {"name": "x", "relative_position": 14, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "x", "relative_position": 14, "prime": 43, "type": "int"},
+                ),
                 ("MULT", {}),
-                ("VAR", {"name": "y", "relative_position": 16, "type": "int"}),
+                (
+                    "VAR",
+                    {"name": "y", "relative_position": 16, "prime": 53, "type": "int"},
+                ),
                 ("RPAR", {}),
                 ("DIV", {}),
                 ("CST", {"type": "int", "value": 2}),

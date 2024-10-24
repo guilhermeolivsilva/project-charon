@@ -4,6 +4,7 @@ from copy import deepcopy
 from typing import Union
 
 from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
+from src.utils import next_prime, primes_list
 
 
 class Lexer:
@@ -82,6 +83,10 @@ class Lexer:
 
         self.variable_count: int = 0
 
+        # Start at the first prime, 2
+        self.struct_prime: int = 2
+        self.variable_prime: int = 2
+
     def parse_source_code(self) -> dict[str, dict]:
         """
         Parse the scopes and functions from the given source code.
@@ -143,12 +148,16 @@ class Lexer:
         # Register the functions and its definitions' relative position
         self.functions = {
             func_name: {
-                "relative_position": func_relative_position
+                "relative_position": func_relative_position,
+                "prime": func_prime
             }
-            for func_name, func_relative_position
+            for func_name, (func_relative_position, func_prime)
             in zip(
                 functions_scopes.keys(),
-                range(1, len(functions_scopes) + 1)
+                zip(
+                    range(1, len(functions_scopes) + 1),
+                    primes_list(len(functions_scopes))
+                )
             )
         }
 
@@ -276,9 +285,12 @@ class Lexer:
                     )
 
                     struct_relative_position = len(self.globals["structs"]) + 1
+                    struct_prime = self.struct_prime
+                    self.struct_prime = next_prime(struct_prime)
 
                     self.globals["structs"][struct_name] = {
                         "relative_position": struct_relative_position,
+                        "prime": struct_prime,
                         "attributes": struct_attributes,
                         "active": False
                     }
@@ -301,9 +313,12 @@ class Lexer:
                         variable_name, variable_metadata = definition_metadata
 
                         var_relative_position = self.variable_count + 1
+                        var_prime = self.variable_prime
                         variable_metadata["relative_position"] = var_relative_position
+                        variable_metadata["prime"] = var_prime
                         self.globals["variables"][variable_name] = variable_metadata
 
+                        self.variable_prime = next_prime(self.variable_prime)
                         self.variable_count += 1
 
     def _parse_function(
@@ -412,11 +427,15 @@ class Lexer:
                     existing_variables.append(variable_name)
 
                     var_relative_position = self.variable_count + 1
+                    var_prime = self.variable_prime
+
                     self.variable_count += 1
+                    self.variable_prime = next_prime(self.variable_prime)
 
                     variable_metadata = {
                         "name": variable_name,
                         "relative_position": var_relative_position,
+                        "prime": var_prime,
                         **variable_type
                     }
 
@@ -433,8 +452,10 @@ class Lexer:
                     )
 
                     function_relative_position = (
-                        self.functions.get(called_function_name)
-                                      .get("relative_position")
+                        self.functions[called_function_name]["relative_position"]
+                    )
+                    function_prime = (
+                        self.functions[called_function_name]["prime"]
                     )
 
                     if function_name == called_function_name:
@@ -447,6 +468,7 @@ class Lexer:
 
                     function_call_metadata = {
                         "function": function_relative_position,
+                        "prime": function_prime,
                         "return_type": function_return_type,
                         "parameters": parameters
                     }
@@ -950,11 +972,15 @@ class Lexer:
                         raise SyntaxError(err_msg)
 
                     argument_relative_position = self.variable_count + 1
+                    argument_prime = self.variable_prime
+
                     self.variable_count += 1
+                    self.variable_prime = next_prime(self.variable_prime)
 
                     arguments[param_name] = {
                         "type": param_type,
-                        "relative_position": argument_relative_position
+                        "relative_position": argument_relative_position,
+                        "prime": argument_prime
                     }
                     curr_idx += 2
 
