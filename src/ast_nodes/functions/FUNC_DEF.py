@@ -35,10 +35,10 @@ class FUNC_DEF(Node):
         function_name: str,
         function_metadata: dict[str, Union[str, dict]]
     ) -> None:
-        super().__init__(id, function_name)
+        
+        type: str = function_metadata.get("type")
+        super().__init__(id, function_name, type)
 
-        self.pseudonymous: str = function_metadata.get("pseudonymous")
-        self.type: str = function_metadata.get("type")
         self.arguments: list[PARAM] = self._define_vars_from_args(
             arguments=function_metadata.get("arguments")
         )
