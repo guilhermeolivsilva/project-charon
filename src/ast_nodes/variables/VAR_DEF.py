@@ -32,9 +32,10 @@ class VAR_DEF(Node):
 
         # The `type_certificate` is a placeholder! The `frontend` certificator
         # is responsible for filling it later.
+        prime: int = variable_metadata["prime"]
         self.symbol: str = (
             f"({self.symbol})^"
-            + f"({relative_position})^"
+            + f"({prime})^"
             + f"({type}_certificate)"
         )
 

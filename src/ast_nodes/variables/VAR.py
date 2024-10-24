@@ -26,12 +26,13 @@ class VAR(Node):
         relative_position = variable_metadata.get("relative_position")
         super().__init__(id, relative_position)
 
-        # Handle the `instruction` and `symbol`
-        self.add_context(variable_metadata=variable_metadata)
-
-        self.relative_position: int = relative_position
         self.variable_metadata: dict[str, str] = variable_metadata
+        self.relative_position: int = relative_position
         self.type = self.variable_metadata.get("type")
+
+        # Handle the `instruction` and `symbol`. This defaults to the `read`
+        # case, but can be changed by the AST as it is built
+        self.add_context(context={"context": "read"})
 
     @override
     def __str__(self) -> str:
@@ -55,7 +56,7 @@ class VAR(Node):
 
         return self.variable_metadata
     
-    def add_context(self, variable_metadata: dict[str, str]) -> None:
+    def add_context(self, context: dict[str, str]) -> None:
         """
         Add context to this `VAR` node.
 
@@ -63,12 +64,11 @@ class VAR(Node):
 
         Parameters
         ----------
-        variable_metadata : dict[str, str]
-            A dictionary containing the relative position where it was first
-            declared in the original source code, and its type.
+        context : dict[str, str]
+            The context of this variable use.
         """
 
-        context: str = variable_metadata.get("context", "read")
+        context: str = context.get("context", "read")
 
         if context == "read":
             self.instruction: str = "LOAD"
@@ -78,4 +78,4 @@ class VAR(Node):
             self.instruction: str = "ADDRESS"
             symbol: str = NODE_SYMBOLS_MAP.get("VAR_WRITE")
 
-        self.symbol: str = f"({symbol})^({self.value})"
+        self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})"

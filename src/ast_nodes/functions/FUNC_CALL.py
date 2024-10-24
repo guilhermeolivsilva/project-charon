@@ -31,6 +31,9 @@ class FUNC_CALL(Node):
         self.parameters: list[Node] = self._build_children_nodes()
         self.type: str = self.function_call_metadata.get("return_type")
 
+        prime: int = self.function_call_metadata["prime"]
+        self.symbol: str = f"({self.symbol})^({prime})"
+
     @override
     def get_certificate_label(self) -> list[str]:
         """
