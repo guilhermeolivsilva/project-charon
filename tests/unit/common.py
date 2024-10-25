@@ -489,8 +489,8 @@ TOKENIZED_SOURCE_CODE = {
 }
 
 _source = deepcopy(TOKENIZED_SOURCE_CODE)
-ast = AbstractSyntaxTree(source_code=_source)
-ABSTRACT_SYNTAX_TREE_ROOT = ast.build()
+ABSTRACT_SYNTAX_TREE = AbstractSyntaxTree(source_code=_source)
+ABSTRACT_SYNTAX_TREE_ROOT = ABSTRACT_SYNTAX_TREE.build()
 
 MACHINE_CODE = {
     "structs": {"my_struct": ["int", "float"]},
