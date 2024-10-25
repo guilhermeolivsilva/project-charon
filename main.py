@@ -16,7 +16,13 @@ def main() -> int:
 
     instance = create_instance(source_code)
 
-    _, vm, frontend_certificate, backend_certificate = instance.values()
+    vm = instance.get_vm()
+
+    frontend_certificator = instance.get_frontend_certificator()
+    backend_certificator = instance.get_backend_certificator()
+
+    frontend_certificate = ...
+    backend_certificate = ...
 
     print("Frontend certificate:")
     print(frontend_certificate)

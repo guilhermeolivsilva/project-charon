@@ -23,7 +23,7 @@ def test_expression():
     """Test multiple expressions."""
 
     instance = create_instance(source_code=SOURCE_CODE)
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     expected_memory = {'0x0': 23, '0x4': 46, '0x8': 0}

@@ -178,7 +178,7 @@ def test_operation(test_suite: dict) -> None:
     }
 
     instance = create_instance(source_code=SOURCE_CODE.format(**test_parameters))
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     assert vm.get_memory() == test_suite["expected_memory"]
@@ -246,7 +246,7 @@ def test_bitwise_operation(test_suite: dict) -> None:
     instance = create_instance(
         source_code=BITWISE_SOURCE_CODE.format(**test_parameters)
     )
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     assert vm.get_memory() == test_suite["expected_memory"]

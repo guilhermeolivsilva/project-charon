@@ -25,7 +25,7 @@ def test_struct():
     """Test a simple struct."""
 
     instance = create_instance(source_code=SOURCE_CODE)
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     expected_memory = {'0x0': 10, '0x4': 10.150331125827813, '0x8': 101}

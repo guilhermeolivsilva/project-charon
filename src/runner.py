@@ -1,7 +1,6 @@
 """Generate a runner for Charon programs."""
 
 from copy import deepcopy
-from typing import Union
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.certificators import BackendCertificator, FrontendCertificator
@@ -10,7 +9,81 @@ from src.lexer import Lexer
 from src.virtual_machine import VirtualMachine
 
 
-def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
+class Charon:
+    """
+    This class represents an instance of a program in [C]haron.
+
+    An instance is composed by the parsed source (i.e., the output from the
+    `Lexer`), the Abstract Syntax Tree, a Virtual Machine, and the frontend and
+    backend certificators.
+
+    The goal of this class is to centralize all of this generated metadata in a
+    single object.
+
+    Parameters
+    ----------
+    parsed_source : dict[str, dict]
+        The source code after being tokenized and parsed by the Lexer.
+    ast : AbstractSyntaxTree
+        The Abstract Syntax Tree of this progrma.
+    program : dict[str, dict]
+        The compiled program, to be executed by the Virtual Machine.
+    vm : VirtualMachine
+        An instance of `VirtualMachine` loaded with the `program`.
+    frontend_certificator : FrontendCertificator
+        An instance of `FrontendCertificator` loaded with the `ast`.
+    backend_certificator : BackendCertificator
+        An instance of `BackendCertificator` loaded with the `program`.
+    """
+
+    def __init__(
+        self,
+        parsed_source: dict[str, dict],
+        ast: AbstractSyntaxTree,
+        program: dict[str, dict],
+        vm: VirtualMachine,
+        frontend_certificator: FrontendCertificator,
+        backend_certificator: BackendCertificator
+    ) -> None:
+        self.parsed_source = parsed_source
+        self.ast = ast
+        self.program = program
+        self.vm = vm
+        self.frontend_certificator = frontend_certificator
+        self.backend_certificator = backend_certificator
+
+    def get_parsed_source(self) -> dict[str, dict]:
+        """Get the `parsed_source` attribute."""
+
+        return self.parsed_source
+
+    def get_ast(self) -> AbstractSyntaxTree:
+        """Get the `ast` attribute."""
+
+        return self.ast
+
+    def get_program(self) -> dict[str, dict]:
+        """Get the `program` attribute."""
+
+        return self.program
+
+    def get_vm(self) -> VirtualMachine:
+        """Get the `vm` attribute."""
+
+        return self.vm
+
+    def get_frontend_certificator(self) -> FrontendCertificator:
+        """Get the `frontend_certificator` attribute."""
+
+        return self.frontend_certificator
+
+    def get_backend_certificator(self) -> BackendCertificator:
+        """Get the `backend_certificator` attribute."""
+
+        return self.backend_certificator
+
+
+def create_instance(source_code: str) -> Charon:
     """
     Create an instance that certificates and runs the input `source_code`.
 
@@ -21,15 +94,8 @@ def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
 
     Returns
     -------
-    instance : dict[str, Union[VirtualMachine, str]]
-        A dictionary with code metadata and a Virtual Machine loaded with it.
-        Fields:
-         - vm : VirtualMachine
-            The Virtual Machine loaded with the `source_code`.
-         - frontend_certificate : str
-            The computed certificate of the frontend code.
-         - backend_certificate : str
-            The computed certificate of the backend code.
+    instance : Charon
+        An instance of this [C]haron program.
     """
 
     lexer = Lexer(source_code=source_code)
@@ -44,12 +110,16 @@ def create_instance(source_code: str) -> dict[str, Union[VirtualMachine, str]]:
 
     vm = VirtualMachine(program=program)
 
-    instance = {
+    frontend_certificator = FrontendCertificator(ast=ast)
+    backend_certificator = ...
+
+    _instance = {
         "parsed_source": parsed_source,
+        "program": program,
         "ast": ast,
         "vm": vm,
-        "frontend_certificate": ...,
-        "backend_certificate": ...,
+        "frontend_certificator": frontend_certificator,
+        "backend_certificator": backend_certificator,
     }
 
-    return instance
+    return Charon(**_instance)

@@ -26,7 +26,7 @@ def test_array():
     """Test a simple array."""
 
     instance = create_instance(source_code=SOURCE_CODE)
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     expected_memory = {

@@ -28,7 +28,7 @@ def test_gcd() -> None:
     """Test the computation of the GCD between 100 and 125."""
 
     instance = create_instance(source_code=SOURCE_CODE)
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     expected_memory = {'0x0': 25, '0x4': 25}

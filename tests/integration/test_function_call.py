@@ -29,7 +29,7 @@ def test_function_call():
     """Test a function call."""
 
     instance = create_instance(source_code=SOURCE_CODE)
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     expected_memory = {'0x0': 120, '0x4': 0, '0x8': 120}

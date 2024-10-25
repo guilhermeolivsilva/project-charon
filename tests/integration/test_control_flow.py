@@ -28,7 +28,7 @@ def test_if() -> None:
     source_code = SOURCE_CODE.format(placeholder=placeholder)
 
     instance = create_instance(source_code=source_code)
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     expected_memory = {'0x0': placeholder, '0x4': 23}
@@ -42,7 +42,7 @@ def test_else() -> None:
     source_code = SOURCE_CODE.format(placeholder=placeholder)
 
     instance = create_instance(source_code=source_code)
-    vm = instance.get("vm")
+    vm = instance.get_vm()
     vm.run()
 
     expected_memory = {'0x0': placeholder, '0x4': 35}
