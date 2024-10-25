@@ -25,6 +25,23 @@ class AbstractSyntaxTree:
         self.current_statement_list: list[tuple[str, dict]] = []
         self.current_function_type: str = None
 
+    def __eq__(self, other: "AbstractSyntaxTree") -> bool:
+        """
+        Implement the equality comparison between AST objects.
+
+        Parameters
+        ----------
+        other : AbstractSyntaxTree
+            The right hand side AbstractSyntaxTree of the comparison.
+
+        Returns
+        -------
+        : bool
+            `True` if all the attributes are equal, `False` otherwise.
+        """
+
+        return vars(self) == vars(other)
+
     def build(self) -> PROG:
         """
         Build the Abstract Syntax Tree (AST) from the source code.
