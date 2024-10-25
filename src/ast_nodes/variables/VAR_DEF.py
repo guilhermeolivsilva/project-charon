@@ -34,14 +34,12 @@ class VAR_DEF(Node):
         # is responsible for filling it later.
         prime: int = variable_metadata["prime"]
         self.symbol: str = (
-            f"({self.symbol})^"
-            + f"({prime})^"
-            + f"({type}_certificate)"
+            f"({self.symbol})"
+            + f"^({prime})"
         )
 
-        _length = self.variable_metadata.get("length")
-        if _length:
-            self.symbol += f"^({_length})"
+        length = self.variable_metadata.get("length", 1)
+        self.symbol += f"^({type}_certificate)" * length
 
     @override
     def print(self, indent: int = 0) -> None:
