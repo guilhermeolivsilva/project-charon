@@ -52,17 +52,18 @@ class ELEMENT_ACCESS(Node):
         if not (self.is_array or self.is_struct):
             raise TypeError(
                 "Trying to access an element from variable that is not an array"
-                " nor struct"
+                " nor struct."
             )
 
         super().__init__(id)
 
-        self.instruction = "ELEMENT_VALUE"
-        self.symbol: str = NODE_SYMBOLS_MAP.get("ELEMENT_VALUE")
-
         self.variable: VAR = variable
         self.element: Union[CST, VAR] = element
         self.type: str = self._compute_element_type()
+
+        # Handle the `instruction` and `symbol`. This defaults to the `read`
+        # case, but can be changed by the AST as it is built
+        self.add_context(context={"context": "read"})
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -205,8 +206,7 @@ class ELEMENT_ACCESS(Node):
         Parameters
         ----------
         context : dict[str, str]
-            A dictionary containing the relative position where it was first
-            declared in the original source code, and its type.
+            The context of this variable use.
         """
 
         _context: str = context.get("context", "read")
