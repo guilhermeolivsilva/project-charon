@@ -131,6 +131,6 @@ class DO(Conditional):
         prime = self.statement_if_true.certificate(prime)
         prime = self.parenthesis_expression.certificate(prime)
 
-        self.set_certificate_label(certificate_label=f"{prime}^{self.symbol}")
+        self.set_certificate_label(certificate_label=f"({prime})^({self.symbol})")
 
         return next_prime(prime)
