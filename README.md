@@ -27,12 +27,23 @@ implemented the semantics of the high level code in terms of low level code.
 If the sets don't match, then the compiler has altered the semantics of the
 original program during compilation.
 
+# Running programs
+
+You can run your own programs from the terminal. Simply create a file containing
+your code and invoke the `main` with
+
+```
+$ python main.py < path/to/your_code.ch
+```
+
+This projects uses the `.ch` extension just for the sake of style :)
+
 # The [C]haron language
 
-The [C]haron language is implemented in Python, and is derived from
-[M. Feeley's Tiny-C](https://www.iro.umontreal.ca/~felipe/IFT2030-Automne2002/Complements/tinyc.c).
-It is statically typed and supports integers (`long` integers as well),
-floating point numbers, and user defined structures. It also supports
+The [C]haron language is implemented in Python, and consists of a large subset
+of the C programming language. It is statically typed and supports integers
+(`int`/`short`), floating point numbers (`float`), and user defined structures
+(`struct`). It also supports most of C's binary operations, as well as
 functions, arrays, control flow (`if`, `if/else`), and loops (`while`,
 `do/while`).
 
@@ -44,201 +55,172 @@ capabilities of the language.
 The EBNF expression of the language grammar is shown below:
 
 ```
-<program> ::= <function>
-<function> ::= <id> "(" <parameters> ") { return " <statement> "; }"
-<parameters> ::= <id>
-<statement> ::= <function call>
-                | "if" <parenthesis expression> <statement> ";"
-                | "if" <parenthesis expression> <statement> "else" <statement> ";"
-                | "while" <parenthesis expression> <statement> ";"
-                | "do" <statement> "while" <parenthesis expression> ";"
-                | "{" <statement> "}" ";"
-                | <expression> ";"
-                | ";"
-<function call> ::= <name> "(" <expression> ");"
-<parenthesis expression> ::= "(" <expression> ")"
-<expression> ::= <comparison> | <id> "=" <expression>
-<comparison> ::= <sum> | <sum> "<" <sum>
-<sum> ::= <term> | <sum> "+" <term> | <sum> "-" <term>
-<term> ::= <id> | <constant> | <parenthesis expression>
-<id> ::= <type> <name>
-<constant> ::= <int> | <float> | <long> | <struct>
-<int> ::= unsigned decimal integer
-<float> ::= unsigned decimal floating point number
-<struct> ::= <name> "{" <type> <name> "};"
-<name> ::= any non-reserved word or symbol
+<program> ::= <function-definition>
+            | <declaration>
+
+<function-definition> ::= <type-specifier> <declarator> {<declaration>}* <compound-statement>
+
+<type-specifier> ::= short
+                   | int
+                   | float
+                   | <struct-specifier>
+
+<struct-specifier> ::= <struct> <identifier> { {<struct-declaration>}+ }
+                     | <struct> { {<struct-declaration>}+ }
+                     | <struct> <identifier>
+
+<struct-declaration> ::= <type-specifier> <struct-declarator-list>
+
+<struct-declarator-list> ::= <declarator>
+                           | <struct-declarator-list> , <direct-declarator>
+
+<direct-declarator> ::= <identifier>
+                      | ( <declarator> )
+                      | <direct-declarator> [ {<constant-expression>}? ]
+                      | <direct-declarator> ( <parameter-type-list> )
+                      | <direct-declarator> ( {<identifier>}* )
+
+<constant-expression> ::= <logical-or-expression>
+
+<logical-or-expression> ::= <logical-and-expression>
+                          | <logical-or-expression> || <logical-and-expression>
+
+<logical-and-expression> ::= <inclusive-or-expression>
+                           | <logical-and-expression> && <inclusive-or-expression>
+
+<inclusive-or-expression> ::= <and-expression>
+                            | <inclusive-or-expression> | <and-expression>
+
+<and-expression> ::= <equality-expression>
+                   | <and-expression> & <equality-expression>
+
+<equality-expression> ::= <relational-expression>
+                        | <equality-expression> == <relational-expression>
+                        | <equality-expression> != <relational-expression>
+
+<relational-expression> ::= <shift-expression>
+                          | <relational-expression> < <shift-expression>
+                          | <relational-expression> > <shift-expression>
+
+<shift-expression> ::= <additive-expression>
+                     | <shift-expression> << <additive-expression>
+                     | <shift-expression> >> <additive-expression>
+
+<additive-expression> ::= <multiplicative-expression>
+                        | <additive-expression> + <multiplicative-expression>
+                        | <additive-expression> - <multiplicative-expression>
+
+<multiplicative-expression> ::= <unary-expression>
+                              | <multiplicative-expression> * <unary-expression>
+                              | <multiplicative-expression> / <unary-expression>
+                              | <multiplicative-expression> % <unary-expression>
+
+<unary-expression> ::= <postfix-expression>
+                     | <unary-operator> <unary-expression>
+
+<postfix-expression> ::= <primary-expression>
+                       | <postfix-expression> [ <expression> ]
+                       | <postfix-expression> ( {<assignment-expression>}* )
+                       | <postfix-expression> . <identifier>
+
+<primary-expression> ::= <identifier>
+                       | ( <expression> )
+
+<constant> ::= <integer-constant>
+             | <floating-constant>
+
+<expression> ::= <assignment-expression>
+               | <expression> , <assignment-expression>
+
+<assignment-expression> ::= <logical-or-expression>
+                          | <unary-expression> <assignment-operator> <assignment-expression>
+
+<assignment-operator> ::= =
+
+<unary-operator> ::= !
+
+<parameter-type-list> ::= <parameter-list>
+                        | <parameter-list> , ...
+
+<parameter-list> ::= <parameter-declaration>
+                   | <parameter-list> , <parameter-declaration>
+
+<parameter-declaration> ::= {<type-specifier>}+ <declarator>
+
+<declaration> ::=  {<type-specifier>}+ {<declarator>}* ;
+
+<compound-statement> ::= { {<declaration>}* {<statement>}* }
+
+<statement> ::= <expression-statement>
+              | <compound-statement>
+              | <selection-statement>
+              | <iteration-statement>
+
+<expression-statement> ::= {<expression>}? ;
+
+<selection-statement> ::= if ( <expression> ) <statement>
+                        | if ( <expression> ) <statement> else <statement>
+
+<iteration-statement> ::= while ( <expression> ) <statement>
+                        | do <statement> while ( <expression> ) ;
 ```
 
 ## Lexer
 
-### Types
+The [`Lexer`](https://github.com/guilhermeolivsilva/project-charon/blob/main/src/lexer.py)
+tokenizes and pre-processes the code. It also makes some basic syntax checks.
 
-* **INT_TYPE**: an unsigned integer.
-* **FLOAT_TYPE**: an unsigned floating point number.
-* **LONG_TYPE**: an unsigned long integer (64 bits).
-* **STRUCT_TYPE**: a user-defined structure.
-
-### Reserved words
-
-* **IF_SYM**: Represents the `if` keyword, used in conditional statements.
-* **ELSE_SYM**: Represents the `else` keyword, used in if-else statements.
-* **WHILE_SYM**: Represents the `while` keyword, used in while loops.
-* **DO_SYM**: Represents the `do` keyword, used in the do-while loop construct.
-* **RET_SYM**: Represents the `return` keyword, used in functions.
-
-### Symbols
-
-* **LCBRA, RCBRA**: Represents curly braces (`{`, `}`), used to define blocks of statements.
-* **LBRA, RBRA**: Represents braces (`[`, `]`), used to define the length or access an element of an array.
-* **LPAR, RPAR**: Represents parenthesis (`(`, `)`), used in expressions, conditionals and functions.
-* **PLUS**: Represents the addition operator `+`, used in arithmetic expressions.
-* **MINUS**: Represents the subtraction operator `-`, used in arithmetic expressions.
-* **LESS**: Represents the less than operator `<`, used in comparison expressions.
-* **SEMI**: Represents the semicolon `;`, used to terminate statements.
-* **EQUAL**: Represents the equal sign `=`, used in assignment expressions.
-* **DOT**: Represents the access of an attribute of a user-defined `struct`.
-* **EOI**: Stands for "End of Input" and signifies the end of the input source code.
+Check its attributes (namely, `conditionals`, `symbols`, `operators`, and
+`types`) for a better picture of the language's capabilities. Also, look for the
+`Raises` sections in its methods docstrings for a better grasp of the syntax
+checks it performs.
 
 ## Abstract Syntax Tree
 
-Tiny-C works on an internal abstract syntax tree (AST) with the following terms:
+The language builds its Abstract Syntax Tree (AST) with the
+[`AbstractSyntaxTree`](https://github.com/guilhermeolivsilva/project-charon/blob/main/src/abstract_syntax_tree.py)
+class. It has operation precedence, and is generated recursively. It makes
+additional syntax checks, and it is worth to check its `Raises` sections.
 
-* **VAR**: Represents a variable.
-* **CST**: Represents a constant value.
-* **ADD**: Represents addition operation.
-* **SUB**: Represents subtraction operation.
-* **LT**: Represents less-than comparison.
-* **SET**: Represents assignment operation.
-* **IF**: Represents the an `if` statement.
-* **IFELSE**: Represents an `if/else` statement.
-* **WHILE**: Represents a `while` loop.
-* **DO**: Represents a `do/while` loop.
-* **EMPTY**: Represents an empty statement or a placeholder.
-* **SEQ**: Represents a sequence of statements.
-* **EXPR**: Represents an expression.
-* **PROG**: Represents a program.
+Also, the class implements the `print_tree` method. It is very useful as it
+offers a visualization of the tree it built.
+
+## Code Generator
+
+This project compiles code with the `CodeGenerator` class. It takes an AST
+and generates a list of instructions to be run by the [`VirtualMachine`](#virtual-machine).
 
 ## Virtual Machine
 
-Tiny-C's virtual machine supports the following instructions:
+Finally, the compiled code runs in the
+[`VirtualMachine`](https://github.com/guilhermeolivsilva/project-charon/blob/main/src/virtual_machine.py).
+It interprets the code, instruction by instruction, and implements a local memory
+and some execution registers (`program_counter`, `memory_pointer` etc.).
 
-* **IFETCH**: Fetches the value of the specified variable and pushes it onto the stack.
-* **ISTORE**: Pops a value from the stack and stores it at the specified variable.
-* **IPUSH**: Pushes a constant value onto the stack.
-* **IPOP**: Pops the top value from the stack.
-* **IADD**: Pops the top two values from the stack, adds them, and pushes the result back onto the stack.
-* **ISUB**: Pops the top two values from the stack, subtracts the second from the top from the top, and pushes the result back onto the stack.
-* **ILT**: Pops the top two values from the stack, compares them for less-than, and pushes the result (in Python terms, i.e., `True` or `False`) back onto the stack.
-* **JZ**: Jumps to the specified node if the top value on the stack is `False`.
-* **JNZ**: Jumps to the specified node if the top value on the stack is `True`.
-* **JMP**: Unconditional jump to the specified node.
-* **HALT**: Halts the execution of the virtual machine.
+You can check its memory layout after the program ends running with the `print`
+method. It dumps the non-null memory addresses and the state of the internal
+registers.
 
 # Examples
 
 All the following examples have been implemented as integration tests, and you
 may find it [here](https://github.com/guilhermeolivsilva/project-charon/tree/main/tests/integration).
 
-## Variable assignment
+These tests cover all of the language's functionality:
 
-```
-> Input
-{
-    a = 1;
-    c = 3 < 2;
-    b = c;
-}
+- arrays;
+- control flow: `if`, `if/else`;
+- `do/while` loops;
+- expressions;
+- functions;
+- operations (mathematical and logical);
+- structs;
+- `while` loops.
 
-> Result
-{'a': 1, 'b': False, 'c': False}
-```
+And also some cool programs:
 
-## Control Flow
+- compute the Fibonacci sequence;
+- compute the greatest common divisor between two numbers.
 
-```
-> Input
-{
-    i = 10;
-    if (i < 5) {
-        x = 1;
-    }
-    else {
-        y = 2;
-    }
-}
-
-> Result
-{'i': 10, 'y': 2}
-```
-
-## While
-
-```
-> Input
-{
-    i = 1;
-    while (i < 100) {
-        i = i + i;
-    }
-}
-
-> Result
-{'i': 128}
-```
-
-## Do/While
-
-```
-> Input
-{
-    i = 1;
-    do { i = i + 10; }
-    while (i < 50); 
-}
-
-> Result
-{'i': 51}
-```
-
-## Greatest Commond Divisor
-
-```
-> Input
-{
-    i = 125;
-    j = 100;
-    while (i - j) {
-        if (i < j) {
-            j = j - i;
-        }
-        else {
-            i = i - j;
-        }
-    } 
-}
-
-> Result
-{'i': 25, 'j': 25}
-```
-
-## Fibonacci sequence
-
-```
-> Input
-{
-    i = 1;
-    a = 0;
-    b = 1;
-    while (i < 10) {
-        c = a;
-        a = b;
-        b = c + a;
-        i = i + 1; 
-    }
-}
-
-> Result
-{'i': 10, 'a': 34, 'b': 55, 'c': 21}
-
-# (The result is in the `b` variable.)
-```
+There are also unit tests. These are very useful to dive deeper into additional
+details of the project's features. You may find it [here](https://github.com/guilhermeolivsilva/project-charon/tree/main/tests/unit).
