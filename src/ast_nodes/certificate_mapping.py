@@ -6,8 +6,8 @@ from src.utils import primes_list
 __CERTIFICATE_SYMBOLS = [
     "CST",
     "VAR_DEF",
-    "VAR_READ",
-    "VAR_WRITE",
+    "VAR_VALUE",
+    "VAR_ADDRESS",
     "ELEMENT_VALUE",
     "ELEMENT_ADDRESS",
     "FUNC_CALL",

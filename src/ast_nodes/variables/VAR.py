@@ -72,10 +72,10 @@ class VAR(Node):
 
         if context == "read":
             self.instruction: str = "LOAD"
-            symbol: str = NODE_SYMBOLS_MAP.get("VAR_READ")
+            symbol: str = NODE_SYMBOLS_MAP.get("VAR_VALUE")
 
         else:
             self.instruction: str = "ADDRESS"
-            symbol: str = NODE_SYMBOLS_MAP.get("VAR_WRITE")
+            symbol: str = NODE_SYMBOLS_MAP.get("VAR_ADDRESS")
 
         self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})"
