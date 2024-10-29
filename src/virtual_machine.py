@@ -219,10 +219,19 @@ class VirtualMachine:
         # Value represents the variable to load's relative position in the
         # source code.
         variable_to_load: int = instruction_params["value"]
-        variable_address: str = self.variables[variable_to_load]
+        variable_address: int = int(self.variables[variable_to_load], 16)
+
+        offset_size: int = instruction_params["offset_size"]
+        offset_register: int = instruction_params["offset_register"]
+
+        if offset_size > -1:
+            if offset_register > -1:
+                variable_address += offset_size * self.registers[offset_register]
+            else:
+                variable_address += offset_size
 
         destination_register: int = instruction_params["register"]
-        self.registers[destination_register] = variable_address
+        self.registers[destination_register] = hex(variable_address)
 
     def ALLOC(
         self,
@@ -425,81 +434,6 @@ class VirtualMachine:
         rhs = self.registers[instruction_params["rhs_register"]]
 
         self.registers[instruction_params["register"]] = int(lhs / rhs)
-
-    def ELEMENT_ADDRESS(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
-        """
-        Handle a `ELEMENT_ADDRESS` bytecode.
-
-        This method loads the address of an element from an array or struct
-        into a register. It can handle both static (when accessing a struct
-        attribute or an array element with a constant index) and dynamic (when
-        accessing an array element with a variable as index) accesses.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-        """
-
-        offset_mode: str = instruction_params["offset_mode"]
-        variable_relative_position: int = instruction_params["variable_relative_position"]
-        variable_initial_address: int = int(self.variables[variable_relative_position], 16)
-
-        if offset_mode == "static":
-            element_offset: int = instruction_params["offset_size"]
-
-        else:
-            index_variable_register: int = instruction_params["element_register"]
-            index_variable_value: int = self.registers[index_variable_register]
-            variable_type_size: int = instruction_params["variable_type_size"]
-
-            element_offset: int = index_variable_value * variable_type_size
-
-        element_address: str = hex(variable_initial_address + element_offset)
-
-        register_to_write: int = instruction_params["register"]
-        self.registers[register_to_write] = element_address
-
-    def ELEMENT_VALUE(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
-        """
-        Handle a `ELEMENT_VALUE` bytecode.
-
-        This method loads the value of an element from an array or struct
-        into a register. It can handle both static (when accessing a struct
-        attribute or an array element with a constant index) and dynamic (when
-        accessing an array element with a variable as index) accesses.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-        """
-
-        offset_mode: str = instruction_params["offset_mode"]
-        variable_relative_position: int = instruction_params["variable_relative_position"]
-        variable_initial_address: int = int(self.variables[variable_relative_position], 16)
-
-        if offset_mode == "static":
-            element_offset: int = instruction_params["offset_size"]
-
-        else:
-            index_variable_register: int = instruction_params["element_register"]
-            index_variable_value: int = self.registers[index_variable_register]
-            variable_type_size: int = instruction_params["variable_type_size"]
-
-            element_offset: int = index_variable_value * variable_type_size
-
-        element_address: str = hex(variable_initial_address + element_offset)
-        element_value: Union[int, float] = self.memory[element_address]
-
-        register_to_write: int = instruction_params["register"]
-        self.registers[register_to_write] = element_value
 
     def EQ(
         self,
@@ -926,8 +860,18 @@ class VirtualMachine:
         # Value represents the variable to load's relative position in the
         # source code.
         variable_to_load: int = instruction_params["value"]
-        variable_address: str = self.variables[variable_to_load]
-        variable_value: Union[int, float] = self.memory[variable_address]
+        variable_address: int = int(self.variables[variable_to_load], 16)
+
+        offset_size: int = instruction_params["offset_size"]
+        offset_register: int = instruction_params["offset_register"]
+
+        if offset_size > -1:
+            if offset_register > -1:
+                variable_address += offset_size * self.registers[offset_register]
+            else:
+                variable_address += offset_size
+
+        variable_value: Union[int, float] = self.memory[hex(variable_address)]
 
         destination_register: int = instruction_params["register"]
         self.registers[destination_register] = variable_value

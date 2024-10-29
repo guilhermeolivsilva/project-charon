@@ -152,7 +152,8 @@ class ELEMENT_ACCESS(Node):
             "metadata": {
                 "id": self.id,
                 "register": register,
-                "variable_relative_position": self.variable.get_value()
+                "value": self.variable.get_value(),
+                "type": self.type,
             }
         }
 
@@ -213,11 +214,11 @@ class ELEMENT_ACCESS(Node):
         symbol: str = ""
 
         if _context == "read":
-            self.instruction: str = "ELEMENT_VALUE"
+            self.instruction: str = "LOAD"
             symbol = NODE_SYMBOLS_MAP.get("ELEMENT_VALUE")
 
         else:
-            self.instruction: str = "ELEMENT_ADDRESS"
+            self.instruction: str = "ADDRESS"
             symbol = NODE_SYMBOLS_MAP.get("ELEMENT_ADDRESS")
 
         self.symbol = f"({symbol})"
@@ -289,14 +290,13 @@ class ELEMENT_ACCESS(Node):
 
                 offset_size: int = variable_type_size * index
 
+                element_offset["offset_register"] = -1
                 element_offset["offset_size"] = offset_size
-                element_offset["offset_mode"] = "static"
 
             # Case B
             else:
-                element_offset["offset_mode"] = "dynamic"
-                element_offset["element_register"] = element_register
-                element_offset["variable_type_size"] = variable_type_size
+                element_offset["offset_register"] = element_register
+                element_offset["offset_size"] = variable_type_size
         
         # Case C
         else:
@@ -319,7 +319,7 @@ class ELEMENT_ACCESS(Node):
 
                 offset_size += attribute_size
 
+            element_offset["offset_register"] = -1
             element_offset["offset_size"] = offset_size
-            element_offset["offset_mode"] = "static"
 
         return element_offset
