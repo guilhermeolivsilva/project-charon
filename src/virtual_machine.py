@@ -259,14 +259,10 @@ class VirtualMachine:
             err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
 
-        variable_relative_position = instruction_params["relative_position"]
+        variable_relative_position: int = instruction_params["relative_position"]
+        variable_size: int = instruction_params["size"]
 
-        variable_type = instruction_params["type"]
-        variable_size = self._get_variable_size(variable_type)
-        variable_length = instruction_params.get("length", 1)
-
-        updated_memory_pointer: int = self.memory_pointer
-        updated_memory_pointer += (variable_size * variable_length)
+        updated_memory_pointer: int = self.memory_pointer + variable_size
 
         if updated_memory_pointer >= self.memory_size:
             err_msg: str = "Not enough memory to allocate a new variable."
@@ -1049,13 +1045,11 @@ class VirtualMachine:
             err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
 
-        parameter_relative_position = instruction_params["relative_position"]
-        parameter_type = instruction_params["type"]
-        parameter_size = self._get_variable_size(parameter_type)
-        parameter_length = instruction_params.get("length", 1)
+        parameter_relative_position: int = instruction_params["relative_position"]
+        parameter_size: int = instruction_params["size"]
 
         parameter_address: str = hex(self.memory_pointer)
-        updated_memory_pointer: int = self.memory_pointer + (parameter_size * parameter_length)
+        updated_memory_pointer: int = self.memory_pointer + parameter_size
 
         if updated_memory_pointer >= self.memory_size:
             err_msg: str = "Not enough memory to allocate a new variable."
@@ -1268,37 +1262,6 @@ class VirtualMachine:
 
         self.registers[destination_register] = truncated_value
 
-    def _get_variable_size(self, type: str) -> int:
-        """
-        Get the size of a variable, in bytes, from its type.
-
-        Parameters
-        ----------
-        type : str
-            The type of the variable.
-
-        Returns
-        -------
-        type_size : int
-            The size of the variable type, in bytes.
-        """
-
-        type_size: int = 0
-
-        # Case 1: variable is of a built-in type
-        if type in builtin_types:
-            type_size = builtin_types[type]
-
-            return type_size
-
-        # Case 2: variable is a struct
-        struct_types = self.program["structs"][type]
-
-        for attr_type in struct_types:
-            type_size += self._get_variable_size(attr_type)
-
-        return type_size
-    
     def _get_variable_address(
         self,
         instruction_params: dict[str, Union[int, float, str]]

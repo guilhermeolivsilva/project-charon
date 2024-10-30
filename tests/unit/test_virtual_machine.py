@@ -132,7 +132,7 @@ def test_ADDRESS() -> None:
         {
             "instruction_params": {
                 "id": 0,
-                "type": "int",
+                "size": 4,
                 "relative_position": 0
             },
             "expected_result": {
@@ -145,7 +145,7 @@ def test_ADDRESS() -> None:
         {
             "instruction_params": {
                 "id": 0,
-                "type": "my_struct",
+                "size": 8,
                 "relative_position": 0
             },
             "expected_result": {
@@ -158,9 +158,8 @@ def test_ADDRESS() -> None:
         {
             "instruction_params": {
                 "id": 0,
-                "type": "int",
+                "size": 12,
                 "relative_position": 0,
-                "length": 3
             },
             "expected_result": {
                 "memory_pointer": 12,
@@ -190,7 +189,7 @@ def test_ALLOC_success(test_suite) -> None:
         {
             "instruction_params": {
                 "id": 0,
-                "type": "int",
+                "size": 4,
                 "relative_position": 0
             },
             "vm_settings": {
@@ -202,7 +201,7 @@ def test_ALLOC_success(test_suite) -> None:
         {
             "instruction_params": {
                 "id": 0,
-                "type": "my_struct",
+                "size": 8,
                 "relative_position": 0
             },
             "vm_settings": {
@@ -1007,9 +1006,8 @@ def test_PARAM() -> None:
     vm.function_call_parameters = [expected_value]
 
     instruction_params = {
-        "type": "int",
         "relative_position": expected_value_relative_position,
-        "length": 1,
+        "size": 4
     }
 
     vm.PARAM(instruction_params)

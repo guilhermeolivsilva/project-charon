@@ -526,40 +526,25 @@ MACHINE_CODE = {
     "global_vars": [
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 3, "type": "int", "relative_position": 1, "length": 10},
+            "metadata": {"id": 3, "relative_position": 1, "size": 40},
         },
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 4,
-                "type": "my_struct",
-                "relative_position": 2,
-                "length": 1,
-            },
+            "metadata": {"id": 4, "relative_position": 2, "size": 8},
         },
     ],
     "code": [
         {
             "instruction": "PARAM",
-            "metadata": {
-                "id": None,
-                "type": "int",
-                "relative_position": 3,
-                "length": 1,
-            },
+            "metadata": {"id": None, "relative_position": 3, "size": 4},
         },
         {
             "instruction": "PARAM",
-            "metadata": {
-                "id": None,
-                "type": "int",
-                "relative_position": 4,
-                "length": 1,
-            },
+            "metadata": {"id": None, "relative_position": 4, "size": 4},
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 8, "type": "int", "relative_position": 5, "length": 1},
+            "metadata": {"id": 8, "relative_position": 5, "size": 4},
         },
         {
             "instruction": "ADDRESS",
@@ -660,21 +645,11 @@ MACHINE_CODE = {
         },
         {
             "instruction": "PARAM",
-            "metadata": {
-                "id": None,
-                "type": "float",
-                "relative_position": 6,
-                "length": 1,
-            },
+            "metadata": {"id": None, "relative_position": 6, "size": 4},
         },
         {
             "instruction": "PARAM",
-            "metadata": {
-                "id": None,
-                "type": "int",
-                "relative_position": 7,
-                "length": 1,
-            },
+            "metadata": {"id": None, "relative_position": 7, "size": 4},
         },
         {
             "instruction": "LOAD",
@@ -718,25 +693,15 @@ MACHINE_CODE = {
         {"instruction": "RET", "metadata": {"id": 29, "type": "int", "register": 13}},
         {
             "instruction": "PARAM",
-            "metadata": {
-                "id": None,
-                "type": "int",
-                "relative_position": 8,
-                "length": 1,
-            },
+            "metadata": {"id": None, "relative_position": 8, "size": 4},
         },
         {
             "instruction": "PARAM",
-            "metadata": {
-                "id": None,
-                "type": "int",
-                "relative_position": 9,
-                "length": 1,
-            },
+            "metadata": {"id": None, "relative_position": 9, "size": 4},
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 36, "type": "int", "relative_position": 10, "length": 1},
+            "metadata": {"id": 36, "relative_position": 10, "size": 4},
         },
         {
             "instruction": "ADDRESS",
@@ -759,12 +724,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 44,
-                "type": "float",
-                "relative_position": 11,
-                "length": 1,
-            },
+            "metadata": {"id": 44, "relative_position": 11, "size": 4},
         },
         {
             "instruction": "ADDRESS",
@@ -787,21 +747,11 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 52,
-                "type": "short",
-                "relative_position": 12,
-                "length": 1,
-            },
+            "metadata": {"id": 52, "relative_position": 12, "size": 2},
         },
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 56,
-                "type": "my_struct",
-                "relative_position": 13,
-                "length": 1,
-            },
+            "metadata": {"id": 56, "relative_position": 13, "size": 8},
         },
         {
             "instruction": "LOAD",
@@ -939,7 +889,7 @@ MACHINE_CODE = {
         {"instruction": "RET", "metadata": {"id": 72, "type": "int", "register": 32}},
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 79, "type": "int", "relative_position": 14, "length": 1},
+            "metadata": {"id": 79, "relative_position": 14, "size": 4},
         },
         {
             "instruction": "ADDRESS",
@@ -976,12 +926,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {
-                "id": 87,
-                "type": "int",
-                "relative_position": 15,
-                "length": 10,
-            },
+            "metadata": {"id": 87, "relative_position": 15, "size": 40},
         },
         {
             "instruction": "LOAD",
@@ -1019,7 +964,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 97, "type": "int", "relative_position": 16, "length": 1},
+            "metadata": {"id": 97, "relative_position": 16, "size": 4},
         },
         {
             "instruction": "LOAD",
