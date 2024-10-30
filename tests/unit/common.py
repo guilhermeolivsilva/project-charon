@@ -93,7 +93,15 @@ TOKENIZED_SOURCE_CODE = {
         },
         "variables": {
             "a": {"type": "int", "length": 10, "relative_position": 1, "prime": 2},
-            "global_var": {"type": "my_struct", "relative_position": 2, "prime": 3},
+            "global_var": {
+                "type": "my_struct",
+                "attributes": {
+                    "x": {"type": "int", "attr_pointer": 0},
+                    "y": {"type": "float", "attr_pointer": 1},
+                },
+                "relative_position": 2,
+                "prime": 3,
+            },
         },
     },
     "functions": {
@@ -158,7 +166,18 @@ TOKENIZED_SOURCE_CODE = {
                 ),
                 ("SEMI", {}),
                 ("RET_SYM", {}),
-                ("VAR", {"type": "my_struct", "relative_position": 2, "prime": 3}),
+                (
+                    "VAR",
+                    {
+                        "type": "my_struct",
+                        "attributes": {
+                            "x": {"type": "int", "attr_pointer": 0},
+                            "y": {"type": "float", "attr_pointer": 1},
+                        },
+                        "relative_position": 2,
+                        "prime": 3,
+                    },
+                ),
                 ("SEMI", {}),
                 ("RCBRA", {}),
             ],
@@ -252,6 +271,10 @@ TOKENIZED_SOURCE_CODE = {
                         "relative_position": 13,
                         "prime": 41,
                         "type": "my_struct",
+                        "attributes": {
+                            "x": {"type": "int", "attr_pointer": 0},
+                            "y": {"type": "float", "attr_pointer": 1},
+                        },
                     },
                 ),
                 ("SEMI", {}),

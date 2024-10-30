@@ -711,6 +711,13 @@ class Lexer:
                     "type": variable_type
                 }
 
+                # Export attributes information if it is a struct!
+                if variable_type in self.globals["structs"]:
+                    variable_metadata = {
+                        **variable_metadata,
+                        "attributes": self.globals["structs"][variable_type]["attributes"]
+                    }
+
                 if simple_variable_definition:
                     return variable_name, variable_metadata
             
