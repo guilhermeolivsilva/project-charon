@@ -10,7 +10,7 @@ class PARAM(VAR_DEF):
     Implement the representation of a function parameter for the AST.
 
     As this is, essentially, a variable definition, it inherits from `VAR_DEF`
-    and overrides some methods.
+    and ovewrites the `instruction`.
 
     Parameters
     ----------

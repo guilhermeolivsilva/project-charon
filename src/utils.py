@@ -185,3 +185,39 @@ def type_cast(original_type: str, target_type: str, register: int) -> tuple[
         register += 1
 
     return register, code
+
+
+def get_variable_size(variable_metadata: dict) -> int:
+    """
+    Get the size of a variable, in bytes, from its type.
+
+    Parameters
+    ----------
+    variable_metadata : dict
+        Dictionary of variable metadata exported by the Lexer.
+
+    Returns
+    -------
+    var_size : int
+        The size of the variable type, in bytes.
+    """
+
+    var_size: int = 0
+    var_type: str = variable_metadata["type"]
+    var_length: str = variable_metadata.get("length", 1)
+
+    # Case 1: variable is of a built-in type
+    if var_type in builtin_types:
+        var_size = builtin_types[var_type]
+
+        return var_size * var_length
+
+    # Case 2: variable is a struct
+    struct_attr_types = [
+        attr["type"] for attr in variable_metadata["attributes"].values()
+    ]
+
+    for attr_type in struct_attr_types:
+        var_size += get_variable_size({"type": attr_type})
+
+    return var_size * var_length

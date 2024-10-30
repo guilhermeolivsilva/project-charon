@@ -5,6 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
+from src.utils import get_variable_size
 
 
 class VAR_DEF(Node):
@@ -98,9 +99,8 @@ class VAR_DEF(Node):
             "instruction": self.instruction,
             "metadata": {
                 "id": self.id,
-                "type": self.type,
                 "relative_position": self.value,
-                "length": self.variable_metadata.get("length", 1)
+                "size": get_variable_size(self.variable_metadata)
             }
         }
 
