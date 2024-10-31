@@ -4,8 +4,9 @@ from typing import Union
 
 from typing_extensions import override
 
-from src.ast_nodes.node import Node
 from src.ast_nodes.basic.CST import CST
+from src.ast_nodes.functions.ARG import ARG
+from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
 
 
@@ -26,9 +27,8 @@ class FUNC_CALL(Node):
         function_id: int = function_call_metadata.get("function")
         super().__init__(id, function_id)
 
-        self.instruction: str = "CALL"
         self.function_call_metadata: dict = function_call_metadata
-        self.parameters: list[Node] = self._build_children_nodes()
+        self.arguments: list[ARG] = self._build_children_nodes()
         self.type: str = self.function_call_metadata.get("return_type")
 
         prime: int = self.function_call_metadata["prime"]
@@ -40,7 +40,7 @@ class FUNC_CALL(Node):
         Get the contents of `certificate_label`.
 
         For `FUNC_CALL` nodes, obtain the certificates, recursively, from each
-        `parameter` subtree first, and then from the `FUNC_CALL` node itself.
+        `argument` subtree first, and then from the `FUNC_CALL` node itself.
 
         Returns
         -------
@@ -50,8 +50,8 @@ class FUNC_CALL(Node):
 
         certificate_label: list = []
 
-        for parameter in self.parameters:
-            certificate_label.append(*parameter.get_certificate_label())
+        for argument in self.arguments:
+            certificate_label.extend(argument.get_certificate_label())
 
         certificate_label.append(*super().get_certificate_label())
 
@@ -73,8 +73,8 @@ class FUNC_CALL(Node):
 
         super().print(indent)
 
-        for parameter in self.parameters:
-            parameter.print(indent=indent + 1)
+        for argument in self.arguments:
+            argument.print(indent=indent + 1)
 
     @override
     def generate_code(self, register: int) -> tuple[
@@ -84,7 +84,7 @@ class FUNC_CALL(Node):
         """
         Generate the code associated with this `FUNC_CALL`.
 
-        For this node specialization, generate code from `parameter` children
+        For this node specialization, generate code from `argument` children
         nodes first, and then from the `FUNC_CALL` itself.
 
         Parameters
@@ -103,25 +103,38 @@ class FUNC_CALL(Node):
         """
 
         code_metadata: list[dict] = []
-        parameters_registers: list[int] = []
+        arguments_registers: list[int] = []
 
-        for parameter in self.parameters:
-            register, parameter_code = parameter.generate_code(register=register)
+        for argument in self.arguments:
+            register, argument_code = argument.generate_code(register=register)
 
-            # Keep track of the registers containing the parameters values
-            parameters_registers.append(
-                parameter_code[0].get("metadata").get("register")
+            # Keep track of the registers containing the arguments values
+            arguments_registers.append(
+                argument_code[0].get("metadata").get("register")
             )
 
-            code_metadata.extend(parameter_code)
+            code_metadata.extend(argument_code)
 
-        register, this_code = super().generate_code(register=register)
+        # The code for the function call itself is actually very simple! Just
+        # jump-and-link (JAL), to keep track of the return address, and copy
+        # the `returned_value_register` to `register`.
+        func_call_code: list[dict[str, dict]] = [
+            {
+                "instruction": "JAL",
+                "metadata": {"value": self.value}
+            },
+            {
+                "instruction": "MOV",
+                "metadata": {
+                    "lhs_register": register,
+                    "rhs_register": "ret_value",
+                    "type": self.type
+                }
+            }
+        ]
+        register += 1
 
-        # ...and add the parameters registers information to the function call
-        # instruction
-        this_code[0]["metadata"]["parameters_registers"] = parameters_registers
-
-        code_metadata.extend(this_code)
+        code_metadata.extend(func_call_code)
 
         return register, code_metadata
 
@@ -130,7 +143,7 @@ class FUNC_CALL(Node):
         """
         Compute the certificate of the current `FUNC_CALL`, and set this attribute.
 
-        For `FUNC_CALL` nodes, certificate each `parameter` child first, and
+        For `FUNC_CALL` nodes, certificate each `argument` child first, and
         then the `FUNC_CALL` itself.
 
         Parameters
@@ -145,31 +158,36 @@ class FUNC_CALL(Node):
             A prime number that comes after the given `prime`.
         """
 
-        for parameter in self.parameters:
-            prime = parameter.certificate(prime)
+        for argument in self.arguments:
+            prime = argument.certificate(prime)
 
         return super().certificate(prime)
 
     def _build_children_nodes(self) -> list[Node]:
-        parameters = self.function_call_metadata.get("parameters")
+        arguments = self.function_call_metadata.get("arguments")
 
         children_nodes: list[Node] = []
         current_id = self.id
 
-        for parameter_metadata in parameters:
-            _is_variable = parameter_metadata.get("variable")
+        for argument_metadata in arguments:
+            _is_variable = argument_metadata.get("variable")
 
             if _is_variable:
-                new_node = VAR(
+                argument_value = VAR(
                     id=current_id + 1,
-                    variable_metadata=parameter_metadata
+                    variable_metadata=argument_metadata
                 )
 
             else:
-                new_node = CST(
+                argument_value = CST(
                     id=current_id + 1,
-                    constant_metadata=parameter_metadata
+                    constant_metadata=argument_metadata
                 )
+
+            new_node = ARG(
+                id=None,
+                argument_value=argument_value
+            )
 
             current_id += 1
             children_nodes.append(new_node)
