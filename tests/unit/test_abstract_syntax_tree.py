@@ -80,8 +80,10 @@ ID: 0, Kind: PROG
         ID: 69, Kind: ADD, Type: int
           ID: 68, Value: 10, Kind: VAR, Type: int
           ID: 70, Value: 2, Kind: FUNC_CALL, Type: int
-            ID: 71, Value: 11, Kind: VAR, Type: float
-            ID: 72, Value: 123, Kind: CST, Type: int
+            Kind: ARG
+              ID: 71, Value: 11, Kind: VAR, Type: float
+            Kind: ARG
+              ID: 72, Value: 123, Kind: CST, Type: int
       ID: 72, Kind: RET_SYM, Type: int
         ID: 74, Kind: ADD, Type: float
           ID: 73, Value: 11, Kind: VAR, Type: float
@@ -93,8 +95,10 @@ ID: 0, Kind: PROG
       ID: 84, Kind: ASSIGN, Type: int
         ID: 83, Value: 14, Kind: VAR, Type: int
         ID: 85, Value: 3, Kind: FUNC_CALL, Type: int
-          ID: 86, Value: 1, Kind: CST, Type: int
-          ID: 87, Value: 2, Kind: CST, Type: int
+          Kind: ARG
+            ID: 86, Value: 1, Kind: CST, Type: int
+          Kind: ARG
+            ID: 87, Value: 2, Kind: CST, Type: int
       ID: 87, Value: 15, Kind: VAR_DEF, Type: int
         Name: array, Type: int (array), Length: 10
       ID: 94, Kind: ASSIGN, Type: int

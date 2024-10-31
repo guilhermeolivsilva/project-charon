@@ -3,7 +3,7 @@
 from src.utils import primes_list
 
 
-__CERTIFICATE_SYMBOLS = [
+__NODES = [
     "CST",
     "VAR_DEF",
     "VAR_VALUE",
@@ -12,6 +12,7 @@ __CERTIFICATE_SYMBOLS = [
     "ELEMENT_ADDRESS",
     "FUNC_CALL",
     "PARAM",
+    "ARG",
     "RET_SYM",
     "PROG",
     "ASSIGN",
@@ -37,7 +38,7 @@ __CERTIFICATE_SYMBOLS = [
     "DO"
 ]
 
-__TYPES_SYMBOLS = [
+__BUILTIN_TYPES = [
     "short",
     "int",
     "float"
@@ -47,8 +48,8 @@ __TYPES_SYMBOLS = [
 NODE_SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
-        __CERTIFICATE_SYMBOLS,
-        primes_list(len(__CERTIFICATE_SYMBOLS))
+        __NODES,
+        primes_list(len(__NODES))
     )
 }
 
@@ -60,7 +61,7 @@ TYPE_SYMBOLS_MAP = {
     }
 
     for _type, base in zip(
-        __TYPES_SYMBOLS,
-        primes_list(len(__TYPES_SYMBOLS))
+        __BUILTIN_TYPES,
+        primes_list(len(__BUILTIN_TYPES))
     )
 }
