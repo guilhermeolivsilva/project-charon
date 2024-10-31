@@ -123,7 +123,7 @@ class Lexer:
                 <function_name>: {
                     "type": element of `types` or a `struct` from the global
                             scope,
-                    "arguments": list of (attr_type, attr_name) tuples,
+                    "parameters": list of (attr_type, attr_name) tuples,
                     "statements": list of annotated statements found within
                                   the function.
                 },
@@ -342,7 +342,7 @@ class Lexer:
         Returns
         -------
         function_metadata : dict[str, str]
-            The metadata (keys: type, arguments, statements) of the parsed
+            The metadata (keys: type, parameters, statements) of the parsed
             function.
         """
 
@@ -352,7 +352,7 @@ class Lexer:
         # Basic metadata
         function_name = symbol_collection[start_idx + 1]
         function_type = symbol_collection[start_idx]
-        arguments = self._extract_arguments(
+        parameters = self._extract_parameters(
             symbol_collection=symbol_collection,
             function_idx=start_idx
         )
@@ -372,7 +372,7 @@ class Lexer:
 
         # Make it easier to check if a symbol is used without being defined
         global_variables = deepcopy(self.globals.get("variables"))
-        local_variables = deepcopy(arguments)
+        local_variables = deepcopy(parameters)
         available_variables = {
             **global_variables,
             **local_variables
@@ -445,7 +445,7 @@ class Lexer:
                 # If not, check if it is a function call. If it is not either,
                 # `_handle_function_call` will raise a SyntaxError
                 except (SyntaxError, TypeError):
-                    called_function_name, parameters = self._handle_function_call(
+                    called_function_name, arguments = self._handle_function_call(
                         symbol_collection=function_symbol_collection,
                         available_variables=available_variables,
                         function_call_idx=idx
@@ -470,16 +470,16 @@ class Lexer:
                         "function": function_relative_position,
                         "prime": function_prime,
                         "return_type": function_return_type,
-                        "parameters": parameters
+                        "arguments": arguments
                     }
 
                     statements.append(("FUNC_CALL", function_call_metadata))
 
-                    # As the parameters of the function call have already been
+                    # As the arguments of the function call have already been
                     # accounted for in `function_call_metadata`, we'll skip
                     # their tokens. Thus, increment `idx` by 2 (the number of
-                    # parenthesis) plus the number of parameters passed.
-                    idx += 2 + len(function_call_metadata["parameters"])
+                    # parenthesis) plus the number of arguments passed.
+                    idx += 2 + len(function_call_metadata["arguments"])
 
                 idx += 1
 
@@ -495,7 +495,7 @@ class Lexer:
 
         function_metadata = {
             "type": function_type,
-            "arguments": arguments,
+            "parameters": parameters,
             "statements": statements
         }
 
@@ -794,9 +794,9 @@ class Lexer:
         symbol_collection: list[str],
         available_variables: dict[str, str],
         function_call_idx: int
-    ) -> tuple[str, list[str]]:
+    ) -> tuple[str, list[dict]]:
         """
-        Handle a function call to extract the callee and parameters.
+        Handle a function call to extract the callee and arguments.
 
         Parameters
         ----------
@@ -807,6 +807,13 @@ class Lexer:
             the function was called.
         struct_idx : int
             The index of the function call in the `symbol_collection` list.
+
+        Returns
+        -------
+        function_name : str
+            The name of the called function.
+        arguments : list[dict]
+            List of arguments' metadata.
 
         Raises
         ------
@@ -819,7 +826,7 @@ class Lexer:
         if function_name not in self.functions.keys():
             raise SyntaxError(f"Use of undefined name '{function_name}'")
 
-        parameters: list[str] = []
+        arguments: list[dict] = []
 
         for token in symbol_collection[function_call_idx + 1:]:
             if token == "(":
@@ -830,22 +837,22 @@ class Lexer:
 
             # Export the variable metadata
             if token in available_variables:
-                parameter = {
+                argument = {
                     "variable": True,
                     **available_variables[token]
                 }
 
             # If not a variable, then it's a constant. Thus, save it to the
-            # `parameters` list after extracting its actual value.
+            # `arguments` list after extracting its actual value.
             else:
-                parameter = {
+                argument = {
                     "variable": False,
                     **_handle_constant(token)
                 }
             
-            parameters.append(parameter)
+            arguments.append(argument)
 
-        return function_name, parameters
+        return function_name, arguments
 
     def _compute_functions_scopes_limits(
         self,
@@ -919,16 +926,16 @@ class Lexer:
 
         return previous_token_is_type and next_token_is_left_parenthesis
 
-    def _extract_arguments(
+    def _extract_parameters(
         self,
         symbol_collection: list[str],
         function_idx: int
     ) -> dict[str, str]:
         """
-        Extract the arguments from a function.
+        Extract the parameters from a function.
 
-        The extracted arguments are returned as a list of (param_type, param_name)
-        tuples.
+        The extracted parameters are returned as a dictionary of parameters
+        metadata.
 
         Parameters
         ----------
@@ -939,22 +946,22 @@ class Lexer:
 
         Returns
         -------
-        arguments : dict
+        parameters : dict
             A mapping of `param_name`: `param_type`. If the function takes no
-            arguments, return an empty list.
+            parameters, return an empty list.
 
         Raises
         ------
         SyntaxError
             Raised if
-             - the function has malformed arguments (i.e., missing type and/or
+             - the function has malformed parameters (i.e., missing type and/or
                name).
              - a parameter has unknown type.
         """
         
         # Align with the index of the left parenthesis (add 2 to offset).
         curr_idx: int = function_idx + 2
-        arguments: dict[str, str] = {}
+        parameters: dict[str, str] = {}
 
         try:
             while symbol_collection[curr_idx] != ")":
@@ -978,25 +985,25 @@ class Lexer:
                         )
                         raise SyntaxError(err_msg)
 
-                    argument_relative_position = self.variable_count + 1
-                    argument_prime = self.variable_prime
+                    parameter_relative_position = self.variable_count + 1
+                    parameter_prime = self.variable_prime
 
                     self.variable_count += 1
                     self.variable_prime = next_prime(self.variable_prime)
 
-                    arguments[param_name] = {
+                    parameters[param_name] = {
                         "type": param_type,
-                        "relative_position": argument_relative_position,
-                        "prime": argument_prime
+                        "relative_position": parameter_relative_position,
+                        "prime": parameter_prime
                     }
                     curr_idx += 2
 
         except IndexError:
             function_name = symbol_collection[function_idx]
-            err_msg = f"Function '{function_name}' has malformed arguments."
+            err_msg = f"Function '{function_name}' has malformed parameters."
             raise SyntaxError(err_msg)
 
-        return arguments
+        return parameters
 
 
 def _find_function_bounds(symbol_collection: list[str], token_idx: int) -> int: 

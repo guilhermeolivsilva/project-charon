@@ -109,7 +109,7 @@ TOKENIZED_SOURCE_CODE = {
             "relative_position": 1,
             "prime": 2,
             "type": "my_struct",
-            "arguments": {
+            "parameters": {
                 "xyz": {"type": "int", "relative_position": 3, "prime": 5},
                 "aaa": {"type": "int", "relative_position": 4, "prime": 7},
             },
@@ -186,7 +186,7 @@ TOKENIZED_SOURCE_CODE = {
             "relative_position": 2,
             "prime": 3,
             "type": "int",
-            "arguments": {
+            "parameters": {
                 "param_1": {"type": "float", "relative_position": 6, "prime": 13},
                 "param_2": {"type": "int", "relative_position": 7, "prime": 17},
             },
@@ -204,7 +204,7 @@ TOKENIZED_SOURCE_CODE = {
             "relative_position": 3,
             "prime": 5,
             "type": "int",
-            "arguments": {
+            "parameters": {
                 "asda": {"type": "int", "relative_position": 8, "prime": 19},
                 "abcdef": {"type": "int", "relative_position": 9, "prime": 23},
             },
@@ -323,7 +323,7 @@ TOKENIZED_SOURCE_CODE = {
                         "function": 2,
                         "prime": 3,
                         "return_type": "int",
-                        "parameters": [
+                        "arguments": [
                             {
                                 "variable": True,
                                 "name": "blabla",
@@ -364,7 +364,7 @@ TOKENIZED_SOURCE_CODE = {
             "relative_position": 4,
             "prime": 7,
             "type": "int",
-            "arguments": {},
+            "parameters": {},
             "statements": [
                 ("LCBRA", {}),
                 (
@@ -383,7 +383,7 @@ TOKENIZED_SOURCE_CODE = {
                         "function": 3,
                         "prime": 5,
                         "return_type": "int",
-                        "parameters": [
+                        "arguments": [
                             {"variable": False, "type": "int", "value": 1},
                             {"variable": False, "type": "int", "value": 2},
                         ],

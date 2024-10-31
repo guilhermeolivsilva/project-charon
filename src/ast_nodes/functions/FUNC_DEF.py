@@ -39,8 +39,8 @@ class FUNC_DEF(Node):
         type: str = function_metadata.get("type")
         super().__init__(id, function_name, type)
 
-        self.arguments: list[PARAM] = self._define_vars_from_args(
-            arguments=function_metadata.get("arguments")
+        self.parameters: list[PARAM] = self._define_vars_from_args(
+            parameters=function_metadata.get("parameters")
         )
         self.statements: SEQ = None
 
@@ -74,8 +74,8 @@ class FUNC_DEF(Node):
 
         certificate: list[str] = []
 
-        for argument in self.arguments:
-            certificate.extend(argument.get_certificate_label())
+        for parameter in self.parameters:
+            certificate.extend(parameter.get_certificate_label())
 
         certificate.extend(self.statements.get_certificate_label())
 
@@ -97,8 +97,8 @@ class FUNC_DEF(Node):
 
         super().print(indent)
 
-        for argument in self.arguments:
-            argument.print(indent+1)
+        for parameter in self.parameters:
+            parameter.print(indent+1)
 
         self.statements.print(indent+1)
 
@@ -110,9 +110,9 @@ class FUNC_DEF(Node):
         """
         Generate the code for this `FUNC_DEF`.
 
-        For this node specialization, generate the code from its `arguments` and
-        statements`, recursively. The `FUNC_DEF` node itself does not have an
-        associated instruction, nor uses registers.
+        For this node specialization, generate the code from its `parameters`
+        and `statements`, recursively. The `FUNC_DEF` node itself does not have
+        an associated instruction, nor uses registers.
 
         Parameters
         ----------
@@ -131,8 +131,8 @@ class FUNC_DEF(Node):
 
         code_metadata: list[dict[str, Union[int, str]]] = []
 
-        for argument in self.arguments:
-            register, var_def_code = argument.generate_code(
+        for parameter in self.parameters:
+            register, var_def_code = parameter.generate_code(
                 register=register
             )
             code_metadata.extend(var_def_code)
@@ -150,7 +150,7 @@ class FUNC_DEF(Node):
         """
         Compute the certificate of this `FUNC_DEF`.
 
-        To achieve this, certificate its `arguments` and `statements`,
+        To achieve this, certificate its `parameters` and `statements`,
         recursively and in order. The `FUNC_DEF` node itself does not have a
         certificate.
 
@@ -166,18 +166,18 @@ class FUNC_DEF(Node):
             A prime number that comes after the given `prime`.
         """
 
-        for argument in self.arguments:
-            prime = argument.certificate(prime)
+        for parameter in self.parameters:
+            prime = parameter.certificate(prime)
 
         return self.statements.certificate(prime)
     
-    def _define_vars_from_args(self, arguments: dict[str, dict]) -> list[PARAM]:
+    def _define_vars_from_args(self, parameters: dict[str, dict]) -> list[PARAM]:
         """
-        Create `PARAM` nodes to be contain the received arguments.
+        Create `PARAM` nodes to be contain the received parameters.
 
         Parameters
         ----------
-        arguments : dict
+        parameters : dict
             A dict with variable metadata to generate `PARAM` nodes from.
 
         Returns
@@ -189,10 +189,10 @@ class FUNC_DEF(Node):
 
         variables: list[PARAM] = []
 
-        for argument_name, argument_metadata in arguments.items():
+        for parameter_name, parameter_metadata in parameters.items():
             variable_metadata = {
-                "name": argument_name,
-                **argument_metadata
+                "name": parameter_name,
+                **parameter_metadata
             }
 
             variables.append(
