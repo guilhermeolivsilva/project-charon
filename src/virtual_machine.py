@@ -2,8 +2,6 @@
 
 from typing import Union
 
-from src.utils import builtin_types
-
 
 class VirtualMachine:
     """
@@ -38,9 +36,9 @@ class VirtualMachine:
         self.variables: dict[int, str] = {}
 
         # Functions
-        self.function_call_parameters: list[Union[int, float]] = []
-        self.return_program_counter: list[int] = []
-        self.return_value_register: list[int] = []
+        self.arg: list[Union[int, float]] = []
+        self.ret_address: list[int] = []
+        self.ret_value: list[int] = []
 
     def __eq__(self, other: "VirtualMachine") -> bool:
         """
@@ -64,9 +62,9 @@ class VirtualMachine:
             and self.program_counter == other.program_counter
             and self.registers == other.registers
             and self.variables == other.variables
-            and self.function_call_parameters == other.function_call_parameters
-            and self.return_program_counter == other.return_program_counter
-            and self.return_value_register == other.return_value_register
+            and self.arg == other.arg
+            and self.ret_address == other.ret_address
+            and self.ret_value == other.ret_value
         )
 
         return is_equal
@@ -258,9 +256,12 @@ class VirtualMachine:
             err_msg: str = "Cannot allocate memory: memory is full"
             err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
+        
+        variable_address: str = hex(self.memory_pointer)
 
         variable_relative_position: int = instruction_params["relative_position"]
         variable_size: int = instruction_params["size"]
+        variable_address_register: int = instruction_params["register"]
 
         updated_memory_pointer: int = self.memory_pointer + variable_size
 
@@ -270,8 +271,9 @@ class VirtualMachine:
             err_msg += f"\nMemory dump:\n{str(self)}"
 
             raise MemoryError(err_msg)
-        
-        self.variables[variable_relative_position] = hex(self.memory_pointer)
+
+        self.registers[variable_address_register] = variable_address
+        self.variables[variable_relative_position] = variable_address
         self.memory_pointer = updated_memory_pointer
 
     def AND(
@@ -348,46 +350,6 @@ class VirtualMachine:
         rhs = self.registers[instruction_params["rhs_register"]]
 
         self.registers[instruction_params["register"]] = lhs | rhs
-
-    def CALL(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
-        """
-        Handle a `CALL` bytecode.
-
-        This method handles the call to a function.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-        """
-
-        # Handle the `program_counter` for it to point to the function code
-        called_function_relative_position: int = instruction_params["value"]
-        called_function_name: str = (
-            list(self.program["functions"].keys())[called_function_relative_position - 1]
-        )
-        called_function_start: int = (
-            self.program["functions"][called_function_name]["start"]
-        )
-
-        # Save the parameters, if any, to the `function_call_parameters` register
-        parameters_registers: list[int] = reversed(
-            instruction_params["parameters_registers"]
-        )
-        for parameter_register in parameters_registers:
-            parameter_value = self.registers[parameter_register]
-            self.function_call_parameters.append(parameter_value)
-
-        # Save the current state (i.e., the `program_counter` and `registers`)
-        self.return_program_counter.append(self.program_counter)
-        self.program_counter = called_function_start
-
-        # And, finally, save the register to write the call result
-        return_value_register: int = instruction_params["register"]
-        self.return_value_register.append(return_value_register)
 
     def CONSTANT(
         self,
@@ -770,6 +732,34 @@ class VirtualMachine:
 
         return
 
+    def JAL(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `JAL` bytecode.
+
+        This method handles jump-and-link instructions.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+        """
+
+        # Handle the `program_counter` for it to point to the function code
+        called_function_relative_position: int = instruction_params["value"]
+        called_function_name: str = (
+            list(self.program["functions"].keys())[called_function_relative_position - 1]
+        )
+        called_function_start: int = (
+            self.program["functions"][called_function_name]["start"]
+        )
+
+        # Set the return address
+        self.ret_address.append(self.program_counter)
+        self.program_counter = called_function_start
+
     def JMP(
         self,
         instruction_params: dict[str, Union[int, float, str]]
@@ -944,6 +934,32 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs % rhs
 
+    def MOV(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `MOV` bytecode.
+
+        This method copies the value of one register into another.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+        """
+
+        lhs_register: Union[int, str] = instruction_params["lhs_register"]
+        rhs_register: Union[int, str] = instruction_params["rhs_register"]
+
+        # Always insert at the beginning of the list! Appending to the end
+        # causes parameter handling to receive arguments in inverted order.
+        if lhs_register == "arg":
+            self.arg.insert(0, self.registers[rhs_register])
+
+        else:
+            self.registers[lhs_register] = self.ret_value.pop()
+
     def MULT(
         self,
         instruction_params: dict[str, Union[int, float, str]]
@@ -1021,48 +1037,6 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(not expression)
 
-    def PARAM(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
-        """
-        Handle a `PARAM` bytecode.
-
-        This method handles the passing of arguments to functions.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-
-        Notes
-        -----
-        I hate this design. It does too much.
-        """
-
-        if self.memory_pointer >= self.memory_size:
-            err_msg: str = "Cannot allocate memory: memory is full"
-            err_msg += f"\nInstruction: {instruction_params}"
-            raise MemoryError(err_msg)
-
-        parameter_relative_position: int = instruction_params["relative_position"]
-        parameter_size: int = instruction_params["size"]
-
-        parameter_address: str = hex(self.memory_pointer)
-        updated_memory_pointer: int = self.memory_pointer + parameter_size
-
-        if updated_memory_pointer >= self.memory_size:
-            err_msg: str = "Not enough memory to allocate a new variable."
-            err_msg += f"\nInstruction: {instruction_params}"
-
-            raise MemoryError(err_msg)
-
-        self.variables[parameter_relative_position] = parameter_address
-        self.memory_pointer = updated_memory_pointer
-
-        parameter_value: Union[int, float] = self.function_call_parameters.pop()
-        self.memory[parameter_address] = parameter_value
-
     def OR(
         self,
         instruction_params: dict[str, Union[int, float, str]]
@@ -1110,15 +1084,12 @@ class VirtualMachine:
         """
 
         # Save the returned value to the appropriate register, if any
-        if self.return_value_register:
-            register_with_value_to_return: int = instruction_params["register"]
-            return_value_register: int = self.return_value_register.pop()
-
-            self.registers[return_value_register] = self.registers[register_with_value_to_return]
+        register_with_value_to_return: int = instruction_params["register"]
+        self.ret_value.append(self.registers[register_with_value_to_return])
 
         # Restore the `program_counter`
-        if self.return_program_counter:
-            self.program_counter = self.return_program_counter.pop()
+        if self.ret_address:
+            self.program_counter = self.ret_address.pop()
 
     def RSHIFT(
         self,
@@ -1192,14 +1163,7 @@ class VirtualMachine:
         """
         Handle a `STORE` bytecode.
 
-        This method stores some value into a variable.
-
-        There are two possible cases when storing data in a variable: the
-        variable is a simple variable, or the variable is an array or struct.
-        In the first case, the `lhs_register` will contain an integer -- the
-        variable identifier (i.e., its `relative_position`, that indexes the
-        `self.variables` dict); in the second case, it will contain the address
-        to the memory position to be written to.
+        This method stores some value into a memory address.
 
         Parameters
         ----------
@@ -1209,8 +1173,12 @@ class VirtualMachine:
 
         variable_address: str = self._get_variable_address(instruction_params)
 
-        value_to_store_register: int = instruction_params["rhs_register"]
-        value_to_store: Union[int, float] = self.registers[value_to_store_register]
+        value_to_store_register: Union[int, str] = instruction_params["rhs_register"]
+
+        if value_to_store_register == "arg":
+            value_to_store: Union[int, float] = self.arg.pop()
+        else:
+            value_to_store: Union[int, float] = self.registers[value_to_store_register]
 
         self.memory[variable_address] = value_to_store
 

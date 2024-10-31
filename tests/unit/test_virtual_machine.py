@@ -20,9 +20,9 @@ def test_init() -> None:
     assert vm.program_counter == 0
     assert vm.registers == {}
     assert vm.variables == {}
-    assert vm.function_call_parameters == []
-    assert vm.return_program_counter == []
-    assert vm.return_value_register == []
+    assert vm.arg == []
+    assert vm.ret_address == []
+    assert vm.ret_value == []
 
 
 def test_get_memory() -> None:
@@ -133,7 +133,8 @@ def test_ADDRESS() -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 4,
-                "relative_position": 0
+                "relative_position": 0,
+                "register": 0
             },
             "expected_result": {
                 "memory_pointer": 4,
@@ -146,7 +147,8 @@ def test_ADDRESS() -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 8,
-                "relative_position": 0
+                "relative_position": 0,
+                "register": 0
             },
             "expected_result": {
                 "memory_pointer": 8,
@@ -160,6 +162,7 @@ def test_ADDRESS() -> None:
                 "id": 0,
                 "size": 12,
                 "relative_position": 0,
+                "register": 0
             },
             "expected_result": {
                 "memory_pointer": 12,
@@ -190,7 +193,8 @@ def test_ALLOC_success(test_suite) -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 4,
-                "relative_position": 0
+                "relative_position": 0,
+                "register": 0
             },
             "vm_settings": {
                 "memory_size": 0
@@ -202,7 +206,8 @@ def test_ALLOC_success(test_suite) -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 8,
-                "relative_position": 0
+                "relative_position": 0,
+                "register": 0
             },
             "vm_settings": {
                 "memory_size": 4
@@ -297,45 +302,6 @@ def test_BITOR() -> None:
     vm.BITOR(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
-
-
-def test_CALL() -> None:
-    """Test the `VirtualMachine.CALL` method."""
-
-    vm = VirtualMachine(program=MACHINE_CODE)
-    initial_program_counter = vm.program_counter
-
-    param_1_value, param_1_register = 23, 0
-    param_2_value, param_2_register = 35, 1
-
-    function_return_register = 2
-    function_relative_position = 2
-    function_first_instruction_index = (
-        MACHINE_CODE["functions"][
-            list(MACHINE_CODE["functions"].keys())[
-                function_relative_position - 1
-            ]
-        ].get("start")
-    )
-
-    vm.registers = {
-        param_1_register: param_1_value,
-        param_2_register: param_2_value
-    }
-
-    instruction_params = {
-        "register": function_return_register,
-        "value": function_relative_position,
-        "type": "int",
-        "parameters_registers": [param_1_register, param_2_register]
-    }
-
-    vm.CALL(instruction_params)
-
-    assert vm.function_call_parameters == [param_2_value, param_1_value]
-    assert vm.program_counter == function_first_instruction_index
-    assert vm.return_program_counter == [initial_program_counter]
-    assert vm.return_value_register == [function_return_register]
 
 
 def test_CONSTANT() -> None:
@@ -988,34 +954,6 @@ def test_NEQ() -> None:
     assert vm.registers[result_register] == expected_result
 
 
-def test_PARAM() -> None:
-    """Test the `VirtualMachine.PARAM` method."""
-
-    vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
-
-    expected_value_address = "0x8"
-    expected_value = 23
-    expected_value_relative_position = 1
-
-    vm.memory_pointer = int(expected_value_address, 16)
-    vm.variables = {0: "0x0", 2: "0xF"}
-    vm.memory = {
-        "0x0": 123321,
-        "0xF": -1
-    }
-    vm.function_call_parameters = [expected_value]
-
-    instruction_params = {
-        "relative_position": expected_value_relative_position,
-        "size": 4
-    }
-
-    vm.PARAM(instruction_params)
-
-    assert vm.variables[expected_value_relative_position] == expected_value_address
-    assert vm.memory[expected_value_address] == expected_value
-
-
 def test_OR() -> None:
     """Test the `VirtualMachine.OR` method."""
 
@@ -1050,14 +988,12 @@ def test_RET() -> None:
     returned_value_register = 0
     returned_value = 23
 
-    function_call_result_register = 1
     address_to_return_to = 13
 
     vm.registers = {
         returned_value_register: returned_value
     }
-    vm.return_program_counter = [address_to_return_to]
-    vm.return_value_register = [function_call_result_register]
+    vm.ret_address = [address_to_return_to]
 
     instruction_params = {
         "type": "int",
@@ -1066,7 +1002,7 @@ def test_RET() -> None:
 
     vm.RET(instruction_params=instruction_params)
 
-    assert vm.registers[function_call_result_register] == vm.registers[returned_value_register]
+    assert vm.ret_value.pop() == vm.registers[returned_value_register]
     assert vm.program_counter == address_to_return_to
 
 
