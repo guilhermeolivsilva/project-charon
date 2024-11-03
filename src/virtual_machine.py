@@ -32,13 +32,12 @@ class VirtualMachine:
 
         # Program execution variables
         self.program_counter: int = 0
-        self.registers: dict[int, Union[int, float]] = {}
+        self.registers: dict[Union[int, str], Union[int, float]] = {
+            "arg": [],
+            "ret_address": [],
+            "ret_value": []
+        }
         self.variables: dict[int, str] = {}
-
-        # Functions
-        self.arg: list[Union[int, float]] = []
-        self.ret_address: list[int] = []
-        self.ret_value: list[int] = []
 
     def __eq__(self, other: "VirtualMachine") -> bool:
         """
@@ -62,9 +61,6 @@ class VirtualMachine:
             and self.program_counter == other.program_counter
             and self.registers == other.registers
             and self.variables == other.variables
-            and self.arg == other.arg
-            and self.ret_address == other.ret_address
-            and self.ret_value == other.ret_value
         )
 
         return is_equal
@@ -757,7 +753,7 @@ class VirtualMachine:
         )
 
         # Set the return address
-        self.ret_address.append(self.program_counter)
+        self.registers["ret_address"].append(self.program_counter)
         self.program_counter = called_function_start
 
     def JMP(
@@ -955,10 +951,12 @@ class VirtualMachine:
         # Always insert at the beginning of the list! Appending to the end
         # causes parameter handling to receive arguments in inverted order.
         if lhs_register == "arg":
-            self.arg.insert(0, self.registers[rhs_register])
+            self.registers["arg"].insert(0, self.registers[rhs_register])
+        elif lhs_register == "ret_value":
+            self.registers["ret_value"].append(self.registers[rhs_register])
 
         else:
-            self.registers[lhs_register] = self.ret_value.pop()
+            self.registers[lhs_register] = self.registers["ret_value"].pop()
 
     def MULT(
         self,
@@ -1176,7 +1174,7 @@ class VirtualMachine:
         value_to_store_register: Union[int, str] = instruction_params["rhs_register"]
 
         if value_to_store_register == "arg":
-            value_to_store: Union[int, float] = self.arg.pop()
+            value_to_store: Union[int, float] = self.registers["arg"].pop()
         else:
             value_to_store: Union[int, float] = self.registers[value_to_store_register]
 
