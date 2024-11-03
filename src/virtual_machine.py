@@ -218,12 +218,11 @@ class VirtualMachine:
         offset_size: int = instruction_params["offset_size"]
         offset_register: int = instruction_params["offset_register"]
 
-        if offset_size > -1:
-            if offset_register > -1:
-                variable_address += offset_size * self.registers[offset_register]
-            else:
-                variable_address += offset_size
+        offset: int = max(offset_size, 0)
+        if offset_register > -1:
+            offset *= self.registers[offset_register]
 
+        variable_address += offset
         destination_register: int = instruction_params["register"]
         self.registers[destination_register] = hex(variable_address)
 
@@ -847,12 +846,11 @@ class VirtualMachine:
         offset_size: int = instruction_params["offset_size"]
         offset_register: int = instruction_params["offset_register"]
 
-        if offset_size > -1:
-            if offset_register > -1:
-                variable_address += offset_size * self.registers[offset_register]
-            else:
-                variable_address += offset_size
+        offset: int = max(offset_size, 0)
+        if offset_register > -1:
+            offset *= self.registers[offset_register]
 
+        variable_address += offset
         variable_value: Union[int, float] = self.memory[hex(variable_address)]
 
         destination_register: int = instruction_params["register"]
