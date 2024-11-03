@@ -26,7 +26,6 @@ class RET_SYM(Node):
     def __init__(self, id: int, returned_value: Node, type: str) -> None:
         super().__init__(id, uses_register=False)
 
-        self.instruction: str = "RET"
         self.returned_value: Node = returned_value
         self.type: str = type
 
@@ -120,13 +119,24 @@ class RET_SYM(Node):
 
         returned_value_code_register = register - 1
 
-        register, return_symbol_code = super().generate_code(
-            register=register
-        )
+        # The code for the return operation itself is, essentially, a pair of
+        # MOV (move data between registers) + JR (jump to register) pair.
+        return_symbol_code = [
+            {
+                "instruction": "MOV",
+                "metadata": {
+                    "lhs_register": "ret_value",
+                    "rhs_register": returned_value_code_register
+                }
+            },
+            {
+                "instruction": "JR",
+                "metadata": {
+                    "register": "ret_address"
+                }
+            }
+        ]
 
-        # Add the information about the register containing the value to return
-        # to the `return` instruction
-        return_symbol_code[0]["metadata"]["register"] = returned_value_code_register
         code_metadata.extend(return_symbol_code)
 
         return register, code_metadata

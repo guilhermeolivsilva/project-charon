@@ -18,11 +18,12 @@ def test_init() -> None:
     assert vm.memory_size == memory_size
     assert vm.memory_pointer == 0x0
     assert vm.program_counter == 0
-    assert vm.registers == {}
+    assert vm.registers == {
+        "arg": [],
+        "ret_address": [],
+        "ret_value": []
+    }
     assert vm.variables == {}
-    assert vm.arg == []
-    assert vm.ret_address == []
-    assert vm.ret_value == []
 
 
 def test_get_memory() -> None:
@@ -683,6 +684,26 @@ def test_JMP() -> None:
     assert vm.program_counter == expected_program_counter
 
 
+def test_JR() -> None:
+    """Test the `VirtualMachine.JR` method."""
+
+    vm = VirtualMachine(program=MACHINE_CODE)
+
+    jump_register = 1
+    jump_size = 23
+    expected_program_counter = jump_size
+
+    vm.registers[jump_register] = jump_size
+
+    instruction_params = {
+        "register": jump_register
+    }
+
+    vm.JR(instruction_params=instruction_params)
+
+    assert vm.program_counter == expected_program_counter
+
+
 def test_JNZ_true() -> None:
     """
     Test the `VirtualMachine.JNZ` method.
@@ -978,32 +999,6 @@ def test_OR() -> None:
     vm.OR(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
-
-
-def test_RET() -> None:
-    """Test the `VirtualMachine.RET` method."""
-
-    vm = VirtualMachine(program=MACHINE_CODE)
-
-    returned_value_register = 0
-    returned_value = 23
-
-    address_to_return_to = 13
-
-    vm.registers = {
-        returned_value_register: returned_value
-    }
-    vm.ret_address = [address_to_return_to]
-
-    instruction_params = {
-        "type": "int",
-        "register": returned_value_register
-    }
-
-    vm.RET(instruction_params=instruction_params)
-
-    assert vm.ret_value.pop() == vm.registers[returned_value_register]
-    assert vm.program_counter == address_to_return_to
 
 
 def test_RSHIFT() -> None:

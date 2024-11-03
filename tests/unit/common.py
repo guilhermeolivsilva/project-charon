@@ -518,10 +518,10 @@ ABSTRACT_SYNTAX_TREE_ROOT = ABSTRACT_SYNTAX_TREE.build()
 MACHINE_CODE = {
     "structs": {"my_struct": ["int", "float"]},
     "functions": {
-        "function_that_returns_struct": {"start": 0, "end": 17},
-        "some_simple_function": {"start": 17, "end": 27},
-        "abc": {"start": 27, "end": 62},
-        "main": {"start": 62, "end": 111},
+        "function_that_returns_struct": {"start": 0, "end": 18},
+        "some_simple_function": {"start": 18, "end": 29},
+        "abc": {"start": 29, "end": 65},
+        "main": {"start": 65, "end": 115},
     },
     "global_vars": [
         {
@@ -648,9 +648,10 @@ MACHINE_CODE = {
             },
         },
         {
-            "instruction": "RET",
-            "metadata": {"id": 24, "type": "my_struct", "register": 13},
+            "instruction": "MOV",
+            "metadata": {"lhs_register": "ret_value", "rhs_register": 13},
         },
+        {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {
             "instruction": "ALLOC",
             "metadata": {"id": None, "relative_position": 6, "size": 4, "register": 14},
@@ -706,7 +707,11 @@ MACHINE_CODE = {
             "instruction": "FPTOSI",
             "metadata": {"source_register": 19, "destination_register": 20},
         },
-        {"instruction": "RET", "metadata": {"id": 29, "type": "int", "register": 20}},
+        {
+            "instruction": "MOV",
+            "metadata": {"lhs_register": "ret_value", "rhs_register": 20},
+        },
+        {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {
             "instruction": "ALLOC",
             "metadata": {"id": None, "relative_position": 8, "size": 4, "register": 21},
@@ -917,7 +922,11 @@ MACHINE_CODE = {
             "instruction": "FPTOSI",
             "metadata": {"source_register": 44, "destination_register": 45},
         },
-        {"instruction": "RET", "metadata": {"id": 72, "type": "int", "register": 45}},
+        {
+            "instruction": "MOV",
+            "metadata": {"lhs_register": "ret_value", "rhs_register": 45},
+        },
+        {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {
             "instruction": "ALLOC",
             "metadata": {"id": 79, "relative_position": 14, "size": 4, "register": 46},
@@ -1244,7 +1253,11 @@ MACHINE_CODE = {
                 "rhs_register": 83,
             },
         },
-        {"instruction": "RET", "metadata": {"id": 130, "type": "int", "register": 84}},
+        {
+            "instruction": "MOV",
+            "metadata": {"lhs_register": "ret_value", "rhs_register": 84},
+        },
+        {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {"instruction": "HALT", "metadata": {}},
     ],
 }

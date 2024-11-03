@@ -773,6 +773,38 @@ class VirtualMachine:
         jump_size: int = instruction_params["jump_size"]
         self.program_counter += jump_size - 1
 
+    def JR(
+        self,
+        instruction_params: dict[str, Union[int, float, str]]
+    ) -> None:
+        """
+        Handle a `JR` bytecode.
+
+        This method jumps to an address stored in a register.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+        """
+
+        register_with_address: Union[int, str] = instruction_params["register"]
+        address_to_jump_to: int = self.registers[register_with_address]
+
+        # Handle lists
+        if isinstance(address_to_jump_to, list):
+
+            # Handle the `return` statement from the end of the program: when
+            # reaching the final `return`, there won't be an address to jump
+            # to at `registers["ret_address"]`. Thus, jump to the last
+            # instruction.
+            if address_to_jump_to:
+                address_to_jump_to = address_to_jump_to.pop()
+            else:
+                address_to_jump_to = len(self.program["code"]) - 1
+
+        self.program_counter = address_to_jump_to
+
     def JNZ(
         self,
         instruction_params: dict[str, Union[int, float, str]]
@@ -1063,29 +1095,6 @@ class VirtualMachine:
         self.registers[instruction_params["register"]] = (
             1 if (lhs or rhs) > 0 else 0
         )
-
-    def RET(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
-        """
-        Handle a `RET` bytecode.
-
-        This method handles the `return` statement of a function.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-        """
-
-        # Save the returned value to the appropriate register, if any
-        register_with_value_to_return: int = instruction_params["register"]
-        self.ret_value.append(self.registers[register_with_value_to_return])
-
-        # Restore the `program_counter`
-        if self.ret_address:
-            self.program_counter = self.ret_address.pop()
 
     def RSHIFT(
         self,
