@@ -90,18 +90,28 @@ class DO(Conditional):
         # to reenter the loop. It is negative as it will jump to a previous
         # instruction, rather than forward
         instructions_to_jump = 0 - (len(loop_code) + len(parenthesis_expression_code))
-        conditional_jump = {
-            "instruction": "JNZ",
-            "metadata": {
-                "conditional_register": conditional_register,
-                "jump_size": instructions_to_jump
+        conditional_jump = [
+            {
+                "instruction": "NOT",
+                "metadata": {
+                    "expression_register": conditional_register,
+                    "register": register
+                }
+            },
+            {
+                "instruction": "JZ",
+                "metadata": {
+                    "conditional_register": register,
+                    "jump_size": instructions_to_jump
+                }
             }
-        }
+        ]
+        register += 1
 
         do_code: list[dict[str, Union[int, str]]] = [
             *loop_code,
             *parenthesis_expression_code,
-            conditional_jump
+            *conditional_jump
         ]
 
         return register, do_code

@@ -805,29 +805,6 @@ class VirtualMachine:
 
         self.program_counter = address_to_jump_to
 
-    def JNZ(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
-        """
-        Handle a `JNZ` bytecode.
-
-        This method handles conditional jumps: if the evaluated value is not
-        zero, jump some amount of instructions.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-        """
-
-        conditional_register: int = instruction_params["conditional_register"]
-        condition: int = self.registers[conditional_register]
-
-        if condition:
-            jump_size: int = instruction_params["jump_size"]
-            self.program_counter += jump_size - 1
-
     def JZ(
         self,
         instruction_params: dict[str, Union[int, float, str]]
