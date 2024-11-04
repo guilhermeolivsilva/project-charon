@@ -1156,7 +1156,10 @@ MACHINE_CODE = {
             "instruction": "STORE",
             "metadata": {"id": 118, "lhs_register": 70, "rhs_register": 73},
         },
-        {"instruction": "JMP", "metadata": {"jump_size": 6}},
+        {
+            "instruction": "JZ",
+            "metadata": {"conditional_register": "zero", "jump_size": 6},
+        },
         {
             "instruction": "ADDRESS",
             "metadata": {

@@ -137,8 +137,9 @@ class IFELSE(Conditional):
         # instruction of the `statemente_if_false` block)
         instructions_to_jump_over_else = len(statement_if_false_code) + 1
         unconditional_jump = {
-            "instruction": "JMP",
+            "instruction": "JZ",
             "metadata": {
+                "conditional_register": "zero",
                 "jump_size": instructions_to_jump_over_else
             }
         }

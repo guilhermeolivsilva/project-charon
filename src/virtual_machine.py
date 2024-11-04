@@ -35,7 +35,8 @@ class VirtualMachine:
         self.registers: dict[Union[int, str], Union[int, float]] = {
             "arg": [],
             "ret_address": [],
-            "ret_value": []
+            "ret_value": [],
+            "zero": 0
         }
         self.variables: dict[int, str] = {}
 
@@ -754,24 +755,6 @@ class VirtualMachine:
         # Set the return address
         self.registers["ret_address"].append(self.program_counter)
         self.program_counter = called_function_start
-
-    def JMP(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
-        """
-        Handle a `JMP` bytecode.
-
-        This method handles unconditional jumps.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-        """
-
-        jump_size: int = instruction_params["jump_size"]
-        self.program_counter += jump_size - 1
 
     def JR(
         self,

@@ -21,7 +21,8 @@ def test_init() -> None:
     assert vm.registers == {
         "arg": [],
         "ret_address": [],
-        "ret_value": []
+        "ret_value": [],
+        "zero": 0
     }
     assert vm.variables == {}
 
@@ -665,23 +666,6 @@ def test_HALT() -> None:
     """Test the `VirtualMachine.HALT` method."""
 
     ...
-
-
-def test_JMP() -> None:
-    """Test the `VirtualMachine.JMP` method."""
-
-    vm = VirtualMachine(program=MACHINE_CODE)
-
-    jump_size = 23
-    expected_program_counter = jump_size - 1
-
-    instruction_params = {
-        "jump_size": jump_size
-    }
-
-    vm.JMP(instruction_params=instruction_params)
-
-    assert vm.program_counter == expected_program_counter
 
 
 def test_JR() -> None:

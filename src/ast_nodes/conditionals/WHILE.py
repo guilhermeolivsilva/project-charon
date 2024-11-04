@@ -107,8 +107,9 @@ class WHILE(Conditional):
         # evaluation
         instructions_to_jump_back_to_expression = 0 - (len(parenthesis_expression_code) + len(loop_code) + 1)
         unconditional_jump = {
-            "instruction": "JMP",
+            "instruction": "JZ",
             "metadata": {
+                "conditional_register": "zero",
                 "jump_size": instructions_to_jump_back_to_expression
             }
         }
