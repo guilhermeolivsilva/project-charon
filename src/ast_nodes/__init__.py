@@ -8,7 +8,6 @@ from src.ast_nodes.operations.operation import Operation
 # Basic nodes
 from src.ast_nodes.basic.CST import CST
 from src.ast_nodes.basic.EMPTY import EMPTY
-from src.ast_nodes.basic.EXPR import EXPR
 from src.ast_nodes.basic.PROG import PROG
 from src.ast_nodes.basic.SEQ import SEQ
 
