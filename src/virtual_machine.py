@@ -216,11 +216,11 @@ class VirtualMachine:
         variable_to_load: int = instruction_params["value"]
         variable_address: int = int(self.variables[variable_to_load], 16)
 
-        offset_size: int = instruction_params["offset_size"]
-        offset_register: int = instruction_params["offset_register"]
+        offset_size: int = instruction_params.get("offset_size", 0)
+        offset_register: Union[int, None] = instruction_params.get("offset_register")
 
-        offset: int = max(offset_size, 0)
-        if offset_register > -1:
+        offset = offset_size
+        if offset_register:
             offset *= self.registers[offset_register]
 
         variable_address += offset
@@ -835,11 +835,11 @@ class VirtualMachine:
         variable_to_load: int = instruction_params["value"]
         variable_address: int = int(self.variables[variable_to_load], 16)
 
-        offset_size: int = instruction_params["offset_size"]
-        offset_register: int = instruction_params["offset_register"]
+        offset_size: int = instruction_params.get("offset_size", 0)
+        offset_register: Union[int, None] = instruction_params.get("offset_register")
 
-        offset: int = max(offset_size, 0)
-        if offset_register > -1:
+        offset = offset_size
+        if offset_register:
             offset *= self.registers[offset_register]
 
         variable_address += offset

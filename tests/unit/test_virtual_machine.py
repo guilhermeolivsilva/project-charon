@@ -112,8 +112,6 @@ def test_ADDRESS() -> None:
     instruction_params = {
         "register": expected_value_register,
         "value": variable_relative_position,
-        "offset_size": -1,
-        "offset_register": -1,
     }
 
     vm.variables = {
@@ -751,8 +749,6 @@ def test_LOAD() -> None:
     instruction_params = {
         "register": expected_value_register,
         "value": 2,
-        "offset_size": -1,
-        "offset_register": -1,
     }
 
     vm.variables = {

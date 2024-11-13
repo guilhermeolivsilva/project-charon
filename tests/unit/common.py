@@ -556,36 +556,15 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {
-                "id": 12,
-                "register": 5,
-                "value": 5,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 12, "register": 5, "value": 5, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 14,
-                "register": 6,
-                "value": 3,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 14, "register": 6, "value": 3, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 16,
-                "register": 7,
-                "value": 4,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 16, "register": 7, "value": 4, "type": "int"},
         },
         {
             "instruction": "ADD",
@@ -597,14 +576,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 18,
-                "register": 9,
-                "value": 2,
-                "type": "my_struct",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 18, "register": 9, "value": 2, "type": "my_struct"},
         },
         {
             "instruction": "CONSTANT",
@@ -617,20 +589,13 @@ MACHINE_CODE = {
                 "register": 11,
                 "value": 2,
                 "type": "int",
-                "offset_register": -1,
+                "offset_register": None,
                 "offset_size": 0,
             },
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 22,
-                "register": 12,
-                "value": 5,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 22, "register": 12, "value": 5, "type": "int"},
         },
         {
             "instruction": "STORE",
@@ -638,14 +603,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 25,
-                "register": 13,
-                "value": 2,
-                "type": "my_struct",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 25, "register": 13, "value": 2, "type": "my_struct"},
         },
         {
             "instruction": "MOV",
@@ -670,25 +628,11 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 30,
-                "register": 16,
-                "value": 6,
-                "type": "float",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 30, "register": 16, "value": 6, "type": "float"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 32,
-                "register": 17,
-                "value": 7,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 32, "register": 17, "value": 7, "type": "int"},
         },
         {
             "instruction": "SITOFP",
@@ -734,14 +678,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {
-                "id": 40,
-                "register": 24,
-                "value": 10,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 40, "register": 24, "value": 10, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -757,14 +694,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {
-                "id": 48,
-                "register": 27,
-                "value": 11,
-                "type": "float",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 48, "register": 27, "value": 11, "type": "float"},
         },
         {
             "instruction": "CONSTANT",
@@ -784,14 +714,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 60,
-                "register": 31,
-                "value": 13,
-                "type": "my_struct",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 60, "register": 31, "value": 13, "type": "my_struct"},
         },
         {
             "instruction": "CONSTANT",
@@ -804,7 +727,7 @@ MACHINE_CODE = {
                 "register": 33,
                 "value": 13,
                 "type": "int",
-                "offset_register": -1,
+                "offset_register": None,
                 "offset_size": 0,
             },
         },
@@ -818,36 +741,15 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {
-                "id": 66,
-                "register": 35,
-                "value": 10,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 66, "register": 35, "value": 10, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 68,
-                "register": 36,
-                "value": 10,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 68, "register": 36, "value": 10, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 71,
-                "register": 37,
-                "value": 11,
-                "type": "float",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 71, "register": 37, "value": 11, "type": "float"},
         },
         {
             "instruction": "MOV",
@@ -885,25 +787,11 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 73,
-                "register": 41,
-                "value": 11,
-                "type": "float",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 73, "register": 41, "value": 11, "type": "float"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 75,
-                "register": 42,
-                "value": 10,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 75, "register": 42, "value": 10, "type": "int"},
         },
         {
             "instruction": "SITOFP",
@@ -933,14 +821,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {
-                "id": 83,
-                "register": 47,
-                "value": 14,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 83, "register": 47, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -977,14 +858,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 91,
-                "register": 52,
-                "value": 15,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 91, "register": 52, "value": 15, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -997,7 +871,6 @@ MACHINE_CODE = {
                 "register": 54,
                 "value": 15,
                 "type": "int",
-                "offset_register": -1,
                 "offset_size": 20,
             },
         },
@@ -1015,14 +888,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 102,
-                "register": 57,
-                "value": 14,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 102, "register": 57, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -1052,14 +918,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 108,
-                "register": 62,
-                "value": 14,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 108, "register": 62, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -1085,14 +944,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 112,
-                "register": 66,
-                "value": 14,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 112, "register": 66, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -1119,25 +971,11 @@ MACHINE_CODE = {
         {"instruction": "JZ", "metadata": {"conditional_register": 69, "jump_size": 7}},
         {
             "instruction": "ADDRESS",
-            "metadata": {
-                "id": 117,
-                "register": 70,
-                "value": 16,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 117, "register": 70, "value": 16, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 119,
-                "register": 71,
-                "value": 14,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 119, "register": 71, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -1162,25 +1000,11 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {
-                "id": 124,
-                "register": 74,
-                "value": 16,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 124, "register": 74, "value": 16, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 126,
-                "register": 75,
-                "value": 14,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 126, "register": 75, "value": 14, "type": "int"},
         },
         {
             "instruction": "CONSTANT",
@@ -1201,25 +1025,11 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 131,
-                "register": 78,
-                "value": 14,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 131, "register": 78, "value": 14, "type": "int"},
         },
         {
             "instruction": "LOAD",
-            "metadata": {
-                "id": 133,
-                "register": 79,
-                "value": 16,
-                "type": "int",
-                "offset_size": -1,
-                "offset_register": -1,
-            },
+            "metadata": {"id": 133, "register": 79, "value": 16, "type": "int"},
         },
         {
             "instruction": "MULT",

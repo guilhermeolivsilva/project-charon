@@ -289,8 +289,6 @@ class ELEMENT_ACCESS(Node):
                 index: int = self.element.get_value()
 
                 offset_size: int = variable_type_size * index
-
-                element_offset["offset_register"] = -1
                 element_offset["offset_size"] = offset_size
 
             # Case B
@@ -319,7 +317,7 @@ class ELEMENT_ACCESS(Node):
 
                 offset_size += attribute_size
 
-            element_offset["offset_register"] = -1
+            element_offset["offset_register"] = None
             element_offset["offset_size"] = offset_size
 
         return element_offset

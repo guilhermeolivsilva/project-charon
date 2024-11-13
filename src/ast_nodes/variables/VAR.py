@@ -82,9 +82,7 @@ class VAR(Node):
                 "id": self.id,
                 "register": register,
                 "value": self.value,
-                "type": self.type,
-                "offset_size": -1,
-                "offset_register": -1
+                "type": self.type
             }
         }
 
