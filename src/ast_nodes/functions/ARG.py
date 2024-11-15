@@ -7,6 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.basic.CST import CST
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
+from src.utils import type_cast
 
 
 class ARG(Node):
@@ -15,17 +16,23 @@ class ARG(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     argument_value : Union[CST, VAR]
         The node representation of this argument.
+    parameter_type : str
+        The type the parameter expects from the argument.
     """
 
     @override
-    def __init__(self, id: int, argument_value: Union[CST, VAR]) -> None:
+    def __init__(
+        self,
+        id: int,
+        argument_value: Union[CST, VAR],
+        parameter_type: str
+    ) -> None:
         super().__init__(id)
 
         self.argument_value: Union[CST, VAR] = argument_value
+        self.parameter_type: str = parameter_type
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -98,8 +105,18 @@ class ARG(Node):
         )
         code_metadata.extend(argument_value_code)
 
+        # Type cast the argument value to the type the parameter expects, if
+        # they are not the same
+        if self.argument_value.get_type() != self.parameter_type:
+            register, arg_typecast = type_cast(
+                original_type=self.argument_value.get_type(),
+                target_type=self.parameter_type,
+                register=register
+            )
+            code_metadata.extend(arg_typecast)
+
         # ARG must point to the same register that contains the `argument_value`
-        argument_value_register = argument_value_code[-1]["metadata"]["register"]
+        argument_value_register = register - 1
         argument_store_code = {
             "instruction": "MOV",
             "metadata": {

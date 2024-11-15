@@ -166,13 +166,21 @@ class FUNC_CALL(Node):
         return super().certificate(prime)
 
     def _build_children_nodes(self) -> list[Node]:
-        arguments = self.function_call_metadata.get("arguments")
+        arguments = self.function_call_metadata["arguments"]
+        parameters_types: list[str] = [
+            param["type"] for param in (
+                self.function_call_metadata["called_function_metadata"]
+                                           ["parameters"]
+                                           .values()
+            )
+        ]
 
         children_nodes: list[Node] = []
         current_id = self.id
 
-        for argument_metadata in arguments:
-            _is_variable = argument_metadata.get("variable")
+        for idx, argument_metadata in enumerate(arguments):
+            _is_variable = argument_metadata["variable"]
+            _parameter_type = parameters_types[idx]
 
             if _is_variable:
                 argument_value = VAR(
@@ -188,7 +196,8 @@ class FUNC_CALL(Node):
 
             new_node = ARG(
                 id=None,
-                argument_value=argument_value
+                argument_value=argument_value,
+                parameter_type=_parameter_type
             )
 
             current_id += 1
