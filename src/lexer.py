@@ -451,26 +451,9 @@ class Lexer:
                         function_call_idx=idx
                     )
 
-                    function_relative_position = (
-                        self.functions[called_function_name]["relative_position"]
-                    )
-                    function_prime = (
-                        self.functions[called_function_name]["prime"]
-                    )
-
-                    if function_name == called_function_name:
-                        function_return_type = function_type
-                    else:
-                        function_return_type = (
-                            self.functions.get(called_function_name)
-                                        .get("type")
-                        )
-
                     function_call_metadata = {
-                        "function": function_relative_position,
-                        "prime": function_prime,
-                        "return_type": function_return_type,
-                        "arguments": arguments
+                        "arguments": arguments,
+                        "called_function_metadata": self.functions[called_function_name]
                     }
 
                     statements.append(("FUNC_CALL", function_call_metadata))

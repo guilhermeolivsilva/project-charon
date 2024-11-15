@@ -320,9 +320,6 @@ TOKENIZED_SOURCE_CODE = {
                 (
                     "FUNC_CALL",
                     {
-                        "function": 2,
-                        "prime": 3,
-                        "return_type": "int",
                         "arguments": [
                             {
                                 "variable": True,
@@ -333,6 +330,46 @@ TOKENIZED_SOURCE_CODE = {
                             },
                             {"variable": False, "type": "int", "value": 123},
                         ],
+                        "called_function_metadata": {
+                            "relative_position": 2,
+                            "prime": 3,
+                            "type": "int",
+                            "parameters": {
+                                "param_1": {
+                                    "type": "float",
+                                    "relative_position": 6,
+                                    "prime": 13,
+                                },
+                                "param_2": {
+                                    "type": "int",
+                                    "relative_position": 7,
+                                    "prime": 17,
+                                },
+                            },
+                            "statements": [
+                                ("LCBRA", {}),
+                                ("RET_SYM", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "type": "float",
+                                        "relative_position": 6,
+                                        "prime": 13,
+                                    },
+                                ),
+                                ("DIV", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "type": "int",
+                                        "relative_position": 7,
+                                        "prime": 17,
+                                    },
+                                ),
+                                ("SEMI", {}),
+                                ("RCBRA", {}),
+                            ],
+                        },
                     },
                 ),
                 ("SEMI", {}),
@@ -380,13 +417,219 @@ TOKENIZED_SOURCE_CODE = {
                 (
                     "FUNC_CALL",
                     {
-                        "function": 3,
-                        "prime": 5,
-                        "return_type": "int",
                         "arguments": [
                             {"variable": False, "type": "int", "value": 1},
                             {"variable": False, "type": "int", "value": 2},
                         ],
+                        "called_function_metadata": {
+                            "relative_position": 3,
+                            "prime": 5,
+                            "type": "int",
+                            "parameters": {
+                                "asda": {
+                                    "type": "int",
+                                    "relative_position": 8,
+                                    "prime": 19,
+                                },
+                                "abcdef": {
+                                    "type": "int",
+                                    "relative_position": 9,
+                                    "prime": 23,
+                                },
+                            },
+                            "statements": [
+                                ("LCBRA", {}),
+                                (
+                                    "VAR_DEF",
+                                    {
+                                        "name": "bla",
+                                        "relative_position": 10,
+                                        "prime": 29,
+                                        "type": "int",
+                                    },
+                                ),
+                                ("SEMI", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "name": "bla",
+                                        "relative_position": 10,
+                                        "prime": 29,
+                                        "type": "int",
+                                    },
+                                ),
+                                ("ASSIGN", {}),
+                                ("CST", {"type": "int", "value": 1}),
+                                ("SEMI", {}),
+                                (
+                                    "VAR_DEF",
+                                    {
+                                        "name": "blabla",
+                                        "relative_position": 11,
+                                        "prime": 31,
+                                        "type": "float",
+                                    },
+                                ),
+                                ("SEMI", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "name": "blabla",
+                                        "relative_position": 11,
+                                        "prime": 31,
+                                        "type": "float",
+                                    },
+                                ),
+                                ("ASSIGN", {}),
+                                ("CST", {"type": "float", "value": 2.0}),
+                                ("SEMI", {}),
+                                (
+                                    "VAR_DEF",
+                                    {
+                                        "name": "xaxaxa",
+                                        "relative_position": 12,
+                                        "prime": 37,
+                                        "type": "short",
+                                    },
+                                ),
+                                ("SEMI", {}),
+                                (
+                                    "VAR_DEF",
+                                    {
+                                        "name": "internal_struct_var",
+                                        "relative_position": 13,
+                                        "prime": 41,
+                                        "type": "my_struct",
+                                        "attributes": {
+                                            "x": {"type": "int", "attr_pointer": 0},
+                                            "y": {"type": "float", "attr_pointer": 1},
+                                        },
+                                    },
+                                ),
+                                ("SEMI", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "relative_position": 13,
+                                        "prime": 41,
+                                        "attributes": {
+                                            "x": {"type": "int", "attr_pointer": 0},
+                                            "y": {"type": "float", "attr_pointer": 1},
+                                        },
+                                        "active": True,
+                                        "name": "internal_struct_var",
+                                        "type": "my_struct",
+                                    },
+                                ),
+                                ("DOT", {}),
+                                ("CST", {"type": "int", "value": 0}),
+                                ("ASSIGN", {}),
+                                ("CST", {"type": "int", "value": 1}),
+                                ("SEMI", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "name": "bla",
+                                        "relative_position": 10,
+                                        "prime": 29,
+                                        "type": "int",
+                                    },
+                                ),
+                                ("ASSIGN", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "name": "bla",
+                                        "relative_position": 10,
+                                        "prime": 29,
+                                        "type": "int",
+                                    },
+                                ),
+                                ("ADD", {}),
+                                (
+                                    "FUNC_CALL",
+                                    {
+                                        "arguments": [
+                                            {
+                                                "variable": True,
+                                                "name": "blabla",
+                                                "relative_position": 11,
+                                                "prime": 31,
+                                                "type": "float",
+                                            },
+                                            {
+                                                "variable": False,
+                                                "type": "int",
+                                                "value": 123,
+                                            },
+                                        ],
+                                        "called_function_metadata": {
+                                            "relative_position": 2,
+                                            "prime": 3,
+                                            "type": "int",
+                                            "parameters": {
+                                                "param_1": {
+                                                    "type": "float",
+                                                    "relative_position": 6,
+                                                    "prime": 13,
+                                                },
+                                                "param_2": {
+                                                    "type": "int",
+                                                    "relative_position": 7,
+                                                    "prime": 17,
+                                                },
+                                            },
+                                            "statements": [
+                                                ("LCBRA", {}),
+                                                ("RET_SYM", {}),
+                                                (
+                                                    "VAR",
+                                                    {
+                                                        "type": "float",
+                                                        "relative_position": 6,
+                                                        "prime": 13,
+                                                    },
+                                                ),
+                                                ("DIV", {}),
+                                                (
+                                                    "VAR",
+                                                    {
+                                                        "type": "int",
+                                                        "relative_position": 7,
+                                                        "prime": 17,
+                                                    },
+                                                ),
+                                                ("SEMI", {}),
+                                                ("RCBRA", {}),
+                                            ],
+                                        },
+                                    },
+                                ),
+                                ("SEMI", {}),
+                                ("RET_SYM", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "name": "blabla",
+                                        "relative_position": 11,
+                                        "prime": 31,
+                                        "type": "float",
+                                    },
+                                ),
+                                ("ADD", {}),
+                                (
+                                    "VAR",
+                                    {
+                                        "name": "bla",
+                                        "relative_position": 10,
+                                        "prime": 29,
+                                        "type": "int",
+                                    },
+                                ),
+                                ("SEMI", {}),
+                                ("RCBRA", {}),
+                            ],
+                        },
                     },
                 ),
                 ("SEMI", {}),

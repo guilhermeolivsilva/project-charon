@@ -24,15 +24,17 @@ class FUNC_CALL(Node):
 
     @override
     def __init__(self, id: int, function_call_metadata: dict) -> None:
-        function_id: int = function_call_metadata.get("function")
+        function_id: int = function_call_metadata["called_function_metadata"]["relative_position"]
         super().__init__(id, function_id)
+
+        _function_type: str = function_call_metadata["called_function_metadata"]["type"]
 
         self.function_call_metadata: dict = function_call_metadata
         self.arguments: list[ARG] = self._build_children_nodes()
-        self.type: str = self.function_call_metadata.get("return_type")
+        self.type: str = _function_type
 
-        prime: int = self.function_call_metadata["prime"]
-        self.symbol: str = f"({self.symbol})^({prime})"
+        _prime: int = self.function_call_metadata["called_function_metadata"]["prime"]
+        self.symbol: str = f"({self.symbol})^({_prime})"
 
     @override
     def get_certificate_label(self) -> list[str]:
