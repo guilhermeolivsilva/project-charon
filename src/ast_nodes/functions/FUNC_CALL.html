@@ -112,175 +112,186 @@
 </span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>
 </span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>    <span class="nd">@override</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="n">function_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">)</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="n">function_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;relative_position&quot;</span><span class="p">]</span>
 </span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">function_id</span><span class="p">)</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">function_call_metadata</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ARG</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_children_nodes</span><span class="p">()</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;return_type&quot;</span><span class="p">)</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;prime&quot;</span><span class="p">]</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^(</span><span class="si">{</span><span class="n">prime</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="nd">@override</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        For `FUNC_CALL` nodes, obtain the certificates, recursively, from each</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        `argument` subtree first, and then from the `FUNC_CALL` node itself.</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        Returns</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        -------</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        : list of str</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="n">_function_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">function_call_metadata</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ARG</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_children_nodes</span><span class="p">()</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_function_type</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>        <span class="n">_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;prime&quot;</span><span class="p">]</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^(</span><span class="si">{</span><span class="n">_prime</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="nd">@override</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        For `FUNC_CALL` nodes, obtain the certificates, recursively, from each</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        `argument` subtree first, and then from the `FUNC_CALL` node itself.</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        Returns</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        -------</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">        : list of str</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>            <span class="n">certificate_label</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="n">certificate_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>            <span class="n">certificate_label</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>        <span class="n">certificate_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="nd">@override</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">        Print the string representation of this `FUNC_CALL`.</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        Parameters</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        ----------</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="nd">@override</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">        Print the string representation of this `FUNC_CALL`.</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        with an additional left space.</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        Parameters</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        ----------</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>            <span class="n">argument</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="nd">@override</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="p">]:</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        Generate the code associated with this `FUNC_CALL`.</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        For this node specialization, generate code from `argument` children</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        nodes first, and then from the `FUNC_CALL` itself.</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        Parameters</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">        ----------</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        register : int</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">            Node.</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">        Returns</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">        -------</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        register : int</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="n">arguments_registers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">argument_code</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span><span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">)</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>            <span class="c1"># Keep track of the registers containing the arguments values</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>            <span class="n">arguments_registers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>                <span class="n">argument_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;register&quot;</span><span class="p">)</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>            <span class="p">)</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_code</span><span class="p">)</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>            <span class="n">argument</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>    <span class="nd">@override</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="p">]:</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        Generate the code associated with this `FUNC_CALL`.</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        For this node specialization, generate code from `argument` children</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        nodes first, and then from the `FUNC_CALL` itself.</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        Parameters</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        ----------</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        register : int</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            Node.</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        Returns</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        -------</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">        register : int</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">        code_metadata : list of dict</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="n">arguments_registers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">argument_code</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span><span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">)</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>            <span class="c1"># Keep track of the registers containing the arguments values</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>            <span class="n">arguments_registers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>                <span class="n">argument_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;register&quot;</span><span class="p">)</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>            <span class="p">)</span>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="c1"># The code for the function call itself is actually very simple! Just</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="c1"># jump-and-link (JAL), to keep track of the return address, and copy</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="c1"># the `returned_value_register` to `register`.</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="n">func_call_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>            <span class="p">{</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JAL&quot;</span><span class="p">,</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>            <span class="p">},</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="p">{</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;ret_value&quot;</span><span class="p">,</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>                <span class="p">}</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>            <span class="p">}</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="p">]</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">func_call_code</span><span class="p">)</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_code</span><span class="p">)</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="c1"># The code for the function call itself is actually very simple! Just</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="c1"># jump-and-link (JAL), to keep track of the return address, and copy</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="c1"># the `returned_value_register` to `register`.</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="n">func_call_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>            <span class="p">{</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JAL&quot;</span><span class="p">,</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>            <span class="p">},</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>            <span class="p">{</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;ret_value&quot;</span><span class="p">,</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>                <span class="p">}</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>            <span class="p">}</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="p">]</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">func_call_code</span><span class="p">)</span>
 </span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>    <span class="nd">@override</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        Compute the certificate of the current `FUNC_CALL`, and set this attribute.</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        For `FUNC_CALL` nodes, certificate each `argument` child first, and</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">        then the `FUNC_CALL` itself.</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        Parameters</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        ----------</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">        prime : int</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">            in the AST.</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">        Returns</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">        -------</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        : int</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>    <span class="nd">@override</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        Compute the certificate of the current `FUNC_CALL`, and set this attribute.</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">        For `FUNC_CALL` nodes, certificate each `argument` child first, and</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        then the `FUNC_CALL` itself.</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">        Parameters</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        ----------</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">        prime : int</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">            in the AST.</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        Returns</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">        -------</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">        : int</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
 </span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>    <span class="k">def</span> <span class="nf">_build_children_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>        <span class="n">arguments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;arguments&quot;</span><span class="p">)</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>        <span class="n">children_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>        <span class="k">for</span> <span class="n">argument_metadata</span> <span class="ow">in</span> <span class="n">arguments</span><span class="p">:</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>            <span class="n">_is_variable</span> <span class="o">=</span> <span class="n">argument_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">)</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>            <span class="k">if</span> <span class="n">_is_variable</span><span class="p">:</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">VAR</span><span class="p">(</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>                    <span class="n">variable_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>                <span class="p">)</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>    <span class="k">def</span> <span class="nf">_build_children_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>        <span class="n">arguments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;arguments&quot;</span><span class="p">]</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>        <span class="n">parameters_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>            <span class="n">param</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">(</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">]</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>                                           <span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>                                           <span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>            <span class="p">)</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>        <span class="p">]</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="n">children_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
 </span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">CST</span><span class="p">(</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>                    <span class="n">constant_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>                <span class="p">)</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>            <span class="n">new_node</span> <span class="o">=</span> <span class="n">ARG</span><span class="p">(</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>                <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>                <span class="n">argument_value</span><span class="o">=</span><span class="n">argument_value</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>            <span class="p">)</span>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>            <span class="n">children_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>        <span class="k">return</span> <span class="n">children_nodes</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">argument_metadata</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">arguments</span><span class="p">):</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>            <span class="n">_is_variable</span> <span class="o">=</span> <span class="n">argument_metadata</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>            <span class="n">_parameter_type</span> <span class="o">=</span> <span class="n">parameters_types</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>            <span class="k">if</span> <span class="n">_is_variable</span><span class="p">:</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">VAR</span><span class="p">(</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>                    <span class="n">variable_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>                <span class="p">)</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">CST</span><span class="p">(</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>                    <span class="n">constant_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>                <span class="p">)</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>            <span class="n">new_node</span> <span class="o">=</span> <span class="n">ARG</span><span class="p">(</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>                <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>                <span class="n">argument_value</span><span class="o">=</span><span class="n">argument_value</span><span class="p">,</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>                <span class="n">parameter_type</span><span class="o">=</span><span class="n">_parameter_type</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>            <span class="p">)</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>            <span class="n">children_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>        <span class="k">return</span> <span class="n">children_nodes</span>
 </span></pre></div>
 
 
@@ -310,175 +321,186 @@
 </span><span id="FUNC_CALL-25"><a href="#FUNC_CALL-25"><span class="linenos"> 25</span></a>
 </span><span id="FUNC_CALL-26"><a href="#FUNC_CALL-26"><span class="linenos"> 26</span></a>    <span class="nd">@override</span>
 </span><span id="FUNC_CALL-27"><a href="#FUNC_CALL-27"><span class="linenos"> 27</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="FUNC_CALL-28"><a href="#FUNC_CALL-28"><span class="linenos"> 28</span></a>        <span class="n">function_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">)</span>
+</span><span id="FUNC_CALL-28"><a href="#FUNC_CALL-28"><span class="linenos"> 28</span></a>        <span class="n">function_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;relative_position&quot;</span><span class="p">]</span>
 </span><span id="FUNC_CALL-29"><a href="#FUNC_CALL-29"><span class="linenos"> 29</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">function_id</span><span class="p">)</span>
 </span><span id="FUNC_CALL-30"><a href="#FUNC_CALL-30"><span class="linenos"> 30</span></a>
-</span><span id="FUNC_CALL-31"><a href="#FUNC_CALL-31"><span class="linenos"> 31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">function_call_metadata</span>
-</span><span id="FUNC_CALL-32"><a href="#FUNC_CALL-32"><span class="linenos"> 32</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ARG</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_children_nodes</span><span class="p">()</span>
-</span><span id="FUNC_CALL-33"><a href="#FUNC_CALL-33"><span class="linenos"> 33</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;return_type&quot;</span><span class="p">)</span>
-</span><span id="FUNC_CALL-34"><a href="#FUNC_CALL-34"><span class="linenos"> 34</span></a>
-</span><span id="FUNC_CALL-35"><a href="#FUNC_CALL-35"><span class="linenos"> 35</span></a>        <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;prime&quot;</span><span class="p">]</span>
-</span><span id="FUNC_CALL-36"><a href="#FUNC_CALL-36"><span class="linenos"> 36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^(</span><span class="si">{</span><span class="n">prime</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="FUNC_CALL-37"><a href="#FUNC_CALL-37"><span class="linenos"> 37</span></a>
-</span><span id="FUNC_CALL-38"><a href="#FUNC_CALL-38"><span class="linenos"> 38</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL-39"><a href="#FUNC_CALL-39"><span class="linenos"> 39</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="FUNC_CALL-40"><a href="#FUNC_CALL-40"><span class="linenos"> 40</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-41"><a href="#FUNC_CALL-41"><span class="linenos"> 41</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="FUNC_CALL-42"><a href="#FUNC_CALL-42"><span class="linenos"> 42</span></a>
-</span><span id="FUNC_CALL-43"><a href="#FUNC_CALL-43"><span class="linenos"> 43</span></a><span class="sd">        For `FUNC_CALL` nodes, obtain the certificates, recursively, from each</span>
-</span><span id="FUNC_CALL-44"><a href="#FUNC_CALL-44"><span class="linenos"> 44</span></a><span class="sd">        `argument` subtree first, and then from the `FUNC_CALL` node itself.</span>
-</span><span id="FUNC_CALL-45"><a href="#FUNC_CALL-45"><span class="linenos"> 45</span></a>
-</span><span id="FUNC_CALL-46"><a href="#FUNC_CALL-46"><span class="linenos"> 46</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_CALL-47"><a href="#FUNC_CALL-47"><span class="linenos"> 47</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_CALL-48"><a href="#FUNC_CALL-48"><span class="linenos"> 48</span></a><span class="sd">        : list of str</span>
-</span><span id="FUNC_CALL-49"><a href="#FUNC_CALL-49"><span class="linenos"> 49</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="FUNC_CALL-50"><a href="#FUNC_CALL-50"><span class="linenos"> 50</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-51"><a href="#FUNC_CALL-51"><span class="linenos"> 51</span></a>
-</span><span id="FUNC_CALL-52"><a href="#FUNC_CALL-52"><span class="linenos"> 52</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL-31"><a href="#FUNC_CALL-31"><span class="linenos"> 31</span></a>        <span class="n">_function_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL-32"><a href="#FUNC_CALL-32"><span class="linenos"> 32</span></a>
+</span><span id="FUNC_CALL-33"><a href="#FUNC_CALL-33"><span class="linenos"> 33</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">function_call_metadata</span>
+</span><span id="FUNC_CALL-34"><a href="#FUNC_CALL-34"><span class="linenos"> 34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ARG</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_children_nodes</span><span class="p">()</span>
+</span><span id="FUNC_CALL-35"><a href="#FUNC_CALL-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_function_type</span>
+</span><span id="FUNC_CALL-36"><a href="#FUNC_CALL-36"><span class="linenos"> 36</span></a>
+</span><span id="FUNC_CALL-37"><a href="#FUNC_CALL-37"><span class="linenos"> 37</span></a>        <span class="n">_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;prime&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL-38"><a href="#FUNC_CALL-38"><span class="linenos"> 38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^(</span><span class="si">{</span><span class="n">_prime</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="FUNC_CALL-39"><a href="#FUNC_CALL-39"><span class="linenos"> 39</span></a>
+</span><span id="FUNC_CALL-40"><a href="#FUNC_CALL-40"><span class="linenos"> 40</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL-41"><a href="#FUNC_CALL-41"><span class="linenos"> 41</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="FUNC_CALL-42"><a href="#FUNC_CALL-42"><span class="linenos"> 42</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL-43"><a href="#FUNC_CALL-43"><span class="linenos"> 43</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="FUNC_CALL-44"><a href="#FUNC_CALL-44"><span class="linenos"> 44</span></a>
+</span><span id="FUNC_CALL-45"><a href="#FUNC_CALL-45"><span class="linenos"> 45</span></a><span class="sd">        For `FUNC_CALL` nodes, obtain the certificates, recursively, from each</span>
+</span><span id="FUNC_CALL-46"><a href="#FUNC_CALL-46"><span class="linenos"> 46</span></a><span class="sd">        `argument` subtree first, and then from the `FUNC_CALL` node itself.</span>
+</span><span id="FUNC_CALL-47"><a href="#FUNC_CALL-47"><span class="linenos"> 47</span></a>
+</span><span id="FUNC_CALL-48"><a href="#FUNC_CALL-48"><span class="linenos"> 48</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_CALL-49"><a href="#FUNC_CALL-49"><span class="linenos"> 49</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_CALL-50"><a href="#FUNC_CALL-50"><span class="linenos"> 50</span></a><span class="sd">        : list of str</span>
+</span><span id="FUNC_CALL-51"><a href="#FUNC_CALL-51"><span class="linenos"> 51</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="FUNC_CALL-52"><a href="#FUNC_CALL-52"><span class="linenos"> 52</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="FUNC_CALL-53"><a href="#FUNC_CALL-53"><span class="linenos"> 53</span></a>
-</span><span id="FUNC_CALL-54"><a href="#FUNC_CALL-54"><span class="linenos"> 54</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL-55"><a href="#FUNC_CALL-55"><span class="linenos"> 55</span></a>            <span class="n">certificate_label</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
-</span><span id="FUNC_CALL-56"><a href="#FUNC_CALL-56"><span class="linenos"> 56</span></a>
-</span><span id="FUNC_CALL-57"><a href="#FUNC_CALL-57"><span class="linenos"> 57</span></a>        <span class="n">certificate_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
+</span><span id="FUNC_CALL-54"><a href="#FUNC_CALL-54"><span class="linenos"> 54</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL-55"><a href="#FUNC_CALL-55"><span class="linenos"> 55</span></a>
+</span><span id="FUNC_CALL-56"><a href="#FUNC_CALL-56"><span class="linenos"> 56</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL-57"><a href="#FUNC_CALL-57"><span class="linenos"> 57</span></a>            <span class="n">certificate_label</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
 </span><span id="FUNC_CALL-58"><a href="#FUNC_CALL-58"><span class="linenos"> 58</span></a>
-</span><span id="FUNC_CALL-59"><a href="#FUNC_CALL-59"><span class="linenos"> 59</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
+</span><span id="FUNC_CALL-59"><a href="#FUNC_CALL-59"><span class="linenos"> 59</span></a>        <span class="n">certificate_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
 </span><span id="FUNC_CALL-60"><a href="#FUNC_CALL-60"><span class="linenos"> 60</span></a>
-</span><span id="FUNC_CALL-61"><a href="#FUNC_CALL-61"><span class="linenos"> 61</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL-62"><a href="#FUNC_CALL-62"><span class="linenos"> 62</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="FUNC_CALL-63"><a href="#FUNC_CALL-63"><span class="linenos"> 63</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-64"><a href="#FUNC_CALL-64"><span class="linenos"> 64</span></a><span class="sd">        Print the string representation of this `FUNC_CALL`.</span>
-</span><span id="FUNC_CALL-65"><a href="#FUNC_CALL-65"><span class="linenos"> 65</span></a>
-</span><span id="FUNC_CALL-66"><a href="#FUNC_CALL-66"><span class="linenos"> 66</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="FUNC_CALL-67"><a href="#FUNC_CALL-67"><span class="linenos"> 67</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="FUNC_CALL-68"><a href="#FUNC_CALL-68"><span class="linenos"> 68</span></a>
-</span><span id="FUNC_CALL-69"><a href="#FUNC_CALL-69"><span class="linenos"> 69</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_CALL-70"><a href="#FUNC_CALL-70"><span class="linenos"> 70</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_CALL-71"><a href="#FUNC_CALL-71"><span class="linenos"> 71</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="FUNC_CALL-72"><a href="#FUNC_CALL-72"><span class="linenos"> 72</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="FUNC_CALL-73"><a href="#FUNC_CALL-73"><span class="linenos"> 73</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-74"><a href="#FUNC_CALL-74"><span class="linenos"> 74</span></a>
-</span><span id="FUNC_CALL-75"><a href="#FUNC_CALL-75"><span class="linenos"> 75</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="FUNC_CALL-61"><a href="#FUNC_CALL-61"><span class="linenos"> 61</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
+</span><span id="FUNC_CALL-62"><a href="#FUNC_CALL-62"><span class="linenos"> 62</span></a>
+</span><span id="FUNC_CALL-63"><a href="#FUNC_CALL-63"><span class="linenos"> 63</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL-64"><a href="#FUNC_CALL-64"><span class="linenos"> 64</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="FUNC_CALL-65"><a href="#FUNC_CALL-65"><span class="linenos"> 65</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL-66"><a href="#FUNC_CALL-66"><span class="linenos"> 66</span></a><span class="sd">        Print the string representation of this `FUNC_CALL`.</span>
+</span><span id="FUNC_CALL-67"><a href="#FUNC_CALL-67"><span class="linenos"> 67</span></a>
+</span><span id="FUNC_CALL-68"><a href="#FUNC_CALL-68"><span class="linenos"> 68</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="FUNC_CALL-69"><a href="#FUNC_CALL-69"><span class="linenos"> 69</span></a><span class="sd">        with an additional left space.</span>
+</span><span id="FUNC_CALL-70"><a href="#FUNC_CALL-70"><span class="linenos"> 70</span></a>
+</span><span id="FUNC_CALL-71"><a href="#FUNC_CALL-71"><span class="linenos"> 71</span></a><span class="sd">        Parameters</span>
+</span><span id="FUNC_CALL-72"><a href="#FUNC_CALL-72"><span class="linenos"> 72</span></a><span class="sd">        ----------</span>
+</span><span id="FUNC_CALL-73"><a href="#FUNC_CALL-73"><span class="linenos"> 73</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="FUNC_CALL-74"><a href="#FUNC_CALL-74"><span class="linenos"> 74</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="FUNC_CALL-75"><a href="#FUNC_CALL-75"><span class="linenos"> 75</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="FUNC_CALL-76"><a href="#FUNC_CALL-76"><span class="linenos"> 76</span></a>
-</span><span id="FUNC_CALL-77"><a href="#FUNC_CALL-77"><span class="linenos"> 77</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL-78"><a href="#FUNC_CALL-78"><span class="linenos"> 78</span></a>            <span class="n">argument</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="FUNC_CALL-79"><a href="#FUNC_CALL-79"><span class="linenos"> 79</span></a>
-</span><span id="FUNC_CALL-80"><a href="#FUNC_CALL-80"><span class="linenos"> 80</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL-81"><a href="#FUNC_CALL-81"><span class="linenos"> 81</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="FUNC_CALL-82"><a href="#FUNC_CALL-82"><span class="linenos"> 82</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="FUNC_CALL-83"><a href="#FUNC_CALL-83"><span class="linenos"> 83</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
-</span><span id="FUNC_CALL-84"><a href="#FUNC_CALL-84"><span class="linenos"> 84</span></a>    <span class="p">]:</span>
-</span><span id="FUNC_CALL-85"><a href="#FUNC_CALL-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-86"><a href="#FUNC_CALL-86"><span class="linenos"> 86</span></a><span class="sd">        Generate the code associated with this `FUNC_CALL`.</span>
-</span><span id="FUNC_CALL-87"><a href="#FUNC_CALL-87"><span class="linenos"> 87</span></a>
-</span><span id="FUNC_CALL-88"><a href="#FUNC_CALL-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, generate code from `argument` children</span>
-</span><span id="FUNC_CALL-89"><a href="#FUNC_CALL-89"><span class="linenos"> 89</span></a><span class="sd">        nodes first, and then from the `FUNC_CALL` itself.</span>
-</span><span id="FUNC_CALL-90"><a href="#FUNC_CALL-90"><span class="linenos"> 90</span></a>
-</span><span id="FUNC_CALL-91"><a href="#FUNC_CALL-91"><span class="linenos"> 91</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_CALL-92"><a href="#FUNC_CALL-92"><span class="linenos"> 92</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_CALL-93"><a href="#FUNC_CALL-93"><span class="linenos"> 93</span></a><span class="sd">        register : int</span>
-</span><span id="FUNC_CALL-94"><a href="#FUNC_CALL-94"><span class="linenos"> 94</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="FUNC_CALL-95"><a href="#FUNC_CALL-95"><span class="linenos"> 95</span></a><span class="sd">            Node.</span>
-</span><span id="FUNC_CALL-96"><a href="#FUNC_CALL-96"><span class="linenos"> 96</span></a>
-</span><span id="FUNC_CALL-97"><a href="#FUNC_CALL-97"><span class="linenos"> 97</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_CALL-98"><a href="#FUNC_CALL-98"><span class="linenos"> 98</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_CALL-99"><a href="#FUNC_CALL-99"><span class="linenos"> 99</span></a><span class="sd">        register : int</span>
-</span><span id="FUNC_CALL-100"><a href="#FUNC_CALL-100"><span class="linenos">100</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="FUNC_CALL-101"><a href="#FUNC_CALL-101"><span class="linenos">101</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="FUNC_CALL-102"><a href="#FUNC_CALL-102"><span class="linenos">102</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="FUNC_CALL-103"><a href="#FUNC_CALL-103"><span class="linenos">103</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
-</span><span id="FUNC_CALL-104"><a href="#FUNC_CALL-104"><span class="linenos">104</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-105"><a href="#FUNC_CALL-105"><span class="linenos">105</span></a>
-</span><span id="FUNC_CALL-106"><a href="#FUNC_CALL-106"><span class="linenos">106</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="FUNC_CALL-107"><a href="#FUNC_CALL-107"><span class="linenos">107</span></a>        <span class="n">arguments_registers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="FUNC_CALL-108"><a href="#FUNC_CALL-108"><span class="linenos">108</span></a>
-</span><span id="FUNC_CALL-109"><a href="#FUNC_CALL-109"><span class="linenos">109</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL-110"><a href="#FUNC_CALL-110"><span class="linenos">110</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">argument_code</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span><span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">)</span>
-</span><span id="FUNC_CALL-111"><a href="#FUNC_CALL-111"><span class="linenos">111</span></a>
-</span><span id="FUNC_CALL-112"><a href="#FUNC_CALL-112"><span class="linenos">112</span></a>            <span class="c1"># Keep track of the registers containing the arguments values</span>
-</span><span id="FUNC_CALL-113"><a href="#FUNC_CALL-113"><span class="linenos">113</span></a>            <span class="n">arguments_registers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="FUNC_CALL-114"><a href="#FUNC_CALL-114"><span class="linenos">114</span></a>                <span class="n">argument_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;register&quot;</span><span class="p">)</span>
-</span><span id="FUNC_CALL-115"><a href="#FUNC_CALL-115"><span class="linenos">115</span></a>            <span class="p">)</span>
-</span><span id="FUNC_CALL-116"><a href="#FUNC_CALL-116"><span class="linenos">116</span></a>
-</span><span id="FUNC_CALL-117"><a href="#FUNC_CALL-117"><span class="linenos">117</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_code</span><span class="p">)</span>
+</span><span id="FUNC_CALL-77"><a href="#FUNC_CALL-77"><span class="linenos"> 77</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="FUNC_CALL-78"><a href="#FUNC_CALL-78"><span class="linenos"> 78</span></a>
+</span><span id="FUNC_CALL-79"><a href="#FUNC_CALL-79"><span class="linenos"> 79</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL-80"><a href="#FUNC_CALL-80"><span class="linenos"> 80</span></a>            <span class="n">argument</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="FUNC_CALL-81"><a href="#FUNC_CALL-81"><span class="linenos"> 81</span></a>
+</span><span id="FUNC_CALL-82"><a href="#FUNC_CALL-82"><span class="linenos"> 82</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL-83"><a href="#FUNC_CALL-83"><span class="linenos"> 83</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="FUNC_CALL-84"><a href="#FUNC_CALL-84"><span class="linenos"> 84</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="FUNC_CALL-85"><a href="#FUNC_CALL-85"><span class="linenos"> 85</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
+</span><span id="FUNC_CALL-86"><a href="#FUNC_CALL-86"><span class="linenos"> 86</span></a>    <span class="p">]:</span>
+</span><span id="FUNC_CALL-87"><a href="#FUNC_CALL-87"><span class="linenos"> 87</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL-88"><a href="#FUNC_CALL-88"><span class="linenos"> 88</span></a><span class="sd">        Generate the code associated with this `FUNC_CALL`.</span>
+</span><span id="FUNC_CALL-89"><a href="#FUNC_CALL-89"><span class="linenos"> 89</span></a>
+</span><span id="FUNC_CALL-90"><a href="#FUNC_CALL-90"><span class="linenos"> 90</span></a><span class="sd">        For this node specialization, generate code from `argument` children</span>
+</span><span id="FUNC_CALL-91"><a href="#FUNC_CALL-91"><span class="linenos"> 91</span></a><span class="sd">        nodes first, and then from the `FUNC_CALL` itself.</span>
+</span><span id="FUNC_CALL-92"><a href="#FUNC_CALL-92"><span class="linenos"> 92</span></a>
+</span><span id="FUNC_CALL-93"><a href="#FUNC_CALL-93"><span class="linenos"> 93</span></a><span class="sd">        Parameters</span>
+</span><span id="FUNC_CALL-94"><a href="#FUNC_CALL-94"><span class="linenos"> 94</span></a><span class="sd">        ----------</span>
+</span><span id="FUNC_CALL-95"><a href="#FUNC_CALL-95"><span class="linenos"> 95</span></a><span class="sd">        register : int</span>
+</span><span id="FUNC_CALL-96"><a href="#FUNC_CALL-96"><span class="linenos"> 96</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="FUNC_CALL-97"><a href="#FUNC_CALL-97"><span class="linenos"> 97</span></a><span class="sd">            Node.</span>
+</span><span id="FUNC_CALL-98"><a href="#FUNC_CALL-98"><span class="linenos"> 98</span></a>
+</span><span id="FUNC_CALL-99"><a href="#FUNC_CALL-99"><span class="linenos"> 99</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_CALL-100"><a href="#FUNC_CALL-100"><span class="linenos">100</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_CALL-101"><a href="#FUNC_CALL-101"><span class="linenos">101</span></a><span class="sd">        register : int</span>
+</span><span id="FUNC_CALL-102"><a href="#FUNC_CALL-102"><span class="linenos">102</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="FUNC_CALL-103"><a href="#FUNC_CALL-103"><span class="linenos">103</span></a><span class="sd">        code_metadata : list of dict</span>
+</span><span id="FUNC_CALL-104"><a href="#FUNC_CALL-104"><span class="linenos">104</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="FUNC_CALL-105"><a href="#FUNC_CALL-105"><span class="linenos">105</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="FUNC_CALL-106"><a href="#FUNC_CALL-106"><span class="linenos">106</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL-107"><a href="#FUNC_CALL-107"><span class="linenos">107</span></a>
+</span><span id="FUNC_CALL-108"><a href="#FUNC_CALL-108"><span class="linenos">108</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL-109"><a href="#FUNC_CALL-109"><span class="linenos">109</span></a>        <span class="n">arguments_registers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL-110"><a href="#FUNC_CALL-110"><span class="linenos">110</span></a>
+</span><span id="FUNC_CALL-111"><a href="#FUNC_CALL-111"><span class="linenos">111</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL-112"><a href="#FUNC_CALL-112"><span class="linenos">112</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">argument_code</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span><span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">)</span>
+</span><span id="FUNC_CALL-113"><a href="#FUNC_CALL-113"><span class="linenos">113</span></a>
+</span><span id="FUNC_CALL-114"><a href="#FUNC_CALL-114"><span class="linenos">114</span></a>            <span class="c1"># Keep track of the registers containing the arguments values</span>
+</span><span id="FUNC_CALL-115"><a href="#FUNC_CALL-115"><span class="linenos">115</span></a>            <span class="n">arguments_registers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="FUNC_CALL-116"><a href="#FUNC_CALL-116"><span class="linenos">116</span></a>                <span class="n">argument_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;register&quot;</span><span class="p">)</span>
+</span><span id="FUNC_CALL-117"><a href="#FUNC_CALL-117"><span class="linenos">117</span></a>            <span class="p">)</span>
 </span><span id="FUNC_CALL-118"><a href="#FUNC_CALL-118"><span class="linenos">118</span></a>
-</span><span id="FUNC_CALL-119"><a href="#FUNC_CALL-119"><span class="linenos">119</span></a>        <span class="c1"># The code for the function call itself is actually very simple! Just</span>
-</span><span id="FUNC_CALL-120"><a href="#FUNC_CALL-120"><span class="linenos">120</span></a>        <span class="c1"># jump-and-link (JAL), to keep track of the return address, and copy</span>
-</span><span id="FUNC_CALL-121"><a href="#FUNC_CALL-121"><span class="linenos">121</span></a>        <span class="c1"># the `returned_value_register` to `register`.</span>
-</span><span id="FUNC_CALL-122"><a href="#FUNC_CALL-122"><span class="linenos">122</span></a>        <span class="n">func_call_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="FUNC_CALL-123"><a href="#FUNC_CALL-123"><span class="linenos">123</span></a>            <span class="p">{</span>
-</span><span id="FUNC_CALL-124"><a href="#FUNC_CALL-124"><span class="linenos">124</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JAL&quot;</span><span class="p">,</span>
-</span><span id="FUNC_CALL-125"><a href="#FUNC_CALL-125"><span class="linenos">125</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
-</span><span id="FUNC_CALL-126"><a href="#FUNC_CALL-126"><span class="linenos">126</span></a>            <span class="p">},</span>
-</span><span id="FUNC_CALL-127"><a href="#FUNC_CALL-127"><span class="linenos">127</span></a>            <span class="p">{</span>
-</span><span id="FUNC_CALL-128"><a href="#FUNC_CALL-128"><span class="linenos">128</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="FUNC_CALL-129"><a href="#FUNC_CALL-129"><span class="linenos">129</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="FUNC_CALL-130"><a href="#FUNC_CALL-130"><span class="linenos">130</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
-</span><span id="FUNC_CALL-131"><a href="#FUNC_CALL-131"><span class="linenos">131</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;ret_value&quot;</span><span class="p">,</span>
-</span><span id="FUNC_CALL-132"><a href="#FUNC_CALL-132"><span class="linenos">132</span></a>                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
-</span><span id="FUNC_CALL-133"><a href="#FUNC_CALL-133"><span class="linenos">133</span></a>                <span class="p">}</span>
-</span><span id="FUNC_CALL-134"><a href="#FUNC_CALL-134"><span class="linenos">134</span></a>            <span class="p">}</span>
-</span><span id="FUNC_CALL-135"><a href="#FUNC_CALL-135"><span class="linenos">135</span></a>        <span class="p">]</span>
-</span><span id="FUNC_CALL-136"><a href="#FUNC_CALL-136"><span class="linenos">136</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="FUNC_CALL-137"><a href="#FUNC_CALL-137"><span class="linenos">137</span></a>
-</span><span id="FUNC_CALL-138"><a href="#FUNC_CALL-138"><span class="linenos">138</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">func_call_code</span><span class="p">)</span>
+</span><span id="FUNC_CALL-119"><a href="#FUNC_CALL-119"><span class="linenos">119</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_code</span><span class="p">)</span>
+</span><span id="FUNC_CALL-120"><a href="#FUNC_CALL-120"><span class="linenos">120</span></a>
+</span><span id="FUNC_CALL-121"><a href="#FUNC_CALL-121"><span class="linenos">121</span></a>        <span class="c1"># The code for the function call itself is actually very simple! Just</span>
+</span><span id="FUNC_CALL-122"><a href="#FUNC_CALL-122"><span class="linenos">122</span></a>        <span class="c1"># jump-and-link (JAL), to keep track of the return address, and copy</span>
+</span><span id="FUNC_CALL-123"><a href="#FUNC_CALL-123"><span class="linenos">123</span></a>        <span class="c1"># the `returned_value_register` to `register`.</span>
+</span><span id="FUNC_CALL-124"><a href="#FUNC_CALL-124"><span class="linenos">124</span></a>        <span class="n">func_call_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="FUNC_CALL-125"><a href="#FUNC_CALL-125"><span class="linenos">125</span></a>            <span class="p">{</span>
+</span><span id="FUNC_CALL-126"><a href="#FUNC_CALL-126"><span class="linenos">126</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JAL&quot;</span><span class="p">,</span>
+</span><span id="FUNC_CALL-127"><a href="#FUNC_CALL-127"><span class="linenos">127</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
+</span><span id="FUNC_CALL-128"><a href="#FUNC_CALL-128"><span class="linenos">128</span></a>            <span class="p">},</span>
+</span><span id="FUNC_CALL-129"><a href="#FUNC_CALL-129"><span class="linenos">129</span></a>            <span class="p">{</span>
+</span><span id="FUNC_CALL-130"><a href="#FUNC_CALL-130"><span class="linenos">130</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
+</span><span id="FUNC_CALL-131"><a href="#FUNC_CALL-131"><span class="linenos">131</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="FUNC_CALL-132"><a href="#FUNC_CALL-132"><span class="linenos">132</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="FUNC_CALL-133"><a href="#FUNC_CALL-133"><span class="linenos">133</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;ret_value&quot;</span><span class="p">,</span>
+</span><span id="FUNC_CALL-134"><a href="#FUNC_CALL-134"><span class="linenos">134</span></a>                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+</span><span id="FUNC_CALL-135"><a href="#FUNC_CALL-135"><span class="linenos">135</span></a>                <span class="p">}</span>
+</span><span id="FUNC_CALL-136"><a href="#FUNC_CALL-136"><span class="linenos">136</span></a>            <span class="p">}</span>
+</span><span id="FUNC_CALL-137"><a href="#FUNC_CALL-137"><span class="linenos">137</span></a>        <span class="p">]</span>
+</span><span id="FUNC_CALL-138"><a href="#FUNC_CALL-138"><span class="linenos">138</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="FUNC_CALL-139"><a href="#FUNC_CALL-139"><span class="linenos">139</span></a>
-</span><span id="FUNC_CALL-140"><a href="#FUNC_CALL-140"><span class="linenos">140</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="FUNC_CALL-140"><a href="#FUNC_CALL-140"><span class="linenos">140</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">func_call_code</span><span class="p">)</span>
 </span><span id="FUNC_CALL-141"><a href="#FUNC_CALL-141"><span class="linenos">141</span></a>
-</span><span id="FUNC_CALL-142"><a href="#FUNC_CALL-142"><span class="linenos">142</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL-143"><a href="#FUNC_CALL-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="FUNC_CALL-144"><a href="#FUNC_CALL-144"><span class="linenos">144</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-145"><a href="#FUNC_CALL-145"><span class="linenos">145</span></a><span class="sd">        Compute the certificate of the current `FUNC_CALL`, and set this attribute.</span>
-</span><span id="FUNC_CALL-146"><a href="#FUNC_CALL-146"><span class="linenos">146</span></a>
-</span><span id="FUNC_CALL-147"><a href="#FUNC_CALL-147"><span class="linenos">147</span></a><span class="sd">        For `FUNC_CALL` nodes, certificate each `argument` child first, and</span>
-</span><span id="FUNC_CALL-148"><a href="#FUNC_CALL-148"><span class="linenos">148</span></a><span class="sd">        then the `FUNC_CALL` itself.</span>
-</span><span id="FUNC_CALL-149"><a href="#FUNC_CALL-149"><span class="linenos">149</span></a>
-</span><span id="FUNC_CALL-150"><a href="#FUNC_CALL-150"><span class="linenos">150</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_CALL-151"><a href="#FUNC_CALL-151"><span class="linenos">151</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_CALL-152"><a href="#FUNC_CALL-152"><span class="linenos">152</span></a><span class="sd">        prime : int</span>
-</span><span id="FUNC_CALL-153"><a href="#FUNC_CALL-153"><span class="linenos">153</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
-</span><span id="FUNC_CALL-154"><a href="#FUNC_CALL-154"><span class="linenos">154</span></a><span class="sd">            in the AST.</span>
-</span><span id="FUNC_CALL-155"><a href="#FUNC_CALL-155"><span class="linenos">155</span></a>
-</span><span id="FUNC_CALL-156"><a href="#FUNC_CALL-156"><span class="linenos">156</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_CALL-157"><a href="#FUNC_CALL-157"><span class="linenos">157</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_CALL-158"><a href="#FUNC_CALL-158"><span class="linenos">158</span></a><span class="sd">        : int</span>
-</span><span id="FUNC_CALL-159"><a href="#FUNC_CALL-159"><span class="linenos">159</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="FUNC_CALL-160"><a href="#FUNC_CALL-160"><span class="linenos">160</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL-161"><a href="#FUNC_CALL-161"><span class="linenos">161</span></a>
-</span><span id="FUNC_CALL-162"><a href="#FUNC_CALL-162"><span class="linenos">162</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL-163"><a href="#FUNC_CALL-163"><span class="linenos">163</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="FUNC_CALL-164"><a href="#FUNC_CALL-164"><span class="linenos">164</span></a>
-</span><span id="FUNC_CALL-165"><a href="#FUNC_CALL-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="FUNC_CALL-142"><a href="#FUNC_CALL-142"><span class="linenos">142</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="FUNC_CALL-143"><a href="#FUNC_CALL-143"><span class="linenos">143</span></a>
+</span><span id="FUNC_CALL-144"><a href="#FUNC_CALL-144"><span class="linenos">144</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL-145"><a href="#FUNC_CALL-145"><span class="linenos">145</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="FUNC_CALL-146"><a href="#FUNC_CALL-146"><span class="linenos">146</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL-147"><a href="#FUNC_CALL-147"><span class="linenos">147</span></a><span class="sd">        Compute the certificate of the current `FUNC_CALL`, and set this attribute.</span>
+</span><span id="FUNC_CALL-148"><a href="#FUNC_CALL-148"><span class="linenos">148</span></a>
+</span><span id="FUNC_CALL-149"><a href="#FUNC_CALL-149"><span class="linenos">149</span></a><span class="sd">        For `FUNC_CALL` nodes, certificate each `argument` child first, and</span>
+</span><span id="FUNC_CALL-150"><a href="#FUNC_CALL-150"><span class="linenos">150</span></a><span class="sd">        then the `FUNC_CALL` itself.</span>
+</span><span id="FUNC_CALL-151"><a href="#FUNC_CALL-151"><span class="linenos">151</span></a>
+</span><span id="FUNC_CALL-152"><a href="#FUNC_CALL-152"><span class="linenos">152</span></a><span class="sd">        Parameters</span>
+</span><span id="FUNC_CALL-153"><a href="#FUNC_CALL-153"><span class="linenos">153</span></a><span class="sd">        ----------</span>
+</span><span id="FUNC_CALL-154"><a href="#FUNC_CALL-154"><span class="linenos">154</span></a><span class="sd">        prime : int</span>
+</span><span id="FUNC_CALL-155"><a href="#FUNC_CALL-155"><span class="linenos">155</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
+</span><span id="FUNC_CALL-156"><a href="#FUNC_CALL-156"><span class="linenos">156</span></a><span class="sd">            in the AST.</span>
+</span><span id="FUNC_CALL-157"><a href="#FUNC_CALL-157"><span class="linenos">157</span></a>
+</span><span id="FUNC_CALL-158"><a href="#FUNC_CALL-158"><span class="linenos">158</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_CALL-159"><a href="#FUNC_CALL-159"><span class="linenos">159</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_CALL-160"><a href="#FUNC_CALL-160"><span class="linenos">160</span></a><span class="sd">        : int</span>
+</span><span id="FUNC_CALL-161"><a href="#FUNC_CALL-161"><span class="linenos">161</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="FUNC_CALL-162"><a href="#FUNC_CALL-162"><span class="linenos">162</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL-163"><a href="#FUNC_CALL-163"><span class="linenos">163</span></a>
+</span><span id="FUNC_CALL-164"><a href="#FUNC_CALL-164"><span class="linenos">164</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL-165"><a href="#FUNC_CALL-165"><span class="linenos">165</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
 </span><span id="FUNC_CALL-166"><a href="#FUNC_CALL-166"><span class="linenos">166</span></a>
-</span><span id="FUNC_CALL-167"><a href="#FUNC_CALL-167"><span class="linenos">167</span></a>    <span class="k">def</span> <span class="nf">_build_children_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-</span><span id="FUNC_CALL-168"><a href="#FUNC_CALL-168"><span class="linenos">168</span></a>        <span class="n">arguments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;arguments&quot;</span><span class="p">)</span>
-</span><span id="FUNC_CALL-169"><a href="#FUNC_CALL-169"><span class="linenos">169</span></a>
-</span><span id="FUNC_CALL-170"><a href="#FUNC_CALL-170"><span class="linenos">170</span></a>        <span class="n">children_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="FUNC_CALL-171"><a href="#FUNC_CALL-171"><span class="linenos">171</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
-</span><span id="FUNC_CALL-172"><a href="#FUNC_CALL-172"><span class="linenos">172</span></a>
-</span><span id="FUNC_CALL-173"><a href="#FUNC_CALL-173"><span class="linenos">173</span></a>        <span class="k">for</span> <span class="n">argument_metadata</span> <span class="ow">in</span> <span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL-174"><a href="#FUNC_CALL-174"><span class="linenos">174</span></a>            <span class="n">_is_variable</span> <span class="o">=</span> <span class="n">argument_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">)</span>
-</span><span id="FUNC_CALL-175"><a href="#FUNC_CALL-175"><span class="linenos">175</span></a>
-</span><span id="FUNC_CALL-176"><a href="#FUNC_CALL-176"><span class="linenos">176</span></a>            <span class="k">if</span> <span class="n">_is_variable</span><span class="p">:</span>
-</span><span id="FUNC_CALL-177"><a href="#FUNC_CALL-177"><span class="linenos">177</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">VAR</span><span class="p">(</span>
-</span><span id="FUNC_CALL-178"><a href="#FUNC_CALL-178"><span class="linenos">178</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="FUNC_CALL-179"><a href="#FUNC_CALL-179"><span class="linenos">179</span></a>                    <span class="n">variable_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
-</span><span id="FUNC_CALL-180"><a href="#FUNC_CALL-180"><span class="linenos">180</span></a>                <span class="p">)</span>
+</span><span id="FUNC_CALL-167"><a href="#FUNC_CALL-167"><span class="linenos">167</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="FUNC_CALL-168"><a href="#FUNC_CALL-168"><span class="linenos">168</span></a>
+</span><span id="FUNC_CALL-169"><a href="#FUNC_CALL-169"><span class="linenos">169</span></a>    <span class="k">def</span> <span class="nf">_build_children_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+</span><span id="FUNC_CALL-170"><a href="#FUNC_CALL-170"><span class="linenos">170</span></a>        <span class="n">arguments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;arguments&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL-171"><a href="#FUNC_CALL-171"><span class="linenos">171</span></a>        <span class="n">parameters_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="FUNC_CALL-172"><a href="#FUNC_CALL-172"><span class="linenos">172</span></a>            <span class="n">param</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">(</span>
+</span><span id="FUNC_CALL-173"><a href="#FUNC_CALL-173"><span class="linenos">173</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL-174"><a href="#FUNC_CALL-174"><span class="linenos">174</span></a>                                           <span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL-175"><a href="#FUNC_CALL-175"><span class="linenos">175</span></a>                                           <span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span id="FUNC_CALL-176"><a href="#FUNC_CALL-176"><span class="linenos">176</span></a>            <span class="p">)</span>
+</span><span id="FUNC_CALL-177"><a href="#FUNC_CALL-177"><span class="linenos">177</span></a>        <span class="p">]</span>
+</span><span id="FUNC_CALL-178"><a href="#FUNC_CALL-178"><span class="linenos">178</span></a>
+</span><span id="FUNC_CALL-179"><a href="#FUNC_CALL-179"><span class="linenos">179</span></a>        <span class="n">children_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL-180"><a href="#FUNC_CALL-180"><span class="linenos">180</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
 </span><span id="FUNC_CALL-181"><a href="#FUNC_CALL-181"><span class="linenos">181</span></a>
-</span><span id="FUNC_CALL-182"><a href="#FUNC_CALL-182"><span class="linenos">182</span></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="FUNC_CALL-183"><a href="#FUNC_CALL-183"><span class="linenos">183</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">CST</span><span class="p">(</span>
-</span><span id="FUNC_CALL-184"><a href="#FUNC_CALL-184"><span class="linenos">184</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="FUNC_CALL-185"><a href="#FUNC_CALL-185"><span class="linenos">185</span></a>                    <span class="n">constant_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
-</span><span id="FUNC_CALL-186"><a href="#FUNC_CALL-186"><span class="linenos">186</span></a>                <span class="p">)</span>
-</span><span id="FUNC_CALL-187"><a href="#FUNC_CALL-187"><span class="linenos">187</span></a>
-</span><span id="FUNC_CALL-188"><a href="#FUNC_CALL-188"><span class="linenos">188</span></a>            <span class="n">new_node</span> <span class="o">=</span> <span class="n">ARG</span><span class="p">(</span>
-</span><span id="FUNC_CALL-189"><a href="#FUNC_CALL-189"><span class="linenos">189</span></a>                <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span id="FUNC_CALL-190"><a href="#FUNC_CALL-190"><span class="linenos">190</span></a>                <span class="n">argument_value</span><span class="o">=</span><span class="n">argument_value</span>
-</span><span id="FUNC_CALL-191"><a href="#FUNC_CALL-191"><span class="linenos">191</span></a>            <span class="p">)</span>
-</span><span id="FUNC_CALL-192"><a href="#FUNC_CALL-192"><span class="linenos">192</span></a>
-</span><span id="FUNC_CALL-193"><a href="#FUNC_CALL-193"><span class="linenos">193</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="FUNC_CALL-194"><a href="#FUNC_CALL-194"><span class="linenos">194</span></a>            <span class="n">children_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
-</span><span id="FUNC_CALL-195"><a href="#FUNC_CALL-195"><span class="linenos">195</span></a>
-</span><span id="FUNC_CALL-196"><a href="#FUNC_CALL-196"><span class="linenos">196</span></a>        <span class="k">return</span> <span class="n">children_nodes</span>
+</span><span id="FUNC_CALL-182"><a href="#FUNC_CALL-182"><span class="linenos">182</span></a>        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">argument_metadata</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">arguments</span><span class="p">):</span>
+</span><span id="FUNC_CALL-183"><a href="#FUNC_CALL-183"><span class="linenos">183</span></a>            <span class="n">_is_variable</span> <span class="o">=</span> <span class="n">argument_metadata</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL-184"><a href="#FUNC_CALL-184"><span class="linenos">184</span></a>            <span class="n">_parameter_type</span> <span class="o">=</span> <span class="n">parameters_types</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+</span><span id="FUNC_CALL-185"><a href="#FUNC_CALL-185"><span class="linenos">185</span></a>
+</span><span id="FUNC_CALL-186"><a href="#FUNC_CALL-186"><span class="linenos">186</span></a>            <span class="k">if</span> <span class="n">_is_variable</span><span class="p">:</span>
+</span><span id="FUNC_CALL-187"><a href="#FUNC_CALL-187"><span class="linenos">187</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">VAR</span><span class="p">(</span>
+</span><span id="FUNC_CALL-188"><a href="#FUNC_CALL-188"><span class="linenos">188</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="FUNC_CALL-189"><a href="#FUNC_CALL-189"><span class="linenos">189</span></a>                    <span class="n">variable_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
+</span><span id="FUNC_CALL-190"><a href="#FUNC_CALL-190"><span class="linenos">190</span></a>                <span class="p">)</span>
+</span><span id="FUNC_CALL-191"><a href="#FUNC_CALL-191"><span class="linenos">191</span></a>
+</span><span id="FUNC_CALL-192"><a href="#FUNC_CALL-192"><span class="linenos">192</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="FUNC_CALL-193"><a href="#FUNC_CALL-193"><span class="linenos">193</span></a>                <span class="n">argument_value</span> <span class="o">=</span> <span class="n">CST</span><span class="p">(</span>
+</span><span id="FUNC_CALL-194"><a href="#FUNC_CALL-194"><span class="linenos">194</span></a>                    <span class="nb">id</span><span class="o">=</span><span class="n">current_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="FUNC_CALL-195"><a href="#FUNC_CALL-195"><span class="linenos">195</span></a>                    <span class="n">constant_metadata</span><span class="o">=</span><span class="n">argument_metadata</span>
+</span><span id="FUNC_CALL-196"><a href="#FUNC_CALL-196"><span class="linenos">196</span></a>                <span class="p">)</span>
+</span><span id="FUNC_CALL-197"><a href="#FUNC_CALL-197"><span class="linenos">197</span></a>
+</span><span id="FUNC_CALL-198"><a href="#FUNC_CALL-198"><span class="linenos">198</span></a>            <span class="n">new_node</span> <span class="o">=</span> <span class="n">ARG</span><span class="p">(</span>
+</span><span id="FUNC_CALL-199"><a href="#FUNC_CALL-199"><span class="linenos">199</span></a>                <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="FUNC_CALL-200"><a href="#FUNC_CALL-200"><span class="linenos">200</span></a>                <span class="n">argument_value</span><span class="o">=</span><span class="n">argument_value</span><span class="p">,</span>
+</span><span id="FUNC_CALL-201"><a href="#FUNC_CALL-201"><span class="linenos">201</span></a>                <span class="n">parameter_type</span><span class="o">=</span><span class="n">_parameter_type</span>
+</span><span id="FUNC_CALL-202"><a href="#FUNC_CALL-202"><span class="linenos">202</span></a>            <span class="p">)</span>
+</span><span id="FUNC_CALL-203"><a href="#FUNC_CALL-203"><span class="linenos">203</span></a>
+</span><span id="FUNC_CALL-204"><a href="#FUNC_CALL-204"><span class="linenos">204</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="FUNC_CALL-205"><a href="#FUNC_CALL-205"><span class="linenos">205</span></a>            <span class="n">children_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
+</span><span id="FUNC_CALL-206"><a href="#FUNC_CALL-206"><span class="linenos">206</span></a>
+</span><span id="FUNC_CALL-207"><a href="#FUNC_CALL-207"><span class="linenos">207</span></a>        <span class="k">return</span> <span class="n">children_nodes</span>
 </span></pre></div>
 
 
@@ -506,15 +528,17 @@ function_call_metadata : dict
     <a class="headerlink" href="#FUNC_CALL.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.__init__-26"><a href="#FUNC_CALL.__init__-26"><span class="linenos">26</span></a>    <span class="nd">@override</span>
 </span><span id="FUNC_CALL.__init__-27"><a href="#FUNC_CALL.__init__-27"><span class="linenos">27</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="FUNC_CALL.__init__-28"><a href="#FUNC_CALL.__init__-28"><span class="linenos">28</span></a>        <span class="n">function_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">)</span>
+</span><span id="FUNC_CALL.__init__-28"><a href="#FUNC_CALL.__init__-28"><span class="linenos">28</span></a>        <span class="n">function_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;relative_position&quot;</span><span class="p">]</span>
 </span><span id="FUNC_CALL.__init__-29"><a href="#FUNC_CALL.__init__-29"><span class="linenos">29</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">function_id</span><span class="p">)</span>
 </span><span id="FUNC_CALL.__init__-30"><a href="#FUNC_CALL.__init__-30"><span class="linenos">30</span></a>
-</span><span id="FUNC_CALL.__init__-31"><a href="#FUNC_CALL.__init__-31"><span class="linenos">31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">function_call_metadata</span>
-</span><span id="FUNC_CALL.__init__-32"><a href="#FUNC_CALL.__init__-32"><span class="linenos">32</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ARG</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_children_nodes</span><span class="p">()</span>
-</span><span id="FUNC_CALL.__init__-33"><a href="#FUNC_CALL.__init__-33"><span class="linenos">33</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;return_type&quot;</span><span class="p">)</span>
-</span><span id="FUNC_CALL.__init__-34"><a href="#FUNC_CALL.__init__-34"><span class="linenos">34</span></a>
-</span><span id="FUNC_CALL.__init__-35"><a href="#FUNC_CALL.__init__-35"><span class="linenos">35</span></a>        <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;prime&quot;</span><span class="p">]</span>
-</span><span id="FUNC_CALL.__init__-36"><a href="#FUNC_CALL.__init__-36"><span class="linenos">36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^(</span><span class="si">{</span><span class="n">prime</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="FUNC_CALL.__init__-31"><a href="#FUNC_CALL.__init__-31"><span class="linenos">31</span></a>        <span class="n">_function_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL.__init__-32"><a href="#FUNC_CALL.__init__-32"><span class="linenos">32</span></a>
+</span><span id="FUNC_CALL.__init__-33"><a href="#FUNC_CALL.__init__-33"><span class="linenos">33</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">function_call_metadata</span>
+</span><span id="FUNC_CALL.__init__-34"><a href="#FUNC_CALL.__init__-34"><span class="linenos">34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ARG</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_children_nodes</span><span class="p">()</span>
+</span><span id="FUNC_CALL.__init__-35"><a href="#FUNC_CALL.__init__-35"><span class="linenos">35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_function_type</span>
+</span><span id="FUNC_CALL.__init__-36"><a href="#FUNC_CALL.__init__-36"><span class="linenos">36</span></a>
+</span><span id="FUNC_CALL.__init__-37"><a href="#FUNC_CALL.__init__-37"><span class="linenos">37</span></a>        <span class="n">_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call_metadata</span><span class="p">[</span><span class="s2">&quot;called_function_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;prime&quot;</span><span class="p">]</span>
+</span><span id="FUNC_CALL.__init__-38"><a href="#FUNC_CALL.__init__-38"><span class="linenos">38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^(</span><span class="si">{</span><span class="n">_prime</span><span class="si">}</span><span class="s2">)&quot;</span>
 </span></pre></div>
 
 
@@ -577,28 +601,28 @@ function_call_metadata : dict
 
     </div>
     <a class="headerlink" href="#FUNC_CALL.get_certificate_label"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.get_certificate_label-38"><a href="#FUNC_CALL.get_certificate_label-38"><span class="linenos">38</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL.get_certificate_label-39"><a href="#FUNC_CALL.get_certificate_label-39"><span class="linenos">39</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="FUNC_CALL.get_certificate_label-40"><a href="#FUNC_CALL.get_certificate_label-40"><span class="linenos">40</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.get_certificate_label-41"><a href="#FUNC_CALL.get_certificate_label-41"><span class="linenos">41</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="FUNC_CALL.get_certificate_label-42"><a href="#FUNC_CALL.get_certificate_label-42"><span class="linenos">42</span></a>
-</span><span id="FUNC_CALL.get_certificate_label-43"><a href="#FUNC_CALL.get_certificate_label-43"><span class="linenos">43</span></a><span class="sd">        For `FUNC_CALL` nodes, obtain the certificates, recursively, from each</span>
-</span><span id="FUNC_CALL.get_certificate_label-44"><a href="#FUNC_CALL.get_certificate_label-44"><span class="linenos">44</span></a><span class="sd">        `argument` subtree first, and then from the `FUNC_CALL` node itself.</span>
-</span><span id="FUNC_CALL.get_certificate_label-45"><a href="#FUNC_CALL.get_certificate_label-45"><span class="linenos">45</span></a>
-</span><span id="FUNC_CALL.get_certificate_label-46"><a href="#FUNC_CALL.get_certificate_label-46"><span class="linenos">46</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_CALL.get_certificate_label-47"><a href="#FUNC_CALL.get_certificate_label-47"><span class="linenos">47</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_CALL.get_certificate_label-48"><a href="#FUNC_CALL.get_certificate_label-48"><span class="linenos">48</span></a><span class="sd">        : list of str</span>
-</span><span id="FUNC_CALL.get_certificate_label-49"><a href="#FUNC_CALL.get_certificate_label-49"><span class="linenos">49</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="FUNC_CALL.get_certificate_label-50"><a href="#FUNC_CALL.get_certificate_label-50"><span class="linenos">50</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.get_certificate_label-51"><a href="#FUNC_CALL.get_certificate_label-51"><span class="linenos">51</span></a>
-</span><span id="FUNC_CALL.get_certificate_label-52"><a href="#FUNC_CALL.get_certificate_label-52"><span class="linenos">52</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.get_certificate_label-40"><a href="#FUNC_CALL.get_certificate_label-40"><span class="linenos">40</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL.get_certificate_label-41"><a href="#FUNC_CALL.get_certificate_label-41"><span class="linenos">41</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="FUNC_CALL.get_certificate_label-42"><a href="#FUNC_CALL.get_certificate_label-42"><span class="linenos">42</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL.get_certificate_label-43"><a href="#FUNC_CALL.get_certificate_label-43"><span class="linenos">43</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="FUNC_CALL.get_certificate_label-44"><a href="#FUNC_CALL.get_certificate_label-44"><span class="linenos">44</span></a>
+</span><span id="FUNC_CALL.get_certificate_label-45"><a href="#FUNC_CALL.get_certificate_label-45"><span class="linenos">45</span></a><span class="sd">        For `FUNC_CALL` nodes, obtain the certificates, recursively, from each</span>
+</span><span id="FUNC_CALL.get_certificate_label-46"><a href="#FUNC_CALL.get_certificate_label-46"><span class="linenos">46</span></a><span class="sd">        `argument` subtree first, and then from the `FUNC_CALL` node itself.</span>
+</span><span id="FUNC_CALL.get_certificate_label-47"><a href="#FUNC_CALL.get_certificate_label-47"><span class="linenos">47</span></a>
+</span><span id="FUNC_CALL.get_certificate_label-48"><a href="#FUNC_CALL.get_certificate_label-48"><span class="linenos">48</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_CALL.get_certificate_label-49"><a href="#FUNC_CALL.get_certificate_label-49"><span class="linenos">49</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_CALL.get_certificate_label-50"><a href="#FUNC_CALL.get_certificate_label-50"><span class="linenos">50</span></a><span class="sd">        : list of str</span>
+</span><span id="FUNC_CALL.get_certificate_label-51"><a href="#FUNC_CALL.get_certificate_label-51"><span class="linenos">51</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="FUNC_CALL.get_certificate_label-52"><a href="#FUNC_CALL.get_certificate_label-52"><span class="linenos">52</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="FUNC_CALL.get_certificate_label-53"><a href="#FUNC_CALL.get_certificate_label-53"><span class="linenos">53</span></a>
-</span><span id="FUNC_CALL.get_certificate_label-54"><a href="#FUNC_CALL.get_certificate_label-54"><span class="linenos">54</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL.get_certificate_label-55"><a href="#FUNC_CALL.get_certificate_label-55"><span class="linenos">55</span></a>            <span class="n">certificate_label</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
-</span><span id="FUNC_CALL.get_certificate_label-56"><a href="#FUNC_CALL.get_certificate_label-56"><span class="linenos">56</span></a>
-</span><span id="FUNC_CALL.get_certificate_label-57"><a href="#FUNC_CALL.get_certificate_label-57"><span class="linenos">57</span></a>        <span class="n">certificate_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
+</span><span id="FUNC_CALL.get_certificate_label-54"><a href="#FUNC_CALL.get_certificate_label-54"><span class="linenos">54</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL.get_certificate_label-55"><a href="#FUNC_CALL.get_certificate_label-55"><span class="linenos">55</span></a>
+</span><span id="FUNC_CALL.get_certificate_label-56"><a href="#FUNC_CALL.get_certificate_label-56"><span class="linenos">56</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL.get_certificate_label-57"><a href="#FUNC_CALL.get_certificate_label-57"><span class="linenos">57</span></a>            <span class="n">certificate_label</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
 </span><span id="FUNC_CALL.get_certificate_label-58"><a href="#FUNC_CALL.get_certificate_label-58"><span class="linenos">58</span></a>
-</span><span id="FUNC_CALL.get_certificate_label-59"><a href="#FUNC_CALL.get_certificate_label-59"><span class="linenos">59</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
+</span><span id="FUNC_CALL.get_certificate_label-59"><a href="#FUNC_CALL.get_certificate_label-59"><span class="linenos">59</span></a>        <span class="n">certificate_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">())</span>
+</span><span id="FUNC_CALL.get_certificate_label-60"><a href="#FUNC_CALL.get_certificate_label-60"><span class="linenos">60</span></a>
+</span><span id="FUNC_CALL.get_certificate_label-61"><a href="#FUNC_CALL.get_certificate_label-61"><span class="linenos">61</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
 </span></pre></div>
 
 
@@ -627,24 +651,24 @@ function_call_metadata : dict
 
     </div>
     <a class="headerlink" href="#FUNC_CALL.print"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.print-61"><a href="#FUNC_CALL.print-61"><span class="linenos">61</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL.print-62"><a href="#FUNC_CALL.print-62"><span class="linenos">62</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="FUNC_CALL.print-63"><a href="#FUNC_CALL.print-63"><span class="linenos">63</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.print-64"><a href="#FUNC_CALL.print-64"><span class="linenos">64</span></a><span class="sd">        Print the string representation of this `FUNC_CALL`.</span>
-</span><span id="FUNC_CALL.print-65"><a href="#FUNC_CALL.print-65"><span class="linenos">65</span></a>
-</span><span id="FUNC_CALL.print-66"><a href="#FUNC_CALL.print-66"><span class="linenos">66</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="FUNC_CALL.print-67"><a href="#FUNC_CALL.print-67"><span class="linenos">67</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="FUNC_CALL.print-68"><a href="#FUNC_CALL.print-68"><span class="linenos">68</span></a>
-</span><span id="FUNC_CALL.print-69"><a href="#FUNC_CALL.print-69"><span class="linenos">69</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_CALL.print-70"><a href="#FUNC_CALL.print-70"><span class="linenos">70</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_CALL.print-71"><a href="#FUNC_CALL.print-71"><span class="linenos">71</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="FUNC_CALL.print-72"><a href="#FUNC_CALL.print-72"><span class="linenos">72</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="FUNC_CALL.print-73"><a href="#FUNC_CALL.print-73"><span class="linenos">73</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.print-74"><a href="#FUNC_CALL.print-74"><span class="linenos">74</span></a>
-</span><span id="FUNC_CALL.print-75"><a href="#FUNC_CALL.print-75"><span class="linenos">75</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.print-63"><a href="#FUNC_CALL.print-63"><span class="linenos">63</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL.print-64"><a href="#FUNC_CALL.print-64"><span class="linenos">64</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="FUNC_CALL.print-65"><a href="#FUNC_CALL.print-65"><span class="linenos">65</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL.print-66"><a href="#FUNC_CALL.print-66"><span class="linenos">66</span></a><span class="sd">        Print the string representation of this `FUNC_CALL`.</span>
+</span><span id="FUNC_CALL.print-67"><a href="#FUNC_CALL.print-67"><span class="linenos">67</span></a>
+</span><span id="FUNC_CALL.print-68"><a href="#FUNC_CALL.print-68"><span class="linenos">68</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="FUNC_CALL.print-69"><a href="#FUNC_CALL.print-69"><span class="linenos">69</span></a><span class="sd">        with an additional left space.</span>
+</span><span id="FUNC_CALL.print-70"><a href="#FUNC_CALL.print-70"><span class="linenos">70</span></a>
+</span><span id="FUNC_CALL.print-71"><a href="#FUNC_CALL.print-71"><span class="linenos">71</span></a><span class="sd">        Parameters</span>
+</span><span id="FUNC_CALL.print-72"><a href="#FUNC_CALL.print-72"><span class="linenos">72</span></a><span class="sd">        ----------</span>
+</span><span id="FUNC_CALL.print-73"><a href="#FUNC_CALL.print-73"><span class="linenos">73</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="FUNC_CALL.print-74"><a href="#FUNC_CALL.print-74"><span class="linenos">74</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="FUNC_CALL.print-75"><a href="#FUNC_CALL.print-75"><span class="linenos">75</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="FUNC_CALL.print-76"><a href="#FUNC_CALL.print-76"><span class="linenos">76</span></a>
-</span><span id="FUNC_CALL.print-77"><a href="#FUNC_CALL.print-77"><span class="linenos">77</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL.print-78"><a href="#FUNC_CALL.print-78"><span class="linenos">78</span></a>            <span class="n">argument</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="FUNC_CALL.print-77"><a href="#FUNC_CALL.print-77"><span class="linenos">77</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="FUNC_CALL.print-78"><a href="#FUNC_CALL.print-78"><span class="linenos">78</span></a>
+</span><span id="FUNC_CALL.print-79"><a href="#FUNC_CALL.print-79"><span class="linenos">79</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL.print-80"><a href="#FUNC_CALL.print-80"><span class="linenos">80</span></a>            <span class="n">argument</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -673,67 +697,67 @@ with an additional left space.</p>
 
     </div>
     <a class="headerlink" href="#FUNC_CALL.generate_code"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.generate_code-80"><a href="#FUNC_CALL.generate_code-80"><span class="linenos"> 80</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL.generate_code-81"><a href="#FUNC_CALL.generate_code-81"><span class="linenos"> 81</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="FUNC_CALL.generate_code-82"><a href="#FUNC_CALL.generate_code-82"><span class="linenos"> 82</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="FUNC_CALL.generate_code-83"><a href="#FUNC_CALL.generate_code-83"><span class="linenos"> 83</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
-</span><span id="FUNC_CALL.generate_code-84"><a href="#FUNC_CALL.generate_code-84"><span class="linenos"> 84</span></a>    <span class="p">]:</span>
-</span><span id="FUNC_CALL.generate_code-85"><a href="#FUNC_CALL.generate_code-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.generate_code-86"><a href="#FUNC_CALL.generate_code-86"><span class="linenos"> 86</span></a><span class="sd">        Generate the code associated with this `FUNC_CALL`.</span>
-</span><span id="FUNC_CALL.generate_code-87"><a href="#FUNC_CALL.generate_code-87"><span class="linenos"> 87</span></a>
-</span><span id="FUNC_CALL.generate_code-88"><a href="#FUNC_CALL.generate_code-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, generate code from `argument` children</span>
-</span><span id="FUNC_CALL.generate_code-89"><a href="#FUNC_CALL.generate_code-89"><span class="linenos"> 89</span></a><span class="sd">        nodes first, and then from the `FUNC_CALL` itself.</span>
-</span><span id="FUNC_CALL.generate_code-90"><a href="#FUNC_CALL.generate_code-90"><span class="linenos"> 90</span></a>
-</span><span id="FUNC_CALL.generate_code-91"><a href="#FUNC_CALL.generate_code-91"><span class="linenos"> 91</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_CALL.generate_code-92"><a href="#FUNC_CALL.generate_code-92"><span class="linenos"> 92</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_CALL.generate_code-93"><a href="#FUNC_CALL.generate_code-93"><span class="linenos"> 93</span></a><span class="sd">        register : int</span>
-</span><span id="FUNC_CALL.generate_code-94"><a href="#FUNC_CALL.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="FUNC_CALL.generate_code-95"><a href="#FUNC_CALL.generate_code-95"><span class="linenos"> 95</span></a><span class="sd">            Node.</span>
-</span><span id="FUNC_CALL.generate_code-96"><a href="#FUNC_CALL.generate_code-96"><span class="linenos"> 96</span></a>
-</span><span id="FUNC_CALL.generate_code-97"><a href="#FUNC_CALL.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_CALL.generate_code-98"><a href="#FUNC_CALL.generate_code-98"><span class="linenos"> 98</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_CALL.generate_code-99"><a href="#FUNC_CALL.generate_code-99"><span class="linenos"> 99</span></a><span class="sd">        register : int</span>
-</span><span id="FUNC_CALL.generate_code-100"><a href="#FUNC_CALL.generate_code-100"><span class="linenos">100</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="FUNC_CALL.generate_code-101"><a href="#FUNC_CALL.generate_code-101"><span class="linenos">101</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="FUNC_CALL.generate_code-102"><a href="#FUNC_CALL.generate_code-102"><span class="linenos">102</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="FUNC_CALL.generate_code-103"><a href="#FUNC_CALL.generate_code-103"><span class="linenos">103</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
-</span><span id="FUNC_CALL.generate_code-104"><a href="#FUNC_CALL.generate_code-104"><span class="linenos">104</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.generate_code-105"><a href="#FUNC_CALL.generate_code-105"><span class="linenos">105</span></a>
-</span><span id="FUNC_CALL.generate_code-106"><a href="#FUNC_CALL.generate_code-106"><span class="linenos">106</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="FUNC_CALL.generate_code-107"><a href="#FUNC_CALL.generate_code-107"><span class="linenos">107</span></a>        <span class="n">arguments_registers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="FUNC_CALL.generate_code-108"><a href="#FUNC_CALL.generate_code-108"><span class="linenos">108</span></a>
-</span><span id="FUNC_CALL.generate_code-109"><a href="#FUNC_CALL.generate_code-109"><span class="linenos">109</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL.generate_code-110"><a href="#FUNC_CALL.generate_code-110"><span class="linenos">110</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">argument_code</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span><span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">)</span>
-</span><span id="FUNC_CALL.generate_code-111"><a href="#FUNC_CALL.generate_code-111"><span class="linenos">111</span></a>
-</span><span id="FUNC_CALL.generate_code-112"><a href="#FUNC_CALL.generate_code-112"><span class="linenos">112</span></a>            <span class="c1"># Keep track of the registers containing the arguments values</span>
-</span><span id="FUNC_CALL.generate_code-113"><a href="#FUNC_CALL.generate_code-113"><span class="linenos">113</span></a>            <span class="n">arguments_registers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="FUNC_CALL.generate_code-114"><a href="#FUNC_CALL.generate_code-114"><span class="linenos">114</span></a>                <span class="n">argument_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;register&quot;</span><span class="p">)</span>
-</span><span id="FUNC_CALL.generate_code-115"><a href="#FUNC_CALL.generate_code-115"><span class="linenos">115</span></a>            <span class="p">)</span>
-</span><span id="FUNC_CALL.generate_code-116"><a href="#FUNC_CALL.generate_code-116"><span class="linenos">116</span></a>
-</span><span id="FUNC_CALL.generate_code-117"><a href="#FUNC_CALL.generate_code-117"><span class="linenos">117</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_code</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.generate_code-82"><a href="#FUNC_CALL.generate_code-82"><span class="linenos"> 82</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL.generate_code-83"><a href="#FUNC_CALL.generate_code-83"><span class="linenos"> 83</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="FUNC_CALL.generate_code-84"><a href="#FUNC_CALL.generate_code-84"><span class="linenos"> 84</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="FUNC_CALL.generate_code-85"><a href="#FUNC_CALL.generate_code-85"><span class="linenos"> 85</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
+</span><span id="FUNC_CALL.generate_code-86"><a href="#FUNC_CALL.generate_code-86"><span class="linenos"> 86</span></a>    <span class="p">]:</span>
+</span><span id="FUNC_CALL.generate_code-87"><a href="#FUNC_CALL.generate_code-87"><span class="linenos"> 87</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL.generate_code-88"><a href="#FUNC_CALL.generate_code-88"><span class="linenos"> 88</span></a><span class="sd">        Generate the code associated with this `FUNC_CALL`.</span>
+</span><span id="FUNC_CALL.generate_code-89"><a href="#FUNC_CALL.generate_code-89"><span class="linenos"> 89</span></a>
+</span><span id="FUNC_CALL.generate_code-90"><a href="#FUNC_CALL.generate_code-90"><span class="linenos"> 90</span></a><span class="sd">        For this node specialization, generate code from `argument` children</span>
+</span><span id="FUNC_CALL.generate_code-91"><a href="#FUNC_CALL.generate_code-91"><span class="linenos"> 91</span></a><span class="sd">        nodes first, and then from the `FUNC_CALL` itself.</span>
+</span><span id="FUNC_CALL.generate_code-92"><a href="#FUNC_CALL.generate_code-92"><span class="linenos"> 92</span></a>
+</span><span id="FUNC_CALL.generate_code-93"><a href="#FUNC_CALL.generate_code-93"><span class="linenos"> 93</span></a><span class="sd">        Parameters</span>
+</span><span id="FUNC_CALL.generate_code-94"><a href="#FUNC_CALL.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">        ----------</span>
+</span><span id="FUNC_CALL.generate_code-95"><a href="#FUNC_CALL.generate_code-95"><span class="linenos"> 95</span></a><span class="sd">        register : int</span>
+</span><span id="FUNC_CALL.generate_code-96"><a href="#FUNC_CALL.generate_code-96"><span class="linenos"> 96</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="FUNC_CALL.generate_code-97"><a href="#FUNC_CALL.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">            Node.</span>
+</span><span id="FUNC_CALL.generate_code-98"><a href="#FUNC_CALL.generate_code-98"><span class="linenos"> 98</span></a>
+</span><span id="FUNC_CALL.generate_code-99"><a href="#FUNC_CALL.generate_code-99"><span class="linenos"> 99</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_CALL.generate_code-100"><a href="#FUNC_CALL.generate_code-100"><span class="linenos">100</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_CALL.generate_code-101"><a href="#FUNC_CALL.generate_code-101"><span class="linenos">101</span></a><span class="sd">        register : int</span>
+</span><span id="FUNC_CALL.generate_code-102"><a href="#FUNC_CALL.generate_code-102"><span class="linenos">102</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="FUNC_CALL.generate_code-103"><a href="#FUNC_CALL.generate_code-103"><span class="linenos">103</span></a><span class="sd">        code_metadata : list of dict</span>
+</span><span id="FUNC_CALL.generate_code-104"><a href="#FUNC_CALL.generate_code-104"><span class="linenos">104</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="FUNC_CALL.generate_code-105"><a href="#FUNC_CALL.generate_code-105"><span class="linenos">105</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="FUNC_CALL.generate_code-106"><a href="#FUNC_CALL.generate_code-106"><span class="linenos">106</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL.generate_code-107"><a href="#FUNC_CALL.generate_code-107"><span class="linenos">107</span></a>
+</span><span id="FUNC_CALL.generate_code-108"><a href="#FUNC_CALL.generate_code-108"><span class="linenos">108</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL.generate_code-109"><a href="#FUNC_CALL.generate_code-109"><span class="linenos">109</span></a>        <span class="n">arguments_registers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_CALL.generate_code-110"><a href="#FUNC_CALL.generate_code-110"><span class="linenos">110</span></a>
+</span><span id="FUNC_CALL.generate_code-111"><a href="#FUNC_CALL.generate_code-111"><span class="linenos">111</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL.generate_code-112"><a href="#FUNC_CALL.generate_code-112"><span class="linenos">112</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">argument_code</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span><span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">)</span>
+</span><span id="FUNC_CALL.generate_code-113"><a href="#FUNC_CALL.generate_code-113"><span class="linenos">113</span></a>
+</span><span id="FUNC_CALL.generate_code-114"><a href="#FUNC_CALL.generate_code-114"><span class="linenos">114</span></a>            <span class="c1"># Keep track of the registers containing the arguments values</span>
+</span><span id="FUNC_CALL.generate_code-115"><a href="#FUNC_CALL.generate_code-115"><span class="linenos">115</span></a>            <span class="n">arguments_registers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="FUNC_CALL.generate_code-116"><a href="#FUNC_CALL.generate_code-116"><span class="linenos">116</span></a>                <span class="n">argument_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;register&quot;</span><span class="p">)</span>
+</span><span id="FUNC_CALL.generate_code-117"><a href="#FUNC_CALL.generate_code-117"><span class="linenos">117</span></a>            <span class="p">)</span>
 </span><span id="FUNC_CALL.generate_code-118"><a href="#FUNC_CALL.generate_code-118"><span class="linenos">118</span></a>
-</span><span id="FUNC_CALL.generate_code-119"><a href="#FUNC_CALL.generate_code-119"><span class="linenos">119</span></a>        <span class="c1"># The code for the function call itself is actually very simple! Just</span>
-</span><span id="FUNC_CALL.generate_code-120"><a href="#FUNC_CALL.generate_code-120"><span class="linenos">120</span></a>        <span class="c1"># jump-and-link (JAL), to keep track of the return address, and copy</span>
-</span><span id="FUNC_CALL.generate_code-121"><a href="#FUNC_CALL.generate_code-121"><span class="linenos">121</span></a>        <span class="c1"># the `returned_value_register` to `register`.</span>
-</span><span id="FUNC_CALL.generate_code-122"><a href="#FUNC_CALL.generate_code-122"><span class="linenos">122</span></a>        <span class="n">func_call_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="FUNC_CALL.generate_code-123"><a href="#FUNC_CALL.generate_code-123"><span class="linenos">123</span></a>            <span class="p">{</span>
-</span><span id="FUNC_CALL.generate_code-124"><a href="#FUNC_CALL.generate_code-124"><span class="linenos">124</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JAL&quot;</span><span class="p">,</span>
-</span><span id="FUNC_CALL.generate_code-125"><a href="#FUNC_CALL.generate_code-125"><span class="linenos">125</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
-</span><span id="FUNC_CALL.generate_code-126"><a href="#FUNC_CALL.generate_code-126"><span class="linenos">126</span></a>            <span class="p">},</span>
-</span><span id="FUNC_CALL.generate_code-127"><a href="#FUNC_CALL.generate_code-127"><span class="linenos">127</span></a>            <span class="p">{</span>
-</span><span id="FUNC_CALL.generate_code-128"><a href="#FUNC_CALL.generate_code-128"><span class="linenos">128</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="FUNC_CALL.generate_code-129"><a href="#FUNC_CALL.generate_code-129"><span class="linenos">129</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="FUNC_CALL.generate_code-130"><a href="#FUNC_CALL.generate_code-130"><span class="linenos">130</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
-</span><span id="FUNC_CALL.generate_code-131"><a href="#FUNC_CALL.generate_code-131"><span class="linenos">131</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;ret_value&quot;</span><span class="p">,</span>
-</span><span id="FUNC_CALL.generate_code-132"><a href="#FUNC_CALL.generate_code-132"><span class="linenos">132</span></a>                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
-</span><span id="FUNC_CALL.generate_code-133"><a href="#FUNC_CALL.generate_code-133"><span class="linenos">133</span></a>                <span class="p">}</span>
-</span><span id="FUNC_CALL.generate_code-134"><a href="#FUNC_CALL.generate_code-134"><span class="linenos">134</span></a>            <span class="p">}</span>
-</span><span id="FUNC_CALL.generate_code-135"><a href="#FUNC_CALL.generate_code-135"><span class="linenos">135</span></a>        <span class="p">]</span>
-</span><span id="FUNC_CALL.generate_code-136"><a href="#FUNC_CALL.generate_code-136"><span class="linenos">136</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="FUNC_CALL.generate_code-137"><a href="#FUNC_CALL.generate_code-137"><span class="linenos">137</span></a>
-</span><span id="FUNC_CALL.generate_code-138"><a href="#FUNC_CALL.generate_code-138"><span class="linenos">138</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">func_call_code</span><span class="p">)</span>
+</span><span id="FUNC_CALL.generate_code-119"><a href="#FUNC_CALL.generate_code-119"><span class="linenos">119</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_code</span><span class="p">)</span>
+</span><span id="FUNC_CALL.generate_code-120"><a href="#FUNC_CALL.generate_code-120"><span class="linenos">120</span></a>
+</span><span id="FUNC_CALL.generate_code-121"><a href="#FUNC_CALL.generate_code-121"><span class="linenos">121</span></a>        <span class="c1"># The code for the function call itself is actually very simple! Just</span>
+</span><span id="FUNC_CALL.generate_code-122"><a href="#FUNC_CALL.generate_code-122"><span class="linenos">122</span></a>        <span class="c1"># jump-and-link (JAL), to keep track of the return address, and copy</span>
+</span><span id="FUNC_CALL.generate_code-123"><a href="#FUNC_CALL.generate_code-123"><span class="linenos">123</span></a>        <span class="c1"># the `returned_value_register` to `register`.</span>
+</span><span id="FUNC_CALL.generate_code-124"><a href="#FUNC_CALL.generate_code-124"><span class="linenos">124</span></a>        <span class="n">func_call_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="FUNC_CALL.generate_code-125"><a href="#FUNC_CALL.generate_code-125"><span class="linenos">125</span></a>            <span class="p">{</span>
+</span><span id="FUNC_CALL.generate_code-126"><a href="#FUNC_CALL.generate_code-126"><span class="linenos">126</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JAL&quot;</span><span class="p">,</span>
+</span><span id="FUNC_CALL.generate_code-127"><a href="#FUNC_CALL.generate_code-127"><span class="linenos">127</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
+</span><span id="FUNC_CALL.generate_code-128"><a href="#FUNC_CALL.generate_code-128"><span class="linenos">128</span></a>            <span class="p">},</span>
+</span><span id="FUNC_CALL.generate_code-129"><a href="#FUNC_CALL.generate_code-129"><span class="linenos">129</span></a>            <span class="p">{</span>
+</span><span id="FUNC_CALL.generate_code-130"><a href="#FUNC_CALL.generate_code-130"><span class="linenos">130</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
+</span><span id="FUNC_CALL.generate_code-131"><a href="#FUNC_CALL.generate_code-131"><span class="linenos">131</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="FUNC_CALL.generate_code-132"><a href="#FUNC_CALL.generate_code-132"><span class="linenos">132</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="FUNC_CALL.generate_code-133"><a href="#FUNC_CALL.generate_code-133"><span class="linenos">133</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;ret_value&quot;</span><span class="p">,</span>
+</span><span id="FUNC_CALL.generate_code-134"><a href="#FUNC_CALL.generate_code-134"><span class="linenos">134</span></a>                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+</span><span id="FUNC_CALL.generate_code-135"><a href="#FUNC_CALL.generate_code-135"><span class="linenos">135</span></a>                <span class="p">}</span>
+</span><span id="FUNC_CALL.generate_code-136"><a href="#FUNC_CALL.generate_code-136"><span class="linenos">136</span></a>            <span class="p">}</span>
+</span><span id="FUNC_CALL.generate_code-137"><a href="#FUNC_CALL.generate_code-137"><span class="linenos">137</span></a>        <span class="p">]</span>
+</span><span id="FUNC_CALL.generate_code-138"><a href="#FUNC_CALL.generate_code-138"><span class="linenos">138</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="FUNC_CALL.generate_code-139"><a href="#FUNC_CALL.generate_code-139"><span class="linenos">139</span></a>
-</span><span id="FUNC_CALL.generate_code-140"><a href="#FUNC_CALL.generate_code-140"><span class="linenos">140</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="FUNC_CALL.generate_code-140"><a href="#FUNC_CALL.generate_code-140"><span class="linenos">140</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">func_call_code</span><span class="p">)</span>
+</span><span id="FUNC_CALL.generate_code-141"><a href="#FUNC_CALL.generate_code-141"><span class="linenos">141</span></a>
+</span><span id="FUNC_CALL.generate_code-142"><a href="#FUNC_CALL.generate_code-142"><span class="linenos">142</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span></pre></div>
 
 
@@ -771,30 +795,30 @@ code_metadata : list of dict
 
     </div>
     <a class="headerlink" href="#FUNC_CALL.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.certificate-142"><a href="#FUNC_CALL.certificate-142"><span class="linenos">142</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_CALL.certificate-143"><a href="#FUNC_CALL.certificate-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="FUNC_CALL.certificate-144"><a href="#FUNC_CALL.certificate-144"><span class="linenos">144</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.certificate-145"><a href="#FUNC_CALL.certificate-145"><span class="linenos">145</span></a><span class="sd">        Compute the certificate of the current `FUNC_CALL`, and set this attribute.</span>
-</span><span id="FUNC_CALL.certificate-146"><a href="#FUNC_CALL.certificate-146"><span class="linenos">146</span></a>
-</span><span id="FUNC_CALL.certificate-147"><a href="#FUNC_CALL.certificate-147"><span class="linenos">147</span></a><span class="sd">        For `FUNC_CALL` nodes, certificate each `argument` child first, and</span>
-</span><span id="FUNC_CALL.certificate-148"><a href="#FUNC_CALL.certificate-148"><span class="linenos">148</span></a><span class="sd">        then the `FUNC_CALL` itself.</span>
-</span><span id="FUNC_CALL.certificate-149"><a href="#FUNC_CALL.certificate-149"><span class="linenos">149</span></a>
-</span><span id="FUNC_CALL.certificate-150"><a href="#FUNC_CALL.certificate-150"><span class="linenos">150</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_CALL.certificate-151"><a href="#FUNC_CALL.certificate-151"><span class="linenos">151</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_CALL.certificate-152"><a href="#FUNC_CALL.certificate-152"><span class="linenos">152</span></a><span class="sd">        prime : int</span>
-</span><span id="FUNC_CALL.certificate-153"><a href="#FUNC_CALL.certificate-153"><span class="linenos">153</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
-</span><span id="FUNC_CALL.certificate-154"><a href="#FUNC_CALL.certificate-154"><span class="linenos">154</span></a><span class="sd">            in the AST.</span>
-</span><span id="FUNC_CALL.certificate-155"><a href="#FUNC_CALL.certificate-155"><span class="linenos">155</span></a>
-</span><span id="FUNC_CALL.certificate-156"><a href="#FUNC_CALL.certificate-156"><span class="linenos">156</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_CALL.certificate-157"><a href="#FUNC_CALL.certificate-157"><span class="linenos">157</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_CALL.certificate-158"><a href="#FUNC_CALL.certificate-158"><span class="linenos">158</span></a><span class="sd">        : int</span>
-</span><span id="FUNC_CALL.certificate-159"><a href="#FUNC_CALL.certificate-159"><span class="linenos">159</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="FUNC_CALL.certificate-160"><a href="#FUNC_CALL.certificate-160"><span class="linenos">160</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_CALL.certificate-161"><a href="#FUNC_CALL.certificate-161"><span class="linenos">161</span></a>
-</span><span id="FUNC_CALL.certificate-162"><a href="#FUNC_CALL.certificate-162"><span class="linenos">162</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-</span><span id="FUNC_CALL.certificate-163"><a href="#FUNC_CALL.certificate-163"><span class="linenos">163</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="FUNC_CALL.certificate-164"><a href="#FUNC_CALL.certificate-164"><span class="linenos">164</span></a>
-</span><span id="FUNC_CALL.certificate-165"><a href="#FUNC_CALL.certificate-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_CALL.certificate-144"><a href="#FUNC_CALL.certificate-144"><span class="linenos">144</span></a>    <span class="nd">@override</span>
+</span><span id="FUNC_CALL.certificate-145"><a href="#FUNC_CALL.certificate-145"><span class="linenos">145</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="FUNC_CALL.certificate-146"><a href="#FUNC_CALL.certificate-146"><span class="linenos">146</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL.certificate-147"><a href="#FUNC_CALL.certificate-147"><span class="linenos">147</span></a><span class="sd">        Compute the certificate of the current `FUNC_CALL`, and set this attribute.</span>
+</span><span id="FUNC_CALL.certificate-148"><a href="#FUNC_CALL.certificate-148"><span class="linenos">148</span></a>
+</span><span id="FUNC_CALL.certificate-149"><a href="#FUNC_CALL.certificate-149"><span class="linenos">149</span></a><span class="sd">        For `FUNC_CALL` nodes, certificate each `argument` child first, and</span>
+</span><span id="FUNC_CALL.certificate-150"><a href="#FUNC_CALL.certificate-150"><span class="linenos">150</span></a><span class="sd">        then the `FUNC_CALL` itself.</span>
+</span><span id="FUNC_CALL.certificate-151"><a href="#FUNC_CALL.certificate-151"><span class="linenos">151</span></a>
+</span><span id="FUNC_CALL.certificate-152"><a href="#FUNC_CALL.certificate-152"><span class="linenos">152</span></a><span class="sd">        Parameters</span>
+</span><span id="FUNC_CALL.certificate-153"><a href="#FUNC_CALL.certificate-153"><span class="linenos">153</span></a><span class="sd">        ----------</span>
+</span><span id="FUNC_CALL.certificate-154"><a href="#FUNC_CALL.certificate-154"><span class="linenos">154</span></a><span class="sd">        prime : int</span>
+</span><span id="FUNC_CALL.certificate-155"><a href="#FUNC_CALL.certificate-155"><span class="linenos">155</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
+</span><span id="FUNC_CALL.certificate-156"><a href="#FUNC_CALL.certificate-156"><span class="linenos">156</span></a><span class="sd">            in the AST.</span>
+</span><span id="FUNC_CALL.certificate-157"><a href="#FUNC_CALL.certificate-157"><span class="linenos">157</span></a>
+</span><span id="FUNC_CALL.certificate-158"><a href="#FUNC_CALL.certificate-158"><span class="linenos">158</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_CALL.certificate-159"><a href="#FUNC_CALL.certificate-159"><span class="linenos">159</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_CALL.certificate-160"><a href="#FUNC_CALL.certificate-160"><span class="linenos">160</span></a><span class="sd">        : int</span>
+</span><span id="FUNC_CALL.certificate-161"><a href="#FUNC_CALL.certificate-161"><span class="linenos">161</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="FUNC_CALL.certificate-162"><a href="#FUNC_CALL.certificate-162"><span class="linenos">162</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_CALL.certificate-163"><a href="#FUNC_CALL.certificate-163"><span class="linenos">163</span></a>
+</span><span id="FUNC_CALL.certificate-164"><a href="#FUNC_CALL.certificate-164"><span class="linenos">164</span></a>        <span class="k">for</span> <span class="n">argument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+</span><span id="FUNC_CALL.certificate-165"><a href="#FUNC_CALL.certificate-165"><span class="linenos">165</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="FUNC_CALL.certificate-166"><a href="#FUNC_CALL.certificate-166"><span class="linenos">166</span></a>
+</span><span id="FUNC_CALL.certificate-167"><a href="#FUNC_CALL.certificate-167"><span class="linenos">167</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
 </span></pre></div>
 
 
