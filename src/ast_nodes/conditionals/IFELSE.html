@@ -93,171 +93,168 @@
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">    Parameters</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">    ----------</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">    id : int</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">        The ID of the Node.</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="sd">    parenthesis_expression : Node</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">        The node representation of the expression to be evaluated.</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">    statement_if_true : Node</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">        evaluates to `True`.</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">    statement_if_false : Node</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">        evaluates to `False`.</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>    <span class="nd">@override</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>        <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>        <span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">)</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>    <span class="nd">@override</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        For `IFELSE` nodes, first call the `Conditional.get_certificate_label`</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        method, and compose it with the `certificate_label` obtained recursively</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        from the `statement_if_false` subtree.</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">        Returns</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">        -------</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="sd">        : list of str</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>        <span class="p">]</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="nd">@override</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">    parenthesis_expression : Node</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">        The node representation of the expression to be evaluated.</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="sd">    statement_if_true : Node</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">        evaluates to `True`.</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">    statement_if_false : Node</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">        evaluates to `False`.</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>    <span class="nd">@override</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>        <span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parenthesis_expression</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">)</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>    <span class="nd">@override</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        For `IFELSE` nodes, first call the `Conditional.get_certificate_label`</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        method, and compose it with the `certificate_label` obtained recursively</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        from the `statement_if_false` subtree.</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        Returns</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        -------</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">        : list of str</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="p">]</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="nd">@override</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">        with an additional left space.</span>
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        Parameters</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        ----------</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="nd">@override</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="p">]:</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        Generate the code associated with this `IFELSE`.</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        For this node specialization, generate code from the</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        `parenthesis_expression` first, add a conditional jump to the first</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        instruction of the `statement_if_false` subtree -- i.e., to jump to if</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        the `parenthesis_expression` evaluates to `False` --, then generate</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">        code from the `statement_if_true`, add an unconditional jump to the</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        last instruction of teh `statement_if_false` subtree, and then finally</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        generate code from `statement_if_false`.</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        Parameters</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">        ----------</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">        register : int</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">            Node.</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        Returns</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">        -------</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        register : int</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        ifelse_code : list of dict</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">parenthesis_expression_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>        <span class="p">)</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>        <span class="n">conditional_register</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_true_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>        <span class="p">)</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_false_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="p">)</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="c1"># `statement_if_true` block (add 2 to land right after the unconditional</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="c1"># jump added later on)</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="n">instructions_to_jump_over_if</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_true_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="n">conditional_jump</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="n">conditional_register</span><span class="p">,</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_if</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>            <span class="p">}</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="p">}</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="c1"># `statement_if_false` block (add 1 to land right after the last</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="c1"># instruction of the `statemente_if_false` block)</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>        <span class="n">instructions_to_jump_over_else</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_false_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="n">unconditional_jump</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span><span class="p">,</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_else</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>            <span class="p">}</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="p">}</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="n">ifelse_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="o">*</span><span class="n">parenthesis_expression_code</span><span class="p">,</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>            <span class="n">conditional_jump</span><span class="p">,</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>            <span class="o">*</span><span class="n">statement_if_true_code</span><span class="p">,</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>            <span class="n">unconditional_jump</span><span class="p">,</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>            <span class="o">*</span><span class="n">statement_if_false_code</span><span class="p">,</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>        <span class="p">]</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>    <span class="nd">@override</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">        Parameters</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">        ----------</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">        prime : int</span>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">            in the AST.</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">        Returns</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">        -------</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">        : int</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        Parameters</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">        ----------</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="nd">@override</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="p">]:</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        Generate the code associated with this `IFELSE`.</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">        For this node specialization, generate code from the</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        `parenthesis_expression` first, add a conditional jump to the first</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        instruction of the `statement_if_false` subtree -- i.e., to jump to if</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        the `parenthesis_expression` evaluates to `False` --, then generate</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        code from the `statement_if_true`, add an unconditional jump to the</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        last instruction of teh `statement_if_false` subtree, and then finally</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        generate code from `statement_if_false`.</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        Parameters</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        ----------</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        register : int</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            Node.</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        Returns</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        -------</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">        register : int</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">        ifelse_code : list of dict</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">            `instruction`and `value`.</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">parenthesis_expression_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>        <span class="p">)</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="n">conditional_register</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_true_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>        <span class="p">)</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_false_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="p">)</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="c1"># `statement_if_true` block (add 2 to land right after the unconditional</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="c1"># jump added later on)</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="n">instructions_to_jump_over_if</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_true_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="n">conditional_jump</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="n">conditional_register</span><span class="p">,</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_if</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>            <span class="p">}</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="p">}</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="c1"># `statement_if_false` block (add 1 to land right after the last</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="c1"># instruction of the `statemente_if_false` block)</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="n">instructions_to_jump_over_else</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_false_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="n">unconditional_jump</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span><span class="p">,</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_else</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>            <span class="p">}</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>        <span class="p">}</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>        <span class="n">ifelse_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>            <span class="o">*</span><span class="n">parenthesis_expression_code</span><span class="p">,</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>            <span class="n">conditional_jump</span><span class="p">,</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>            <span class="o">*</span><span class="n">statement_if_true_code</span><span class="p">,</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="n">unconditional_jump</span><span class="p">,</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>            <span class="o">*</span><span class="n">statement_if_false_code</span><span class="p">,</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="p">]</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>    <span class="nd">@override</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        Parameters</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        ----------</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        prime : int</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">            in the AST.</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">        Returns</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">        -------</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">        : int</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -279,171 +276,168 @@
 </span><span id="IFELSE-15"><a href="#IFELSE-15"><span class="linenos"> 15</span></a>
 </span><span id="IFELSE-16"><a href="#IFELSE-16"><span class="linenos"> 16</span></a><span class="sd">    Parameters</span>
 </span><span id="IFELSE-17"><a href="#IFELSE-17"><span class="linenos"> 17</span></a><span class="sd">    ----------</span>
-</span><span id="IFELSE-18"><a href="#IFELSE-18"><span class="linenos"> 18</span></a><span class="sd">    id : int</span>
-</span><span id="IFELSE-19"><a href="#IFELSE-19"><span class="linenos"> 19</span></a><span class="sd">        The ID of the Node.</span>
-</span><span id="IFELSE-20"><a href="#IFELSE-20"><span class="linenos"> 20</span></a><span class="sd">    parenthesis_expression : Node</span>
-</span><span id="IFELSE-21"><a href="#IFELSE-21"><span class="linenos"> 21</span></a><span class="sd">        The node representation of the expression to be evaluated.</span>
-</span><span id="IFELSE-22"><a href="#IFELSE-22"><span class="linenos"> 22</span></a><span class="sd">    statement_if_true : Node</span>
-</span><span id="IFELSE-23"><a href="#IFELSE-23"><span class="linenos"> 23</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
-</span><span id="IFELSE-24"><a href="#IFELSE-24"><span class="linenos"> 24</span></a><span class="sd">        evaluates to `True`.</span>
-</span><span id="IFELSE-25"><a href="#IFELSE-25"><span class="linenos"> 25</span></a><span class="sd">    statement_if_false : Node</span>
-</span><span id="IFELSE-26"><a href="#IFELSE-26"><span class="linenos"> 26</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
-</span><span id="IFELSE-27"><a href="#IFELSE-27"><span class="linenos"> 27</span></a><span class="sd">        evaluates to `False`.</span>
-</span><span id="IFELSE-28"><a href="#IFELSE-28"><span class="linenos"> 28</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="IFELSE-29"><a href="#IFELSE-29"><span class="linenos"> 29</span></a>
-</span><span id="IFELSE-30"><a href="#IFELSE-30"><span class="linenos"> 30</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-31"><a href="#IFELSE-31"><span class="linenos"> 31</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="IFELSE-32"><a href="#IFELSE-32"><span class="linenos"> 32</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="IFELSE-33"><a href="#IFELSE-33"><span class="linenos"> 33</span></a>        <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="IFELSE-34"><a href="#IFELSE-34"><span class="linenos"> 34</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="IFELSE-35"><a href="#IFELSE-35"><span class="linenos"> 35</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="IFELSE-36"><a href="#IFELSE-36"><span class="linenos"> 36</span></a>        <span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="IFELSE-37"><a href="#IFELSE-37"><span class="linenos"> 37</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="IFELSE-38"><a href="#IFELSE-38"><span class="linenos"> 38</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">)</span>
-</span><span id="IFELSE-39"><a href="#IFELSE-39"><span class="linenos"> 39</span></a>
-</span><span id="IFELSE-40"><a href="#IFELSE-40"><span class="linenos"> 40</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
-</span><span id="IFELSE-41"><a href="#IFELSE-41"><span class="linenos"> 41</span></a>
-</span><span id="IFELSE-42"><a href="#IFELSE-42"><span class="linenos"> 42</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-43"><a href="#IFELSE-43"><span class="linenos"> 43</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="IFELSE-44"><a href="#IFELSE-44"><span class="linenos"> 44</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE-45"><a href="#IFELSE-45"><span class="linenos"> 45</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="IFELSE-46"><a href="#IFELSE-46"><span class="linenos"> 46</span></a>
-</span><span id="IFELSE-47"><a href="#IFELSE-47"><span class="linenos"> 47</span></a><span class="sd">        For `IFELSE` nodes, first call the `Conditional.get_certificate_label`</span>
-</span><span id="IFELSE-48"><a href="#IFELSE-48"><span class="linenos"> 48</span></a><span class="sd">        method, and compose it with the `certificate_label` obtained recursively</span>
-</span><span id="IFELSE-49"><a href="#IFELSE-49"><span class="linenos"> 49</span></a><span class="sd">        from the `statement_if_false` subtree.</span>
-</span><span id="IFELSE-50"><a href="#IFELSE-50"><span class="linenos"> 50</span></a>
-</span><span id="IFELSE-51"><a href="#IFELSE-51"><span class="linenos"> 51</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE-52"><a href="#IFELSE-52"><span class="linenos"> 52</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE-53"><a href="#IFELSE-53"><span class="linenos"> 53</span></a><span class="sd">        : list of str</span>
-</span><span id="IFELSE-54"><a href="#IFELSE-54"><span class="linenos"> 54</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="IFELSE-55"><a href="#IFELSE-55"><span class="linenos"> 55</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE-56"><a href="#IFELSE-56"><span class="linenos"> 56</span></a>
-</span><span id="IFELSE-57"><a href="#IFELSE-57"><span class="linenos"> 57</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="IFELSE-58"><a href="#IFELSE-58"><span class="linenos"> 58</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="IFELSE-59"><a href="#IFELSE-59"><span class="linenos"> 59</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="IFELSE-60"><a href="#IFELSE-60"><span class="linenos"> 60</span></a>        <span class="p">]</span>
-</span><span id="IFELSE-61"><a href="#IFELSE-61"><span class="linenos"> 61</span></a>
-</span><span id="IFELSE-62"><a href="#IFELSE-62"><span class="linenos"> 62</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-63"><a href="#IFELSE-63"><span class="linenos"> 63</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="IFELSE-64"><a href="#IFELSE-64"><span class="linenos"> 64</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE-65"><a href="#IFELSE-65"><span class="linenos"> 65</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="IFELSE-18"><a href="#IFELSE-18"><span class="linenos"> 18</span></a><span class="sd">    parenthesis_expression : Node</span>
+</span><span id="IFELSE-19"><a href="#IFELSE-19"><span class="linenos"> 19</span></a><span class="sd">        The node representation of the expression to be evaluated.</span>
+</span><span id="IFELSE-20"><a href="#IFELSE-20"><span class="linenos"> 20</span></a><span class="sd">    statement_if_true : Node</span>
+</span><span id="IFELSE-21"><a href="#IFELSE-21"><span class="linenos"> 21</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
+</span><span id="IFELSE-22"><a href="#IFELSE-22"><span class="linenos"> 22</span></a><span class="sd">        evaluates to `True`.</span>
+</span><span id="IFELSE-23"><a href="#IFELSE-23"><span class="linenos"> 23</span></a><span class="sd">    statement_if_false : Node</span>
+</span><span id="IFELSE-24"><a href="#IFELSE-24"><span class="linenos"> 24</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
+</span><span id="IFELSE-25"><a href="#IFELSE-25"><span class="linenos"> 25</span></a><span class="sd">        evaluates to `False`.</span>
+</span><span id="IFELSE-26"><a href="#IFELSE-26"><span class="linenos"> 26</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="IFELSE-27"><a href="#IFELSE-27"><span class="linenos"> 27</span></a>
+</span><span id="IFELSE-28"><a href="#IFELSE-28"><span class="linenos"> 28</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE-29"><a href="#IFELSE-29"><span class="linenos"> 29</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="IFELSE-30"><a href="#IFELSE-30"><span class="linenos"> 30</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="IFELSE-31"><a href="#IFELSE-31"><span class="linenos"> 31</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="IFELSE-32"><a href="#IFELSE-32"><span class="linenos"> 32</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="IFELSE-33"><a href="#IFELSE-33"><span class="linenos"> 33</span></a>        <span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="IFELSE-34"><a href="#IFELSE-34"><span class="linenos"> 34</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="IFELSE-35"><a href="#IFELSE-35"><span class="linenos"> 35</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parenthesis_expression</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">)</span>
+</span><span id="IFELSE-36"><a href="#IFELSE-36"><span class="linenos"> 36</span></a>
+</span><span id="IFELSE-37"><a href="#IFELSE-37"><span class="linenos"> 37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
+</span><span id="IFELSE-38"><a href="#IFELSE-38"><span class="linenos"> 38</span></a>
+</span><span id="IFELSE-39"><a href="#IFELSE-39"><span class="linenos"> 39</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE-40"><a href="#IFELSE-40"><span class="linenos"> 40</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="IFELSE-41"><a href="#IFELSE-41"><span class="linenos"> 41</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE-42"><a href="#IFELSE-42"><span class="linenos"> 42</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="IFELSE-43"><a href="#IFELSE-43"><span class="linenos"> 43</span></a>
+</span><span id="IFELSE-44"><a href="#IFELSE-44"><span class="linenos"> 44</span></a><span class="sd">        For `IFELSE` nodes, first call the `Conditional.get_certificate_label`</span>
+</span><span id="IFELSE-45"><a href="#IFELSE-45"><span class="linenos"> 45</span></a><span class="sd">        method, and compose it with the `certificate_label` obtained recursively</span>
+</span><span id="IFELSE-46"><a href="#IFELSE-46"><span class="linenos"> 46</span></a><span class="sd">        from the `statement_if_false` subtree.</span>
+</span><span id="IFELSE-47"><a href="#IFELSE-47"><span class="linenos"> 47</span></a>
+</span><span id="IFELSE-48"><a href="#IFELSE-48"><span class="linenos"> 48</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE-49"><a href="#IFELSE-49"><span class="linenos"> 49</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE-50"><a href="#IFELSE-50"><span class="linenos"> 50</span></a><span class="sd">        : list of str</span>
+</span><span id="IFELSE-51"><a href="#IFELSE-51"><span class="linenos"> 51</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="IFELSE-52"><a href="#IFELSE-52"><span class="linenos"> 52</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE-53"><a href="#IFELSE-53"><span class="linenos"> 53</span></a>
+</span><span id="IFELSE-54"><a href="#IFELSE-54"><span class="linenos"> 54</span></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="IFELSE-55"><a href="#IFELSE-55"><span class="linenos"> 55</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="IFELSE-56"><a href="#IFELSE-56"><span class="linenos"> 56</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="IFELSE-57"><a href="#IFELSE-57"><span class="linenos"> 57</span></a>        <span class="p">]</span>
+</span><span id="IFELSE-58"><a href="#IFELSE-58"><span class="linenos"> 58</span></a>
+</span><span id="IFELSE-59"><a href="#IFELSE-59"><span class="linenos"> 59</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE-60"><a href="#IFELSE-60"><span class="linenos"> 60</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="IFELSE-61"><a href="#IFELSE-61"><span class="linenos"> 61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE-62"><a href="#IFELSE-62"><span class="linenos"> 62</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="IFELSE-63"><a href="#IFELSE-63"><span class="linenos"> 63</span></a>
+</span><span id="IFELSE-64"><a href="#IFELSE-64"><span class="linenos"> 64</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="IFELSE-65"><a href="#IFELSE-65"><span class="linenos"> 65</span></a><span class="sd">        with an additional left space.</span>
 </span><span id="IFELSE-66"><a href="#IFELSE-66"><span class="linenos"> 66</span></a>
-</span><span id="IFELSE-67"><a href="#IFELSE-67"><span class="linenos"> 67</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="IFELSE-68"><a href="#IFELSE-68"><span class="linenos"> 68</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="IFELSE-69"><a href="#IFELSE-69"><span class="linenos"> 69</span></a>
-</span><span id="IFELSE-70"><a href="#IFELSE-70"><span class="linenos"> 70</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE-71"><a href="#IFELSE-71"><span class="linenos"> 71</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE-72"><a href="#IFELSE-72"><span class="linenos"> 72</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="IFELSE-73"><a href="#IFELSE-73"><span class="linenos"> 73</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="IFELSE-74"><a href="#IFELSE-74"><span class="linenos"> 74</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE-75"><a href="#IFELSE-75"><span class="linenos"> 75</span></a>
-</span><span id="IFELSE-76"><a href="#IFELSE-76"><span class="linenos"> 76</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="IFELSE-77"><a href="#IFELSE-77"><span class="linenos"> 77</span></a>
-</span><span id="IFELSE-78"><a href="#IFELSE-78"><span class="linenos"> 78</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="IFELSE-79"><a href="#IFELSE-79"><span class="linenos"> 79</span></a>
-</span><span id="IFELSE-80"><a href="#IFELSE-80"><span class="linenos"> 80</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-81"><a href="#IFELSE-81"><span class="linenos"> 81</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="IFELSE-82"><a href="#IFELSE-82"><span class="linenos"> 82</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="IFELSE-83"><a href="#IFELSE-83"><span class="linenos"> 83</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
-</span><span id="IFELSE-84"><a href="#IFELSE-84"><span class="linenos"> 84</span></a>    <span class="p">]:</span>
-</span><span id="IFELSE-85"><a href="#IFELSE-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE-86"><a href="#IFELSE-86"><span class="linenos"> 86</span></a><span class="sd">        Generate the code associated with this `IFELSE`.</span>
-</span><span id="IFELSE-87"><a href="#IFELSE-87"><span class="linenos"> 87</span></a>
-</span><span id="IFELSE-88"><a href="#IFELSE-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, generate code from the</span>
-</span><span id="IFELSE-89"><a href="#IFELSE-89"><span class="linenos"> 89</span></a><span class="sd">        `parenthesis_expression` first, add a conditional jump to the first</span>
-</span><span id="IFELSE-90"><a href="#IFELSE-90"><span class="linenos"> 90</span></a><span class="sd">        instruction of the `statement_if_false` subtree -- i.e., to jump to if</span>
-</span><span id="IFELSE-91"><a href="#IFELSE-91"><span class="linenos"> 91</span></a><span class="sd">        the `parenthesis_expression` evaluates to `False` --, then generate</span>
-</span><span id="IFELSE-92"><a href="#IFELSE-92"><span class="linenos"> 92</span></a><span class="sd">        code from the `statement_if_true`, add an unconditional jump to the</span>
-</span><span id="IFELSE-93"><a href="#IFELSE-93"><span class="linenos"> 93</span></a><span class="sd">        last instruction of teh `statement_if_false` subtree, and then finally</span>
-</span><span id="IFELSE-94"><a href="#IFELSE-94"><span class="linenos"> 94</span></a><span class="sd">        generate code from `statement_if_false`.</span>
-</span><span id="IFELSE-95"><a href="#IFELSE-95"><span class="linenos"> 95</span></a>
-</span><span id="IFELSE-96"><a href="#IFELSE-96"><span class="linenos"> 96</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE-97"><a href="#IFELSE-97"><span class="linenos"> 97</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE-98"><a href="#IFELSE-98"><span class="linenos"> 98</span></a><span class="sd">        register : int</span>
-</span><span id="IFELSE-99"><a href="#IFELSE-99"><span class="linenos"> 99</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="IFELSE-100"><a href="#IFELSE-100"><span class="linenos">100</span></a><span class="sd">            Node.</span>
-</span><span id="IFELSE-101"><a href="#IFELSE-101"><span class="linenos">101</span></a>
-</span><span id="IFELSE-102"><a href="#IFELSE-102"><span class="linenos">102</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE-103"><a href="#IFELSE-103"><span class="linenos">103</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE-104"><a href="#IFELSE-104"><span class="linenos">104</span></a><span class="sd">        register : int</span>
-</span><span id="IFELSE-105"><a href="#IFELSE-105"><span class="linenos">105</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="IFELSE-106"><a href="#IFELSE-106"><span class="linenos">106</span></a><span class="sd">        ifelse_code : list of dict</span>
-</span><span id="IFELSE-107"><a href="#IFELSE-107"><span class="linenos">107</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="IFELSE-108"><a href="#IFELSE-108"><span class="linenos">108</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
-</span><span id="IFELSE-109"><a href="#IFELSE-109"><span class="linenos">109</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE-110"><a href="#IFELSE-110"><span class="linenos">110</span></a>
-</span><span id="IFELSE-111"><a href="#IFELSE-111"><span class="linenos">111</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">parenthesis_expression_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="IFELSE-112"><a href="#IFELSE-112"><span class="linenos">112</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="IFELSE-113"><a href="#IFELSE-113"><span class="linenos">113</span></a>        <span class="p">)</span>
-</span><span id="IFELSE-114"><a href="#IFELSE-114"><span class="linenos">114</span></a>        <span class="n">conditional_register</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="IFELSE-115"><a href="#IFELSE-115"><span class="linenos">115</span></a>
-</span><span id="IFELSE-116"><a href="#IFELSE-116"><span class="linenos">116</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_true_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="IFELSE-117"><a href="#IFELSE-117"><span class="linenos">117</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="IFELSE-118"><a href="#IFELSE-118"><span class="linenos">118</span></a>        <span class="p">)</span>
-</span><span id="IFELSE-119"><a href="#IFELSE-119"><span class="linenos">119</span></a>
-</span><span id="IFELSE-120"><a href="#IFELSE-120"><span class="linenos">120</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_false_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="IFELSE-121"><a href="#IFELSE-121"><span class="linenos">121</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="IFELSE-122"><a href="#IFELSE-122"><span class="linenos">122</span></a>        <span class="p">)</span>
-</span><span id="IFELSE-123"><a href="#IFELSE-123"><span class="linenos">123</span></a>
-</span><span id="IFELSE-124"><a href="#IFELSE-124"><span class="linenos">124</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
-</span><span id="IFELSE-125"><a href="#IFELSE-125"><span class="linenos">125</span></a>        <span class="c1"># `statement_if_true` block (add 2 to land right after the unconditional</span>
-</span><span id="IFELSE-126"><a href="#IFELSE-126"><span class="linenos">126</span></a>        <span class="c1"># jump added later on)</span>
-</span><span id="IFELSE-127"><a href="#IFELSE-127"><span class="linenos">127</span></a>        <span class="n">instructions_to_jump_over_if</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_true_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
-</span><span id="IFELSE-128"><a href="#IFELSE-128"><span class="linenos">128</span></a>        <span class="n">conditional_jump</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="IFELSE-129"><a href="#IFELSE-129"><span class="linenos">129</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
-</span><span id="IFELSE-130"><a href="#IFELSE-130"><span class="linenos">130</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="IFELSE-131"><a href="#IFELSE-131"><span class="linenos">131</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="n">conditional_register</span><span class="p">,</span>
-</span><span id="IFELSE-132"><a href="#IFELSE-132"><span class="linenos">132</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_if</span>
-</span><span id="IFELSE-133"><a href="#IFELSE-133"><span class="linenos">133</span></a>            <span class="p">}</span>
-</span><span id="IFELSE-134"><a href="#IFELSE-134"><span class="linenos">134</span></a>        <span class="p">}</span>
-</span><span id="IFELSE-135"><a href="#IFELSE-135"><span class="linenos">135</span></a>
-</span><span id="IFELSE-136"><a href="#IFELSE-136"><span class="linenos">136</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
-</span><span id="IFELSE-137"><a href="#IFELSE-137"><span class="linenos">137</span></a>        <span class="c1"># `statement_if_false` block (add 1 to land right after the last</span>
-</span><span id="IFELSE-138"><a href="#IFELSE-138"><span class="linenos">138</span></a>        <span class="c1"># instruction of the `statemente_if_false` block)</span>
-</span><span id="IFELSE-139"><a href="#IFELSE-139"><span class="linenos">139</span></a>        <span class="n">instructions_to_jump_over_else</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_false_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span id="IFELSE-140"><a href="#IFELSE-140"><span class="linenos">140</span></a>        <span class="n">unconditional_jump</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="IFELSE-141"><a href="#IFELSE-141"><span class="linenos">141</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
-</span><span id="IFELSE-142"><a href="#IFELSE-142"><span class="linenos">142</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="IFELSE-143"><a href="#IFELSE-143"><span class="linenos">143</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span><span class="p">,</span>
-</span><span id="IFELSE-144"><a href="#IFELSE-144"><span class="linenos">144</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_else</span>
-</span><span id="IFELSE-145"><a href="#IFELSE-145"><span class="linenos">145</span></a>            <span class="p">}</span>
-</span><span id="IFELSE-146"><a href="#IFELSE-146"><span class="linenos">146</span></a>        <span class="p">}</span>
-</span><span id="IFELSE-147"><a href="#IFELSE-147"><span class="linenos">147</span></a>
-</span><span id="IFELSE-148"><a href="#IFELSE-148"><span class="linenos">148</span></a>        <span class="n">ifelse_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="IFELSE-149"><a href="#IFELSE-149"><span class="linenos">149</span></a>            <span class="o">*</span><span class="n">parenthesis_expression_code</span><span class="p">,</span>
-</span><span id="IFELSE-150"><a href="#IFELSE-150"><span class="linenos">150</span></a>            <span class="n">conditional_jump</span><span class="p">,</span>
-</span><span id="IFELSE-151"><a href="#IFELSE-151"><span class="linenos">151</span></a>            <span class="o">*</span><span class="n">statement_if_true_code</span><span class="p">,</span>
-</span><span id="IFELSE-152"><a href="#IFELSE-152"><span class="linenos">152</span></a>            <span class="n">unconditional_jump</span><span class="p">,</span>
-</span><span id="IFELSE-153"><a href="#IFELSE-153"><span class="linenos">153</span></a>            <span class="o">*</span><span class="n">statement_if_false_code</span><span class="p">,</span>
-</span><span id="IFELSE-154"><a href="#IFELSE-154"><span class="linenos">154</span></a>        <span class="p">]</span>
-</span><span id="IFELSE-155"><a href="#IFELSE-155"><span class="linenos">155</span></a>
-</span><span id="IFELSE-156"><a href="#IFELSE-156"><span class="linenos">156</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
-</span><span id="IFELSE-157"><a href="#IFELSE-157"><span class="linenos">157</span></a>
-</span><span id="IFELSE-158"><a href="#IFELSE-158"><span class="linenos">158</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-159"><a href="#IFELSE-159"><span class="linenos">159</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="IFELSE-160"><a href="#IFELSE-160"><span class="linenos">160</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE-161"><a href="#IFELSE-161"><span class="linenos">161</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
-</span><span id="IFELSE-162"><a href="#IFELSE-162"><span class="linenos">162</span></a>
-</span><span id="IFELSE-163"><a href="#IFELSE-163"><span class="linenos">163</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="IFELSE-164"><a href="#IFELSE-164"><span class="linenos">164</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
-</span><span id="IFELSE-165"><a href="#IFELSE-165"><span class="linenos">165</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
-</span><span id="IFELSE-166"><a href="#IFELSE-166"><span class="linenos">166</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="IFELSE-167"><a href="#IFELSE-167"><span class="linenos">167</span></a>
-</span><span id="IFELSE-168"><a href="#IFELSE-168"><span class="linenos">168</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE-169"><a href="#IFELSE-169"><span class="linenos">169</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE-170"><a href="#IFELSE-170"><span class="linenos">170</span></a><span class="sd">        prime : int</span>
-</span><span id="IFELSE-171"><a href="#IFELSE-171"><span class="linenos">171</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
-</span><span id="IFELSE-172"><a href="#IFELSE-172"><span class="linenos">172</span></a><span class="sd">            in the AST.</span>
-</span><span id="IFELSE-173"><a href="#IFELSE-173"><span class="linenos">173</span></a>
-</span><span id="IFELSE-174"><a href="#IFELSE-174"><span class="linenos">174</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE-175"><a href="#IFELSE-175"><span class="linenos">175</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE-176"><a href="#IFELSE-176"><span class="linenos">176</span></a><span class="sd">        : int</span>
-</span><span id="IFELSE-177"><a href="#IFELSE-177"><span class="linenos">177</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="IFELSE-178"><a href="#IFELSE-178"><span class="linenos">178</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE-179"><a href="#IFELSE-179"><span class="linenos">179</span></a>
-</span><span id="IFELSE-180"><a href="#IFELSE-180"><span class="linenos">180</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="IFELSE-181"><a href="#IFELSE-181"><span class="linenos">181</span></a>
-</span><span id="IFELSE-182"><a href="#IFELSE-182"><span class="linenos">182</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="IFELSE-67"><a href="#IFELSE-67"><span class="linenos"> 67</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE-68"><a href="#IFELSE-68"><span class="linenos"> 68</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE-69"><a href="#IFELSE-69"><span class="linenos"> 69</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="IFELSE-70"><a href="#IFELSE-70"><span class="linenos"> 70</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="IFELSE-71"><a href="#IFELSE-71"><span class="linenos"> 71</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE-72"><a href="#IFELSE-72"><span class="linenos"> 72</span></a>
+</span><span id="IFELSE-73"><a href="#IFELSE-73"><span class="linenos"> 73</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="IFELSE-74"><a href="#IFELSE-74"><span class="linenos"> 74</span></a>
+</span><span id="IFELSE-75"><a href="#IFELSE-75"><span class="linenos"> 75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="IFELSE-76"><a href="#IFELSE-76"><span class="linenos"> 76</span></a>
+</span><span id="IFELSE-77"><a href="#IFELSE-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE-78"><a href="#IFELSE-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="IFELSE-79"><a href="#IFELSE-79"><span class="linenos"> 79</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="IFELSE-80"><a href="#IFELSE-80"><span class="linenos"> 80</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+</span><span id="IFELSE-81"><a href="#IFELSE-81"><span class="linenos"> 81</span></a>    <span class="p">]:</span>
+</span><span id="IFELSE-82"><a href="#IFELSE-82"><span class="linenos"> 82</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE-83"><a href="#IFELSE-83"><span class="linenos"> 83</span></a><span class="sd">        Generate the code associated with this `IFELSE`.</span>
+</span><span id="IFELSE-84"><a href="#IFELSE-84"><span class="linenos"> 84</span></a>
+</span><span id="IFELSE-85"><a href="#IFELSE-85"><span class="linenos"> 85</span></a><span class="sd">        For this node specialization, generate code from the</span>
+</span><span id="IFELSE-86"><a href="#IFELSE-86"><span class="linenos"> 86</span></a><span class="sd">        `parenthesis_expression` first, add a conditional jump to the first</span>
+</span><span id="IFELSE-87"><a href="#IFELSE-87"><span class="linenos"> 87</span></a><span class="sd">        instruction of the `statement_if_false` subtree -- i.e., to jump to if</span>
+</span><span id="IFELSE-88"><a href="#IFELSE-88"><span class="linenos"> 88</span></a><span class="sd">        the `parenthesis_expression` evaluates to `False` --, then generate</span>
+</span><span id="IFELSE-89"><a href="#IFELSE-89"><span class="linenos"> 89</span></a><span class="sd">        code from the `statement_if_true`, add an unconditional jump to the</span>
+</span><span id="IFELSE-90"><a href="#IFELSE-90"><span class="linenos"> 90</span></a><span class="sd">        last instruction of teh `statement_if_false` subtree, and then finally</span>
+</span><span id="IFELSE-91"><a href="#IFELSE-91"><span class="linenos"> 91</span></a><span class="sd">        generate code from `statement_if_false`.</span>
+</span><span id="IFELSE-92"><a href="#IFELSE-92"><span class="linenos"> 92</span></a>
+</span><span id="IFELSE-93"><a href="#IFELSE-93"><span class="linenos"> 93</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE-94"><a href="#IFELSE-94"><span class="linenos"> 94</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE-95"><a href="#IFELSE-95"><span class="linenos"> 95</span></a><span class="sd">        register : int</span>
+</span><span id="IFELSE-96"><a href="#IFELSE-96"><span class="linenos"> 96</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="IFELSE-97"><a href="#IFELSE-97"><span class="linenos"> 97</span></a><span class="sd">            Node.</span>
+</span><span id="IFELSE-98"><a href="#IFELSE-98"><span class="linenos"> 98</span></a>
+</span><span id="IFELSE-99"><a href="#IFELSE-99"><span class="linenos"> 99</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE-100"><a href="#IFELSE-100"><span class="linenos">100</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE-101"><a href="#IFELSE-101"><span class="linenos">101</span></a><span class="sd">        register : int</span>
+</span><span id="IFELSE-102"><a href="#IFELSE-102"><span class="linenos">102</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="IFELSE-103"><a href="#IFELSE-103"><span class="linenos">103</span></a><span class="sd">        ifelse_code : list of dict</span>
+</span><span id="IFELSE-104"><a href="#IFELSE-104"><span class="linenos">104</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="IFELSE-105"><a href="#IFELSE-105"><span class="linenos">105</span></a><span class="sd">            `instruction`and `value`.</span>
+</span><span id="IFELSE-106"><a href="#IFELSE-106"><span class="linenos">106</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE-107"><a href="#IFELSE-107"><span class="linenos">107</span></a>
+</span><span id="IFELSE-108"><a href="#IFELSE-108"><span class="linenos">108</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">parenthesis_expression_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE-109"><a href="#IFELSE-109"><span class="linenos">109</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="IFELSE-110"><a href="#IFELSE-110"><span class="linenos">110</span></a>        <span class="p">)</span>
+</span><span id="IFELSE-111"><a href="#IFELSE-111"><span class="linenos">111</span></a>        <span class="n">conditional_register</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="IFELSE-112"><a href="#IFELSE-112"><span class="linenos">112</span></a>
+</span><span id="IFELSE-113"><a href="#IFELSE-113"><span class="linenos">113</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_true_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE-114"><a href="#IFELSE-114"><span class="linenos">114</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="IFELSE-115"><a href="#IFELSE-115"><span class="linenos">115</span></a>        <span class="p">)</span>
+</span><span id="IFELSE-116"><a href="#IFELSE-116"><span class="linenos">116</span></a>
+</span><span id="IFELSE-117"><a href="#IFELSE-117"><span class="linenos">117</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_false_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE-118"><a href="#IFELSE-118"><span class="linenos">118</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="IFELSE-119"><a href="#IFELSE-119"><span class="linenos">119</span></a>        <span class="p">)</span>
+</span><span id="IFELSE-120"><a href="#IFELSE-120"><span class="linenos">120</span></a>
+</span><span id="IFELSE-121"><a href="#IFELSE-121"><span class="linenos">121</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
+</span><span id="IFELSE-122"><a href="#IFELSE-122"><span class="linenos">122</span></a>        <span class="c1"># `statement_if_true` block (add 2 to land right after the unconditional</span>
+</span><span id="IFELSE-123"><a href="#IFELSE-123"><span class="linenos">123</span></a>        <span class="c1"># jump added later on)</span>
+</span><span id="IFELSE-124"><a href="#IFELSE-124"><span class="linenos">124</span></a>        <span class="n">instructions_to_jump_over_if</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_true_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+</span><span id="IFELSE-125"><a href="#IFELSE-125"><span class="linenos">125</span></a>        <span class="n">conditional_jump</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="IFELSE-126"><a href="#IFELSE-126"><span class="linenos">126</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
+</span><span id="IFELSE-127"><a href="#IFELSE-127"><span class="linenos">127</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="IFELSE-128"><a href="#IFELSE-128"><span class="linenos">128</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="n">conditional_register</span><span class="p">,</span>
+</span><span id="IFELSE-129"><a href="#IFELSE-129"><span class="linenos">129</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_if</span>
+</span><span id="IFELSE-130"><a href="#IFELSE-130"><span class="linenos">130</span></a>            <span class="p">}</span>
+</span><span id="IFELSE-131"><a href="#IFELSE-131"><span class="linenos">131</span></a>        <span class="p">}</span>
+</span><span id="IFELSE-132"><a href="#IFELSE-132"><span class="linenos">132</span></a>
+</span><span id="IFELSE-133"><a href="#IFELSE-133"><span class="linenos">133</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
+</span><span id="IFELSE-134"><a href="#IFELSE-134"><span class="linenos">134</span></a>        <span class="c1"># `statement_if_false` block (add 1 to land right after the last</span>
+</span><span id="IFELSE-135"><a href="#IFELSE-135"><span class="linenos">135</span></a>        <span class="c1"># instruction of the `statemente_if_false` block)</span>
+</span><span id="IFELSE-136"><a href="#IFELSE-136"><span class="linenos">136</span></a>        <span class="n">instructions_to_jump_over_else</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_false_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="IFELSE-137"><a href="#IFELSE-137"><span class="linenos">137</span></a>        <span class="n">unconditional_jump</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="IFELSE-138"><a href="#IFELSE-138"><span class="linenos">138</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
+</span><span id="IFELSE-139"><a href="#IFELSE-139"><span class="linenos">139</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="IFELSE-140"><a href="#IFELSE-140"><span class="linenos">140</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span><span class="p">,</span>
+</span><span id="IFELSE-141"><a href="#IFELSE-141"><span class="linenos">141</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_else</span>
+</span><span id="IFELSE-142"><a href="#IFELSE-142"><span class="linenos">142</span></a>            <span class="p">}</span>
+</span><span id="IFELSE-143"><a href="#IFELSE-143"><span class="linenos">143</span></a>        <span class="p">}</span>
+</span><span id="IFELSE-144"><a href="#IFELSE-144"><span class="linenos">144</span></a>
+</span><span id="IFELSE-145"><a href="#IFELSE-145"><span class="linenos">145</span></a>        <span class="n">ifelse_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="IFELSE-146"><a href="#IFELSE-146"><span class="linenos">146</span></a>            <span class="o">*</span><span class="n">parenthesis_expression_code</span><span class="p">,</span>
+</span><span id="IFELSE-147"><a href="#IFELSE-147"><span class="linenos">147</span></a>            <span class="n">conditional_jump</span><span class="p">,</span>
+</span><span id="IFELSE-148"><a href="#IFELSE-148"><span class="linenos">148</span></a>            <span class="o">*</span><span class="n">statement_if_true_code</span><span class="p">,</span>
+</span><span id="IFELSE-149"><a href="#IFELSE-149"><span class="linenos">149</span></a>            <span class="n">unconditional_jump</span><span class="p">,</span>
+</span><span id="IFELSE-150"><a href="#IFELSE-150"><span class="linenos">150</span></a>            <span class="o">*</span><span class="n">statement_if_false_code</span><span class="p">,</span>
+</span><span id="IFELSE-151"><a href="#IFELSE-151"><span class="linenos">151</span></a>        <span class="p">]</span>
+</span><span id="IFELSE-152"><a href="#IFELSE-152"><span class="linenos">152</span></a>
+</span><span id="IFELSE-153"><a href="#IFELSE-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
+</span><span id="IFELSE-154"><a href="#IFELSE-154"><span class="linenos">154</span></a>
+</span><span id="IFELSE-155"><a href="#IFELSE-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE-156"><a href="#IFELSE-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="IFELSE-157"><a href="#IFELSE-157"><span class="linenos">157</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE-158"><a href="#IFELSE-158"><span class="linenos">158</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
+</span><span id="IFELSE-159"><a href="#IFELSE-159"><span class="linenos">159</span></a>
+</span><span id="IFELSE-160"><a href="#IFELSE-160"><span class="linenos">160</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="IFELSE-161"><a href="#IFELSE-161"><span class="linenos">161</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
+</span><span id="IFELSE-162"><a href="#IFELSE-162"><span class="linenos">162</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
+</span><span id="IFELSE-163"><a href="#IFELSE-163"><span class="linenos">163</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
+</span><span id="IFELSE-164"><a href="#IFELSE-164"><span class="linenos">164</span></a>
+</span><span id="IFELSE-165"><a href="#IFELSE-165"><span class="linenos">165</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE-166"><a href="#IFELSE-166"><span class="linenos">166</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE-167"><a href="#IFELSE-167"><span class="linenos">167</span></a><span class="sd">        prime : int</span>
+</span><span id="IFELSE-168"><a href="#IFELSE-168"><span class="linenos">168</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
+</span><span id="IFELSE-169"><a href="#IFELSE-169"><span class="linenos">169</span></a><span class="sd">            in the AST.</span>
+</span><span id="IFELSE-170"><a href="#IFELSE-170"><span class="linenos">170</span></a>
+</span><span id="IFELSE-171"><a href="#IFELSE-171"><span class="linenos">171</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE-172"><a href="#IFELSE-172"><span class="linenos">172</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE-173"><a href="#IFELSE-173"><span class="linenos">173</span></a><span class="sd">        : int</span>
+</span><span id="IFELSE-174"><a href="#IFELSE-174"><span class="linenos">174</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="IFELSE-175"><a href="#IFELSE-175"><span class="linenos">175</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE-176"><a href="#IFELSE-176"><span class="linenos">176</span></a>
+</span><span id="IFELSE-177"><a href="#IFELSE-177"><span class="linenos">177</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="IFELSE-178"><a href="#IFELSE-178"><span class="linenos">178</span></a>
+</span><span id="IFELSE-179"><a href="#IFELSE-179"><span class="linenos">179</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -451,9 +445,7 @@
 
 <h2 id="parameters">Parameters</h2>
 
-<p>id : int
-    The ID of the Node.
-parenthesis_expression : Node
+<p>parenthesis_expression : Node
     The node representation of the expression to be evaluated.
 statement_if_true : Node
     The node representation of code to run if the <code><a href="#IFELSE.parenthesis_expression">parenthesis_expression</a></code>
@@ -469,23 +461,22 @@ statement_if_false : Node
 <div class="attr function">
                     <div class="decorator decorator-override">@override</div>
 
-        <span class="name">IFELSE</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>,</span><span class="param">	<span class="n">statement_if_true</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>,</span><span class="param">	<span class="n">statement_if_false</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span></span>)</span>
+        <span class="name">IFELSE</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>,</span><span class="param">	<span class="n">statement_if_true</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>,</span><span class="param">	<span class="n">statement_if_false</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span></span>)</span>
 
                 <label class="view-source-button" for="IFELSE.__init__-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#IFELSE.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.__init__-30"><a href="#IFELSE.__init__-30"><span class="linenos">30</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.__init__-31"><a href="#IFELSE.__init__-31"><span class="linenos">31</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="IFELSE.__init__-32"><a href="#IFELSE.__init__-32"><span class="linenos">32</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="IFELSE.__init__-33"><a href="#IFELSE.__init__-33"><span class="linenos">33</span></a>        <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="IFELSE.__init__-34"><a href="#IFELSE.__init__-34"><span class="linenos">34</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="IFELSE.__init__-35"><a href="#IFELSE.__init__-35"><span class="linenos">35</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="IFELSE.__init__-36"><a href="#IFELSE.__init__-36"><span class="linenos">36</span></a>        <span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
-</span><span id="IFELSE.__init__-37"><a href="#IFELSE.__init__-37"><span class="linenos">37</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="IFELSE.__init__-38"><a href="#IFELSE.__init__-38"><span class="linenos">38</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">)</span>
-</span><span id="IFELSE.__init__-39"><a href="#IFELSE.__init__-39"><span class="linenos">39</span></a>
-</span><span id="IFELSE.__init__-40"><a href="#IFELSE.__init__-40"><span class="linenos">40</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.__init__-28"><a href="#IFELSE.__init__-28"><span class="linenos">28</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE.__init__-29"><a href="#IFELSE.__init__-29"><span class="linenos">29</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="IFELSE.__init__-30"><a href="#IFELSE.__init__-30"><span class="linenos">30</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="IFELSE.__init__-31"><a href="#IFELSE.__init__-31"><span class="linenos">31</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="IFELSE.__init__-32"><a href="#IFELSE.__init__-32"><span class="linenos">32</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="IFELSE.__init__-33"><a href="#IFELSE.__init__-33"><span class="linenos">33</span></a>        <span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+</span><span id="IFELSE.__init__-34"><a href="#IFELSE.__init__-34"><span class="linenos">34</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="IFELSE.__init__-35"><a href="#IFELSE.__init__-35"><span class="linenos">35</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parenthesis_expression</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">)</span>
+</span><span id="IFELSE.__init__-36"><a href="#IFELSE.__init__-36"><span class="linenos">36</span></a>
+</span><span id="IFELSE.__init__-37"><a href="#IFELSE.__init__-37"><span class="linenos">37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
 </span></pre></div>
 
 
@@ -515,25 +506,25 @@ statement_if_false : Node
 
     </div>
     <a class="headerlink" href="#IFELSE.get_certificate_label"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.get_certificate_label-42"><a href="#IFELSE.get_certificate_label-42"><span class="linenos">42</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.get_certificate_label-43"><a href="#IFELSE.get_certificate_label-43"><span class="linenos">43</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="IFELSE.get_certificate_label-44"><a href="#IFELSE.get_certificate_label-44"><span class="linenos">44</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE.get_certificate_label-45"><a href="#IFELSE.get_certificate_label-45"><span class="linenos">45</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="IFELSE.get_certificate_label-46"><a href="#IFELSE.get_certificate_label-46"><span class="linenos">46</span></a>
-</span><span id="IFELSE.get_certificate_label-47"><a href="#IFELSE.get_certificate_label-47"><span class="linenos">47</span></a><span class="sd">        For `IFELSE` nodes, first call the `Conditional.get_certificate_label`</span>
-</span><span id="IFELSE.get_certificate_label-48"><a href="#IFELSE.get_certificate_label-48"><span class="linenos">48</span></a><span class="sd">        method, and compose it with the `certificate_label` obtained recursively</span>
-</span><span id="IFELSE.get_certificate_label-49"><a href="#IFELSE.get_certificate_label-49"><span class="linenos">49</span></a><span class="sd">        from the `statement_if_false` subtree.</span>
-</span><span id="IFELSE.get_certificate_label-50"><a href="#IFELSE.get_certificate_label-50"><span class="linenos">50</span></a>
-</span><span id="IFELSE.get_certificate_label-51"><a href="#IFELSE.get_certificate_label-51"><span class="linenos">51</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE.get_certificate_label-52"><a href="#IFELSE.get_certificate_label-52"><span class="linenos">52</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE.get_certificate_label-53"><a href="#IFELSE.get_certificate_label-53"><span class="linenos">53</span></a><span class="sd">        : list of str</span>
-</span><span id="IFELSE.get_certificate_label-54"><a href="#IFELSE.get_certificate_label-54"><span class="linenos">54</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="IFELSE.get_certificate_label-55"><a href="#IFELSE.get_certificate_label-55"><span class="linenos">55</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE.get_certificate_label-56"><a href="#IFELSE.get_certificate_label-56"><span class="linenos">56</span></a>
-</span><span id="IFELSE.get_certificate_label-57"><a href="#IFELSE.get_certificate_label-57"><span class="linenos">57</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="IFELSE.get_certificate_label-58"><a href="#IFELSE.get_certificate_label-58"><span class="linenos">58</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="IFELSE.get_certificate_label-59"><a href="#IFELSE.get_certificate_label-59"><span class="linenos">59</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="IFELSE.get_certificate_label-60"><a href="#IFELSE.get_certificate_label-60"><span class="linenos">60</span></a>        <span class="p">]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.get_certificate_label-39"><a href="#IFELSE.get_certificate_label-39"><span class="linenos">39</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE.get_certificate_label-40"><a href="#IFELSE.get_certificate_label-40"><span class="linenos">40</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="IFELSE.get_certificate_label-41"><a href="#IFELSE.get_certificate_label-41"><span class="linenos">41</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE.get_certificate_label-42"><a href="#IFELSE.get_certificate_label-42"><span class="linenos">42</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="IFELSE.get_certificate_label-43"><a href="#IFELSE.get_certificate_label-43"><span class="linenos">43</span></a>
+</span><span id="IFELSE.get_certificate_label-44"><a href="#IFELSE.get_certificate_label-44"><span class="linenos">44</span></a><span class="sd">        For `IFELSE` nodes, first call the `Conditional.get_certificate_label`</span>
+</span><span id="IFELSE.get_certificate_label-45"><a href="#IFELSE.get_certificate_label-45"><span class="linenos">45</span></a><span class="sd">        method, and compose it with the `certificate_label` obtained recursively</span>
+</span><span id="IFELSE.get_certificate_label-46"><a href="#IFELSE.get_certificate_label-46"><span class="linenos">46</span></a><span class="sd">        from the `statement_if_false` subtree.</span>
+</span><span id="IFELSE.get_certificate_label-47"><a href="#IFELSE.get_certificate_label-47"><span class="linenos">47</span></a>
+</span><span id="IFELSE.get_certificate_label-48"><a href="#IFELSE.get_certificate_label-48"><span class="linenos">48</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE.get_certificate_label-49"><a href="#IFELSE.get_certificate_label-49"><span class="linenos">49</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE.get_certificate_label-50"><a href="#IFELSE.get_certificate_label-50"><span class="linenos">50</span></a><span class="sd">        : list of str</span>
+</span><span id="IFELSE.get_certificate_label-51"><a href="#IFELSE.get_certificate_label-51"><span class="linenos">51</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="IFELSE.get_certificate_label-52"><a href="#IFELSE.get_certificate_label-52"><span class="linenos">52</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE.get_certificate_label-53"><a href="#IFELSE.get_certificate_label-53"><span class="linenos">53</span></a>
+</span><span id="IFELSE.get_certificate_label-54"><a href="#IFELSE.get_certificate_label-54"><span class="linenos">54</span></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="IFELSE.get_certificate_label-55"><a href="#IFELSE.get_certificate_label-55"><span class="linenos">55</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="IFELSE.get_certificate_label-56"><a href="#IFELSE.get_certificate_label-56"><span class="linenos">56</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="IFELSE.get_certificate_label-57"><a href="#IFELSE.get_certificate_label-57"><span class="linenos">57</span></a>        <span class="p">]</span>
 </span></pre></div>
 
 
@@ -563,23 +554,23 @@ from the <code><a href="#IFELSE.statement_if_false">statement_if_false</a></code
 
     </div>
     <a class="headerlink" href="#IFELSE.print"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.print-62"><a href="#IFELSE.print-62"><span class="linenos">62</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.print-63"><a href="#IFELSE.print-63"><span class="linenos">63</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="IFELSE.print-64"><a href="#IFELSE.print-64"><span class="linenos">64</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE.print-65"><a href="#IFELSE.print-65"><span class="linenos">65</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.print-59"><a href="#IFELSE.print-59"><span class="linenos">59</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE.print-60"><a href="#IFELSE.print-60"><span class="linenos">60</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="IFELSE.print-61"><a href="#IFELSE.print-61"><span class="linenos">61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE.print-62"><a href="#IFELSE.print-62"><span class="linenos">62</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="IFELSE.print-63"><a href="#IFELSE.print-63"><span class="linenos">63</span></a>
+</span><span id="IFELSE.print-64"><a href="#IFELSE.print-64"><span class="linenos">64</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="IFELSE.print-65"><a href="#IFELSE.print-65"><span class="linenos">65</span></a><span class="sd">        with an additional left space.</span>
 </span><span id="IFELSE.print-66"><a href="#IFELSE.print-66"><span class="linenos">66</span></a>
-</span><span id="IFELSE.print-67"><a href="#IFELSE.print-67"><span class="linenos">67</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="IFELSE.print-68"><a href="#IFELSE.print-68"><span class="linenos">68</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="IFELSE.print-69"><a href="#IFELSE.print-69"><span class="linenos">69</span></a>
-</span><span id="IFELSE.print-70"><a href="#IFELSE.print-70"><span class="linenos">70</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE.print-71"><a href="#IFELSE.print-71"><span class="linenos">71</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE.print-72"><a href="#IFELSE.print-72"><span class="linenos">72</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="IFELSE.print-73"><a href="#IFELSE.print-73"><span class="linenos">73</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="IFELSE.print-74"><a href="#IFELSE.print-74"><span class="linenos">74</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE.print-75"><a href="#IFELSE.print-75"><span class="linenos">75</span></a>
-</span><span id="IFELSE.print-76"><a href="#IFELSE.print-76"><span class="linenos">76</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="IFELSE.print-77"><a href="#IFELSE.print-77"><span class="linenos">77</span></a>
-</span><span id="IFELSE.print-78"><a href="#IFELSE.print-78"><span class="linenos">78</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="IFELSE.print-67"><a href="#IFELSE.print-67"><span class="linenos">67</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE.print-68"><a href="#IFELSE.print-68"><span class="linenos">68</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE.print-69"><a href="#IFELSE.print-69"><span class="linenos">69</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="IFELSE.print-70"><a href="#IFELSE.print-70"><span class="linenos">70</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="IFELSE.print-71"><a href="#IFELSE.print-71"><span class="linenos">71</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE.print-72"><a href="#IFELSE.print-72"><span class="linenos">72</span></a>
+</span><span id="IFELSE.print-73"><a href="#IFELSE.print-73"><span class="linenos">73</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="IFELSE.print-74"><a href="#IFELSE.print-74"><span class="linenos">74</span></a>
+</span><span id="IFELSE.print-75"><a href="#IFELSE.print-75"><span class="linenos">75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -608,83 +599,83 @@ with an additional left space.</p>
 
     </div>
     <a class="headerlink" href="#IFELSE.generate_code"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.generate_code-80"><a href="#IFELSE.generate_code-80"><span class="linenos"> 80</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.generate_code-81"><a href="#IFELSE.generate_code-81"><span class="linenos"> 81</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="IFELSE.generate_code-82"><a href="#IFELSE.generate_code-82"><span class="linenos"> 82</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-83"><a href="#IFELSE.generate_code-83"><span class="linenos"> 83</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
-</span><span id="IFELSE.generate_code-84"><a href="#IFELSE.generate_code-84"><span class="linenos"> 84</span></a>    <span class="p">]:</span>
-</span><span id="IFELSE.generate_code-85"><a href="#IFELSE.generate_code-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE.generate_code-86"><a href="#IFELSE.generate_code-86"><span class="linenos"> 86</span></a><span class="sd">        Generate the code associated with this `IFELSE`.</span>
-</span><span id="IFELSE.generate_code-87"><a href="#IFELSE.generate_code-87"><span class="linenos"> 87</span></a>
-</span><span id="IFELSE.generate_code-88"><a href="#IFELSE.generate_code-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, generate code from the</span>
-</span><span id="IFELSE.generate_code-89"><a href="#IFELSE.generate_code-89"><span class="linenos"> 89</span></a><span class="sd">        `parenthesis_expression` first, add a conditional jump to the first</span>
-</span><span id="IFELSE.generate_code-90"><a href="#IFELSE.generate_code-90"><span class="linenos"> 90</span></a><span class="sd">        instruction of the `statement_if_false` subtree -- i.e., to jump to if</span>
-</span><span id="IFELSE.generate_code-91"><a href="#IFELSE.generate_code-91"><span class="linenos"> 91</span></a><span class="sd">        the `parenthesis_expression` evaluates to `False` --, then generate</span>
-</span><span id="IFELSE.generate_code-92"><a href="#IFELSE.generate_code-92"><span class="linenos"> 92</span></a><span class="sd">        code from the `statement_if_true`, add an unconditional jump to the</span>
-</span><span id="IFELSE.generate_code-93"><a href="#IFELSE.generate_code-93"><span class="linenos"> 93</span></a><span class="sd">        last instruction of teh `statement_if_false` subtree, and then finally</span>
-</span><span id="IFELSE.generate_code-94"><a href="#IFELSE.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">        generate code from `statement_if_false`.</span>
-</span><span id="IFELSE.generate_code-95"><a href="#IFELSE.generate_code-95"><span class="linenos"> 95</span></a>
-</span><span id="IFELSE.generate_code-96"><a href="#IFELSE.generate_code-96"><span class="linenos"> 96</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE.generate_code-97"><a href="#IFELSE.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE.generate_code-98"><a href="#IFELSE.generate_code-98"><span class="linenos"> 98</span></a><span class="sd">        register : int</span>
-</span><span id="IFELSE.generate_code-99"><a href="#IFELSE.generate_code-99"><span class="linenos"> 99</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="IFELSE.generate_code-100"><a href="#IFELSE.generate_code-100"><span class="linenos">100</span></a><span class="sd">            Node.</span>
-</span><span id="IFELSE.generate_code-101"><a href="#IFELSE.generate_code-101"><span class="linenos">101</span></a>
-</span><span id="IFELSE.generate_code-102"><a href="#IFELSE.generate_code-102"><span class="linenos">102</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE.generate_code-103"><a href="#IFELSE.generate_code-103"><span class="linenos">103</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE.generate_code-104"><a href="#IFELSE.generate_code-104"><span class="linenos">104</span></a><span class="sd">        register : int</span>
-</span><span id="IFELSE.generate_code-105"><a href="#IFELSE.generate_code-105"><span class="linenos">105</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="IFELSE.generate_code-106"><a href="#IFELSE.generate_code-106"><span class="linenos">106</span></a><span class="sd">        ifelse_code : list of dict</span>
-</span><span id="IFELSE.generate_code-107"><a href="#IFELSE.generate_code-107"><span class="linenos">107</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="IFELSE.generate_code-108"><a href="#IFELSE.generate_code-108"><span class="linenos">108</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
-</span><span id="IFELSE.generate_code-109"><a href="#IFELSE.generate_code-109"><span class="linenos">109</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE.generate_code-110"><a href="#IFELSE.generate_code-110"><span class="linenos">110</span></a>
-</span><span id="IFELSE.generate_code-111"><a href="#IFELSE.generate_code-111"><span class="linenos">111</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">parenthesis_expression_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="IFELSE.generate_code-112"><a href="#IFELSE.generate_code-112"><span class="linenos">112</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="IFELSE.generate_code-113"><a href="#IFELSE.generate_code-113"><span class="linenos">113</span></a>        <span class="p">)</span>
-</span><span id="IFELSE.generate_code-114"><a href="#IFELSE.generate_code-114"><span class="linenos">114</span></a>        <span class="n">conditional_register</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="IFELSE.generate_code-115"><a href="#IFELSE.generate_code-115"><span class="linenos">115</span></a>
-</span><span id="IFELSE.generate_code-116"><a href="#IFELSE.generate_code-116"><span class="linenos">116</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_true_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="IFELSE.generate_code-117"><a href="#IFELSE.generate_code-117"><span class="linenos">117</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="IFELSE.generate_code-118"><a href="#IFELSE.generate_code-118"><span class="linenos">118</span></a>        <span class="p">)</span>
-</span><span id="IFELSE.generate_code-119"><a href="#IFELSE.generate_code-119"><span class="linenos">119</span></a>
-</span><span id="IFELSE.generate_code-120"><a href="#IFELSE.generate_code-120"><span class="linenos">120</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_false_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="IFELSE.generate_code-121"><a href="#IFELSE.generate_code-121"><span class="linenos">121</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="IFELSE.generate_code-122"><a href="#IFELSE.generate_code-122"><span class="linenos">122</span></a>        <span class="p">)</span>
-</span><span id="IFELSE.generate_code-123"><a href="#IFELSE.generate_code-123"><span class="linenos">123</span></a>
-</span><span id="IFELSE.generate_code-124"><a href="#IFELSE.generate_code-124"><span class="linenos">124</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
-</span><span id="IFELSE.generate_code-125"><a href="#IFELSE.generate_code-125"><span class="linenos">125</span></a>        <span class="c1"># `statement_if_true` block (add 2 to land right after the unconditional</span>
-</span><span id="IFELSE.generate_code-126"><a href="#IFELSE.generate_code-126"><span class="linenos">126</span></a>        <span class="c1"># jump added later on)</span>
-</span><span id="IFELSE.generate_code-127"><a href="#IFELSE.generate_code-127"><span class="linenos">127</span></a>        <span class="n">instructions_to_jump_over_if</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_true_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
-</span><span id="IFELSE.generate_code-128"><a href="#IFELSE.generate_code-128"><span class="linenos">128</span></a>        <span class="n">conditional_jump</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="IFELSE.generate_code-129"><a href="#IFELSE.generate_code-129"><span class="linenos">129</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-130"><a href="#IFELSE.generate_code-130"><span class="linenos">130</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="IFELSE.generate_code-131"><a href="#IFELSE.generate_code-131"><span class="linenos">131</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="n">conditional_register</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-132"><a href="#IFELSE.generate_code-132"><span class="linenos">132</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_if</span>
-</span><span id="IFELSE.generate_code-133"><a href="#IFELSE.generate_code-133"><span class="linenos">133</span></a>            <span class="p">}</span>
-</span><span id="IFELSE.generate_code-134"><a href="#IFELSE.generate_code-134"><span class="linenos">134</span></a>        <span class="p">}</span>
-</span><span id="IFELSE.generate_code-135"><a href="#IFELSE.generate_code-135"><span class="linenos">135</span></a>
-</span><span id="IFELSE.generate_code-136"><a href="#IFELSE.generate_code-136"><span class="linenos">136</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
-</span><span id="IFELSE.generate_code-137"><a href="#IFELSE.generate_code-137"><span class="linenos">137</span></a>        <span class="c1"># `statement_if_false` block (add 1 to land right after the last</span>
-</span><span id="IFELSE.generate_code-138"><a href="#IFELSE.generate_code-138"><span class="linenos">138</span></a>        <span class="c1"># instruction of the `statemente_if_false` block)</span>
-</span><span id="IFELSE.generate_code-139"><a href="#IFELSE.generate_code-139"><span class="linenos">139</span></a>        <span class="n">instructions_to_jump_over_else</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_false_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span id="IFELSE.generate_code-140"><a href="#IFELSE.generate_code-140"><span class="linenos">140</span></a>        <span class="n">unconditional_jump</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="IFELSE.generate_code-141"><a href="#IFELSE.generate_code-141"><span class="linenos">141</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-142"><a href="#IFELSE.generate_code-142"><span class="linenos">142</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="IFELSE.generate_code-143"><a href="#IFELSE.generate_code-143"><span class="linenos">143</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-144"><a href="#IFELSE.generate_code-144"><span class="linenos">144</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_else</span>
-</span><span id="IFELSE.generate_code-145"><a href="#IFELSE.generate_code-145"><span class="linenos">145</span></a>            <span class="p">}</span>
-</span><span id="IFELSE.generate_code-146"><a href="#IFELSE.generate_code-146"><span class="linenos">146</span></a>        <span class="p">}</span>
-</span><span id="IFELSE.generate_code-147"><a href="#IFELSE.generate_code-147"><span class="linenos">147</span></a>
-</span><span id="IFELSE.generate_code-148"><a href="#IFELSE.generate_code-148"><span class="linenos">148</span></a>        <span class="n">ifelse_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="IFELSE.generate_code-149"><a href="#IFELSE.generate_code-149"><span class="linenos">149</span></a>            <span class="o">*</span><span class="n">parenthesis_expression_code</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-150"><a href="#IFELSE.generate_code-150"><span class="linenos">150</span></a>            <span class="n">conditional_jump</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-151"><a href="#IFELSE.generate_code-151"><span class="linenos">151</span></a>            <span class="o">*</span><span class="n">statement_if_true_code</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-152"><a href="#IFELSE.generate_code-152"><span class="linenos">152</span></a>            <span class="n">unconditional_jump</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-153"><a href="#IFELSE.generate_code-153"><span class="linenos">153</span></a>            <span class="o">*</span><span class="n">statement_if_false_code</span><span class="p">,</span>
-</span><span id="IFELSE.generate_code-154"><a href="#IFELSE.generate_code-154"><span class="linenos">154</span></a>        <span class="p">]</span>
-</span><span id="IFELSE.generate_code-155"><a href="#IFELSE.generate_code-155"><span class="linenos">155</span></a>
-</span><span id="IFELSE.generate_code-156"><a href="#IFELSE.generate_code-156"><span class="linenos">156</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.generate_code-77"><a href="#IFELSE.generate_code-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE.generate_code-78"><a href="#IFELSE.generate_code-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="IFELSE.generate_code-79"><a href="#IFELSE.generate_code-79"><span class="linenos"> 79</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-80"><a href="#IFELSE.generate_code-80"><span class="linenos"> 80</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+</span><span id="IFELSE.generate_code-81"><a href="#IFELSE.generate_code-81"><span class="linenos"> 81</span></a>    <span class="p">]:</span>
+</span><span id="IFELSE.generate_code-82"><a href="#IFELSE.generate_code-82"><span class="linenos"> 82</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE.generate_code-83"><a href="#IFELSE.generate_code-83"><span class="linenos"> 83</span></a><span class="sd">        Generate the code associated with this `IFELSE`.</span>
+</span><span id="IFELSE.generate_code-84"><a href="#IFELSE.generate_code-84"><span class="linenos"> 84</span></a>
+</span><span id="IFELSE.generate_code-85"><a href="#IFELSE.generate_code-85"><span class="linenos"> 85</span></a><span class="sd">        For this node specialization, generate code from the</span>
+</span><span id="IFELSE.generate_code-86"><a href="#IFELSE.generate_code-86"><span class="linenos"> 86</span></a><span class="sd">        `parenthesis_expression` first, add a conditional jump to the first</span>
+</span><span id="IFELSE.generate_code-87"><a href="#IFELSE.generate_code-87"><span class="linenos"> 87</span></a><span class="sd">        instruction of the `statement_if_false` subtree -- i.e., to jump to if</span>
+</span><span id="IFELSE.generate_code-88"><a href="#IFELSE.generate_code-88"><span class="linenos"> 88</span></a><span class="sd">        the `parenthesis_expression` evaluates to `False` --, then generate</span>
+</span><span id="IFELSE.generate_code-89"><a href="#IFELSE.generate_code-89"><span class="linenos"> 89</span></a><span class="sd">        code from the `statement_if_true`, add an unconditional jump to the</span>
+</span><span id="IFELSE.generate_code-90"><a href="#IFELSE.generate_code-90"><span class="linenos"> 90</span></a><span class="sd">        last instruction of teh `statement_if_false` subtree, and then finally</span>
+</span><span id="IFELSE.generate_code-91"><a href="#IFELSE.generate_code-91"><span class="linenos"> 91</span></a><span class="sd">        generate code from `statement_if_false`.</span>
+</span><span id="IFELSE.generate_code-92"><a href="#IFELSE.generate_code-92"><span class="linenos"> 92</span></a>
+</span><span id="IFELSE.generate_code-93"><a href="#IFELSE.generate_code-93"><span class="linenos"> 93</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE.generate_code-94"><a href="#IFELSE.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE.generate_code-95"><a href="#IFELSE.generate_code-95"><span class="linenos"> 95</span></a><span class="sd">        register : int</span>
+</span><span id="IFELSE.generate_code-96"><a href="#IFELSE.generate_code-96"><span class="linenos"> 96</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="IFELSE.generate_code-97"><a href="#IFELSE.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">            Node.</span>
+</span><span id="IFELSE.generate_code-98"><a href="#IFELSE.generate_code-98"><span class="linenos"> 98</span></a>
+</span><span id="IFELSE.generate_code-99"><a href="#IFELSE.generate_code-99"><span class="linenos"> 99</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE.generate_code-100"><a href="#IFELSE.generate_code-100"><span class="linenos">100</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE.generate_code-101"><a href="#IFELSE.generate_code-101"><span class="linenos">101</span></a><span class="sd">        register : int</span>
+</span><span id="IFELSE.generate_code-102"><a href="#IFELSE.generate_code-102"><span class="linenos">102</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="IFELSE.generate_code-103"><a href="#IFELSE.generate_code-103"><span class="linenos">103</span></a><span class="sd">        ifelse_code : list of dict</span>
+</span><span id="IFELSE.generate_code-104"><a href="#IFELSE.generate_code-104"><span class="linenos">104</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="IFELSE.generate_code-105"><a href="#IFELSE.generate_code-105"><span class="linenos">105</span></a><span class="sd">            `instruction`and `value`.</span>
+</span><span id="IFELSE.generate_code-106"><a href="#IFELSE.generate_code-106"><span class="linenos">106</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE.generate_code-107"><a href="#IFELSE.generate_code-107"><span class="linenos">107</span></a>
+</span><span id="IFELSE.generate_code-108"><a href="#IFELSE.generate_code-108"><span class="linenos">108</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">parenthesis_expression_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE.generate_code-109"><a href="#IFELSE.generate_code-109"><span class="linenos">109</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="IFELSE.generate_code-110"><a href="#IFELSE.generate_code-110"><span class="linenos">110</span></a>        <span class="p">)</span>
+</span><span id="IFELSE.generate_code-111"><a href="#IFELSE.generate_code-111"><span class="linenos">111</span></a>        <span class="n">conditional_register</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="IFELSE.generate_code-112"><a href="#IFELSE.generate_code-112"><span class="linenos">112</span></a>
+</span><span id="IFELSE.generate_code-113"><a href="#IFELSE.generate_code-113"><span class="linenos">113</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_true_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE.generate_code-114"><a href="#IFELSE.generate_code-114"><span class="linenos">114</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="IFELSE.generate_code-115"><a href="#IFELSE.generate_code-115"><span class="linenos">115</span></a>        <span class="p">)</span>
+</span><span id="IFELSE.generate_code-116"><a href="#IFELSE.generate_code-116"><span class="linenos">116</span></a>
+</span><span id="IFELSE.generate_code-117"><a href="#IFELSE.generate_code-117"><span class="linenos">117</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">statement_if_false_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE.generate_code-118"><a href="#IFELSE.generate_code-118"><span class="linenos">118</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="IFELSE.generate_code-119"><a href="#IFELSE.generate_code-119"><span class="linenos">119</span></a>        <span class="p">)</span>
+</span><span id="IFELSE.generate_code-120"><a href="#IFELSE.generate_code-120"><span class="linenos">120</span></a>
+</span><span id="IFELSE.generate_code-121"><a href="#IFELSE.generate_code-121"><span class="linenos">121</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
+</span><span id="IFELSE.generate_code-122"><a href="#IFELSE.generate_code-122"><span class="linenos">122</span></a>        <span class="c1"># `statement_if_true` block (add 2 to land right after the unconditional</span>
+</span><span id="IFELSE.generate_code-123"><a href="#IFELSE.generate_code-123"><span class="linenos">123</span></a>        <span class="c1"># jump added later on)</span>
+</span><span id="IFELSE.generate_code-124"><a href="#IFELSE.generate_code-124"><span class="linenos">124</span></a>        <span class="n">instructions_to_jump_over_if</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_true_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+</span><span id="IFELSE.generate_code-125"><a href="#IFELSE.generate_code-125"><span class="linenos">125</span></a>        <span class="n">conditional_jump</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="IFELSE.generate_code-126"><a href="#IFELSE.generate_code-126"><span class="linenos">126</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-127"><a href="#IFELSE.generate_code-127"><span class="linenos">127</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="IFELSE.generate_code-128"><a href="#IFELSE.generate_code-128"><span class="linenos">128</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="n">conditional_register</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-129"><a href="#IFELSE.generate_code-129"><span class="linenos">129</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_if</span>
+</span><span id="IFELSE.generate_code-130"><a href="#IFELSE.generate_code-130"><span class="linenos">130</span></a>            <span class="p">}</span>
+</span><span id="IFELSE.generate_code-131"><a href="#IFELSE.generate_code-131"><span class="linenos">131</span></a>        <span class="p">}</span>
+</span><span id="IFELSE.generate_code-132"><a href="#IFELSE.generate_code-132"><span class="linenos">132</span></a>
+</span><span id="IFELSE.generate_code-133"><a href="#IFELSE.generate_code-133"><span class="linenos">133</span></a>        <span class="c1"># The jump target is the amount of instructions in the</span>
+</span><span id="IFELSE.generate_code-134"><a href="#IFELSE.generate_code-134"><span class="linenos">134</span></a>        <span class="c1"># `statement_if_false` block (add 1 to land right after the last</span>
+</span><span id="IFELSE.generate_code-135"><a href="#IFELSE.generate_code-135"><span class="linenos">135</span></a>        <span class="c1"># instruction of the `statemente_if_false` block)</span>
+</span><span id="IFELSE.generate_code-136"><a href="#IFELSE.generate_code-136"><span class="linenos">136</span></a>        <span class="n">instructions_to_jump_over_else</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement_if_false_code</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="IFELSE.generate_code-137"><a href="#IFELSE.generate_code-137"><span class="linenos">137</span></a>        <span class="n">unconditional_jump</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="IFELSE.generate_code-138"><a href="#IFELSE.generate_code-138"><span class="linenos">138</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;JZ&quot;</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-139"><a href="#IFELSE.generate_code-139"><span class="linenos">139</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="IFELSE.generate_code-140"><a href="#IFELSE.generate_code-140"><span class="linenos">140</span></a>                <span class="s2">&quot;conditional_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-141"><a href="#IFELSE.generate_code-141"><span class="linenos">141</span></a>                <span class="s2">&quot;jump_size&quot;</span><span class="p">:</span> <span class="n">instructions_to_jump_over_else</span>
+</span><span id="IFELSE.generate_code-142"><a href="#IFELSE.generate_code-142"><span class="linenos">142</span></a>            <span class="p">}</span>
+</span><span id="IFELSE.generate_code-143"><a href="#IFELSE.generate_code-143"><span class="linenos">143</span></a>        <span class="p">}</span>
+</span><span id="IFELSE.generate_code-144"><a href="#IFELSE.generate_code-144"><span class="linenos">144</span></a>
+</span><span id="IFELSE.generate_code-145"><a href="#IFELSE.generate_code-145"><span class="linenos">145</span></a>        <span class="n">ifelse_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="IFELSE.generate_code-146"><a href="#IFELSE.generate_code-146"><span class="linenos">146</span></a>            <span class="o">*</span><span class="n">parenthesis_expression_code</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-147"><a href="#IFELSE.generate_code-147"><span class="linenos">147</span></a>            <span class="n">conditional_jump</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-148"><a href="#IFELSE.generate_code-148"><span class="linenos">148</span></a>            <span class="o">*</span><span class="n">statement_if_true_code</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-149"><a href="#IFELSE.generate_code-149"><span class="linenos">149</span></a>            <span class="n">unconditional_jump</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-150"><a href="#IFELSE.generate_code-150"><span class="linenos">150</span></a>            <span class="o">*</span><span class="n">statement_if_false_code</span><span class="p">,</span>
+</span><span id="IFELSE.generate_code-151"><a href="#IFELSE.generate_code-151"><span class="linenos">151</span></a>        <span class="p">]</span>
+</span><span id="IFELSE.generate_code-152"><a href="#IFELSE.generate_code-152"><span class="linenos">152</span></a>
+</span><span id="IFELSE.generate_code-153"><a href="#IFELSE.generate_code-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
 </span></pre></div>
 
 
@@ -710,7 +701,7 @@ generate code from <code><a href="#IFELSE.statement_if_false">statement_if_false
     The number of the next register available.
 ifelse_code : list of dict
     Return a list of dictionaries containing code metadata: the related
-    <code><a href="#IFELSE.instruction">instruction</a></code>, and node <code><a href="#IFELSE.id">id</a></code>, and <code><a href="#IFELSE.value">value</a></code>.</p>
+    <code><a href="#IFELSE.instruction">instruction</a></code>and <code><a href="#IFELSE.value">value</a></code>.</p>
 </div>
 
 
@@ -727,31 +718,31 @@ ifelse_code : list of dict
 
     </div>
     <a class="headerlink" href="#IFELSE.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.certificate-158"><a href="#IFELSE.certificate-158"><span class="linenos">158</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.certificate-159"><a href="#IFELSE.certificate-159"><span class="linenos">159</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="IFELSE.certificate-160"><a href="#IFELSE.certificate-160"><span class="linenos">160</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE.certificate-161"><a href="#IFELSE.certificate-161"><span class="linenos">161</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
-</span><span id="IFELSE.certificate-162"><a href="#IFELSE.certificate-162"><span class="linenos">162</span></a>
-</span><span id="IFELSE.certificate-163"><a href="#IFELSE.certificate-163"><span class="linenos">163</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="IFELSE.certificate-164"><a href="#IFELSE.certificate-164"><span class="linenos">164</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
-</span><span id="IFELSE.certificate-165"><a href="#IFELSE.certificate-165"><span class="linenos">165</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
-</span><span id="IFELSE.certificate-166"><a href="#IFELSE.certificate-166"><span class="linenos">166</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="IFELSE.certificate-167"><a href="#IFELSE.certificate-167"><span class="linenos">167</span></a>
-</span><span id="IFELSE.certificate-168"><a href="#IFELSE.certificate-168"><span class="linenos">168</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE.certificate-169"><a href="#IFELSE.certificate-169"><span class="linenos">169</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE.certificate-170"><a href="#IFELSE.certificate-170"><span class="linenos">170</span></a><span class="sd">        prime : int</span>
-</span><span id="IFELSE.certificate-171"><a href="#IFELSE.certificate-171"><span class="linenos">171</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
-</span><span id="IFELSE.certificate-172"><a href="#IFELSE.certificate-172"><span class="linenos">172</span></a><span class="sd">            in the AST.</span>
-</span><span id="IFELSE.certificate-173"><a href="#IFELSE.certificate-173"><span class="linenos">173</span></a>
-</span><span id="IFELSE.certificate-174"><a href="#IFELSE.certificate-174"><span class="linenos">174</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE.certificate-175"><a href="#IFELSE.certificate-175"><span class="linenos">175</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE.certificate-176"><a href="#IFELSE.certificate-176"><span class="linenos">176</span></a><span class="sd">        : int</span>
-</span><span id="IFELSE.certificate-177"><a href="#IFELSE.certificate-177"><span class="linenos">177</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="IFELSE.certificate-178"><a href="#IFELSE.certificate-178"><span class="linenos">178</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE.certificate-179"><a href="#IFELSE.certificate-179"><span class="linenos">179</span></a>
-</span><span id="IFELSE.certificate-180"><a href="#IFELSE.certificate-180"><span class="linenos">180</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="IFELSE.certificate-181"><a href="#IFELSE.certificate-181"><span class="linenos">181</span></a>
-</span><span id="IFELSE.certificate-182"><a href="#IFELSE.certificate-182"><span class="linenos">182</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.certificate-155"><a href="#IFELSE.certificate-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
+</span><span id="IFELSE.certificate-156"><a href="#IFELSE.certificate-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="IFELSE.certificate-157"><a href="#IFELSE.certificate-157"><span class="linenos">157</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE.certificate-158"><a href="#IFELSE.certificate-158"><span class="linenos">158</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
+</span><span id="IFELSE.certificate-159"><a href="#IFELSE.certificate-159"><span class="linenos">159</span></a>
+</span><span id="IFELSE.certificate-160"><a href="#IFELSE.certificate-160"><span class="linenos">160</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="IFELSE.certificate-161"><a href="#IFELSE.certificate-161"><span class="linenos">161</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
+</span><span id="IFELSE.certificate-162"><a href="#IFELSE.certificate-162"><span class="linenos">162</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
+</span><span id="IFELSE.certificate-163"><a href="#IFELSE.certificate-163"><span class="linenos">163</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
+</span><span id="IFELSE.certificate-164"><a href="#IFELSE.certificate-164"><span class="linenos">164</span></a>
+</span><span id="IFELSE.certificate-165"><a href="#IFELSE.certificate-165"><span class="linenos">165</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE.certificate-166"><a href="#IFELSE.certificate-166"><span class="linenos">166</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE.certificate-167"><a href="#IFELSE.certificate-167"><span class="linenos">167</span></a><span class="sd">        prime : int</span>
+</span><span id="IFELSE.certificate-168"><a href="#IFELSE.certificate-168"><span class="linenos">168</span></a><span class="sd">            A prime number that represents the relative position of the `Node`</span>
+</span><span id="IFELSE.certificate-169"><a href="#IFELSE.certificate-169"><span class="linenos">169</span></a><span class="sd">            in the AST.</span>
+</span><span id="IFELSE.certificate-170"><a href="#IFELSE.certificate-170"><span class="linenos">170</span></a>
+</span><span id="IFELSE.certificate-171"><a href="#IFELSE.certificate-171"><span class="linenos">171</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE.certificate-172"><a href="#IFELSE.certificate-172"><span class="linenos">172</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE.certificate-173"><a href="#IFELSE.certificate-173"><span class="linenos">173</span></a><span class="sd">        : int</span>
+</span><span id="IFELSE.certificate-174"><a href="#IFELSE.certificate-174"><span class="linenos">174</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="IFELSE.certificate-175"><a href="#IFELSE.certificate-175"><span class="linenos">175</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE.certificate-176"><a href="#IFELSE.certificate-176"><span class="linenos">176</span></a>
+</span><span id="IFELSE.certificate-177"><a href="#IFELSE.certificate-177"><span class="linenos">177</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="IFELSE.certificate-178"><a href="#IFELSE.certificate-178"><span class="linenos">178</span></a>
+</span><span id="IFELSE.certificate-179"><a href="#IFELSE.certificate-179"><span class="linenos">179</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -785,8 +776,7 @@ recursively, and the <code><a href="#IFELSE">IFELSE</a></code> itself, and then 
 
             </div>
             <div><dt><a href="../node.html#Node">src.ast_nodes.node.Node</a></dt>
-                                <dd id="IFELSE.id" class="variable"><a href="../node.html#Node.id">id</a></dd>
-                <dd id="IFELSE.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
+                                <dd id="IFELSE.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
                 <dd id="IFELSE.type" class="variable"><a href="../node.html#Node.type">type</a></dd>
                 <dd id="IFELSE.certificate_label" class="variable"><a href="../node.html#Node.certificate_label">certificate_label</a></dd>
                 <dd id="IFELSE.uses_register" class="variable"><a href="../node.html#Node.uses_register">uses_register</a></dd>

@@ -99,7 +99,7 @@
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
 </span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>    <span class="nd">@override</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>
@@ -172,7 +172,7 @@
 </span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        -------</span>
 </span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">        code_metadata : list of dict</span>
 </span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">            `instruction` and `value`.</span>
 </span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -231,7 +231,7 @@
 </span><span id="SEQ-18"><a href="#SEQ-18"><span class="linenos"> 18</span></a>
 </span><span id="SEQ-19"><a href="#SEQ-19"><span class="linenos"> 19</span></a>    <span class="nd">@override</span>
 </span><span id="SEQ-20"><a href="#SEQ-20"><span class="linenos"> 20</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="SEQ-21"><a href="#SEQ-21"><span class="linenos"> 21</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="SEQ-21"><a href="#SEQ-21"><span class="linenos"> 21</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="SEQ-22"><a href="#SEQ-22"><span class="linenos"> 22</span></a>
 </span><span id="SEQ-23"><a href="#SEQ-23"><span class="linenos"> 23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="SEQ-24"><a href="#SEQ-24"><span class="linenos"> 24</span></a>
@@ -304,7 +304,7 @@
 </span><span id="SEQ-91"><a href="#SEQ-91"><span class="linenos"> 91</span></a><span class="sd">        -------</span>
 </span><span id="SEQ-92"><a href="#SEQ-92"><span class="linenos"> 92</span></a><span class="sd">        code_metadata : list of dict</span>
 </span><span id="SEQ-93"><a href="#SEQ-93"><span class="linenos"> 93</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="SEQ-94"><a href="#SEQ-94"><span class="linenos"> 94</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="SEQ-94"><a href="#SEQ-94"><span class="linenos"> 94</span></a><span class="sd">            `instruction` and `value`.</span>
 </span><span id="SEQ-95"><a href="#SEQ-95"><span class="linenos"> 95</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="SEQ-96"><a href="#SEQ-96"><span class="linenos"> 96</span></a>
 </span><span id="SEQ-97"><a href="#SEQ-97"><span class="linenos"> 97</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -361,7 +361,7 @@ certificate. Its only purpose is to help structuring the AST.</p>
     <a class="headerlink" href="#SEQ.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.__init__-19"><a href="#SEQ.__init__-19"><span class="linenos">19</span></a>    <span class="nd">@override</span>
 </span><span id="SEQ.__init__-20"><a href="#SEQ.__init__-20"><span class="linenos">20</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="SEQ.__init__-21"><a href="#SEQ.__init__-21"><span class="linenos">21</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="SEQ.__init__-21"><a href="#SEQ.__init__-21"><span class="linenos">21</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="SEQ.__init__-22"><a href="#SEQ.__init__-22"><span class="linenos">22</span></a>
 </span><span id="SEQ.__init__-23"><a href="#SEQ.__init__-23"><span class="linenos">23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span></pre></div>
@@ -539,7 +539,7 @@ with an additional left space.</p>
 </span><span id="SEQ.generate_code-91"><a href="#SEQ.generate_code-91"><span class="linenos"> 91</span></a><span class="sd">        -------</span>
 </span><span id="SEQ.generate_code-92"><a href="#SEQ.generate_code-92"><span class="linenos"> 92</span></a><span class="sd">        code_metadata : list of dict</span>
 </span><span id="SEQ.generate_code-93"><a href="#SEQ.generate_code-93"><span class="linenos"> 93</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="SEQ.generate_code-94"><a href="#SEQ.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="SEQ.generate_code-94"><a href="#SEQ.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">            `instruction` and `value`.</span>
 </span><span id="SEQ.generate_code-95"><a href="#SEQ.generate_code-95"><span class="linenos"> 95</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="SEQ.generate_code-96"><a href="#SEQ.generate_code-96"><span class="linenos"> 96</span></a>
 </span><span id="SEQ.generate_code-97"><a href="#SEQ.generate_code-97"><span class="linenos"> 97</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -563,7 +563,7 @@ The <code><a href="#SEQ">SEQ</a></code> node itself does not generate code, for 
 
 <p>code_metadata : list of dict
     Return a list of dictionaries containing code metadata: the related
-    <code><a href="#SEQ.instruction">instruction</a></code>, and node <code><a href="#SEQ.id">id</a></code>, and <code><a href="#SEQ.value">value</a></code>.</p>
+    <code><a href="#SEQ.instruction">instruction</a></code> and <code><a href="#SEQ.value">value</a></code>.</p>
 </div>
 
 
@@ -628,8 +628,7 @@ appear in the <code><a href="#SEQ.children">children</a></code> list. The <code>
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="../node.html#Node">src.ast_nodes.node.Node</a></dt>
-                                <dd id="SEQ.id" class="variable"><a href="../node.html#Node.id">id</a></dd>
-                <dd id="SEQ.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
+                                <dd id="SEQ.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
                 <dd id="SEQ.type" class="variable"><a href="../node.html#Node.type">type</a></dd>
                 <dd id="SEQ.certificate_label" class="variable"><a href="../node.html#Node.certificate_label">certificate_label</a></dd>
                 <dd id="SEQ.uses_register" class="variable"><a href="../node.html#Node.uses_register">uses_register</a></dd>

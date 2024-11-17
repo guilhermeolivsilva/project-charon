@@ -80,19 +80,17 @@
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="sd">    Parameters</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    ----------</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">    id : int</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">        The ID of the Node.</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">    lhs : Node</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">        The Node representation of the left hand side of the operation.</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">    rhs : Node</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">        The Node representation of the right hand side of the operation.</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>    <span class="nd">@override</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">supports_float</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BITOR&quot;</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">    lhs : Node</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">        The Node representation of the left hand side of the operation.</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">    rhs : Node</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">        The Node representation of the right hand side of the operation.</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="nd">@override</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">supports_float</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BITOR&quot;</span>
 </span></pre></div>
 
 
@@ -114,19 +112,17 @@
 </span><span id="BITOR-14"><a href="#BITOR-14"><span class="linenos">14</span></a>
 </span><span id="BITOR-15"><a href="#BITOR-15"><span class="linenos">15</span></a><span class="sd">    Parameters</span>
 </span><span id="BITOR-16"><a href="#BITOR-16"><span class="linenos">16</span></a><span class="sd">    ----------</span>
-</span><span id="BITOR-17"><a href="#BITOR-17"><span class="linenos">17</span></a><span class="sd">    id : int</span>
-</span><span id="BITOR-18"><a href="#BITOR-18"><span class="linenos">18</span></a><span class="sd">        The ID of the Node.</span>
-</span><span id="BITOR-19"><a href="#BITOR-19"><span class="linenos">19</span></a><span class="sd">    lhs : Node</span>
-</span><span id="BITOR-20"><a href="#BITOR-20"><span class="linenos">20</span></a><span class="sd">        The Node representation of the left hand side of the operation.</span>
-</span><span id="BITOR-21"><a href="#BITOR-21"><span class="linenos">21</span></a><span class="sd">    rhs : Node</span>
-</span><span id="BITOR-22"><a href="#BITOR-22"><span class="linenos">22</span></a><span class="sd">        The Node representation of the right hand side of the operation.</span>
-</span><span id="BITOR-23"><a href="#BITOR-23"><span class="linenos">23</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="BITOR-24"><a href="#BITOR-24"><span class="linenos">24</span></a>
-</span><span id="BITOR-25"><a href="#BITOR-25"><span class="linenos">25</span></a>    <span class="nd">@override</span>
-</span><span id="BITOR-26"><a href="#BITOR-26"><span class="linenos">26</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="BITOR-27"><a href="#BITOR-27"><span class="linenos">27</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">supports_float</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="BITOR-28"><a href="#BITOR-28"><span class="linenos">28</span></a>
-</span><span id="BITOR-29"><a href="#BITOR-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BITOR&quot;</span>
+</span><span id="BITOR-17"><a href="#BITOR-17"><span class="linenos">17</span></a><span class="sd">    lhs : Node</span>
+</span><span id="BITOR-18"><a href="#BITOR-18"><span class="linenos">18</span></a><span class="sd">        The Node representation of the left hand side of the operation.</span>
+</span><span id="BITOR-19"><a href="#BITOR-19"><span class="linenos">19</span></a><span class="sd">    rhs : Node</span>
+</span><span id="BITOR-20"><a href="#BITOR-20"><span class="linenos">20</span></a><span class="sd">        The Node representation of the right hand side of the operation.</span>
+</span><span id="BITOR-21"><a href="#BITOR-21"><span class="linenos">21</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="BITOR-22"><a href="#BITOR-22"><span class="linenos">22</span></a>
+</span><span id="BITOR-23"><a href="#BITOR-23"><span class="linenos">23</span></a>    <span class="nd">@override</span>
+</span><span id="BITOR-24"><a href="#BITOR-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="BITOR-25"><a href="#BITOR-25"><span class="linenos">25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">supports_float</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="BITOR-26"><a href="#BITOR-26"><span class="linenos">26</span></a>
+</span><span id="BITOR-27"><a href="#BITOR-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BITOR&quot;</span>
 </span></pre></div>
 
 
@@ -134,9 +130,7 @@
 
 <h2 id="parameters">Parameters</h2>
 
-<p>id : int
-    The ID of the Node.
-lhs : Node
+<p>lhs : Node
     The Node representation of the left hand side of the operation.
 rhs : Node
     The Node representation of the right hand side of the operation.</p>
@@ -148,17 +142,17 @@ rhs : Node
 <div class="attr function">
                     <div class="decorator decorator-override">@override</div>
 
-        <span class="name">BITOR</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">lhs</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>,</span><span class="param">	<span class="n">rhs</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span>)</span>
+        <span class="name">BITOR</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">lhs</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>, </span><span class="param"><span class="n">rhs</span><span class="p">:</span> <span class="n"><a href="../node.html#Node">src.ast_nodes.node.Node</a></span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
 
                 <label class="view-source-button" for="BITOR.__init__-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#BITOR.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="BITOR.__init__-25"><a href="#BITOR.__init__-25"><span class="linenos">25</span></a>    <span class="nd">@override</span>
-</span><span id="BITOR.__init__-26"><a href="#BITOR.__init__-26"><span class="linenos">26</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="BITOR.__init__-27"><a href="#BITOR.__init__-27"><span class="linenos">27</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">supports_float</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="BITOR.__init__-28"><a href="#BITOR.__init__-28"><span class="linenos">28</span></a>
-</span><span id="BITOR.__init__-29"><a href="#BITOR.__init__-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BITOR&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="BITOR.__init__-23"><a href="#BITOR.__init__-23"><span class="linenos">23</span></a>    <span class="nd">@override</span>
+</span><span id="BITOR.__init__-24"><a href="#BITOR.__init__-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="BITOR.__init__-25"><a href="#BITOR.__init__-25"><span class="linenos">25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">supports_float</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="BITOR.__init__-26"><a href="#BITOR.__init__-26"><span class="linenos">26</span></a>
+</span><span id="BITOR.__init__-27"><a href="#BITOR.__init__-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BITOR&quot;</span>
 </span></pre></div>
 
 
@@ -191,8 +185,7 @@ rhs : Node
 
             </div>
             <div><dt><a href="../node.html#Node">src.ast_nodes.node.Node</a></dt>
-                                <dd id="BITOR.id" class="variable"><a href="../node.html#Node.id">id</a></dd>
-                <dd id="BITOR.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
+                                <dd id="BITOR.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
                 <dd id="BITOR.type" class="variable"><a href="../node.html#Node.type">type</a></dd>
                 <dd id="BITOR.certificate_label" class="variable"><a href="../node.html#Node.certificate_label">certificate_label</a></dd>
                 <dd id="BITOR.uses_register" class="variable"><a href="../node.html#Node.uses_register">uses_register</a></dd>

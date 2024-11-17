@@ -175,7 +175,7 @@
 </span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        -------</span>
 </span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        code_metadata : list of dict</span>
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            `instruction` and `value`.</span>
 </span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
 </span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -310,7 +310,7 @@
 </span><span id="SCOPE-94"><a href="#SCOPE-94"><span class="linenos"> 94</span></a><span class="sd">        -------</span>
 </span><span id="SCOPE-95"><a href="#SCOPE-95"><span class="linenos"> 95</span></a><span class="sd">        code_metadata : list of dict</span>
 </span><span id="SCOPE-96"><a href="#SCOPE-96"><span class="linenos"> 96</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="SCOPE-97"><a href="#SCOPE-97"><span class="linenos"> 97</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="SCOPE-97"><a href="#SCOPE-97"><span class="linenos"> 97</span></a><span class="sd">            `instruction` and `value`.</span>
 </span><span id="SCOPE-98"><a href="#SCOPE-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="SCOPE-99"><a href="#SCOPE-99"><span class="linenos"> 99</span></a>
 </span><span id="SCOPE-100"><a href="#SCOPE-100"><span class="linenos">100</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -548,7 +548,7 @@ with an additional left space.</p>
 </span><span id="SCOPE.generate_code-94"><a href="#SCOPE.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">        -------</span>
 </span><span id="SCOPE.generate_code-95"><a href="#SCOPE.generate_code-95"><span class="linenos"> 95</span></a><span class="sd">        code_metadata : list of dict</span>
 </span><span id="SCOPE.generate_code-96"><a href="#SCOPE.generate_code-96"><span class="linenos"> 96</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="SCOPE.generate_code-97"><a href="#SCOPE.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">            `instruction`, and node `id`, and `value`.</span>
+</span><span id="SCOPE.generate_code-97"><a href="#SCOPE.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">            `instruction` and `value`.</span>
 </span><span id="SCOPE.generate_code-98"><a href="#SCOPE.generate_code-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="SCOPE.generate_code-99"><a href="#SCOPE.generate_code-99"><span class="linenos"> 99</span></a>
 </span><span id="SCOPE.generate_code-100"><a href="#SCOPE.generate_code-100"><span class="linenos">100</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -570,7 +570,7 @@ associated instruction.</p>
 
 <p>code_metadata : list of dict
     Return a list of dictionaries containing code metadata: the related
-    <code><a href="#SCOPE.instruction">instruction</a></code>, and node <code><a href="#SCOPE.id">id</a></code>, and <code><a href="#SCOPE.value">value</a></code>.</p>
+    <code><a href="#SCOPE.instruction">instruction</a></code> and <code><a href="#SCOPE.value">value</a></code>.</p>
 </div>
 
 
@@ -637,8 +637,7 @@ The <code><a href="#SCOPE">SCOPE</a></code> node itself does not have a certific
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="../node.html#Node">src.ast_nodes.node.Node</a></dt>
-                                <dd id="SCOPE.id" class="variable"><a href="../node.html#Node.id">id</a></dd>
-                <dd id="SCOPE.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
+                                <dd id="SCOPE.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
                 <dd id="SCOPE.type" class="variable"><a href="../node.html#Node.type">type</a></dd>
                 <dd id="SCOPE.certificate_label" class="variable"><a href="../node.html#Node.certificate_label">certificate_label</a></dd>
                 <dd id="SCOPE.uses_register" class="variable"><a href="../node.html#Node.uses_register">uses_register</a></dd>

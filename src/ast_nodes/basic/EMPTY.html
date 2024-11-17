@@ -72,18 +72,11 @@
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="k">class</span> <span class="nc">EMPTY</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="sd">    Implement the representation of an `EMPTY` node for the AST.</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="sd">    Parameters</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    ----------</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">    id : int</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">        The ID of the Node.</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>    <span class="nd">@override</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the representation of an `EMPTY` node for the AST.&quot;&quot;&quot;</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="nd">@override</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -100,27 +93,15 @@
     </div>
     <a class="headerlink" href="#EMPTY"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="EMPTY-11"><a href="#EMPTY-11"><span class="linenos">11</span></a><span class="k">class</span> <span class="nc">EMPTY</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="EMPTY-12"><a href="#EMPTY-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="EMPTY-13"><a href="#EMPTY-13"><span class="linenos">13</span></a><span class="sd">    Implement the representation of an `EMPTY` node for the AST.</span>
-</span><span id="EMPTY-14"><a href="#EMPTY-14"><span class="linenos">14</span></a>
-</span><span id="EMPTY-15"><a href="#EMPTY-15"><span class="linenos">15</span></a><span class="sd">    Parameters</span>
-</span><span id="EMPTY-16"><a href="#EMPTY-16"><span class="linenos">16</span></a><span class="sd">    ----------</span>
-</span><span id="EMPTY-17"><a href="#EMPTY-17"><span class="linenos">17</span></a><span class="sd">    id : int</span>
-</span><span id="EMPTY-18"><a href="#EMPTY-18"><span class="linenos">18</span></a><span class="sd">        The ID of the Node.</span>
-</span><span id="EMPTY-19"><a href="#EMPTY-19"><span class="linenos">19</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="EMPTY-20"><a href="#EMPTY-20"><span class="linenos">20</span></a>
-</span><span id="EMPTY-21"><a href="#EMPTY-21"><span class="linenos">21</span></a>    <span class="nd">@override</span>
-</span><span id="EMPTY-22"><a href="#EMPTY-22"><span class="linenos">22</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="EMPTY-23"><a href="#EMPTY-23"><span class="linenos">23</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</span><span id="EMPTY-12"><a href="#EMPTY-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the representation of an `EMPTY` node for the AST.&quot;&quot;&quot;</span>
+</span><span id="EMPTY-13"><a href="#EMPTY-13"><span class="linenos">13</span></a>
+</span><span id="EMPTY-14"><a href="#EMPTY-14"><span class="linenos">14</span></a>    <span class="nd">@override</span>
+</span><span id="EMPTY-15"><a href="#EMPTY-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="EMPTY-16"><a href="#EMPTY-16"><span class="linenos">16</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Implement the representation of an <code><a href="#EMPTY">EMPTY</a></code> node for the AST.</p>
-
-<h2 id="parameters">Parameters</h2>
-
-<p>id : int
-    The ID of the Node.</p>
 </div>
 
 
@@ -129,15 +110,15 @@
 <div class="attr function">
                     <div class="decorator decorator-override">@override</div>
 
-        <span class="name">EMPTY</span><span class="signature pdoc-code condensed">(<span class="param"><span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
+        <span class="name">EMPTY</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
 
                 <label class="view-source-button" for="EMPTY.__init__-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#EMPTY.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EMPTY.__init__-21"><a href="#EMPTY.__init__-21"><span class="linenos">21</span></a>    <span class="nd">@override</span>
-</span><span id="EMPTY.__init__-22"><a href="#EMPTY.__init__-22"><span class="linenos">22</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="EMPTY.__init__-23"><a href="#EMPTY.__init__-23"><span class="linenos">23</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EMPTY.__init__-14"><a href="#EMPTY.__init__-14"><span class="linenos">14</span></a>    <span class="nd">@override</span>
+</span><span id="EMPTY.__init__-15"><a href="#EMPTY.__init__-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="EMPTY.__init__-16"><a href="#EMPTY.__init__-16"><span class="linenos">16</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -148,8 +129,7 @@
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="../node.html#Node">src.ast_nodes.node.Node</a></dt>
-                                <dd id="EMPTY.id" class="variable"><a href="../node.html#Node.id">id</a></dd>
-                <dd id="EMPTY.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
+                                <dd id="EMPTY.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
                 <dd id="EMPTY.type" class="variable"><a href="../node.html#Node.type">type</a></dd>
                 <dd id="EMPTY.certificate_label" class="variable"><a href="../node.html#Node.certificate_label">certificate_label</a></dd>
                 <dd id="EMPTY.uses_register" class="variable"><a href="../node.html#Node.uses_register">uses_register</a></dd>
