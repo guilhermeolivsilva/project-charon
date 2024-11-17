@@ -162,7 +162,7 @@
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        node first, and then generate a `STORE` instruction to save the</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>
 </span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        Parameters</span>
@@ -202,8 +202,8 @@
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
 </span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>                <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>                <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
 </span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="p">}</span>
 </span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="p">}</span>
@@ -319,7 +319,7 @@
 </span><span id="ARG-81"><a href="#ARG-81"><span class="linenos"> 81</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
 </span><span id="ARG-82"><a href="#ARG-82"><span class="linenos"> 82</span></a>
 </span><span id="ARG-83"><a href="#ARG-83"><span class="linenos"> 83</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
-</span><span id="ARG-84"><a href="#ARG-84"><span class="linenos"> 84</span></a><span class="sd">        node first, and then generate a `STORE` instruction to save the</span>
+</span><span id="ARG-84"><a href="#ARG-84"><span class="linenos"> 84</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
 </span><span id="ARG-85"><a href="#ARG-85"><span class="linenos"> 85</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
 </span><span id="ARG-86"><a href="#ARG-86"><span class="linenos"> 86</span></a>
 </span><span id="ARG-87"><a href="#ARG-87"><span class="linenos"> 87</span></a><span class="sd">        Parameters</span>
@@ -359,8 +359,8 @@
 </span><span id="ARG-121"><a href="#ARG-121"><span class="linenos">121</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="ARG-122"><a href="#ARG-122"><span class="linenos">122</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
 </span><span id="ARG-123"><a href="#ARG-123"><span class="linenos">123</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="ARG-124"><a href="#ARG-124"><span class="linenos">124</span></a>                <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="ARG-125"><a href="#ARG-125"><span class="linenos">125</span></a>                <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="ARG-124"><a href="#ARG-124"><span class="linenos">124</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
+</span><span id="ARG-125"><a href="#ARG-125"><span class="linenos">125</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
 </span><span id="ARG-126"><a href="#ARG-126"><span class="linenos">126</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
 </span><span id="ARG-127"><a href="#ARG-127"><span class="linenos">127</span></a>            <span class="p">}</span>
 </span><span id="ARG-128"><a href="#ARG-128"><span class="linenos">128</span></a>        <span class="p">}</span>
@@ -567,7 +567,7 @@ with an additional left space.</p>
 </span><span id="ARG.generate_code-81"><a href="#ARG.generate_code-81"><span class="linenos"> 81</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
 </span><span id="ARG.generate_code-82"><a href="#ARG.generate_code-82"><span class="linenos"> 82</span></a>
 </span><span id="ARG.generate_code-83"><a href="#ARG.generate_code-83"><span class="linenos"> 83</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
-</span><span id="ARG.generate_code-84"><a href="#ARG.generate_code-84"><span class="linenos"> 84</span></a><span class="sd">        node first, and then generate a `STORE` instruction to save the</span>
+</span><span id="ARG.generate_code-84"><a href="#ARG.generate_code-84"><span class="linenos"> 84</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
 </span><span id="ARG.generate_code-85"><a href="#ARG.generate_code-85"><span class="linenos"> 85</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
 </span><span id="ARG.generate_code-86"><a href="#ARG.generate_code-86"><span class="linenos"> 86</span></a>
 </span><span id="ARG.generate_code-87"><a href="#ARG.generate_code-87"><span class="linenos"> 87</span></a><span class="sd">        Parameters</span>
@@ -607,8 +607,8 @@ with an additional left space.</p>
 </span><span id="ARG.generate_code-121"><a href="#ARG.generate_code-121"><span class="linenos">121</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="ARG.generate_code-122"><a href="#ARG.generate_code-122"><span class="linenos">122</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
 </span><span id="ARG.generate_code-123"><a href="#ARG.generate_code-123"><span class="linenos">123</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="ARG.generate_code-124"><a href="#ARG.generate_code-124"><span class="linenos">124</span></a>                <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="ARG.generate_code-125"><a href="#ARG.generate_code-125"><span class="linenos">125</span></a>                <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="ARG.generate_code-124"><a href="#ARG.generate_code-124"><span class="linenos">124</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
+</span><span id="ARG.generate_code-125"><a href="#ARG.generate_code-125"><span class="linenos">125</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
 </span><span id="ARG.generate_code-126"><a href="#ARG.generate_code-126"><span class="linenos">126</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
 </span><span id="ARG.generate_code-127"><a href="#ARG.generate_code-127"><span class="linenos">127</span></a>            <span class="p">}</span>
 </span><span id="ARG.generate_code-128"><a href="#ARG.generate_code-128"><span class="linenos">128</span></a>        <span class="p">}</span>
@@ -621,7 +621,7 @@ with an additional left space.</p>
             <div class="docstring"><p>Generate the code associated with this <code><a href="#ARG">ARG</a></code>.</p>
 
 <p>For this node specialization, generate code from the <code><a href="#ARG.argument_value">argument_value</a></code>
-node first, and then generate a <code>STORE</code> instruction to save the
+node first, and then generate a <code>MOV</code> instruction to save the
 <code><a href="#ARG.argument_value">argument_value</a></code> in the <code>arg</code> register.</p>
 
 <h2 id="parameters">Parameters</h2>
