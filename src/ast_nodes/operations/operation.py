@@ -18,8 +18,6 @@ class Operation(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     lhs : Node
         The Node representation of the left hand side of the operation.
     rhs : Node
@@ -31,14 +29,14 @@ class Operation(Node):
     @override
     def __init__(
         self,
-        id: int,
+
         lhs: Node,
         rhs: Node,
         supports_float: bool = True,
         type: str = None,
         **kwargs
     ) -> None:
-        super().__init__(id)
+        super().__init__()
 
         self.lhs: Node = lhs
         self.rhs: Node = rhs
@@ -114,7 +112,7 @@ class Operation(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []
@@ -148,7 +146,7 @@ class Operation(Node):
         this_code = {
             "instruction": self.instruction,
             "metadata": {
-                "id": self.id,
+
                 "register": register,
                 "lhs_register": lhs_register,
                 "rhs_register": rhs_register

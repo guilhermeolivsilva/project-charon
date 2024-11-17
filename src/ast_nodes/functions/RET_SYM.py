@@ -14,8 +14,6 @@ class RET_SYM(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     function_call_metadata : dict
         Dictionary of function call metadata exported by the Lexer.
     type : str
@@ -23,8 +21,8 @@ class RET_SYM(Node):
     """
 
     @override
-    def __init__(self, id: int, returned_value: Node, type: str) -> None:
-        super().__init__(id, uses_register=False)
+    def __init__(self, returned_value: Node, type: str) -> None:
+        super().__init__(uses_register=False)
 
         self.returned_value: Node = returned_value
         self.type: str = type
@@ -94,7 +92,7 @@ class RET_SYM(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []

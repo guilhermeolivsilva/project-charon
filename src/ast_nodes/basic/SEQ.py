@@ -17,7 +17,7 @@ class SEQ(Node):
 
     @override
     def __init__(self, **kwargs) -> None:
-        super().__init__(id=None, uses_register=False)
+        super().__init__(uses_register=False)
 
         self.children: list[Node] = []
 
@@ -90,7 +90,7 @@ class SEQ(Node):
         -------
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction` and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []

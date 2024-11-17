@@ -15,9 +15,8 @@ class AbstractSyntaxTree:
     """
 
     def __init__(self, source_code: dict[str, dict]) -> None:
-        self.node_id_manager: int = 1
         self.source_code: dict[str, dict] = source_code
-        self.root: PROG = PROG(id=0)
+        self.root: PROG = PROG()
 
         # Attributes to be used later
         self.current_symbol: str = None
@@ -70,13 +69,9 @@ class AbstractSyntaxTree:
         )
 
         for struct_name, struct_metadata in struct_definitions.items():
-            current_id = self._get_next_id()
             struct_metadata["type"] = struct_name
 
-            struct_def_node = STRUCT_DEF(
-                id=current_id,
-                struct_metadata=struct_metadata
-            )
+            struct_def_node = STRUCT_DEF(struct_metadata=struct_metadata)
 
             self.root.add_child(struct_def_node)
 
@@ -89,13 +84,9 @@ class AbstractSyntaxTree:
         )
 
         for variable_name, variable_metadata in global_variables.items():
-            current_id = self._get_next_id()
             variable_metadata["name"] = variable_name
 
-            var_def_node = VAR_DEF(
-                id=current_id,
-                variable_metadata=variable_metadata
-            )
+            var_def_node = VAR_DEF(variable_metadata=variable_metadata)
 
             self.root.add_child(var_def_node)
 
@@ -105,8 +96,6 @@ class AbstractSyntaxTree:
         functions: dict[str, dict] = self.source_code.get("functions")
 
         for function_name, function_data in functions.items():
-            current_id = self._get_next_id()
-
             # We'll don't want the `statements` field to be passed as it will
             # be parsed just ahead. Thus, we avoid unnecessary duplicate
             # information
@@ -117,7 +106,6 @@ class AbstractSyntaxTree:
             }
 
             function_def_node = FUNC_DEF(
-                id=current_id,
                 function_name=function_name,
                 function_metadata=function_metadata
             )
@@ -197,11 +185,7 @@ class AbstractSyntaxTree:
             A Node that represents a call to a function.
         """
 
-        func_call_node_id = self._get_next_id()
-        func_call_node = FUNC_CALL(
-            id=func_call_node_id,
-            function_call_metadata=self.current_value
-        )
+        func_call_node = FUNC_CALL(function_call_metadata=self.current_value)
 
         self._next_symbol()
 
@@ -217,11 +201,9 @@ class AbstractSyntaxTree:
             A Node that represents the `return` statement.
         """
 
-        ret_sym_node_id = self._get_next_id()
         self._next_symbol()
 
         ret_sym_node = RET_SYM(
-            id=ret_sym_node_id,
             returned_value=self._handle_eol(),
             type=self.current_function_type
         )
@@ -238,11 +220,7 @@ class AbstractSyntaxTree:
             A Node that represents a (local) variable definition.
         """
 
-        var_def_node_id = self._get_next_id()
-        var_def_node = VAR_DEF(
-            id=var_def_node_id,
-            variable_metadata=self.current_value
-        )
+        var_def_node = VAR_DEF(variable_metadata=self.current_value)
 
         self._next_symbol()
 
@@ -260,7 +238,6 @@ class AbstractSyntaxTree:
             parent of the code to run if the expression evaulates to `False`.
         """
 
-        conditional_node_id = self._get_next_id()
         self._next_symbol()
 
         parenthesis_expression = self._parenthesis_expression()
@@ -273,14 +250,12 @@ class AbstractSyntaxTree:
             statement_if_false = self._statement()
 
             return IFELSE(
-                id=conditional_node_id,
                 parenthesis_expression=parenthesis_expression,
                 statement_if_true=statement_if_true,
                 statement_if_false=statement_if_false
             )
     
         return IF(
-            id=conditional_node_id,
             parenthesis_expression=parenthesis_expression,
             statement_if_true=statement_if_true
         )
@@ -296,7 +271,6 @@ class AbstractSyntaxTree:
             and the code to run while it is `True`.
         """
 
-        conditional_node_id = self._get_next_id()
         self._next_symbol()
 
         parenthesis_expression = self._parenthesis_expression()
@@ -304,7 +278,6 @@ class AbstractSyntaxTree:
         loop = self._statement()
 
         return WHILE(
-            id=conditional_node_id,
             parenthesis_expression=parenthesis_expression,
             loop=loop
         )
@@ -322,7 +295,6 @@ class AbstractSyntaxTree:
             always evaluates to `False`.
         """
 
-        conditional_node_id = self._get_next_id()
         self._next_symbol()
 
         loop = self._statement()
@@ -340,7 +312,6 @@ class AbstractSyntaxTree:
             raise SyntaxError("Missing semicolon at the end of statement.")
         
         return DO(
-            id=conditional_node_id,
             parenthesis_expression=parenthesis_expression,
             loop=loop
         )
@@ -355,8 +326,7 @@ class AbstractSyntaxTree:
             An EMPTY node.
         """
 
-        empty_node_id = self._get_next_id()
-        statement_node = EMPTY(id=empty_node_id)
+        statement_node = EMPTY()
 
         self._next_symbol()
 
@@ -372,16 +342,14 @@ class AbstractSyntaxTree:
             The parent node of a sequence of one or more statements.
         """
 
-        statement_node_id = self._get_next_id()
-        statement_node = SEQ(id=statement_node_id)
+        statement_node = SEQ()
     
         self._next_symbol()
 
         while self.current_symbol != "RCBRA":
             temp_node = statement_node
 
-            sequence_node_id = self._get_next_id()
-            statement_node = SEQ(id=sequence_node_id)
+            statement_node = SEQ()
 
             # Avoid multiple nested SEQ statements
             both_are_seq = (
@@ -457,13 +425,11 @@ class AbstractSyntaxTree:
             elif self.current_symbol in ["LBRA", "DOT"]:
                 variable = expression_node
 
-                element_access_node_id = self._get_next_id()
                 self._next_symbol()
 
                 element = self._term()
 
                 expression_node = ELEMENT_ACCESS(
-                    id=element_access_node_id,
                     variable=variable,
                     element=element
                 )
@@ -487,13 +453,11 @@ class AbstractSyntaxTree:
         if isinstance(lhs, (VAR, ELEMENT_ACCESS)):
             lhs.add_context({"context": "write"})
 
-        assign_node_id = self._get_next_id()
         self._next_symbol()
 
         rhs = self._expression()
 
         expression_node = ASSIGN(
-            id=assign_node_id,
             lhs=lhs,
             rhs=rhs
         )
@@ -514,11 +478,9 @@ class AbstractSyntaxTree:
 
         while self.current_symbol == "OR":
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._logical_and()
             expression = OR(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -539,11 +501,9 @@ class AbstractSyntaxTree:
 
         while self.current_symbol == "AND":
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._bitwise_or()
             expression = AND(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -564,11 +524,9 @@ class AbstractSyntaxTree:
 
         while self.current_symbol == "BITOR":
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._bitwise_and()
             expression = BITOR(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -589,11 +547,9 @@ class AbstractSyntaxTree:
 
         while self.current_symbol == "BITAND":
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._equality()
             expression = BITAND(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -621,12 +577,10 @@ class AbstractSyntaxTree:
             _equality_class = _equality_nodes[self.current_symbol]
 
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._comparison()
 
             expression = _equality_class(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -654,12 +608,10 @@ class AbstractSyntaxTree:
             _comparison_class = _comparison_nodes[self.current_symbol]
 
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._bit_shift()
 
             expression = _comparison_class(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -687,12 +639,10 @@ class AbstractSyntaxTree:
             _bit_shift_class = _bit_shift_nodes[self.current_symbol]
 
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._addition()
 
             expression = _bit_shift_class(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -720,12 +670,10 @@ class AbstractSyntaxTree:
             _addition_class = _addition_nodes[self.current_symbol]
 
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._multiplication()
 
             expression = _addition_class(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -754,12 +702,10 @@ class AbstractSyntaxTree:
             _multiplication_class = _multiplication_nodes[self.current_symbol]
 
             self._next_symbol()
-            expression_id = self._get_next_id()
 
             right_expression = self._unary_operation()
 
             expression = _multiplication_class(
-                id=expression_id,
                 lhs=expression,
                 rhs=right_expression
             )
@@ -778,12 +724,8 @@ class AbstractSyntaxTree:
 
         if self.current_symbol == "NOT":
             self._next_symbol()
-            expression_id = self._get_next_id()
 
-            expression = NOT(
-                id=expression_id,
-                expression=self._unary_operation()
-            )
+            expression = NOT(expression=self._unary_operation())
 
         else:
             expression = self._parenthesis_expression()
@@ -830,19 +772,14 @@ class AbstractSyntaxTree:
             The node representation of the term.
         """
 
-        terms_map = {
+        terms_map: dict[str, Node] = {
             "CST": CST,
             "FUNC_CALL": FUNC_CALL,
             "VAR": VAR
         }
 
-        term_handler = terms_map.get(self.current_symbol)
-
-        term_node_id = self._get_next_id()
-        term_node = term_handler(
-            term_node_id,
-            self.current_value
-        )
+        term_handler = terms_map[self.current_symbol]
+        term_node = term_handler(self.current_value)
 
         self._next_symbol()
 
@@ -855,21 +792,3 @@ class AbstractSyntaxTree:
             self.current_symbol, self.current_value = self.current_statement_list.pop(0)
         else:
             self.current_symbol, self.current_value = ("EOI", {})
-
-    def _get_next_id(self) -> int:
-        """
-        Get the ID to use in the next Node to be created.
-
-        This function centralizes the management of the `node_id_manager`
-        property.
-
-        Returns
-        -------
-        next_id : int
-            The ID to use.
-        """
-
-        next_id = self.node_id_manager
-        self.node_id_manager += 1
-
-        return next_id

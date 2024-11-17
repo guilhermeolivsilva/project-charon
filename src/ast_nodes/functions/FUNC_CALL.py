@@ -16,16 +16,14 @@ class FUNC_CALL(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     function_call_metadata : dict
         Dictionary of function call metadata exported by the Lexer.
     """
 
     @override
-    def __init__(self, id: int, function_call_metadata: dict) -> None:
+    def __init__(self, function_call_metadata: dict) -> None:
         function_id: int = function_call_metadata["called_function_metadata"]["relative_position"]
-        super().__init__(id, function_id)
+        super().__init__(function_id)
 
         _function_type: str = function_call_metadata["called_function_metadata"]["type"]
 
@@ -101,7 +99,7 @@ class FUNC_CALL(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict] = []
@@ -176,7 +174,6 @@ class FUNC_CALL(Node):
         ]
 
         children_nodes: list[Node] = []
-        current_id = self.id
 
         for idx, argument_metadata in enumerate(arguments):
             _is_variable = argument_metadata["variable"]
@@ -184,23 +181,19 @@ class FUNC_CALL(Node):
 
             if _is_variable:
                 argument_value = VAR(
-                    id=current_id + 1,
                     variable_metadata=argument_metadata
                 )
 
             else:
                 argument_value = CST(
-                    id=current_id + 1,
                     constant_metadata=argument_metadata
                 )
 
             new_node = ARG(
-                id=None,
                 argument_value=argument_value,
                 parameter_type=_parameter_type
             )
 
-            current_id += 1
             children_nodes.append(new_node)
 
         return children_nodes

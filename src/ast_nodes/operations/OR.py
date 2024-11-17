@@ -13,8 +13,6 @@ class OR(Operation):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     lhs : Node
         The Node representation of the left hand side of the operation.
     rhs : Node
@@ -22,7 +20,7 @@ class OR(Operation):
     """
 
     @override
-    def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
-        super().__init__(id, lhs, rhs, **kwargs)
+    def __init__(self, lhs: Node, rhs: Node, **kwargs) -> None:
+        super().__init__(lhs, rhs, **kwargs)
 
         self.instruction: str = self._compute_instruction("OR")

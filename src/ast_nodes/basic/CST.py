@@ -12,8 +12,6 @@ class CST(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     constant_metadata : dict[str, str]
         A dictionary containing metadata (type and value) about this constant.
 
@@ -25,7 +23,7 @@ class CST(Node):
     """
 
     @override
-    def __init__(self, id: int, constant_metadata: dict[str, str]) -> None:
+    def __init__(self, constant_metadata: dict[str, str]) -> None:
         value: int = constant_metadata.get("value")
         type: str = constant_metadata.get("type")
 
@@ -36,7 +34,7 @@ class CST(Node):
         _type_to_enforce: callable
 
         _type_symbol, _type_to_enforce = TYPE_SYMBOLS_MAP[type].values()
-        super().__init__(id, _type_to_enforce(value))
+        super().__init__(_type_to_enforce(value))
 
         self.type = type
         self.instruction: str = "CONSTANT"

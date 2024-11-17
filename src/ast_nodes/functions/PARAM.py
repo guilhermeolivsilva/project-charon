@@ -17,15 +17,13 @@ class PARAM(VAR_DEF):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     variable_metadata : dict
         Dictionary of parameter metadata exported by the Lexer.
     """
 
     @override
-    def __init__(self, id: int, variable_metadata: dict) -> None:
-        super().__init__(id, variable_metadata)
+    def __init__(self, variable_metadata: dict) -> None:
+        super().__init__(variable_metadata)
 
     @override
     def generate_code(self, register: int) -> tuple[
@@ -51,7 +49,7 @@ class PARAM(VAR_DEF):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str]]] = []

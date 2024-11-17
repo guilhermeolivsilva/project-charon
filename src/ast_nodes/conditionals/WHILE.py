@@ -17,8 +17,6 @@ class WHILE(Conditional):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     parenthesis_expression : Node
         The node representation of the expression to be evaluated.
     loop : Node
@@ -27,8 +25,8 @@ class WHILE(Conditional):
     """
 
     @override
-    def __init__(self, id: int, parenthesis_expression: Node, loop: Node) -> None:
-        super().__init__(id, parenthesis_expression, loop)
+    def __init__(self, parenthesis_expression: Node, loop: Node) -> None:
+        super().__init__(parenthesis_expression, loop)
 
     @override
     def get_certificate_label(self) -> list[str]:
@@ -79,7 +77,7 @@ class WHILE(Conditional):
             The number of the next register available.
         while_code : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         register, parenthesis_expression_code = self.parenthesis_expression.generate_code(

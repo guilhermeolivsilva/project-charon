@@ -14,15 +14,13 @@ class NOT(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     expression : Node
         The Node representation of the term to be negated.
     """
 
     @override
-    def __init__(self, id: int, expression: Node, **kwargs) -> None:
-        super().__init__(id)
+    def __init__(self, expression: Node, **kwargs) -> None:
+        super().__init__()
 
         self.expression: Node = expression
         self.symbol: str = self._compute_symbol()
@@ -89,7 +87,7 @@ class NOT(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []
@@ -102,7 +100,7 @@ class NOT(Node):
         this_code = {
             "instruction": self.instruction,
             "metadata": {
-                "id": self.id,
+
                 "register": register,
                 "expression_register": expression_register
             }

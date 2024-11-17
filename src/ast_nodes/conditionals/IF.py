@@ -14,8 +14,6 @@ class IF(Conditional):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     parenthesis_expression : Node
         The node representation of the expression to be evaluated.
     statement_if_true : Node
@@ -25,9 +23,9 @@ class IF(Conditional):
 
     @override
     def __init__(
-        self, id: int, parenthesis_expression: Node, statement_if_true: Node
+        self, parenthesis_expression: Node, statement_if_true: Node
     ) -> None:
-        super().__init__(id, parenthesis_expression, statement_if_true)
+        super().__init__(parenthesis_expression, statement_if_true)
 
     @override
     def generate_code(self, register: int) -> tuple[
@@ -55,7 +53,7 @@ class IF(Conditional):
             The number of the next register available.
         if_code : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         register, parenthesis_expression_code = self.parenthesis_expression.generate_code(

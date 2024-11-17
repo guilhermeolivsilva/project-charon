@@ -23,8 +23,6 @@ class ELEMENT_ACCESS(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     variable : str
         The variable whose element is being accessed.
     element : int
@@ -39,7 +37,7 @@ class ELEMENT_ACCESS(Node):
     @override
     def __init__(
         self,
-        id: int,
+
         variable: VAR,
         element: Union[CST, VAR]
     ) -> None:
@@ -55,7 +53,7 @@ class ELEMENT_ACCESS(Node):
                 " nor struct."
             )
 
-        super().__init__(id)
+        super().__init__()
 
         self.variable: VAR = variable
         self.element: Union[CST, VAR] = element
@@ -131,7 +129,7 @@ class ELEMENT_ACCESS(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str]]] = []
@@ -150,7 +148,7 @@ class ELEMENT_ACCESS(Node):
         element_access_code = {
             "instruction": self.instruction,
             "metadata": {
-                "id": self.id,
+
                 "register": register,
                 "value": self.variable.get_value(),
                 "type": self.type,

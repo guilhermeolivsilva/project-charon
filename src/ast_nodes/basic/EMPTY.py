@@ -8,15 +8,8 @@ from src.ast_nodes.node import Node
 
 
 class EMPTY(Node):
-    """
-    Implement the representation of an `EMPTY` node for the AST.
-
-    Parameters
-    ----------
-    id : int
-        The ID of the Node.
-    """
+    """Implement the representation of an `EMPTY` node for the AST."""
 
     @override
-    def __init__(self, id: int, value: Union[int, str, None] = None) -> None:
-        super().__init__(id, value)
+    def __init__(self, value: Union[int, str, None] = None) -> None:
+        super().__init__()

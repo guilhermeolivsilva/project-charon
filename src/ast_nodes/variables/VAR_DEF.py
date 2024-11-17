@@ -14,19 +14,17 @@ class VAR_DEF(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     variable_metadata : dict
         Dictionary of variable metadata exported by the Lexer.
     """
 
     @override
-    def __init__(self, id: int, variable_metadata: dict) -> None:
+    def __init__(self, variable_metadata: dict) -> None:
 
         relative_position: int = variable_metadata.get("relative_position")
         type: str = variable_metadata.get("type")
 
-        super().__init__(id, relative_position, type)
+        super().__init__(relative_position, type)
 
         self.variable_metadata: dict = variable_metadata
         self.instruction: str = "ALLOC"
@@ -90,7 +88,7 @@ class VAR_DEF(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str]]] = []
@@ -98,7 +96,7 @@ class VAR_DEF(Node):
         var_def_code = {
             "instruction": self.instruction,
             "metadata": {
-                "id": self.id,
+
                 "relative_position": self.value,
                 "type": "int",
                 "size": get_variable_size(self.variable_metadata),

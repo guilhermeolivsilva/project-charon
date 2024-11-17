@@ -14,18 +14,16 @@ class STRUCT_DEF(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     struct_metadata : dict
         Dictionary of struct metadata exported by the Lexer.
     """
 
     @override
-    def __init__(self, id: int, struct_metadata: dict[str, dict[str, dict]]) -> None:
+    def __init__(self, struct_metadata: dict[str, dict[str, dict]]) -> None:
         relative_position: int = struct_metadata.get("relative_position")
         _type: str = struct_metadata.get("type")
 
-        super().__init__(id, relative_position, type=_type)
+        super().__init__(relative_position, type=_type)
 
         self.active: bool = struct_metadata.get("active")
         self.struct_metadata = struct_metadata

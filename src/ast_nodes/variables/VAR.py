@@ -14,17 +14,15 @@ class VAR(Node):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     variable_metadata : dict[str, str]
         A dictionary containing the relative position where it was first
         declared in the original source code, and its type.
     """
 
     @override
-    def __init__(self, id: int, variable_metadata: dict[str, str]) -> None:
+    def __init__(self, variable_metadata: dict[str, str]) -> None:
         relative_position = variable_metadata.get("relative_position")
-        super().__init__(id, relative_position)
+        super().__init__(relative_position)
 
         self.variable_metadata: dict[str, str] = variable_metadata
         self.relative_position: int = relative_position
@@ -54,8 +52,7 @@ class VAR(Node):
 
         For this node specialization, the code metadata contains the instruction
         (i.e., whether the context requires the variable's value or address),
-        together with the variable identifier (`self.value`). An instruction id
-        (`self.id`) is also added to make debugging easier.
+        together with the variable identifier (`self.value`).
         
         It also contains `offset_size` and `offset_register` fields: this is due
         to the design of the `ADDRESS` and `LOAD` instructions in the virtual
@@ -72,14 +69,14 @@ class VAR(Node):
         register : int
             The number of the next register available.
         code_metadata : list of dict
-            Return a dictionary of code metadata: the related `instruction`,
-            and node `id`, and `value`.
+            Return a dictionary of code metadata: the related `instruction` and
+            `value`.
         """
 
         code_metadata = {
             "instruction": self.instruction,
             "metadata": {
-                "id": self.id,
+
                 "register": register,
                 "value": self.value,
                 "type": self.type

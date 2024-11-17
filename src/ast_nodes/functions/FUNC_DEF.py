@@ -31,13 +31,12 @@ class FUNC_DEF(Node):
     @override
     def __init__(
         self,
-        id: int,
         function_name: str,
         function_metadata: dict[str, Union[str, dict]]
     ) -> None:
         
         type: str = function_metadata.get("type")
-        super().__init__(id, function_name, type)
+        super().__init__(function_name, type)
 
         self.parameters: list[PARAM] = self._define_vars_from_args(
             parameters=function_metadata.get("parameters")
@@ -126,7 +125,7 @@ class FUNC_DEF(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str]]] = []
@@ -195,12 +194,7 @@ class FUNC_DEF(Node):
                 **parameter_metadata
             }
 
-            variables.append(
-                PARAM(
-                    id=None,
-                    variable_metadata=variable_metadata
-                )
-            )
+            variables.append(PARAM(variable_metadata=variable_metadata))
 
         return variables
     

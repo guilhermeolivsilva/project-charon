@@ -8,18 +8,11 @@ from src.ast_nodes.node import Node
 
 
 class PROG(Node):
-    """
-    Implement the representation of the beginning of a program for the AST.
-
-    Parameters
-    ----------
-    id : int
-        The ID of the Node.
-    """
+    """Implement the representation of the beginning of a program for the AST."""
 
     @override
-    def __init__(self, id: int) -> None:
-        super().__init__(id, uses_register=False)
+    def __init__(self) -> None:
+        super().__init__(uses_register=False)
 
         self.instruction: str = "HALT"
         self.children: list[Node] = []
@@ -110,7 +103,7 @@ class PROG(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction` and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []

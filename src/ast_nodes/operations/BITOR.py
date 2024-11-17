@@ -13,8 +13,6 @@ class BITOR(Operation):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     lhs : Node
         The Node representation of the left hand side of the operation.
     rhs : Node
@@ -22,7 +20,7 @@ class BITOR(Operation):
     """
 
     @override
-    def __init__(self, id: int, lhs: Node, rhs: Node, **kwargs) -> None:
-        super().__init__(id, lhs, rhs, supports_float=False, **kwargs)
+    def __init__(self, lhs: Node, rhs: Node, **kwargs) -> None:
+        super().__init__(lhs, rhs, supports_float=False, **kwargs)
 
         self.instruction: str = "BITOR"

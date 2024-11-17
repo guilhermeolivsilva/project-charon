@@ -25,11 +25,10 @@ class ARG(Node):
     @override
     def __init__(
         self,
-        id: int,
         argument_value: Union[CST, VAR],
         parameter_type: str
     ) -> None:
-        super().__init__(id)
+        super().__init__()
 
         self.argument_value: Union[CST, VAR] = argument_value
         self.parameter_type: str = parameter_type
@@ -95,7 +94,7 @@ class ARG(Node):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         code_metadata: list[dict] = []

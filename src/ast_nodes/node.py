@@ -12,8 +12,6 @@ class Node:
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     value : str, int, float, or None, optional (default = None)
         The value the Node holds, if any. Defaults to None.
     type : str or None (optional, default = None)
@@ -25,12 +23,10 @@ class Node:
 
     def __init__(
         self,
-        id: Union[int, str],
         value: Union[int, str, float, None] = None,
         type: Union[str, None] = None,
         uses_register: bool = True
     ) -> None:
-        self.id: Union[int, str] = id
         self.value: Union[int, str, float, None] = value
         self.type: Union[str, None] = type
         self.certificate_label: str = None
@@ -57,8 +53,7 @@ class Node:
         """
 
         is_equal = (
-            self.id == other.id
-            and self.value == other.value
+            self.value == other.value
             and type(self) is type(other)
         )
 
@@ -77,9 +72,6 @@ class Node:
         """
 
         _str = ""
-
-        if self.id is not None:
-            _str += f"ID: {self.id}, "
 
         if self.value is not None:
             _str += f"Value: {self.value}, "
@@ -171,8 +163,8 @@ class Node:
         Generate the code associated with this `Node`.
 
         The generated code consists of a dictionary containing the relevant
-        `Node` data for the code to run -- namely, the `instruction`, the `id`,
-        and the `value`.
+        `Node` data for the code to run -- namely, the `instruction`, and the
+        `value`.
 
         Notice that some `Nodes` may rewrite this method in order to deal
         with special attributes -- such as the `Operation` nodes, that must
@@ -194,8 +186,7 @@ class Node:
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the register
-            to be used, the related `instruction` and its metadata (the node
-            `id` and `value`, if any).
+            to be used, the related `instruction` and its metadata.
 
         Notes
         -----
@@ -208,9 +199,6 @@ class Node:
             "instruction": self.instruction,
             "metadata": {}
         }
-
-        if self.id is not None:
-            code_metadata["metadata"]["id"] = self.id
 
         if self.uses_register:
             code_metadata["metadata"]["register"] = register

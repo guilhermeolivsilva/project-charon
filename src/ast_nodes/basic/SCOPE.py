@@ -93,7 +93,7 @@ class SCOPE(Node):
         -------
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction` and `value`.
         """
 
         code_metadata: list[dict[str, Union[int, str, None]]] = []

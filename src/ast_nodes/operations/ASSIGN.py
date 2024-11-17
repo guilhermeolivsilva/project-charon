@@ -16,8 +16,6 @@ class ASSIGN(Operation):
 
     Parameters
     ----------
-    id : int
-        The ID of the Node.
     lhs : Node
         The node representation of the variable to attribute to.
     rhs : Node
@@ -30,13 +28,13 @@ class ASSIGN(Operation):
     """
 
     @override
-    def __init__(self, id: int, lhs: Node, rhs: Node) -> None:
+    def __init__(self, lhs: Node, rhs: Node) -> None:
         if not isinstance(lhs, (VAR, ELEMENT_ACCESS)):
             raise TypeError(
                 "Left-hand side of ASSIGN operation is not a Variable."
             )
 
-        super().__init__(id, lhs=lhs, rhs=rhs, type=lhs.type)
+        super().__init__(lhs=lhs, rhs=rhs, type=lhs.type)
 
         self.instruction: str = "STORE"
 
@@ -69,7 +67,7 @@ class ASSIGN(Operation):
             The number of the next register available.
         code_metadata : list of dict
             Return a list of dictionaries containing code metadata: the related
-            `instruction`, and node `id`, and `value`.
+            `instruction`and `value`.
         """
 
         register, operation_code = super().generate_code(register=register)
