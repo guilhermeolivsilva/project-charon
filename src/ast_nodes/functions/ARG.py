@@ -80,7 +80,7 @@ class ARG(Node):
         Generate the code associated with this `ARG`.
 
         For this node specialization, generate code from the `argument_value`
-        node first, and then generate a `STORE` instruction to save the
+        node first, and then generate a `MOV` instruction to save the
         `argument_value` in the `arg` register.
 
         Parameters

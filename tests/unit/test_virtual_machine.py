@@ -961,15 +961,15 @@ def test_STORE_simple() -> None:
     """
     Test the `VirtualMachine.STORE` method when handling simple variables.
 
-    In this case, the `lhs_register` contains the `relative_position` of the
-    variable to be written to.
+    In this case, `register` contains the register with the `relative_position`
+    of the variable to be written to.
     """
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
 
     instruction_params = {
-        "lhs_register": 0,
-        "rhs_register": 1
+        "register": 0,
+        "value": 1
     }
 
     value_to_store = 23
@@ -990,14 +990,14 @@ def test_STORE_arrays_structs() -> None:
     """
     Test the `VirtualMachine.STORE` method when handling arrays/structs.
     
-    In this case, the `lhs_register` contains the memory address to write to.
+    In this case, `register` contains the register with the address to write to.
     """
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
 
     instruction_params = {
-        "lhs_register": 0,
-        "rhs_register": 1
+        "register": 0,
+        "value": 1
     }
 
     value_to_store = 23

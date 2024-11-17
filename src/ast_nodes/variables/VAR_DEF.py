@@ -100,6 +100,7 @@ class VAR_DEF(Node):
             "metadata": {
                 "id": self.id,
                 "relative_position": self.value,
+                "type": "int",
                 "size": get_variable_size(self.variable_metadata),
                 "register": register
             }

@@ -1138,7 +1138,7 @@ class VirtualMachine:
 
         variable_address: str = self._get_variable_address(instruction_params)
 
-        value_to_store_register: Union[int, str] = instruction_params["rhs_register"]
+        value_to_store_register: Union[int, str] = instruction_params["value"]
 
         if value_to_store_register == "arg":
             value_to_store: Union[int, float] = self.registers["arg"].pop()
@@ -1202,8 +1202,7 @@ class VirtualMachine:
         """
         Get the address of some variable from the instruction_params.
 
-        This method is intended to be used by the `LOAD` and `STORE`
-        instruction handlers.
+        This method is intended to be used by the `STORE` instruction handler.
 
         Parameters
         ----------
@@ -1216,7 +1215,7 @@ class VirtualMachine:
             The address of the variable in the `self.memory` dictionary.
         """
 
-        lhs_register: int = instruction_params["lhs_register"]
+        lhs_register: int = instruction_params["register"]
         lhs_register_contents: Union[int, str] = self.registers[lhs_register]
 
         # Case 1: writing to some simple variable (i.e., the `lhs_register`

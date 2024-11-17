@@ -79,6 +79,15 @@ class ASSIGN(Operation):
         del assign_code["metadata"]["register"]
         register -= 1
 
+        # Rerrange the binary operation metadata to unary operation
+        assign_code_metadata = assign_code.pop("metadata")
+        assign_code_metadata["register"] = assign_code_metadata.pop("lhs_register")
+        assign_code_metadata["value"] = assign_code_metadata.pop("rhs_register")
+
+        assign_code["metadata"] = assign_code_metadata
+
         operation_code.append(assign_code)
+
+        print(operation_code)
 
         return register, operation_code

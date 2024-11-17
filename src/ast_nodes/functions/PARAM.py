@@ -66,8 +66,8 @@ class PARAM(VAR_DEF):
         parameter_store_code = {
             "instruction": "STORE",
             "metadata": {
-                "lhs_register": parameter_address_register,
-                "rhs_register": "arg",
+                "register": parameter_address_register,
+                "value": "arg",
                 "type": self.type
             }
         }
