@@ -872,10 +872,7 @@ MACHINE_CODE = {
             "instruction": "LOAD",
             "metadata": {"id": 25, "register": 13, "value": 2, "type": "my_struct"},
         },
-        {
-            "instruction": "MOV",
-            "metadata": {"lhs_register": "ret_value", "rhs_register": 13},
-        },
+        {"instruction": "MOV", "metadata": {"register": "ret_value", "value": 13}},
         {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {
             "instruction": "ALLOC",
@@ -930,10 +927,7 @@ MACHINE_CODE = {
             "instruction": "FPTOSI",
             "metadata": {"source_register": 19, "destination_register": 20},
         },
-        {
-            "instruction": "MOV",
-            "metadata": {"lhs_register": "ret_value", "rhs_register": 20},
-        },
+        {"instruction": "MOV", "metadata": {"register": "ret_value", "value": 20}},
         {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {
             "instruction": "ALLOC",
@@ -1059,7 +1053,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "MOV",
-            "metadata": {"lhs_register": "arg", "rhs_register": 37, "type": None},
+            "metadata": {"register": "arg", "value": 37, "type": None},
         },
         {
             "instruction": "CONSTANT",
@@ -1067,16 +1061,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "MOV",
-            "metadata": {"lhs_register": "arg", "rhs_register": 38, "type": None},
+            "metadata": {"register": "arg", "value": 38, "type": None},
         },
         {"instruction": "JAL", "metadata": {"value": 2}},
         {
             "instruction": "MOV",
-            "metadata": {
-                "lhs_register": 39,
-                "rhs_register": "ret_value",
-                "type": "int",
-            },
+            "metadata": {"register": 39, "value": "ret_value", "type": "int"},
         },
         {
             "instruction": "ADD",
@@ -1113,10 +1103,7 @@ MACHINE_CODE = {
             "instruction": "FPTOSI",
             "metadata": {"source_register": 44, "destination_register": 45},
         },
-        {
-            "instruction": "MOV",
-            "metadata": {"lhs_register": "ret_value", "rhs_register": 45},
-        },
+        {"instruction": "MOV", "metadata": {"register": "ret_value", "value": 45}},
         {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {
             "instruction": "ALLOC",
@@ -1138,7 +1125,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "MOV",
-            "metadata": {"lhs_register": "arg", "rhs_register": 48, "type": None},
+            "metadata": {"register": "arg", "value": 48, "type": None},
         },
         {
             "instruction": "CONSTANT",
@@ -1146,16 +1133,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "MOV",
-            "metadata": {"lhs_register": "arg", "rhs_register": 49, "type": None},
+            "metadata": {"register": "arg", "value": 49, "type": None},
         },
         {"instruction": "JAL", "metadata": {"value": 3}},
         {
             "instruction": "MOV",
-            "metadata": {
-                "lhs_register": 50,
-                "rhs_register": "ret_value",
-                "type": "int",
-            },
+            "metadata": {"register": 50, "value": "ret_value", "type": "int"},
         },
         {"instruction": "STORE", "metadata": {"id": 84, "register": 47, "value": 50}},
         {
@@ -1375,10 +1358,7 @@ MACHINE_CODE = {
                 "rhs_register": 83,
             },
         },
-        {
-            "instruction": "MOV",
-            "metadata": {"lhs_register": "ret_value", "rhs_register": 84},
-        },
+        {"instruction": "MOV", "metadata": {"register": "ret_value", "value": 84}},
         {"instruction": "JR", "metadata": {"register": "ret_address"}},
         {"instruction": "HALT", "metadata": {}},
     ],

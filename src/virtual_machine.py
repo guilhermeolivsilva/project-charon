@@ -935,8 +935,8 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        lhs_register: Union[int, str] = instruction_params["lhs_register"]
-        rhs_register: Union[int, str] = instruction_params["rhs_register"]
+        lhs_register: Union[int, str] = instruction_params["register"]
+        rhs_register: Union[int, str] = instruction_params["value"]
 
         # Always insert at the beginning of the list! Appending to the end
         # causes parameter handling to receive arguments in inverted order.

@@ -125,8 +125,8 @@ class RET_SYM(Node):
             {
                 "instruction": "MOV",
                 "metadata": {
-                    "lhs_register": "ret_value",
-                    "rhs_register": returned_value_code_register
+                    "register": "ret_value",
+                    "value": returned_value_code_register
                 }
             },
             {

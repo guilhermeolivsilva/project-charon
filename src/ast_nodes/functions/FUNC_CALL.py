@@ -128,8 +128,8 @@ class FUNC_CALL(Node):
             {
                 "instruction": "MOV",
                 "metadata": {
-                    "lhs_register": register,
-                    "rhs_register": "ret_value",
+                    "register": register,
+                    "value": "ret_value",
                     "type": self.type
                 }
             }

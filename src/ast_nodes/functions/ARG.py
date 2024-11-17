@@ -120,8 +120,8 @@ class ARG(Node):
         argument_store_code = {
             "instruction": "MOV",
             "metadata": {
-                "lhs_register": "arg",
-                "rhs_register": argument_value_register,
+                "register": "arg",
+                "value": argument_value_register,
                 "type": self.type
             }
         }
