@@ -122,6 +122,8 @@ class CodeGenerator:
             "metadata": {}
         })
 
+        self._add_ids_to_source()
+
         return self.program
 
     def parse_struct_definitions(self) -> None:
@@ -198,3 +200,18 @@ class CodeGenerator:
         """
 
         return self.program
+    
+    def _add_ids_to_source(self) -> None:
+        """Add sequential IDs to the program."""
+
+        current_id = 1
+
+        # Add to global variables definitions, first
+        for instruction in self.program["global_vars"]:
+            instruction["id"] = current_id
+            current_id += 1
+
+        # ...and to the rest of the code
+        for instruction in self.program["code"]:
+            instruction["id"] = current_id
+            current_id += 1
