@@ -157,6 +157,9 @@ class AbstractSyntaxTree:
             The parent node of the statement representation.
         """
 
+        if self.current_symbol == "SEMI":
+            self._next_symbol()
+
         statement_handler_map = {
             "FUNC_CALL": self._func_call,
             "RET_SYM": self._ret_sym,
@@ -164,7 +167,6 @@ class AbstractSyntaxTree:
             "IF_SYM": self._if_sym,
             "WHILE_SYM": self._while_sym,
             "DO_SYM": self._do_sym,
-            "SEMI": self._semi,
             "LCBRA": self._brackets
         }
 
@@ -316,22 +318,6 @@ class AbstractSyntaxTree:
             loop=loop
         )
 
-    def _semi(self) -> EMPTY:
-        """
-        Parse the semicolon.
-        
-        Returns
-        -------
-        statement_node : EMPTY
-            An EMPTY node.
-        """
-
-        statement_node = EMPTY()
-
-        self._next_symbol()
-
-        return statement_node
-
     def _brackets(self) -> SEQ:
         """
         Parse a statement embraced by brackets: `{ <statement> }`.
@@ -362,11 +348,7 @@ class AbstractSyntaxTree:
                 statement_node.add_child(temp_node)
 
             child_statement = self._statement()
-
-            # Avoid adding EMPTY nodes to the tree (`self._semi` only exists
-            # because removing it breaks a lot of stuff)
-            if not isinstance(child_statement, EMPTY):
-                statement_node.add_child(child_statement)
+            statement_node.add_child(child_statement)
 
         self._next_symbol()
 
