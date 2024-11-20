@@ -56,7 +56,7 @@ def test_parse_global_variables() -> None:
     # Manually add the IDs
     current_id = 1
     for element in cg.program["global_vars"]:
-        element["id"] = current_id
+        element["instruction_id"] = current_id
         current_id += 1
 
     assert cg.program["global_vars"] == expected_parsed_global_vars

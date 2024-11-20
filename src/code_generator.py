@@ -206,12 +206,6 @@ class CodeGenerator:
 
         current_id = 1
 
-        # Add to global variables definitions, first
-        for instruction in self.program["global_vars"]:
-            instruction["id"] = current_id
-            current_id += 1
-
-        # ...and to the rest of the code
-        for instruction in self.program["code"]:
-            instruction["id"] = current_id
+        for instruction in [*self.program["global_vars"], *self.program["code"]]:
+            instruction["instruction_id"] = current_id
             current_id += 1
