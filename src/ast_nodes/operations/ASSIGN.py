@@ -73,7 +73,7 @@ class ASSIGN(Operation):
         register, operation_code = super().generate_code(register=register)
         assign_code = operation_code.pop()
 
-        # Simply "undo" the `register` field of the `assign` instruction :)
+        # Simply "undo" the `register` and `type` fields of the `assign` instruction :)
         del assign_code["metadata"]["register"]
         register -= 1
 

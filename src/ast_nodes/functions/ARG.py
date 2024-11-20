@@ -121,7 +121,6 @@ class ARG(Node):
             "metadata": {
                 "register": "arg",
                 "value": argument_value_register,
-                "type": self.type
             }
         }
         code_metadata.append(argument_store_code)

@@ -151,7 +151,6 @@ class ELEMENT_ACCESS(Node):
 
                 "register": register,
                 "value": self.variable.get_value(),
-                "type": self.type,
             }
         }
 

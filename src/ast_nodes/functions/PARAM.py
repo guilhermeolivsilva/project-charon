@@ -65,8 +65,7 @@ class PARAM(VAR_DEF):
             "instruction": "STORE",
             "metadata": {
                 "register": parameter_address_register,
-                "value": "arg",
-                "type": self.type
+                "value": "arg"
             }
         }
         code_metadata.append(parameter_store_code)

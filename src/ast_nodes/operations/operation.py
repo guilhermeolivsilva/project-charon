@@ -146,7 +146,6 @@ class Operation(Node):
         this_code = {
             "instruction": self.instruction,
             "metadata": {
-
                 "register": register,
                 "lhs_register": lhs_register,
                 "rhs_register": rhs_register

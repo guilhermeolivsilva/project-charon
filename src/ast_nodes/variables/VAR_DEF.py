@@ -96,9 +96,7 @@ class VAR_DEF(Node):
         var_def_code = {
             "instruction": self.instruction,
             "metadata": {
-
                 "id": self.value,
-                "type": "int",
                 "size": get_variable_size(self.variable_metadata),
                 "register": register
             }

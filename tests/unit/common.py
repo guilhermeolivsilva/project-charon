@@ -769,54 +769,54 @@ MACHINE_CODE = {
     "global_vars": [
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 1, "type": "int", "size": 40, "register": 0},
+            "metadata": {"id": 1, "size": 40, "register": 0},
             "instruction_id": 1,
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 2, "type": "int", "size": 8, "register": 1},
+            "metadata": {"id": 2, "size": 8, "register": 1},
             "instruction_id": 2,
         },
     ],
     "code": [
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 3, "type": "int", "size": 4, "register": 2},
+            "metadata": {"id": 3, "size": 4, "register": 2},
             "instruction_id": 3,
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 2, "value": "arg", "type": "int"},
+            "metadata": {"register": 2, "value": "arg"},
             "instruction_id": 4,
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 4, "type": "int", "size": 4, "register": 3},
+            "metadata": {"id": 4, "size": 4, "register": 3},
             "instruction_id": 5,
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 3, "value": "arg", "type": "int"},
+            "metadata": {"register": 3, "value": "arg"},
             "instruction_id": 6,
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 5, "type": "int", "size": 4, "register": 4},
+            "metadata": {"id": 5, "size": 4, "register": 4},
             "instruction_id": 7,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 5, "value": 5, "type": "int"},
+            "metadata": {"register": 5, "value": 5},
             "instruction_id": 8,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 6, "value": 3, "type": "int"},
+            "metadata": {"register": 6, "value": 3},
             "instruction_id": 9,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 7, "value": 4, "type": "int"},
+            "metadata": {"register": 7, "value": 4},
             "instruction_id": 10,
         },
         {
@@ -831,12 +831,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 9, "value": 2, "type": "my_struct"},
+            "metadata": {"register": 9, "value": 2},
             "instruction_id": 13,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 10, "value": 0, "type": "int"},
+            "metadata": {"register": 10, "value": 0},
             "instruction_id": 14,
         },
         {
@@ -844,7 +844,6 @@ MACHINE_CODE = {
             "metadata": {
                 "register": 11,
                 "value": 2,
-                "type": "int",
                 "offset_register": None,
                 "offset_size": 0,
             },
@@ -852,7 +851,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 12, "value": 5, "type": "int"},
+            "metadata": {"register": 12, "value": 5},
             "instruction_id": 16,
         },
         {
@@ -862,7 +861,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 13, "value": 2, "type": "my_struct"},
+            "metadata": {"register": 13, "value": 2},
             "instruction_id": 18,
         },
         {
@@ -877,32 +876,32 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 6, "type": "int", "size": 4, "register": 14},
+            "metadata": {"id": 6, "size": 4, "register": 14},
             "instruction_id": 21,
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 14, "value": "arg", "type": "float"},
+            "metadata": {"register": 14, "value": "arg"},
             "instruction_id": 22,
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 7, "type": "int", "size": 4, "register": 15},
+            "metadata": {"id": 7, "size": 4, "register": 15},
             "instruction_id": 23,
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 15, "value": "arg", "type": "int"},
+            "metadata": {"register": 15, "value": "arg"},
             "instruction_id": 24,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 16, "value": 6, "type": "float"},
+            "metadata": {"register": 16, "value": 6},
             "instruction_id": 25,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 17, "value": 7, "type": "int"},
+            "metadata": {"register": 17, "value": 7},
             "instruction_id": 26,
         },
         {
@@ -932,37 +931,37 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 8, "type": "int", "size": 4, "register": 21},
+            "metadata": {"id": 8, "size": 4, "register": 21},
             "instruction_id": 32,
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 21, "value": "arg", "type": "int"},
+            "metadata": {"register": 21, "value": "arg"},
             "instruction_id": 33,
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 9, "type": "int", "size": 4, "register": 22},
+            "metadata": {"id": 9, "size": 4, "register": 22},
             "instruction_id": 34,
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 22, "value": "arg", "type": "int"},
+            "metadata": {"register": 22, "value": "arg"},
             "instruction_id": 35,
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 10, "type": "int", "size": 4, "register": 23},
+            "metadata": {"id": 10, "size": 4, "register": 23},
             "instruction_id": 36,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 24, "value": 10, "type": "int"},
+            "metadata": {"register": 24, "value": 10},
             "instruction_id": 37,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 25, "value": 1, "type": "int"},
+            "metadata": {"register": 25, "value": 1},
             "instruction_id": 38,
         },
         {
@@ -972,17 +971,17 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 11, "type": "int", "size": 4, "register": 26},
+            "metadata": {"id": 11, "size": 4, "register": 26},
             "instruction_id": 40,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 27, "value": 11, "type": "float"},
+            "metadata": {"register": 27, "value": 11},
             "instruction_id": 41,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 28, "value": 2.0, "type": "float"},
+            "metadata": {"register": 28, "value": 2.0},
             "instruction_id": 42,
         },
         {
@@ -992,22 +991,22 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 12, "type": "int", "size": 2, "register": 29},
+            "metadata": {"id": 12, "size": 2, "register": 29},
             "instruction_id": 44,
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 13, "type": "int", "size": 8, "register": 30},
+            "metadata": {"id": 13, "size": 8, "register": 30},
             "instruction_id": 45,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 31, "value": 13, "type": "my_struct"},
+            "metadata": {"register": 31, "value": 13},
             "instruction_id": 46,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 32, "value": 0, "type": "int"},
+            "metadata": {"register": 32, "value": 0},
             "instruction_id": 47,
         },
         {
@@ -1015,7 +1014,6 @@ MACHINE_CODE = {
             "metadata": {
                 "register": 33,
                 "value": 13,
-                "type": "int",
                 "offset_register": None,
                 "offset_size": 0,
             },
@@ -1023,7 +1021,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 34, "value": 1, "type": "int"},
+            "metadata": {"register": 34, "value": 1},
             "instruction_id": 49,
         },
         {
@@ -1033,38 +1031,38 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 35, "value": 10, "type": "int"},
+            "metadata": {"register": 35, "value": 10},
             "instruction_id": 51,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 36, "value": 10, "type": "int"},
+            "metadata": {"register": 36, "value": 10},
             "instruction_id": 52,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 37, "value": 11, "type": "float"},
+            "metadata": {"register": 37, "value": 11},
             "instruction_id": 53,
         },
         {
             "instruction": "MOV",
-            "metadata": {"register": "arg", "value": 37, "type": None},
+            "metadata": {"register": "arg", "value": 37},
             "instruction_id": 54,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 38, "value": 123, "type": "int"},
+            "metadata": {"register": 38, "value": 123},
             "instruction_id": 55,
         },
         {
             "instruction": "MOV",
-            "metadata": {"register": "arg", "value": 38, "type": None},
+            "metadata": {"register": "arg", "value": 38},
             "instruction_id": 56,
         },
         {"instruction": "JAL", "metadata": {"value": 2}, "instruction_id": 57},
         {
             "instruction": "MOV",
-            "metadata": {"register": 39, "value": "ret_value", "type": "int"},
+            "metadata": {"register": 39, "value": "ret_value"},
             "instruction_id": 58,
         },
         {
@@ -1079,12 +1077,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 41, "value": 11, "type": "float"},
+            "metadata": {"register": 41, "value": 11},
             "instruction_id": 61,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 42, "value": 10, "type": "int"},
+            "metadata": {"register": 42, "value": 10},
             "instruction_id": 62,
         },
         {
@@ -1114,38 +1112,38 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 14, "type": "int", "size": 4, "register": 46},
+            "metadata": {"id": 14, "size": 4, "register": 46},
             "instruction_id": 68,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 47, "value": 14, "type": "int"},
+            "metadata": {"register": 47, "value": 14},
             "instruction_id": 69,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 48, "value": 1, "type": "int"},
+            "metadata": {"register": 48, "value": 1},
             "instruction_id": 70,
         },
         {
             "instruction": "MOV",
-            "metadata": {"register": "arg", "value": 48, "type": None},
+            "metadata": {"register": "arg", "value": 48},
             "instruction_id": 71,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 49, "value": 2, "type": "int"},
+            "metadata": {"register": 49, "value": 2},
             "instruction_id": 72,
         },
         {
             "instruction": "MOV",
-            "metadata": {"register": "arg", "value": 49, "type": None},
+            "metadata": {"register": "arg", "value": 49},
             "instruction_id": 73,
         },
         {"instruction": "JAL", "metadata": {"value": 3}, "instruction_id": 74},
         {
             "instruction": "MOV",
-            "metadata": {"register": 50, "value": "ret_value", "type": "int"},
+            "metadata": {"register": 50, "value": "ret_value"},
             "instruction_id": 75,
         },
         {
@@ -1155,27 +1153,27 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 15, "type": "int", "size": 40, "register": 51},
+            "metadata": {"id": 15, "size": 40, "register": 51},
             "instruction_id": 77,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 52, "value": 15, "type": "int"},
+            "metadata": {"register": 52, "value": 15},
             "instruction_id": 78,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 53, "value": 5, "type": "int"},
+            "metadata": {"register": 53, "value": 5},
             "instruction_id": 79,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 54, "value": 15, "type": "int", "offset_size": 20},
+            "metadata": {"register": 54, "value": 15, "offset_size": 20},
             "instruction_id": 80,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 55, "value": 1, "type": "int"},
+            "metadata": {"register": 55, "value": 1},
             "instruction_id": 81,
         },
         {
@@ -1185,17 +1183,17 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ALLOC",
-            "metadata": {"id": 16, "type": "int", "size": 4, "register": 56},
+            "metadata": {"id": 16, "size": 4, "register": 56},
             "instruction_id": 83,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 57, "value": 14, "type": "int"},
+            "metadata": {"register": 57, "value": 14},
             "instruction_id": 84,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 58, "value": 4, "type": "int"},
+            "metadata": {"register": 58, "value": 4},
             "instruction_id": 85,
         },
         {
@@ -1205,7 +1203,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 60, "value": 1, "type": "int"},
+            "metadata": {"register": 60, "value": 1},
             "instruction_id": 87,
         },
         {
@@ -1215,12 +1213,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 62, "value": 14, "type": "int"},
+            "metadata": {"register": 62, "value": 14},
             "instruction_id": 89,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 63, "value": 1, "type": "int"},
+            "metadata": {"register": 63, "value": 1},
             "instruction_id": 90,
         },
         {
@@ -1235,12 +1233,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 66, "value": 14, "type": "int"},
+            "metadata": {"register": 66, "value": 14},
             "instruction_id": 93,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 67, "value": 10, "type": "int"},
+            "metadata": {"register": 67, "value": 10},
             "instruction_id": 94,
         },
         {
@@ -1260,17 +1258,17 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 70, "value": 16, "type": "int"},
+            "metadata": {"register": 70, "value": 16},
             "instruction_id": 98,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 71, "value": 14, "type": "int"},
+            "metadata": {"register": 71, "value": 14},
             "instruction_id": 99,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 72, "value": 1, "type": "int"},
+            "metadata": {"register": 72, "value": 1},
             "instruction_id": 100,
         },
         {
@@ -1290,17 +1288,17 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 74, "value": 16, "type": "int"},
+            "metadata": {"register": 74, "value": 16},
             "instruction_id": 104,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 75, "value": 14, "type": "int"},
+            "metadata": {"register": 75, "value": 14},
             "instruction_id": 105,
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 76, "value": 1, "type": "int"},
+            "metadata": {"register": 76, "value": 1},
             "instruction_id": 106,
         },
         {
@@ -1315,12 +1313,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 78, "value": 14, "type": "int"},
+            "metadata": {"register": 78, "value": 14},
             "instruction_id": 109,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 79, "value": 16, "type": "int"},
+            "metadata": {"register": 79, "value": 16},
             "instruction_id": 110,
         },
         {
@@ -1330,7 +1328,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 81, "value": 2, "type": "int"},
+            "metadata": {"register": 81, "value": 2},
             "instruction_id": 112,
         },
         {
@@ -1340,7 +1338,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 83, "value": 1, "type": "int"},
+            "metadata": {"register": 83, "value": 1},
             "instruction_id": 114,
         },
         {

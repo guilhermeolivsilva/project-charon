@@ -78,8 +78,7 @@ class VAR(Node):
             "metadata": {
 
                 "register": register,
-                "value": self.value,
-                "type": self.type
+                "value": self.value
             }
         }
 

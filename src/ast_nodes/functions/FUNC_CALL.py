@@ -128,7 +128,6 @@ class FUNC_CALL(Node):
                 "metadata": {
                     "register": register,
                     "value": "ret_value",
-                    "type": self.type
                 }
             }
         ]

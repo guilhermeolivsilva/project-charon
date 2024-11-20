@@ -207,9 +207,6 @@ class Node:
         if self.value is not None:
             code_metadata["metadata"]["value"] = self.value
 
-        if self.type is not None:
-            code_metadata["metadata"]["type"] = self.type
-
         return register, [code_metadata]
 
     def certificate(self, prime: int) -> int:
