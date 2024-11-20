@@ -139,16 +139,22 @@ class ELEMENT_ACCESS(Node):
         )
         code_metadata.extend(variable_code)
 
-        register, element_code = self.element.generate_code(
-            register=register
-        )
-        code_metadata.extend(element_code)
-        element_register = register - 1
+        # Only generate `element` code if it is an dynamically accessed array.
+        # Statically accessed arrays and structs only need the offset, and this
+        # is calculated `_compute_element_offset`.
+        if self.is_array and isinstance(self.element, VAR):
+            register, element_code = self.element.generate_code(
+                register=register
+            )
+            code_metadata.extend(element_code)
+            element_register = register - 1
+
+        else:
+            element_register = None
 
         element_access_code = {
             "instruction": self.instruction,
             "metadata": {
-
                 "register": register,
                 "value": self.variable.get_value(),
             }
@@ -250,7 +256,7 @@ class ELEMENT_ACCESS(Node):
 
         return accessed_attribute_type
 
-    def _compute_element_offset(self, element_register: int) -> dict:
+    def _compute_element_offset(self, element_register: Union[int, None]) -> dict:
         """
         Compute the number of bytes to offset in order to reach the accessed element.
 
@@ -265,9 +271,9 @@ class ELEMENT_ACCESS(Node):
 
         Parameters
         ----------
-        element_register : int
+        element_register : Union[int, None]
             The number of the register that contains the value of the `element`.
-            Will only be used in case B.
+            Will only be used in case B. If `None`, it means it is not case B.
 
         Returns
         -------
@@ -314,7 +320,6 @@ class ELEMENT_ACCESS(Node):
 
                 offset_size += attribute_size
 
-            element_offset["offset_register"] = None
             element_offset["offset_size"] = offset_size
 
         return element_offset
