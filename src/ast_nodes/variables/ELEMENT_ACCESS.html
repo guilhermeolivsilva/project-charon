@@ -245,174 +245,173 @@
 </span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
 </span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
 </span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_value</span><span class="p">(),</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>            <span class="p">}</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>        <span class="p">}</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>        <span class="c1"># Compute the offset, in bytes, to reach the accessed element</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_element_offset</span><span class="p">(</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>            <span class="n">element_register</span><span class="o">=</span><span class="n">element_register</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>        <span class="p">)</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>        <span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>            <span class="o">**</span><span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>            <span class="o">**</span><span class="n">element_offset</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>        <span class="p">}</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_access_code</span><span class="p">)</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>    <span class="nd">@override</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">        Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">        For `ELEMENT_ACCESS` nodes, certificate `variable` and `element`</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">        children first, and then the `ELEMENT_ACCESS` itself.</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">        Parameters</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">        ----------</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">        prime : int</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">            in the AST.</span>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">        Returns</span>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">        -------</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">        : int</span>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>    
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>    <span class="k">def</span> <span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a><span class="sd">        Add context to this `ELEMENT_ACCESS` node.</span>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">        Parameters</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">        ----------</span>
-</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>        <span class="n">_context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>        <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>
-</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>        <span class="k">if</span> <span class="n">_context</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LOAD&quot;</span>
-</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_VALUE&quot;</span><span class="p">)</span>
-</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>
-</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ADDRESS&quot;</span>
-</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>
-</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>    
-</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>    <span class="k">def</span> <span class="nf">_compute_element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a><span class="sd">        Compute the type of this `ELEMENT_ACCESS`.</span>
-</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>
-</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="sd">        The type of this Node is the type of the element being accessed as</span>
-</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a><span class="sd">        declared in its `variable_metadata`.</span>
-</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>
-</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a><span class="sd">        Returns</span>
-</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a><span class="sd">        -------</span>
-</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a><span class="sd">        : str</span>
-</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a><span class="sd">            The type of the accessed element.</span>
-</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>
-</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>        <span class="n">variable_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
-</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>        <span class="n">variable_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>
-</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>        <span class="c1"># If the type of the struct-like variable is in this mapping, then it is</span>
-</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>        <span class="c1"># an array.</span>
-</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>        <span class="k">if</span> <span class="n">variable_type</span> <span class="ow">in</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">:</span>
-</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>            <span class="k">return</span> <span class="n">variable_type</span>
-</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>        
-</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>        <span class="c1"># If not, then it is an &quot;actual&quot; struct. Thus, get the type of the</span>
-</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>        <span class="c1"># element being accessed.</span>
-</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>        <span class="n">struct_attributes</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span>
-</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>        <span class="n">accessed_attribute_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>        <span class="n">accessed_attribute_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">struct_attributes</span><span class="p">)[</span><span class="n">accessed_attribute_index</span><span class="p">]</span>
-</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>        <span class="n">accessed_attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">struct_attributes</span><span class="p">[</span><span class="n">accessed_attribute_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>
-</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>        <span class="k">return</span> <span class="n">accessed_attribute_type</span>
-</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>
-</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>    <span class="k">def</span> <span class="nf">_compute_element_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a><span class="sd">        Compute the number of bytes to offset in order to reach the accessed element.</span>
-</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>
-</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a><span class="sd">        This method handles 3 possible cases:</span>
-</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>
-</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a><span class="sd">        - A: the `variable` is an array, and the `element` is a constant (i.e.,</span>
-</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a><span class="sd">        statically indexed).</span>
-</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a><span class="sd">        - B: the `variable` is an array, but the `element` is a variable (i.e.,</span>
-</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a><span class="sd">        dinamically indexed).</span>
-</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a><span class="sd">        - C: the `variable` is a struct, and the `element` is, necessarily, a</span>
-</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a><span class="sd">        constant.</span>
-</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>
-</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a><span class="sd">        Parameters</span>
-</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a><span class="sd">        ----------</span>
-</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a><span class="sd">        element_register : int</span>
-</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a><span class="sd">            The number of the register that contains the value of the `element`.</span>
-</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a><span class="sd">            Will only be used in case B.</span>
-</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>
-</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a><span class="sd">        Returns</span>
-</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a><span class="sd">        -------</span>
-</span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a><span class="sd">        element_offset : dict</span>
-</span><span id="L-276"><a href="#L-276"><span class="linenos">276</span></a><span class="sd">            A dictionary containing further metadata about how to access the</span>
-</span><span id="L-277"><a href="#L-277"><span class="linenos">277</span></a><span class="sd">            intended `element` from `variable`.</span>
-</span><span id="L-278"><a href="#L-278"><span class="linenos">278</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-279"><a href="#L-279"><span class="linenos">279</span></a>
-</span><span id="L-280"><a href="#L-280"><span class="linenos">280</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="L-281"><a href="#L-281"><span class="linenos">281</span></a>
-</span><span id="L-282"><a href="#L-282"><span class="linenos">282</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_array</span><span class="p">:</span>
-</span><span id="L-283"><a href="#L-283"><span class="linenos">283</span></a>            <span class="n">variable_type_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
-</span><span id="L-284"><a href="#L-284"><span class="linenos">284</span></a>
-</span><span id="L-285"><a href="#L-285"><span class="linenos">285</span></a>            <span class="c1"># Case A</span>
-</span><span id="L-286"><a href="#L-286"><span class="linenos">286</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">,</span> <span class="n">CST</span><span class="p">):</span>
-</span><span id="L-287"><a href="#L-287"><span class="linenos">287</span></a>                <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-</span><span id="L-288"><a href="#L-288"><span class="linenos">288</span></a>
-</span><span id="L-289"><a href="#L-289"><span class="linenos">289</span></a>                <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">variable_type_size</span> <span class="o">*</span> <span class="n">index</span>
-</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
-</span><span id="L-291"><a href="#L-291"><span class="linenos">291</span></a>
-</span><span id="L-292"><a href="#L-292"><span class="linenos">292</span></a>            <span class="c1"># Case B</span>
-</span><span id="L-293"><a href="#L-293"><span class="linenos">293</span></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="L-294"><a href="#L-294"><span class="linenos">294</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_register</span>
-</span><span id="L-295"><a href="#L-295"><span class="linenos">295</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_type_size</span>
-</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a>        
-</span><span id="L-297"><a href="#L-297"><span class="linenos">297</span></a>        <span class="c1"># Case C</span>
-</span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a>            <span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
-</span><span id="L-300"><a href="#L-300"><span class="linenos">300</span></a>            <span class="n">variable_attributes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
-</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a>
-</span><span id="L-302"><a href="#L-302"><span class="linenos">302</span></a>            <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a>
-</span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a>            <span class="c1"># Iterate over the attributes and sum the offset, in bytes, until</span>
-</span><span id="L-305"><a href="#L-305"><span class="linenos">305</span></a>            <span class="c1"># the `element` is found</span>
-</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>
-</span><span id="L-307"><a href="#L-307"><span class="linenos">307</span></a>            <span class="k">for</span> <span class="n">attribute_metadata</span> <span class="ow">in</span> <span class="n">variable_attributes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-</span><span id="L-308"><a href="#L-308"><span class="linenos">308</span></a>                <span class="n">attribute_position</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attr_pointer&quot;</span><span class="p">)</span>
-</span><span id="L-309"><a href="#L-309"><span class="linenos">309</span></a>
-</span><span id="L-310"><a href="#L-310"><span class="linenos">310</span></a>                <span class="k">if</span> <span class="n">attribute_position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
-</span><span id="L-311"><a href="#L-311"><span class="linenos">311</span></a>                    <span class="k">break</span>
-</span><span id="L-312"><a href="#L-312"><span class="linenos">312</span></a>
-</span><span id="L-313"><a href="#L-313"><span class="linenos">313</span></a>                <span class="n">attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-</span><span id="L-314"><a href="#L-314"><span class="linenos">314</span></a>                <span class="n">attribute_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute_type</span><span class="p">)</span>
-</span><span id="L-315"><a href="#L-315"><span class="linenos">315</span></a>
-</span><span id="L-316"><a href="#L-316"><span class="linenos">316</span></a>                <span class="n">offset_size</span> <span class="o">+=</span> <span class="n">attribute_size</span>
-</span><span id="L-317"><a href="#L-317"><span class="linenos">317</span></a>
-</span><span id="L-318"><a href="#L-318"><span class="linenos">318</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="L-319"><a href="#L-319"><span class="linenos">319</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
-</span><span id="L-320"><a href="#L-320"><span class="linenos">320</span></a>
-</span><span id="L-321"><a href="#L-321"><span class="linenos">321</span></a>        <span class="k">return</span> <span class="n">element_offset</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>            <span class="p">}</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>        <span class="p">}</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="c1"># Compute the offset, in bytes, to reach the accessed element</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_element_offset</span><span class="p">(</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>            <span class="n">element_register</span><span class="o">=</span><span class="n">element_register</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>        <span class="p">)</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>            <span class="o">**</span><span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>            <span class="o">**</span><span class="n">element_offset</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>        <span class="p">}</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_access_code</span><span class="p">)</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>    <span class="nd">@override</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">        Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">        For `ELEMENT_ACCESS` nodes, certificate `variable` and `element`</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">        children first, and then the `ELEMENT_ACCESS` itself.</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="sd">        Parameters</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">        ----------</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">        prime : int</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">            in the AST.</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">        Returns</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">        -------</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">        : int</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>    
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>    <span class="k">def</span> <span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">        Add context to this `ELEMENT_ACCESS` node.</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a><span class="sd">        Parameters</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">        ----------</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>        <span class="n">_context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>        <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>        <span class="k">if</span> <span class="n">_context</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LOAD&quot;</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_VALUE&quot;</span><span class="p">)</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ADDRESS&quot;</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>    
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>    <span class="k">def</span> <span class="nf">_compute_element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="sd">        Compute the type of this `ELEMENT_ACCESS`.</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a><span class="sd">        The type of this Node is the type of the element being accessed as</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="sd">        declared in its `variable_metadata`.</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a><span class="sd">        Returns</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a><span class="sd">        -------</span>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a><span class="sd">        : str</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a><span class="sd">            The type of the accessed element.</span>
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>        <span class="n">variable_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>        <span class="n">variable_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>        <span class="c1"># If the type of the struct-like variable is in this mapping, then it is</span>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>        <span class="c1"># an array.</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>        <span class="k">if</span> <span class="n">variable_type</span> <span class="ow">in</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">:</span>
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>            <span class="k">return</span> <span class="n">variable_type</span>
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>        
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>        <span class="c1"># If not, then it is an &quot;actual&quot; struct. Thus, get the type of the</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>        <span class="c1"># element being accessed.</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>        <span class="n">struct_attributes</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>        <span class="n">accessed_attribute_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>        <span class="n">accessed_attribute_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">struct_attributes</span><span class="p">)[</span><span class="n">accessed_attribute_index</span><span class="p">]</span>
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>        <span class="n">accessed_attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">struct_attributes</span><span class="p">[</span><span class="n">accessed_attribute_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>
+</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>        <span class="k">return</span> <span class="n">accessed_attribute_type</span>
+</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>
+</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>    <span class="k">def</span> <span class="nf">_compute_element_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a><span class="sd">        Compute the number of bytes to offset in order to reach the accessed element.</span>
+</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a>
+</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a><span class="sd">        This method handles 3 possible cases:</span>
+</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>
+</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a><span class="sd">        - A: the `variable` is an array, and the `element` is a constant (i.e.,</span>
+</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a><span class="sd">        statically indexed).</span>
+</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a><span class="sd">        - B: the `variable` is an array, but the `element` is a variable (i.e.,</span>
+</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a><span class="sd">        dinamically indexed).</span>
+</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a><span class="sd">        - C: the `variable` is a struct, and the `element` is, necessarily, a</span>
+</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a><span class="sd">        constant.</span>
+</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>
+</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a><span class="sd">        Parameters</span>
+</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a><span class="sd">        ----------</span>
+</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a><span class="sd">        element_register : int</span>
+</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a><span class="sd">            The number of the register that contains the value of the `element`.</span>
+</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a><span class="sd">            Will only be used in case B.</span>
+</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a>
+</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a><span class="sd">        Returns</span>
+</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a><span class="sd">        -------</span>
+</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a><span class="sd">        element_offset : dict</span>
+</span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a><span class="sd">            A dictionary containing further metadata about how to access the</span>
+</span><span id="L-276"><a href="#L-276"><span class="linenos">276</span></a><span class="sd">            intended `element` from `variable`.</span>
+</span><span id="L-277"><a href="#L-277"><span class="linenos">277</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-278"><a href="#L-278"><span class="linenos">278</span></a>
+</span><span id="L-279"><a href="#L-279"><span class="linenos">279</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="L-280"><a href="#L-280"><span class="linenos">280</span></a>
+</span><span id="L-281"><a href="#L-281"><span class="linenos">281</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_array</span><span class="p">:</span>
+</span><span id="L-282"><a href="#L-282"><span class="linenos">282</span></a>            <span class="n">variable_type_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
+</span><span id="L-283"><a href="#L-283"><span class="linenos">283</span></a>
+</span><span id="L-284"><a href="#L-284"><span class="linenos">284</span></a>            <span class="c1"># Case A</span>
+</span><span id="L-285"><a href="#L-285"><span class="linenos">285</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">,</span> <span class="n">CST</span><span class="p">):</span>
+</span><span id="L-286"><a href="#L-286"><span class="linenos">286</span></a>                <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+</span><span id="L-287"><a href="#L-287"><span class="linenos">287</span></a>
+</span><span id="L-288"><a href="#L-288"><span class="linenos">288</span></a>                <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">variable_type_size</span> <span class="o">*</span> <span class="n">index</span>
+</span><span id="L-289"><a href="#L-289"><span class="linenos">289</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
+</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a>
+</span><span id="L-291"><a href="#L-291"><span class="linenos">291</span></a>            <span class="c1"># Case B</span>
+</span><span id="L-292"><a href="#L-292"><span class="linenos">292</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="L-293"><a href="#L-293"><span class="linenos">293</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_register</span>
+</span><span id="L-294"><a href="#L-294"><span class="linenos">294</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_type_size</span>
+</span><span id="L-295"><a href="#L-295"><span class="linenos">295</span></a>        
+</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a>        <span class="c1"># Case C</span>
+</span><span id="L-297"><a href="#L-297"><span class="linenos">297</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a>            <span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
+</span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a>            <span class="n">variable_attributes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
+</span><span id="L-300"><a href="#L-300"><span class="linenos">300</span></a>
+</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a>            <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="L-302"><a href="#L-302"><span class="linenos">302</span></a>
+</span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a>            <span class="c1"># Iterate over the attributes and sum the offset, in bytes, until</span>
+</span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a>            <span class="c1"># the `element` is found</span>
+</span><span id="L-305"><a href="#L-305"><span class="linenos">305</span></a>
+</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>            <span class="k">for</span> <span class="n">attribute_metadata</span> <span class="ow">in</span> <span class="n">variable_attributes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+</span><span id="L-307"><a href="#L-307"><span class="linenos">307</span></a>                <span class="n">attribute_position</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attr_pointer&quot;</span><span class="p">)</span>
+</span><span id="L-308"><a href="#L-308"><span class="linenos">308</span></a>
+</span><span id="L-309"><a href="#L-309"><span class="linenos">309</span></a>                <span class="k">if</span> <span class="n">attribute_position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
+</span><span id="L-310"><a href="#L-310"><span class="linenos">310</span></a>                    <span class="k">break</span>
+</span><span id="L-311"><a href="#L-311"><span class="linenos">311</span></a>
+</span><span id="L-312"><a href="#L-312"><span class="linenos">312</span></a>                <span class="n">attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+</span><span id="L-313"><a href="#L-313"><span class="linenos">313</span></a>                <span class="n">attribute_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute_type</span><span class="p">)</span>
+</span><span id="L-314"><a href="#L-314"><span class="linenos">314</span></a>
+</span><span id="L-315"><a href="#L-315"><span class="linenos">315</span></a>                <span class="n">offset_size</span> <span class="o">+=</span> <span class="n">attribute_size</span>
+</span><span id="L-316"><a href="#L-316"><span class="linenos">316</span></a>
+</span><span id="L-317"><a href="#L-317"><span class="linenos">317</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="L-318"><a href="#L-318"><span class="linenos">318</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
+</span><span id="L-319"><a href="#L-319"><span class="linenos">319</span></a>
+</span><span id="L-320"><a href="#L-320"><span class="linenos">320</span></a>        <span class="k">return</span> <span class="n">element_offset</span>
 </span></pre></div>
 
 
@@ -568,174 +567,173 @@
 </span><span id="ELEMENT_ACCESS-152"><a href="#ELEMENT_ACCESS-152"><span class="linenos">152</span></a>
 </span><span id="ELEMENT_ACCESS-153"><a href="#ELEMENT_ACCESS-153"><span class="linenos">153</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
 </span><span id="ELEMENT_ACCESS-154"><a href="#ELEMENT_ACCESS-154"><span class="linenos">154</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_value</span><span class="p">(),</span>
-</span><span id="ELEMENT_ACCESS-155"><a href="#ELEMENT_ACCESS-155"><span class="linenos">155</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
-</span><span id="ELEMENT_ACCESS-156"><a href="#ELEMENT_ACCESS-156"><span class="linenos">156</span></a>            <span class="p">}</span>
-</span><span id="ELEMENT_ACCESS-157"><a href="#ELEMENT_ACCESS-157"><span class="linenos">157</span></a>        <span class="p">}</span>
-</span><span id="ELEMENT_ACCESS-158"><a href="#ELEMENT_ACCESS-158"><span class="linenos">158</span></a>
-</span><span id="ELEMENT_ACCESS-159"><a href="#ELEMENT_ACCESS-159"><span class="linenos">159</span></a>        <span class="c1"># Compute the offset, in bytes, to reach the accessed element</span>
-</span><span id="ELEMENT_ACCESS-160"><a href="#ELEMENT_ACCESS-160"><span class="linenos">160</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_element_offset</span><span class="p">(</span>
-</span><span id="ELEMENT_ACCESS-161"><a href="#ELEMENT_ACCESS-161"><span class="linenos">161</span></a>            <span class="n">element_register</span><span class="o">=</span><span class="n">element_register</span>
-</span><span id="ELEMENT_ACCESS-162"><a href="#ELEMENT_ACCESS-162"><span class="linenos">162</span></a>        <span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-163"><a href="#ELEMENT_ACCESS-163"><span class="linenos">163</span></a>
-</span><span id="ELEMENT_ACCESS-164"><a href="#ELEMENT_ACCESS-164"><span class="linenos">164</span></a>        <span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ELEMENT_ACCESS-165"><a href="#ELEMENT_ACCESS-165"><span class="linenos">165</span></a>            <span class="o">**</span><span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span>
-</span><span id="ELEMENT_ACCESS-166"><a href="#ELEMENT_ACCESS-166"><span class="linenos">166</span></a>            <span class="o">**</span><span class="n">element_offset</span>
-</span><span id="ELEMENT_ACCESS-167"><a href="#ELEMENT_ACCESS-167"><span class="linenos">167</span></a>        <span class="p">}</span>
-</span><span id="ELEMENT_ACCESS-168"><a href="#ELEMENT_ACCESS-168"><span class="linenos">168</span></a>
-</span><span id="ELEMENT_ACCESS-169"><a href="#ELEMENT_ACCESS-169"><span class="linenos">169</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_access_code</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-170"><a href="#ELEMENT_ACCESS-170"><span class="linenos">170</span></a>
-</span><span id="ELEMENT_ACCESS-171"><a href="#ELEMENT_ACCESS-171"><span class="linenos">171</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="ELEMENT_ACCESS-172"><a href="#ELEMENT_ACCESS-172"><span class="linenos">172</span></a>
-</span><span id="ELEMENT_ACCESS-173"><a href="#ELEMENT_ACCESS-173"><span class="linenos">173</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
-</span><span id="ELEMENT_ACCESS-174"><a href="#ELEMENT_ACCESS-174"><span class="linenos">174</span></a>
-</span><span id="ELEMENT_ACCESS-175"><a href="#ELEMENT_ACCESS-175"><span class="linenos">175</span></a>    <span class="nd">@override</span>
-</span><span id="ELEMENT_ACCESS-176"><a href="#ELEMENT_ACCESS-176"><span class="linenos">176</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-177"><a href="#ELEMENT_ACCESS-177"><span class="linenos">177</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-178"><a href="#ELEMENT_ACCESS-178"><span class="linenos">178</span></a><span class="sd">        Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.</span>
-</span><span id="ELEMENT_ACCESS-179"><a href="#ELEMENT_ACCESS-179"><span class="linenos">179</span></a>
-</span><span id="ELEMENT_ACCESS-180"><a href="#ELEMENT_ACCESS-180"><span class="linenos">180</span></a><span class="sd">        For `ELEMENT_ACCESS` nodes, certificate `variable` and `element`</span>
-</span><span id="ELEMENT_ACCESS-181"><a href="#ELEMENT_ACCESS-181"><span class="linenos">181</span></a><span class="sd">        children first, and then the `ELEMENT_ACCESS` itself.</span>
-</span><span id="ELEMENT_ACCESS-182"><a href="#ELEMENT_ACCESS-182"><span class="linenos">182</span></a>
-</span><span id="ELEMENT_ACCESS-183"><a href="#ELEMENT_ACCESS-183"><span class="linenos">183</span></a><span class="sd">        Parameters</span>
-</span><span id="ELEMENT_ACCESS-184"><a href="#ELEMENT_ACCESS-184"><span class="linenos">184</span></a><span class="sd">        ----------</span>
-</span><span id="ELEMENT_ACCESS-185"><a href="#ELEMENT_ACCESS-185"><span class="linenos">185</span></a><span class="sd">        prime : int</span>
-</span><span id="ELEMENT_ACCESS-186"><a href="#ELEMENT_ACCESS-186"><span class="linenos">186</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="ELEMENT_ACCESS-187"><a href="#ELEMENT_ACCESS-187"><span class="linenos">187</span></a><span class="sd">            in the AST.</span>
-</span><span id="ELEMENT_ACCESS-188"><a href="#ELEMENT_ACCESS-188"><span class="linenos">188</span></a>
-</span><span id="ELEMENT_ACCESS-189"><a href="#ELEMENT_ACCESS-189"><span class="linenos">189</span></a><span class="sd">        Returns</span>
-</span><span id="ELEMENT_ACCESS-190"><a href="#ELEMENT_ACCESS-190"><span class="linenos">190</span></a><span class="sd">        -------</span>
-</span><span id="ELEMENT_ACCESS-191"><a href="#ELEMENT_ACCESS-191"><span class="linenos">191</span></a><span class="sd">        : int</span>
-</span><span id="ELEMENT_ACCESS-192"><a href="#ELEMENT_ACCESS-192"><span class="linenos">192</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="ELEMENT_ACCESS-193"><a href="#ELEMENT_ACCESS-193"><span class="linenos">193</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-194"><a href="#ELEMENT_ACCESS-194"><span class="linenos">194</span></a>
-</span><span id="ELEMENT_ACCESS-195"><a href="#ELEMENT_ACCESS-195"><span class="linenos">195</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-196"><a href="#ELEMENT_ACCESS-196"><span class="linenos">196</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-197"><a href="#ELEMENT_ACCESS-197"><span class="linenos">197</span></a>
-</span><span id="ELEMENT_ACCESS-198"><a href="#ELEMENT_ACCESS-198"><span class="linenos">198</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-199"><a href="#ELEMENT_ACCESS-199"><span class="linenos">199</span></a>    
-</span><span id="ELEMENT_ACCESS-200"><a href="#ELEMENT_ACCESS-200"><span class="linenos">200</span></a>    <span class="k">def</span> <span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-201"><a href="#ELEMENT_ACCESS-201"><span class="linenos">201</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-202"><a href="#ELEMENT_ACCESS-202"><span class="linenos">202</span></a><span class="sd">        Add context to this `ELEMENT_ACCESS` node.</span>
-</span><span id="ELEMENT_ACCESS-203"><a href="#ELEMENT_ACCESS-203"><span class="linenos">203</span></a>
-</span><span id="ELEMENT_ACCESS-204"><a href="#ELEMENT_ACCESS-204"><span class="linenos">204</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="ELEMENT_ACCESS-205"><a href="#ELEMENT_ACCESS-205"><span class="linenos">205</span></a>
-</span><span id="ELEMENT_ACCESS-206"><a href="#ELEMENT_ACCESS-206"><span class="linenos">206</span></a><span class="sd">        Parameters</span>
-</span><span id="ELEMENT_ACCESS-207"><a href="#ELEMENT_ACCESS-207"><span class="linenos">207</span></a><span class="sd">        ----------</span>
-</span><span id="ELEMENT_ACCESS-208"><a href="#ELEMENT_ACCESS-208"><span class="linenos">208</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="ELEMENT_ACCESS-209"><a href="#ELEMENT_ACCESS-209"><span class="linenos">209</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="ELEMENT_ACCESS-210"><a href="#ELEMENT_ACCESS-210"><span class="linenos">210</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-211"><a href="#ELEMENT_ACCESS-211"><span class="linenos">211</span></a>
-</span><span id="ELEMENT_ACCESS-212"><a href="#ELEMENT_ACCESS-212"><span class="linenos">212</span></a>        <span class="n">_context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-213"><a href="#ELEMENT_ACCESS-213"><span class="linenos">213</span></a>        <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-214"><a href="#ELEMENT_ACCESS-214"><span class="linenos">214</span></a>
-</span><span id="ELEMENT_ACCESS-215"><a href="#ELEMENT_ACCESS-215"><span class="linenos">215</span></a>        <span class="k">if</span> <span class="n">_context</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-216"><a href="#ELEMENT_ACCESS-216"><span class="linenos">216</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LOAD&quot;</span>
-</span><span id="ELEMENT_ACCESS-217"><a href="#ELEMENT_ACCESS-217"><span class="linenos">217</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_VALUE&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-218"><a href="#ELEMENT_ACCESS-218"><span class="linenos">218</span></a>
-</span><span id="ELEMENT_ACCESS-219"><a href="#ELEMENT_ACCESS-219"><span class="linenos">219</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-220"><a href="#ELEMENT_ACCESS-220"><span class="linenos">220</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ADDRESS&quot;</span>
-</span><span id="ELEMENT_ACCESS-221"><a href="#ELEMENT_ACCESS-221"><span class="linenos">221</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-222"><a href="#ELEMENT_ACCESS-222"><span class="linenos">222</span></a>
-</span><span id="ELEMENT_ACCESS-223"><a href="#ELEMENT_ACCESS-223"><span class="linenos">223</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="ELEMENT_ACCESS-224"><a href="#ELEMENT_ACCESS-224"><span class="linenos">224</span></a>    
-</span><span id="ELEMENT_ACCESS-225"><a href="#ELEMENT_ACCESS-225"><span class="linenos">225</span></a>    <span class="k">def</span> <span class="nf">_compute_element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-226"><a href="#ELEMENT_ACCESS-226"><span class="linenos">226</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-227"><a href="#ELEMENT_ACCESS-227"><span class="linenos">227</span></a><span class="sd">        Compute the type of this `ELEMENT_ACCESS`.</span>
-</span><span id="ELEMENT_ACCESS-228"><a href="#ELEMENT_ACCESS-228"><span class="linenos">228</span></a>
-</span><span id="ELEMENT_ACCESS-229"><a href="#ELEMENT_ACCESS-229"><span class="linenos">229</span></a><span class="sd">        The type of this Node is the type of the element being accessed as</span>
-</span><span id="ELEMENT_ACCESS-230"><a href="#ELEMENT_ACCESS-230"><span class="linenos">230</span></a><span class="sd">        declared in its `variable_metadata`.</span>
-</span><span id="ELEMENT_ACCESS-231"><a href="#ELEMENT_ACCESS-231"><span class="linenos">231</span></a>
-</span><span id="ELEMENT_ACCESS-232"><a href="#ELEMENT_ACCESS-232"><span class="linenos">232</span></a><span class="sd">        Returns</span>
-</span><span id="ELEMENT_ACCESS-233"><a href="#ELEMENT_ACCESS-233"><span class="linenos">233</span></a><span class="sd">        -------</span>
-</span><span id="ELEMENT_ACCESS-234"><a href="#ELEMENT_ACCESS-234"><span class="linenos">234</span></a><span class="sd">        : str</span>
-</span><span id="ELEMENT_ACCESS-235"><a href="#ELEMENT_ACCESS-235"><span class="linenos">235</span></a><span class="sd">            The type of the accessed element.</span>
-</span><span id="ELEMENT_ACCESS-236"><a href="#ELEMENT_ACCESS-236"><span class="linenos">236</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-237"><a href="#ELEMENT_ACCESS-237"><span class="linenos">237</span></a>
-</span><span id="ELEMENT_ACCESS-238"><a href="#ELEMENT_ACCESS-238"><span class="linenos">238</span></a>        <span class="n">variable_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
-</span><span id="ELEMENT_ACCESS-239"><a href="#ELEMENT_ACCESS-239"><span class="linenos">239</span></a>        <span class="n">variable_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-</span><span id="ELEMENT_ACCESS-240"><a href="#ELEMENT_ACCESS-240"><span class="linenos">240</span></a>
-</span><span id="ELEMENT_ACCESS-241"><a href="#ELEMENT_ACCESS-241"><span class="linenos">241</span></a>        <span class="c1"># If the type of the struct-like variable is in this mapping, then it is</span>
-</span><span id="ELEMENT_ACCESS-242"><a href="#ELEMENT_ACCESS-242"><span class="linenos">242</span></a>        <span class="c1"># an array.</span>
-</span><span id="ELEMENT_ACCESS-243"><a href="#ELEMENT_ACCESS-243"><span class="linenos">243</span></a>        <span class="k">if</span> <span class="n">variable_type</span> <span class="ow">in</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-244"><a href="#ELEMENT_ACCESS-244"><span class="linenos">244</span></a>            <span class="k">return</span> <span class="n">variable_type</span>
-</span><span id="ELEMENT_ACCESS-245"><a href="#ELEMENT_ACCESS-245"><span class="linenos">245</span></a>        
-</span><span id="ELEMENT_ACCESS-246"><a href="#ELEMENT_ACCESS-246"><span class="linenos">246</span></a>        <span class="c1"># If not, then it is an &quot;actual&quot; struct. Thus, get the type of the</span>
-</span><span id="ELEMENT_ACCESS-247"><a href="#ELEMENT_ACCESS-247"><span class="linenos">247</span></a>        <span class="c1"># element being accessed.</span>
-</span><span id="ELEMENT_ACCESS-248"><a href="#ELEMENT_ACCESS-248"><span class="linenos">248</span></a>        <span class="n">struct_attributes</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span>
-</span><span id="ELEMENT_ACCESS-249"><a href="#ELEMENT_ACCESS-249"><span class="linenos">249</span></a>        <span class="n">accessed_attribute_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-</span><span id="ELEMENT_ACCESS-250"><a href="#ELEMENT_ACCESS-250"><span class="linenos">250</span></a>        <span class="n">accessed_attribute_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">struct_attributes</span><span class="p">)[</span><span class="n">accessed_attribute_index</span><span class="p">]</span>
-</span><span id="ELEMENT_ACCESS-251"><a href="#ELEMENT_ACCESS-251"><span class="linenos">251</span></a>        <span class="n">accessed_attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">struct_attributes</span><span class="p">[</span><span class="n">accessed_attribute_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-</span><span id="ELEMENT_ACCESS-252"><a href="#ELEMENT_ACCESS-252"><span class="linenos">252</span></a>
-</span><span id="ELEMENT_ACCESS-253"><a href="#ELEMENT_ACCESS-253"><span class="linenos">253</span></a>        <span class="k">return</span> <span class="n">accessed_attribute_type</span>
-</span><span id="ELEMENT_ACCESS-254"><a href="#ELEMENT_ACCESS-254"><span class="linenos">254</span></a>
-</span><span id="ELEMENT_ACCESS-255"><a href="#ELEMENT_ACCESS-255"><span class="linenos">255</span></a>    <span class="k">def</span> <span class="nf">_compute_element_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-256"><a href="#ELEMENT_ACCESS-256"><span class="linenos">256</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-257"><a href="#ELEMENT_ACCESS-257"><span class="linenos">257</span></a><span class="sd">        Compute the number of bytes to offset in order to reach the accessed element.</span>
-</span><span id="ELEMENT_ACCESS-258"><a href="#ELEMENT_ACCESS-258"><span class="linenos">258</span></a>
-</span><span id="ELEMENT_ACCESS-259"><a href="#ELEMENT_ACCESS-259"><span class="linenos">259</span></a><span class="sd">        This method handles 3 possible cases:</span>
-</span><span id="ELEMENT_ACCESS-260"><a href="#ELEMENT_ACCESS-260"><span class="linenos">260</span></a>
-</span><span id="ELEMENT_ACCESS-261"><a href="#ELEMENT_ACCESS-261"><span class="linenos">261</span></a><span class="sd">        - A: the `variable` is an array, and the `element` is a constant (i.e.,</span>
-</span><span id="ELEMENT_ACCESS-262"><a href="#ELEMENT_ACCESS-262"><span class="linenos">262</span></a><span class="sd">        statically indexed).</span>
-</span><span id="ELEMENT_ACCESS-263"><a href="#ELEMENT_ACCESS-263"><span class="linenos">263</span></a><span class="sd">        - B: the `variable` is an array, but the `element` is a variable (i.e.,</span>
-</span><span id="ELEMENT_ACCESS-264"><a href="#ELEMENT_ACCESS-264"><span class="linenos">264</span></a><span class="sd">        dinamically indexed).</span>
-</span><span id="ELEMENT_ACCESS-265"><a href="#ELEMENT_ACCESS-265"><span class="linenos">265</span></a><span class="sd">        - C: the `variable` is a struct, and the `element` is, necessarily, a</span>
-</span><span id="ELEMENT_ACCESS-266"><a href="#ELEMENT_ACCESS-266"><span class="linenos">266</span></a><span class="sd">        constant.</span>
-</span><span id="ELEMENT_ACCESS-267"><a href="#ELEMENT_ACCESS-267"><span class="linenos">267</span></a>
-</span><span id="ELEMENT_ACCESS-268"><a href="#ELEMENT_ACCESS-268"><span class="linenos">268</span></a><span class="sd">        Parameters</span>
-</span><span id="ELEMENT_ACCESS-269"><a href="#ELEMENT_ACCESS-269"><span class="linenos">269</span></a><span class="sd">        ----------</span>
-</span><span id="ELEMENT_ACCESS-270"><a href="#ELEMENT_ACCESS-270"><span class="linenos">270</span></a><span class="sd">        element_register : int</span>
-</span><span id="ELEMENT_ACCESS-271"><a href="#ELEMENT_ACCESS-271"><span class="linenos">271</span></a><span class="sd">            The number of the register that contains the value of the `element`.</span>
-</span><span id="ELEMENT_ACCESS-272"><a href="#ELEMENT_ACCESS-272"><span class="linenos">272</span></a><span class="sd">            Will only be used in case B.</span>
-</span><span id="ELEMENT_ACCESS-273"><a href="#ELEMENT_ACCESS-273"><span class="linenos">273</span></a>
-</span><span id="ELEMENT_ACCESS-274"><a href="#ELEMENT_ACCESS-274"><span class="linenos">274</span></a><span class="sd">        Returns</span>
-</span><span id="ELEMENT_ACCESS-275"><a href="#ELEMENT_ACCESS-275"><span class="linenos">275</span></a><span class="sd">        -------</span>
-</span><span id="ELEMENT_ACCESS-276"><a href="#ELEMENT_ACCESS-276"><span class="linenos">276</span></a><span class="sd">        element_offset : dict</span>
-</span><span id="ELEMENT_ACCESS-277"><a href="#ELEMENT_ACCESS-277"><span class="linenos">277</span></a><span class="sd">            A dictionary containing further metadata about how to access the</span>
-</span><span id="ELEMENT_ACCESS-278"><a href="#ELEMENT_ACCESS-278"><span class="linenos">278</span></a><span class="sd">            intended `element` from `variable`.</span>
-</span><span id="ELEMENT_ACCESS-279"><a href="#ELEMENT_ACCESS-279"><span class="linenos">279</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS-280"><a href="#ELEMENT_ACCESS-280"><span class="linenos">280</span></a>
-</span><span id="ELEMENT_ACCESS-281"><a href="#ELEMENT_ACCESS-281"><span class="linenos">281</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="ELEMENT_ACCESS-282"><a href="#ELEMENT_ACCESS-282"><span class="linenos">282</span></a>
-</span><span id="ELEMENT_ACCESS-283"><a href="#ELEMENT_ACCESS-283"><span class="linenos">283</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_array</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-284"><a href="#ELEMENT_ACCESS-284"><span class="linenos">284</span></a>            <span class="n">variable_type_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
-</span><span id="ELEMENT_ACCESS-285"><a href="#ELEMENT_ACCESS-285"><span class="linenos">285</span></a>
-</span><span id="ELEMENT_ACCESS-286"><a href="#ELEMENT_ACCESS-286"><span class="linenos">286</span></a>            <span class="c1"># Case A</span>
-</span><span id="ELEMENT_ACCESS-287"><a href="#ELEMENT_ACCESS-287"><span class="linenos">287</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">,</span> <span class="n">CST</span><span class="p">):</span>
-</span><span id="ELEMENT_ACCESS-288"><a href="#ELEMENT_ACCESS-288"><span class="linenos">288</span></a>                <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-</span><span id="ELEMENT_ACCESS-289"><a href="#ELEMENT_ACCESS-289"><span class="linenos">289</span></a>
-</span><span id="ELEMENT_ACCESS-290"><a href="#ELEMENT_ACCESS-290"><span class="linenos">290</span></a>                <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">variable_type_size</span> <span class="o">*</span> <span class="n">index</span>
-</span><span id="ELEMENT_ACCESS-291"><a href="#ELEMENT_ACCESS-291"><span class="linenos">291</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
-</span><span id="ELEMENT_ACCESS-292"><a href="#ELEMENT_ACCESS-292"><span class="linenos">292</span></a>
-</span><span id="ELEMENT_ACCESS-293"><a href="#ELEMENT_ACCESS-293"><span class="linenos">293</span></a>            <span class="c1"># Case B</span>
-</span><span id="ELEMENT_ACCESS-294"><a href="#ELEMENT_ACCESS-294"><span class="linenos">294</span></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-295"><a href="#ELEMENT_ACCESS-295"><span class="linenos">295</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_register</span>
-</span><span id="ELEMENT_ACCESS-296"><a href="#ELEMENT_ACCESS-296"><span class="linenos">296</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_type_size</span>
-</span><span id="ELEMENT_ACCESS-297"><a href="#ELEMENT_ACCESS-297"><span class="linenos">297</span></a>        
-</span><span id="ELEMENT_ACCESS-298"><a href="#ELEMENT_ACCESS-298"><span class="linenos">298</span></a>        <span class="c1"># Case C</span>
-</span><span id="ELEMENT_ACCESS-299"><a href="#ELEMENT_ACCESS-299"><span class="linenos">299</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS-300"><a href="#ELEMENT_ACCESS-300"><span class="linenos">300</span></a>            <span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
-</span><span id="ELEMENT_ACCESS-301"><a href="#ELEMENT_ACCESS-301"><span class="linenos">301</span></a>            <span class="n">variable_attributes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-302"><a href="#ELEMENT_ACCESS-302"><span class="linenos">302</span></a>
-</span><span id="ELEMENT_ACCESS-303"><a href="#ELEMENT_ACCESS-303"><span class="linenos">303</span></a>            <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="ELEMENT_ACCESS-304"><a href="#ELEMENT_ACCESS-304"><span class="linenos">304</span></a>
-</span><span id="ELEMENT_ACCESS-305"><a href="#ELEMENT_ACCESS-305"><span class="linenos">305</span></a>            <span class="c1"># Iterate over the attributes and sum the offset, in bytes, until</span>
-</span><span id="ELEMENT_ACCESS-306"><a href="#ELEMENT_ACCESS-306"><span class="linenos">306</span></a>            <span class="c1"># the `element` is found</span>
-</span><span id="ELEMENT_ACCESS-307"><a href="#ELEMENT_ACCESS-307"><span class="linenos">307</span></a>
-</span><span id="ELEMENT_ACCESS-308"><a href="#ELEMENT_ACCESS-308"><span class="linenos">308</span></a>            <span class="k">for</span> <span class="n">attribute_metadata</span> <span class="ow">in</span> <span class="n">variable_attributes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-</span><span id="ELEMENT_ACCESS-309"><a href="#ELEMENT_ACCESS-309"><span class="linenos">309</span></a>                <span class="n">attribute_position</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attr_pointer&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-310"><a href="#ELEMENT_ACCESS-310"><span class="linenos">310</span></a>
-</span><span id="ELEMENT_ACCESS-311"><a href="#ELEMENT_ACCESS-311"><span class="linenos">311</span></a>                <span class="k">if</span> <span class="n">attribute_position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
-</span><span id="ELEMENT_ACCESS-312"><a href="#ELEMENT_ACCESS-312"><span class="linenos">312</span></a>                    <span class="k">break</span>
-</span><span id="ELEMENT_ACCESS-313"><a href="#ELEMENT_ACCESS-313"><span class="linenos">313</span></a>
-</span><span id="ELEMENT_ACCESS-314"><a href="#ELEMENT_ACCESS-314"><span class="linenos">314</span></a>                <span class="n">attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-315"><a href="#ELEMENT_ACCESS-315"><span class="linenos">315</span></a>                <span class="n">attribute_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute_type</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS-316"><a href="#ELEMENT_ACCESS-316"><span class="linenos">316</span></a>
-</span><span id="ELEMENT_ACCESS-317"><a href="#ELEMENT_ACCESS-317"><span class="linenos">317</span></a>                <span class="n">offset_size</span> <span class="o">+=</span> <span class="n">attribute_size</span>
-</span><span id="ELEMENT_ACCESS-318"><a href="#ELEMENT_ACCESS-318"><span class="linenos">318</span></a>
-</span><span id="ELEMENT_ACCESS-319"><a href="#ELEMENT_ACCESS-319"><span class="linenos">319</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="ELEMENT_ACCESS-320"><a href="#ELEMENT_ACCESS-320"><span class="linenos">320</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
-</span><span id="ELEMENT_ACCESS-321"><a href="#ELEMENT_ACCESS-321"><span class="linenos">321</span></a>
-</span><span id="ELEMENT_ACCESS-322"><a href="#ELEMENT_ACCESS-322"><span class="linenos">322</span></a>        <span class="k">return</span> <span class="n">element_offset</span>
+</span><span id="ELEMENT_ACCESS-155"><a href="#ELEMENT_ACCESS-155"><span class="linenos">155</span></a>            <span class="p">}</span>
+</span><span id="ELEMENT_ACCESS-156"><a href="#ELEMENT_ACCESS-156"><span class="linenos">156</span></a>        <span class="p">}</span>
+</span><span id="ELEMENT_ACCESS-157"><a href="#ELEMENT_ACCESS-157"><span class="linenos">157</span></a>
+</span><span id="ELEMENT_ACCESS-158"><a href="#ELEMENT_ACCESS-158"><span class="linenos">158</span></a>        <span class="c1"># Compute the offset, in bytes, to reach the accessed element</span>
+</span><span id="ELEMENT_ACCESS-159"><a href="#ELEMENT_ACCESS-159"><span class="linenos">159</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_element_offset</span><span class="p">(</span>
+</span><span id="ELEMENT_ACCESS-160"><a href="#ELEMENT_ACCESS-160"><span class="linenos">160</span></a>            <span class="n">element_register</span><span class="o">=</span><span class="n">element_register</span>
+</span><span id="ELEMENT_ACCESS-161"><a href="#ELEMENT_ACCESS-161"><span class="linenos">161</span></a>        <span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-162"><a href="#ELEMENT_ACCESS-162"><span class="linenos">162</span></a>
+</span><span id="ELEMENT_ACCESS-163"><a href="#ELEMENT_ACCESS-163"><span class="linenos">163</span></a>        <span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="ELEMENT_ACCESS-164"><a href="#ELEMENT_ACCESS-164"><span class="linenos">164</span></a>            <span class="o">**</span><span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span>
+</span><span id="ELEMENT_ACCESS-165"><a href="#ELEMENT_ACCESS-165"><span class="linenos">165</span></a>            <span class="o">**</span><span class="n">element_offset</span>
+</span><span id="ELEMENT_ACCESS-166"><a href="#ELEMENT_ACCESS-166"><span class="linenos">166</span></a>        <span class="p">}</span>
+</span><span id="ELEMENT_ACCESS-167"><a href="#ELEMENT_ACCESS-167"><span class="linenos">167</span></a>
+</span><span id="ELEMENT_ACCESS-168"><a href="#ELEMENT_ACCESS-168"><span class="linenos">168</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_access_code</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-169"><a href="#ELEMENT_ACCESS-169"><span class="linenos">169</span></a>
+</span><span id="ELEMENT_ACCESS-170"><a href="#ELEMENT_ACCESS-170"><span class="linenos">170</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="ELEMENT_ACCESS-171"><a href="#ELEMENT_ACCESS-171"><span class="linenos">171</span></a>
+</span><span id="ELEMENT_ACCESS-172"><a href="#ELEMENT_ACCESS-172"><span class="linenos">172</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="ELEMENT_ACCESS-173"><a href="#ELEMENT_ACCESS-173"><span class="linenos">173</span></a>
+</span><span id="ELEMENT_ACCESS-174"><a href="#ELEMENT_ACCESS-174"><span class="linenos">174</span></a>    <span class="nd">@override</span>
+</span><span id="ELEMENT_ACCESS-175"><a href="#ELEMENT_ACCESS-175"><span class="linenos">175</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-176"><a href="#ELEMENT_ACCESS-176"><span class="linenos">176</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-177"><a href="#ELEMENT_ACCESS-177"><span class="linenos">177</span></a><span class="sd">        Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.</span>
+</span><span id="ELEMENT_ACCESS-178"><a href="#ELEMENT_ACCESS-178"><span class="linenos">178</span></a>
+</span><span id="ELEMENT_ACCESS-179"><a href="#ELEMENT_ACCESS-179"><span class="linenos">179</span></a><span class="sd">        For `ELEMENT_ACCESS` nodes, certificate `variable` and `element`</span>
+</span><span id="ELEMENT_ACCESS-180"><a href="#ELEMENT_ACCESS-180"><span class="linenos">180</span></a><span class="sd">        children first, and then the `ELEMENT_ACCESS` itself.</span>
+</span><span id="ELEMENT_ACCESS-181"><a href="#ELEMENT_ACCESS-181"><span class="linenos">181</span></a>
+</span><span id="ELEMENT_ACCESS-182"><a href="#ELEMENT_ACCESS-182"><span class="linenos">182</span></a><span class="sd">        Parameters</span>
+</span><span id="ELEMENT_ACCESS-183"><a href="#ELEMENT_ACCESS-183"><span class="linenos">183</span></a><span class="sd">        ----------</span>
+</span><span id="ELEMENT_ACCESS-184"><a href="#ELEMENT_ACCESS-184"><span class="linenos">184</span></a><span class="sd">        prime : int</span>
+</span><span id="ELEMENT_ACCESS-185"><a href="#ELEMENT_ACCESS-185"><span class="linenos">185</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
+</span><span id="ELEMENT_ACCESS-186"><a href="#ELEMENT_ACCESS-186"><span class="linenos">186</span></a><span class="sd">            in the AST.</span>
+</span><span id="ELEMENT_ACCESS-187"><a href="#ELEMENT_ACCESS-187"><span class="linenos">187</span></a>
+</span><span id="ELEMENT_ACCESS-188"><a href="#ELEMENT_ACCESS-188"><span class="linenos">188</span></a><span class="sd">        Returns</span>
+</span><span id="ELEMENT_ACCESS-189"><a href="#ELEMENT_ACCESS-189"><span class="linenos">189</span></a><span class="sd">        -------</span>
+</span><span id="ELEMENT_ACCESS-190"><a href="#ELEMENT_ACCESS-190"><span class="linenos">190</span></a><span class="sd">        : int</span>
+</span><span id="ELEMENT_ACCESS-191"><a href="#ELEMENT_ACCESS-191"><span class="linenos">191</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="ELEMENT_ACCESS-192"><a href="#ELEMENT_ACCESS-192"><span class="linenos">192</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-193"><a href="#ELEMENT_ACCESS-193"><span class="linenos">193</span></a>
+</span><span id="ELEMENT_ACCESS-194"><a href="#ELEMENT_ACCESS-194"><span class="linenos">194</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-195"><a href="#ELEMENT_ACCESS-195"><span class="linenos">195</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-196"><a href="#ELEMENT_ACCESS-196"><span class="linenos">196</span></a>
+</span><span id="ELEMENT_ACCESS-197"><a href="#ELEMENT_ACCESS-197"><span class="linenos">197</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-198"><a href="#ELEMENT_ACCESS-198"><span class="linenos">198</span></a>    
+</span><span id="ELEMENT_ACCESS-199"><a href="#ELEMENT_ACCESS-199"><span class="linenos">199</span></a>    <span class="k">def</span> <span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-200"><a href="#ELEMENT_ACCESS-200"><span class="linenos">200</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-201"><a href="#ELEMENT_ACCESS-201"><span class="linenos">201</span></a><span class="sd">        Add context to this `ELEMENT_ACCESS` node.</span>
+</span><span id="ELEMENT_ACCESS-202"><a href="#ELEMENT_ACCESS-202"><span class="linenos">202</span></a>
+</span><span id="ELEMENT_ACCESS-203"><a href="#ELEMENT_ACCESS-203"><span class="linenos">203</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="ELEMENT_ACCESS-204"><a href="#ELEMENT_ACCESS-204"><span class="linenos">204</span></a>
+</span><span id="ELEMENT_ACCESS-205"><a href="#ELEMENT_ACCESS-205"><span class="linenos">205</span></a><span class="sd">        Parameters</span>
+</span><span id="ELEMENT_ACCESS-206"><a href="#ELEMENT_ACCESS-206"><span class="linenos">206</span></a><span class="sd">        ----------</span>
+</span><span id="ELEMENT_ACCESS-207"><a href="#ELEMENT_ACCESS-207"><span class="linenos">207</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="ELEMENT_ACCESS-208"><a href="#ELEMENT_ACCESS-208"><span class="linenos">208</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="ELEMENT_ACCESS-209"><a href="#ELEMENT_ACCESS-209"><span class="linenos">209</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-210"><a href="#ELEMENT_ACCESS-210"><span class="linenos">210</span></a>
+</span><span id="ELEMENT_ACCESS-211"><a href="#ELEMENT_ACCESS-211"><span class="linenos">211</span></a>        <span class="n">_context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-212"><a href="#ELEMENT_ACCESS-212"><span class="linenos">212</span></a>        <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-213"><a href="#ELEMENT_ACCESS-213"><span class="linenos">213</span></a>
+</span><span id="ELEMENT_ACCESS-214"><a href="#ELEMENT_ACCESS-214"><span class="linenos">214</span></a>        <span class="k">if</span> <span class="n">_context</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-215"><a href="#ELEMENT_ACCESS-215"><span class="linenos">215</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LOAD&quot;</span>
+</span><span id="ELEMENT_ACCESS-216"><a href="#ELEMENT_ACCESS-216"><span class="linenos">216</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_VALUE&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-217"><a href="#ELEMENT_ACCESS-217"><span class="linenos">217</span></a>
+</span><span id="ELEMENT_ACCESS-218"><a href="#ELEMENT_ACCESS-218"><span class="linenos">218</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-219"><a href="#ELEMENT_ACCESS-219"><span class="linenos">219</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ADDRESS&quot;</span>
+</span><span id="ELEMENT_ACCESS-220"><a href="#ELEMENT_ACCESS-220"><span class="linenos">220</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-221"><a href="#ELEMENT_ACCESS-221"><span class="linenos">221</span></a>
+</span><span id="ELEMENT_ACCESS-222"><a href="#ELEMENT_ACCESS-222"><span class="linenos">222</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="ELEMENT_ACCESS-223"><a href="#ELEMENT_ACCESS-223"><span class="linenos">223</span></a>    
+</span><span id="ELEMENT_ACCESS-224"><a href="#ELEMENT_ACCESS-224"><span class="linenos">224</span></a>    <span class="k">def</span> <span class="nf">_compute_element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-225"><a href="#ELEMENT_ACCESS-225"><span class="linenos">225</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-226"><a href="#ELEMENT_ACCESS-226"><span class="linenos">226</span></a><span class="sd">        Compute the type of this `ELEMENT_ACCESS`.</span>
+</span><span id="ELEMENT_ACCESS-227"><a href="#ELEMENT_ACCESS-227"><span class="linenos">227</span></a>
+</span><span id="ELEMENT_ACCESS-228"><a href="#ELEMENT_ACCESS-228"><span class="linenos">228</span></a><span class="sd">        The type of this Node is the type of the element being accessed as</span>
+</span><span id="ELEMENT_ACCESS-229"><a href="#ELEMENT_ACCESS-229"><span class="linenos">229</span></a><span class="sd">        declared in its `variable_metadata`.</span>
+</span><span id="ELEMENT_ACCESS-230"><a href="#ELEMENT_ACCESS-230"><span class="linenos">230</span></a>
+</span><span id="ELEMENT_ACCESS-231"><a href="#ELEMENT_ACCESS-231"><span class="linenos">231</span></a><span class="sd">        Returns</span>
+</span><span id="ELEMENT_ACCESS-232"><a href="#ELEMENT_ACCESS-232"><span class="linenos">232</span></a><span class="sd">        -------</span>
+</span><span id="ELEMENT_ACCESS-233"><a href="#ELEMENT_ACCESS-233"><span class="linenos">233</span></a><span class="sd">        : str</span>
+</span><span id="ELEMENT_ACCESS-234"><a href="#ELEMENT_ACCESS-234"><span class="linenos">234</span></a><span class="sd">            The type of the accessed element.</span>
+</span><span id="ELEMENT_ACCESS-235"><a href="#ELEMENT_ACCESS-235"><span class="linenos">235</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-236"><a href="#ELEMENT_ACCESS-236"><span class="linenos">236</span></a>
+</span><span id="ELEMENT_ACCESS-237"><a href="#ELEMENT_ACCESS-237"><span class="linenos">237</span></a>        <span class="n">variable_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
+</span><span id="ELEMENT_ACCESS-238"><a href="#ELEMENT_ACCESS-238"><span class="linenos">238</span></a>        <span class="n">variable_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+</span><span id="ELEMENT_ACCESS-239"><a href="#ELEMENT_ACCESS-239"><span class="linenos">239</span></a>
+</span><span id="ELEMENT_ACCESS-240"><a href="#ELEMENT_ACCESS-240"><span class="linenos">240</span></a>        <span class="c1"># If the type of the struct-like variable is in this mapping, then it is</span>
+</span><span id="ELEMENT_ACCESS-241"><a href="#ELEMENT_ACCESS-241"><span class="linenos">241</span></a>        <span class="c1"># an array.</span>
+</span><span id="ELEMENT_ACCESS-242"><a href="#ELEMENT_ACCESS-242"><span class="linenos">242</span></a>        <span class="k">if</span> <span class="n">variable_type</span> <span class="ow">in</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-243"><a href="#ELEMENT_ACCESS-243"><span class="linenos">243</span></a>            <span class="k">return</span> <span class="n">variable_type</span>
+</span><span id="ELEMENT_ACCESS-244"><a href="#ELEMENT_ACCESS-244"><span class="linenos">244</span></a>        
+</span><span id="ELEMENT_ACCESS-245"><a href="#ELEMENT_ACCESS-245"><span class="linenos">245</span></a>        <span class="c1"># If not, then it is an &quot;actual&quot; struct. Thus, get the type of the</span>
+</span><span id="ELEMENT_ACCESS-246"><a href="#ELEMENT_ACCESS-246"><span class="linenos">246</span></a>        <span class="c1"># element being accessed.</span>
+</span><span id="ELEMENT_ACCESS-247"><a href="#ELEMENT_ACCESS-247"><span class="linenos">247</span></a>        <span class="n">struct_attributes</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span>
+</span><span id="ELEMENT_ACCESS-248"><a href="#ELEMENT_ACCESS-248"><span class="linenos">248</span></a>        <span class="n">accessed_attribute_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+</span><span id="ELEMENT_ACCESS-249"><a href="#ELEMENT_ACCESS-249"><span class="linenos">249</span></a>        <span class="n">accessed_attribute_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">struct_attributes</span><span class="p">)[</span><span class="n">accessed_attribute_index</span><span class="p">]</span>
+</span><span id="ELEMENT_ACCESS-250"><a href="#ELEMENT_ACCESS-250"><span class="linenos">250</span></a>        <span class="n">accessed_attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">struct_attributes</span><span class="p">[</span><span class="n">accessed_attribute_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+</span><span id="ELEMENT_ACCESS-251"><a href="#ELEMENT_ACCESS-251"><span class="linenos">251</span></a>
+</span><span id="ELEMENT_ACCESS-252"><a href="#ELEMENT_ACCESS-252"><span class="linenos">252</span></a>        <span class="k">return</span> <span class="n">accessed_attribute_type</span>
+</span><span id="ELEMENT_ACCESS-253"><a href="#ELEMENT_ACCESS-253"><span class="linenos">253</span></a>
+</span><span id="ELEMENT_ACCESS-254"><a href="#ELEMENT_ACCESS-254"><span class="linenos">254</span></a>    <span class="k">def</span> <span class="nf">_compute_element_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-255"><a href="#ELEMENT_ACCESS-255"><span class="linenos">255</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-256"><a href="#ELEMENT_ACCESS-256"><span class="linenos">256</span></a><span class="sd">        Compute the number of bytes to offset in order to reach the accessed element.</span>
+</span><span id="ELEMENT_ACCESS-257"><a href="#ELEMENT_ACCESS-257"><span class="linenos">257</span></a>
+</span><span id="ELEMENT_ACCESS-258"><a href="#ELEMENT_ACCESS-258"><span class="linenos">258</span></a><span class="sd">        This method handles 3 possible cases:</span>
+</span><span id="ELEMENT_ACCESS-259"><a href="#ELEMENT_ACCESS-259"><span class="linenos">259</span></a>
+</span><span id="ELEMENT_ACCESS-260"><a href="#ELEMENT_ACCESS-260"><span class="linenos">260</span></a><span class="sd">        - A: the `variable` is an array, and the `element` is a constant (i.e.,</span>
+</span><span id="ELEMENT_ACCESS-261"><a href="#ELEMENT_ACCESS-261"><span class="linenos">261</span></a><span class="sd">        statically indexed).</span>
+</span><span id="ELEMENT_ACCESS-262"><a href="#ELEMENT_ACCESS-262"><span class="linenos">262</span></a><span class="sd">        - B: the `variable` is an array, but the `element` is a variable (i.e.,</span>
+</span><span id="ELEMENT_ACCESS-263"><a href="#ELEMENT_ACCESS-263"><span class="linenos">263</span></a><span class="sd">        dinamically indexed).</span>
+</span><span id="ELEMENT_ACCESS-264"><a href="#ELEMENT_ACCESS-264"><span class="linenos">264</span></a><span class="sd">        - C: the `variable` is a struct, and the `element` is, necessarily, a</span>
+</span><span id="ELEMENT_ACCESS-265"><a href="#ELEMENT_ACCESS-265"><span class="linenos">265</span></a><span class="sd">        constant.</span>
+</span><span id="ELEMENT_ACCESS-266"><a href="#ELEMENT_ACCESS-266"><span class="linenos">266</span></a>
+</span><span id="ELEMENT_ACCESS-267"><a href="#ELEMENT_ACCESS-267"><span class="linenos">267</span></a><span class="sd">        Parameters</span>
+</span><span id="ELEMENT_ACCESS-268"><a href="#ELEMENT_ACCESS-268"><span class="linenos">268</span></a><span class="sd">        ----------</span>
+</span><span id="ELEMENT_ACCESS-269"><a href="#ELEMENT_ACCESS-269"><span class="linenos">269</span></a><span class="sd">        element_register : int</span>
+</span><span id="ELEMENT_ACCESS-270"><a href="#ELEMENT_ACCESS-270"><span class="linenos">270</span></a><span class="sd">            The number of the register that contains the value of the `element`.</span>
+</span><span id="ELEMENT_ACCESS-271"><a href="#ELEMENT_ACCESS-271"><span class="linenos">271</span></a><span class="sd">            Will only be used in case B.</span>
+</span><span id="ELEMENT_ACCESS-272"><a href="#ELEMENT_ACCESS-272"><span class="linenos">272</span></a>
+</span><span id="ELEMENT_ACCESS-273"><a href="#ELEMENT_ACCESS-273"><span class="linenos">273</span></a><span class="sd">        Returns</span>
+</span><span id="ELEMENT_ACCESS-274"><a href="#ELEMENT_ACCESS-274"><span class="linenos">274</span></a><span class="sd">        -------</span>
+</span><span id="ELEMENT_ACCESS-275"><a href="#ELEMENT_ACCESS-275"><span class="linenos">275</span></a><span class="sd">        element_offset : dict</span>
+</span><span id="ELEMENT_ACCESS-276"><a href="#ELEMENT_ACCESS-276"><span class="linenos">276</span></a><span class="sd">            A dictionary containing further metadata about how to access the</span>
+</span><span id="ELEMENT_ACCESS-277"><a href="#ELEMENT_ACCESS-277"><span class="linenos">277</span></a><span class="sd">            intended `element` from `variable`.</span>
+</span><span id="ELEMENT_ACCESS-278"><a href="#ELEMENT_ACCESS-278"><span class="linenos">278</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS-279"><a href="#ELEMENT_ACCESS-279"><span class="linenos">279</span></a>
+</span><span id="ELEMENT_ACCESS-280"><a href="#ELEMENT_ACCESS-280"><span class="linenos">280</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="ELEMENT_ACCESS-281"><a href="#ELEMENT_ACCESS-281"><span class="linenos">281</span></a>
+</span><span id="ELEMENT_ACCESS-282"><a href="#ELEMENT_ACCESS-282"><span class="linenos">282</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_array</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-283"><a href="#ELEMENT_ACCESS-283"><span class="linenos">283</span></a>            <span class="n">variable_type_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
+</span><span id="ELEMENT_ACCESS-284"><a href="#ELEMENT_ACCESS-284"><span class="linenos">284</span></a>
+</span><span id="ELEMENT_ACCESS-285"><a href="#ELEMENT_ACCESS-285"><span class="linenos">285</span></a>            <span class="c1"># Case A</span>
+</span><span id="ELEMENT_ACCESS-286"><a href="#ELEMENT_ACCESS-286"><span class="linenos">286</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">,</span> <span class="n">CST</span><span class="p">):</span>
+</span><span id="ELEMENT_ACCESS-287"><a href="#ELEMENT_ACCESS-287"><span class="linenos">287</span></a>                <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+</span><span id="ELEMENT_ACCESS-288"><a href="#ELEMENT_ACCESS-288"><span class="linenos">288</span></a>
+</span><span id="ELEMENT_ACCESS-289"><a href="#ELEMENT_ACCESS-289"><span class="linenos">289</span></a>                <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">variable_type_size</span> <span class="o">*</span> <span class="n">index</span>
+</span><span id="ELEMENT_ACCESS-290"><a href="#ELEMENT_ACCESS-290"><span class="linenos">290</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
+</span><span id="ELEMENT_ACCESS-291"><a href="#ELEMENT_ACCESS-291"><span class="linenos">291</span></a>
+</span><span id="ELEMENT_ACCESS-292"><a href="#ELEMENT_ACCESS-292"><span class="linenos">292</span></a>            <span class="c1"># Case B</span>
+</span><span id="ELEMENT_ACCESS-293"><a href="#ELEMENT_ACCESS-293"><span class="linenos">293</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-294"><a href="#ELEMENT_ACCESS-294"><span class="linenos">294</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_register</span>
+</span><span id="ELEMENT_ACCESS-295"><a href="#ELEMENT_ACCESS-295"><span class="linenos">295</span></a>                <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_type_size</span>
+</span><span id="ELEMENT_ACCESS-296"><a href="#ELEMENT_ACCESS-296"><span class="linenos">296</span></a>        
+</span><span id="ELEMENT_ACCESS-297"><a href="#ELEMENT_ACCESS-297"><span class="linenos">297</span></a>        <span class="c1"># Case C</span>
+</span><span id="ELEMENT_ACCESS-298"><a href="#ELEMENT_ACCESS-298"><span class="linenos">298</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS-299"><a href="#ELEMENT_ACCESS-299"><span class="linenos">299</span></a>            <span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">()</span>
+</span><span id="ELEMENT_ACCESS-300"><a href="#ELEMENT_ACCESS-300"><span class="linenos">300</span></a>            <span class="n">variable_attributes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-301"><a href="#ELEMENT_ACCESS-301"><span class="linenos">301</span></a>
+</span><span id="ELEMENT_ACCESS-302"><a href="#ELEMENT_ACCESS-302"><span class="linenos">302</span></a>            <span class="n">offset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="ELEMENT_ACCESS-303"><a href="#ELEMENT_ACCESS-303"><span class="linenos">303</span></a>
+</span><span id="ELEMENT_ACCESS-304"><a href="#ELEMENT_ACCESS-304"><span class="linenos">304</span></a>            <span class="c1"># Iterate over the attributes and sum the offset, in bytes, until</span>
+</span><span id="ELEMENT_ACCESS-305"><a href="#ELEMENT_ACCESS-305"><span class="linenos">305</span></a>            <span class="c1"># the `element` is found</span>
+</span><span id="ELEMENT_ACCESS-306"><a href="#ELEMENT_ACCESS-306"><span class="linenos">306</span></a>
+</span><span id="ELEMENT_ACCESS-307"><a href="#ELEMENT_ACCESS-307"><span class="linenos">307</span></a>            <span class="k">for</span> <span class="n">attribute_metadata</span> <span class="ow">in</span> <span class="n">variable_attributes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+</span><span id="ELEMENT_ACCESS-308"><a href="#ELEMENT_ACCESS-308"><span class="linenos">308</span></a>                <span class="n">attribute_position</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attr_pointer&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-309"><a href="#ELEMENT_ACCESS-309"><span class="linenos">309</span></a>
+</span><span id="ELEMENT_ACCESS-310"><a href="#ELEMENT_ACCESS-310"><span class="linenos">310</span></a>                <span class="k">if</span> <span class="n">attribute_position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
+</span><span id="ELEMENT_ACCESS-311"><a href="#ELEMENT_ACCESS-311"><span class="linenos">311</span></a>                    <span class="k">break</span>
+</span><span id="ELEMENT_ACCESS-312"><a href="#ELEMENT_ACCESS-312"><span class="linenos">312</span></a>
+</span><span id="ELEMENT_ACCESS-313"><a href="#ELEMENT_ACCESS-313"><span class="linenos">313</span></a>                <span class="n">attribute_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">attribute_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-314"><a href="#ELEMENT_ACCESS-314"><span class="linenos">314</span></a>                <span class="n">attribute_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">builtin_types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute_type</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS-315"><a href="#ELEMENT_ACCESS-315"><span class="linenos">315</span></a>
+</span><span id="ELEMENT_ACCESS-316"><a href="#ELEMENT_ACCESS-316"><span class="linenos">316</span></a>                <span class="n">offset_size</span> <span class="o">+=</span> <span class="n">attribute_size</span>
+</span><span id="ELEMENT_ACCESS-317"><a href="#ELEMENT_ACCESS-317"><span class="linenos">317</span></a>
+</span><span id="ELEMENT_ACCESS-318"><a href="#ELEMENT_ACCESS-318"><span class="linenos">318</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="ELEMENT_ACCESS-319"><a href="#ELEMENT_ACCESS-319"><span class="linenos">319</span></a>            <span class="n">element_offset</span><span class="p">[</span><span class="s2">&quot;offset_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_size</span>
+</span><span id="ELEMENT_ACCESS-320"><a href="#ELEMENT_ACCESS-320"><span class="linenos">320</span></a>
+</span><span id="ELEMENT_ACCESS-321"><a href="#ELEMENT_ACCESS-321"><span class="linenos">321</span></a>        <span class="k">return</span> <span class="n">element_offset</span>
 </span></pre></div>
 
 
@@ -1017,25 +1015,24 @@ space.</p>
 </span><span id="ELEMENT_ACCESS.generate_code-152"><a href="#ELEMENT_ACCESS.generate_code-152"><span class="linenos">152</span></a>
 </span><span id="ELEMENT_ACCESS.generate_code-153"><a href="#ELEMENT_ACCESS.generate_code-153"><span class="linenos">153</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
 </span><span id="ELEMENT_ACCESS.generate_code-154"><a href="#ELEMENT_ACCESS.generate_code-154"><span class="linenos">154</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_value</span><span class="p">(),</span>
-</span><span id="ELEMENT_ACCESS.generate_code-155"><a href="#ELEMENT_ACCESS.generate_code-155"><span class="linenos">155</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
-</span><span id="ELEMENT_ACCESS.generate_code-156"><a href="#ELEMENT_ACCESS.generate_code-156"><span class="linenos">156</span></a>            <span class="p">}</span>
-</span><span id="ELEMENT_ACCESS.generate_code-157"><a href="#ELEMENT_ACCESS.generate_code-157"><span class="linenos">157</span></a>        <span class="p">}</span>
-</span><span id="ELEMENT_ACCESS.generate_code-158"><a href="#ELEMENT_ACCESS.generate_code-158"><span class="linenos">158</span></a>
-</span><span id="ELEMENT_ACCESS.generate_code-159"><a href="#ELEMENT_ACCESS.generate_code-159"><span class="linenos">159</span></a>        <span class="c1"># Compute the offset, in bytes, to reach the accessed element</span>
-</span><span id="ELEMENT_ACCESS.generate_code-160"><a href="#ELEMENT_ACCESS.generate_code-160"><span class="linenos">160</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_element_offset</span><span class="p">(</span>
-</span><span id="ELEMENT_ACCESS.generate_code-161"><a href="#ELEMENT_ACCESS.generate_code-161"><span class="linenos">161</span></a>            <span class="n">element_register</span><span class="o">=</span><span class="n">element_register</span>
-</span><span id="ELEMENT_ACCESS.generate_code-162"><a href="#ELEMENT_ACCESS.generate_code-162"><span class="linenos">162</span></a>        <span class="p">)</span>
-</span><span id="ELEMENT_ACCESS.generate_code-163"><a href="#ELEMENT_ACCESS.generate_code-163"><span class="linenos">163</span></a>
-</span><span id="ELEMENT_ACCESS.generate_code-164"><a href="#ELEMENT_ACCESS.generate_code-164"><span class="linenos">164</span></a>        <span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ELEMENT_ACCESS.generate_code-165"><a href="#ELEMENT_ACCESS.generate_code-165"><span class="linenos">165</span></a>            <span class="o">**</span><span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span>
-</span><span id="ELEMENT_ACCESS.generate_code-166"><a href="#ELEMENT_ACCESS.generate_code-166"><span class="linenos">166</span></a>            <span class="o">**</span><span class="n">element_offset</span>
-</span><span id="ELEMENT_ACCESS.generate_code-167"><a href="#ELEMENT_ACCESS.generate_code-167"><span class="linenos">167</span></a>        <span class="p">}</span>
-</span><span id="ELEMENT_ACCESS.generate_code-168"><a href="#ELEMENT_ACCESS.generate_code-168"><span class="linenos">168</span></a>
-</span><span id="ELEMENT_ACCESS.generate_code-169"><a href="#ELEMENT_ACCESS.generate_code-169"><span class="linenos">169</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_access_code</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS.generate_code-170"><a href="#ELEMENT_ACCESS.generate_code-170"><span class="linenos">170</span></a>
-</span><span id="ELEMENT_ACCESS.generate_code-171"><a href="#ELEMENT_ACCESS.generate_code-171"><span class="linenos">171</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="ELEMENT_ACCESS.generate_code-172"><a href="#ELEMENT_ACCESS.generate_code-172"><span class="linenos">172</span></a>
-</span><span id="ELEMENT_ACCESS.generate_code-173"><a href="#ELEMENT_ACCESS.generate_code-173"><span class="linenos">173</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="ELEMENT_ACCESS.generate_code-155"><a href="#ELEMENT_ACCESS.generate_code-155"><span class="linenos">155</span></a>            <span class="p">}</span>
+</span><span id="ELEMENT_ACCESS.generate_code-156"><a href="#ELEMENT_ACCESS.generate_code-156"><span class="linenos">156</span></a>        <span class="p">}</span>
+</span><span id="ELEMENT_ACCESS.generate_code-157"><a href="#ELEMENT_ACCESS.generate_code-157"><span class="linenos">157</span></a>
+</span><span id="ELEMENT_ACCESS.generate_code-158"><a href="#ELEMENT_ACCESS.generate_code-158"><span class="linenos">158</span></a>        <span class="c1"># Compute the offset, in bytes, to reach the accessed element</span>
+</span><span id="ELEMENT_ACCESS.generate_code-159"><a href="#ELEMENT_ACCESS.generate_code-159"><span class="linenos">159</span></a>        <span class="n">element_offset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_element_offset</span><span class="p">(</span>
+</span><span id="ELEMENT_ACCESS.generate_code-160"><a href="#ELEMENT_ACCESS.generate_code-160"><span class="linenos">160</span></a>            <span class="n">element_register</span><span class="o">=</span><span class="n">element_register</span>
+</span><span id="ELEMENT_ACCESS.generate_code-161"><a href="#ELEMENT_ACCESS.generate_code-161"><span class="linenos">161</span></a>        <span class="p">)</span>
+</span><span id="ELEMENT_ACCESS.generate_code-162"><a href="#ELEMENT_ACCESS.generate_code-162"><span class="linenos">162</span></a>
+</span><span id="ELEMENT_ACCESS.generate_code-163"><a href="#ELEMENT_ACCESS.generate_code-163"><span class="linenos">163</span></a>        <span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="ELEMENT_ACCESS.generate_code-164"><a href="#ELEMENT_ACCESS.generate_code-164"><span class="linenos">164</span></a>            <span class="o">**</span><span class="n">element_access_code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span>
+</span><span id="ELEMENT_ACCESS.generate_code-165"><a href="#ELEMENT_ACCESS.generate_code-165"><span class="linenos">165</span></a>            <span class="o">**</span><span class="n">element_offset</span>
+</span><span id="ELEMENT_ACCESS.generate_code-166"><a href="#ELEMENT_ACCESS.generate_code-166"><span class="linenos">166</span></a>        <span class="p">}</span>
+</span><span id="ELEMENT_ACCESS.generate_code-167"><a href="#ELEMENT_ACCESS.generate_code-167"><span class="linenos">167</span></a>
+</span><span id="ELEMENT_ACCESS.generate_code-168"><a href="#ELEMENT_ACCESS.generate_code-168"><span class="linenos">168</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_access_code</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS.generate_code-169"><a href="#ELEMENT_ACCESS.generate_code-169"><span class="linenos">169</span></a>
+</span><span id="ELEMENT_ACCESS.generate_code-170"><a href="#ELEMENT_ACCESS.generate_code-170"><span class="linenos">170</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="ELEMENT_ACCESS.generate_code-171"><a href="#ELEMENT_ACCESS.generate_code-171"><span class="linenos">171</span></a>
+</span><span id="ELEMENT_ACCESS.generate_code-172"><a href="#ELEMENT_ACCESS.generate_code-172"><span class="linenos">172</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span></pre></div>
 
 
@@ -1074,30 +1071,30 @@ code_metadata : list of dict
 
     </div>
     <a class="headerlink" href="#ELEMENT_ACCESS.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ELEMENT_ACCESS.certificate-175"><a href="#ELEMENT_ACCESS.certificate-175"><span class="linenos">175</span></a>    <span class="nd">@override</span>
-</span><span id="ELEMENT_ACCESS.certificate-176"><a href="#ELEMENT_ACCESS.certificate-176"><span class="linenos">176</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS.certificate-177"><a href="#ELEMENT_ACCESS.certificate-177"><span class="linenos">177</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS.certificate-178"><a href="#ELEMENT_ACCESS.certificate-178"><span class="linenos">178</span></a><span class="sd">        Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.</span>
-</span><span id="ELEMENT_ACCESS.certificate-179"><a href="#ELEMENT_ACCESS.certificate-179"><span class="linenos">179</span></a>
-</span><span id="ELEMENT_ACCESS.certificate-180"><a href="#ELEMENT_ACCESS.certificate-180"><span class="linenos">180</span></a><span class="sd">        For `ELEMENT_ACCESS` nodes, certificate `variable` and `element`</span>
-</span><span id="ELEMENT_ACCESS.certificate-181"><a href="#ELEMENT_ACCESS.certificate-181"><span class="linenos">181</span></a><span class="sd">        children first, and then the `ELEMENT_ACCESS` itself.</span>
-</span><span id="ELEMENT_ACCESS.certificate-182"><a href="#ELEMENT_ACCESS.certificate-182"><span class="linenos">182</span></a>
-</span><span id="ELEMENT_ACCESS.certificate-183"><a href="#ELEMENT_ACCESS.certificate-183"><span class="linenos">183</span></a><span class="sd">        Parameters</span>
-</span><span id="ELEMENT_ACCESS.certificate-184"><a href="#ELEMENT_ACCESS.certificate-184"><span class="linenos">184</span></a><span class="sd">        ----------</span>
-</span><span id="ELEMENT_ACCESS.certificate-185"><a href="#ELEMENT_ACCESS.certificate-185"><span class="linenos">185</span></a><span class="sd">        prime : int</span>
-</span><span id="ELEMENT_ACCESS.certificate-186"><a href="#ELEMENT_ACCESS.certificate-186"><span class="linenos">186</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="ELEMENT_ACCESS.certificate-187"><a href="#ELEMENT_ACCESS.certificate-187"><span class="linenos">187</span></a><span class="sd">            in the AST.</span>
-</span><span id="ELEMENT_ACCESS.certificate-188"><a href="#ELEMENT_ACCESS.certificate-188"><span class="linenos">188</span></a>
-</span><span id="ELEMENT_ACCESS.certificate-189"><a href="#ELEMENT_ACCESS.certificate-189"><span class="linenos">189</span></a><span class="sd">        Returns</span>
-</span><span id="ELEMENT_ACCESS.certificate-190"><a href="#ELEMENT_ACCESS.certificate-190"><span class="linenos">190</span></a><span class="sd">        -------</span>
-</span><span id="ELEMENT_ACCESS.certificate-191"><a href="#ELEMENT_ACCESS.certificate-191"><span class="linenos">191</span></a><span class="sd">        : int</span>
-</span><span id="ELEMENT_ACCESS.certificate-192"><a href="#ELEMENT_ACCESS.certificate-192"><span class="linenos">192</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="ELEMENT_ACCESS.certificate-193"><a href="#ELEMENT_ACCESS.certificate-193"><span class="linenos">193</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS.certificate-194"><a href="#ELEMENT_ACCESS.certificate-194"><span class="linenos">194</span></a>
-</span><span id="ELEMENT_ACCESS.certificate-195"><a href="#ELEMENT_ACCESS.certificate-195"><span class="linenos">195</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS.certificate-196"><a href="#ELEMENT_ACCESS.certificate-196"><span class="linenos">196</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS.certificate-197"><a href="#ELEMENT_ACCESS.certificate-197"><span class="linenos">197</span></a>
-</span><span id="ELEMENT_ACCESS.certificate-198"><a href="#ELEMENT_ACCESS.certificate-198"><span class="linenos">198</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ELEMENT_ACCESS.certificate-174"><a href="#ELEMENT_ACCESS.certificate-174"><span class="linenos">174</span></a>    <span class="nd">@override</span>
+</span><span id="ELEMENT_ACCESS.certificate-175"><a href="#ELEMENT_ACCESS.certificate-175"><span class="linenos">175</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS.certificate-176"><a href="#ELEMENT_ACCESS.certificate-176"><span class="linenos">176</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS.certificate-177"><a href="#ELEMENT_ACCESS.certificate-177"><span class="linenos">177</span></a><span class="sd">        Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.</span>
+</span><span id="ELEMENT_ACCESS.certificate-178"><a href="#ELEMENT_ACCESS.certificate-178"><span class="linenos">178</span></a>
+</span><span id="ELEMENT_ACCESS.certificate-179"><a href="#ELEMENT_ACCESS.certificate-179"><span class="linenos">179</span></a><span class="sd">        For `ELEMENT_ACCESS` nodes, certificate `variable` and `element`</span>
+</span><span id="ELEMENT_ACCESS.certificate-180"><a href="#ELEMENT_ACCESS.certificate-180"><span class="linenos">180</span></a><span class="sd">        children first, and then the `ELEMENT_ACCESS` itself.</span>
+</span><span id="ELEMENT_ACCESS.certificate-181"><a href="#ELEMENT_ACCESS.certificate-181"><span class="linenos">181</span></a>
+</span><span id="ELEMENT_ACCESS.certificate-182"><a href="#ELEMENT_ACCESS.certificate-182"><span class="linenos">182</span></a><span class="sd">        Parameters</span>
+</span><span id="ELEMENT_ACCESS.certificate-183"><a href="#ELEMENT_ACCESS.certificate-183"><span class="linenos">183</span></a><span class="sd">        ----------</span>
+</span><span id="ELEMENT_ACCESS.certificate-184"><a href="#ELEMENT_ACCESS.certificate-184"><span class="linenos">184</span></a><span class="sd">        prime : int</span>
+</span><span id="ELEMENT_ACCESS.certificate-185"><a href="#ELEMENT_ACCESS.certificate-185"><span class="linenos">185</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
+</span><span id="ELEMENT_ACCESS.certificate-186"><a href="#ELEMENT_ACCESS.certificate-186"><span class="linenos">186</span></a><span class="sd">            in the AST.</span>
+</span><span id="ELEMENT_ACCESS.certificate-187"><a href="#ELEMENT_ACCESS.certificate-187"><span class="linenos">187</span></a>
+</span><span id="ELEMENT_ACCESS.certificate-188"><a href="#ELEMENT_ACCESS.certificate-188"><span class="linenos">188</span></a><span class="sd">        Returns</span>
+</span><span id="ELEMENT_ACCESS.certificate-189"><a href="#ELEMENT_ACCESS.certificate-189"><span class="linenos">189</span></a><span class="sd">        -------</span>
+</span><span id="ELEMENT_ACCESS.certificate-190"><a href="#ELEMENT_ACCESS.certificate-190"><span class="linenos">190</span></a><span class="sd">        : int</span>
+</span><span id="ELEMENT_ACCESS.certificate-191"><a href="#ELEMENT_ACCESS.certificate-191"><span class="linenos">191</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
+</span><span id="ELEMENT_ACCESS.certificate-192"><a href="#ELEMENT_ACCESS.certificate-192"><span class="linenos">192</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS.certificate-193"><a href="#ELEMENT_ACCESS.certificate-193"><span class="linenos">193</span></a>
+</span><span id="ELEMENT_ACCESS.certificate-194"><a href="#ELEMENT_ACCESS.certificate-194"><span class="linenos">194</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS.certificate-195"><a href="#ELEMENT_ACCESS.certificate-195"><span class="linenos">195</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS.certificate-196"><a href="#ELEMENT_ACCESS.certificate-196"><span class="linenos">196</span></a>
+</span><span id="ELEMENT_ACCESS.certificate-197"><a href="#ELEMENT_ACCESS.certificate-197"><span class="linenos">197</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1131,30 +1128,30 @@ children first, and then the <code><a href="#ELEMENT_ACCESS">ELEMENT_ACCESS</a><
 
     </div>
     <a class="headerlink" href="#ELEMENT_ACCESS.add_context"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ELEMENT_ACCESS.add_context-200"><a href="#ELEMENT_ACCESS.add_context-200"><span class="linenos">200</span></a>    <span class="k">def</span> <span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS.add_context-201"><a href="#ELEMENT_ACCESS.add_context-201"><span class="linenos">201</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS.add_context-202"><a href="#ELEMENT_ACCESS.add_context-202"><span class="linenos">202</span></a><span class="sd">        Add context to this `ELEMENT_ACCESS` node.</span>
-</span><span id="ELEMENT_ACCESS.add_context-203"><a href="#ELEMENT_ACCESS.add_context-203"><span class="linenos">203</span></a>
-</span><span id="ELEMENT_ACCESS.add_context-204"><a href="#ELEMENT_ACCESS.add_context-204"><span class="linenos">204</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="ELEMENT_ACCESS.add_context-205"><a href="#ELEMENT_ACCESS.add_context-205"><span class="linenos">205</span></a>
-</span><span id="ELEMENT_ACCESS.add_context-206"><a href="#ELEMENT_ACCESS.add_context-206"><span class="linenos">206</span></a><span class="sd">        Parameters</span>
-</span><span id="ELEMENT_ACCESS.add_context-207"><a href="#ELEMENT_ACCESS.add_context-207"><span class="linenos">207</span></a><span class="sd">        ----------</span>
-</span><span id="ELEMENT_ACCESS.add_context-208"><a href="#ELEMENT_ACCESS.add_context-208"><span class="linenos">208</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="ELEMENT_ACCESS.add_context-209"><a href="#ELEMENT_ACCESS.add_context-209"><span class="linenos">209</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="ELEMENT_ACCESS.add_context-210"><a href="#ELEMENT_ACCESS.add_context-210"><span class="linenos">210</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS.add_context-211"><a href="#ELEMENT_ACCESS.add_context-211"><span class="linenos">211</span></a>
-</span><span id="ELEMENT_ACCESS.add_context-212"><a href="#ELEMENT_ACCESS.add_context-212"><span class="linenos">212</span></a>        <span class="n">_context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS.add_context-213"><a href="#ELEMENT_ACCESS.add_context-213"><span class="linenos">213</span></a>        <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span id="ELEMENT_ACCESS.add_context-214"><a href="#ELEMENT_ACCESS.add_context-214"><span class="linenos">214</span></a>
-</span><span id="ELEMENT_ACCESS.add_context-215"><a href="#ELEMENT_ACCESS.add_context-215"><span class="linenos">215</span></a>        <span class="k">if</span> <span class="n">_context</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS.add_context-216"><a href="#ELEMENT_ACCESS.add_context-216"><span class="linenos">216</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LOAD&quot;</span>
-</span><span id="ELEMENT_ACCESS.add_context-217"><a href="#ELEMENT_ACCESS.add_context-217"><span class="linenos">217</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_VALUE&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS.add_context-218"><a href="#ELEMENT_ACCESS.add_context-218"><span class="linenos">218</span></a>
-</span><span id="ELEMENT_ACCESS.add_context-219"><a href="#ELEMENT_ACCESS.add_context-219"><span class="linenos">219</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="ELEMENT_ACCESS.add_context-220"><a href="#ELEMENT_ACCESS.add_context-220"><span class="linenos">220</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ADDRESS&quot;</span>
-</span><span id="ELEMENT_ACCESS.add_context-221"><a href="#ELEMENT_ACCESS.add_context-221"><span class="linenos">221</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="ELEMENT_ACCESS.add_context-222"><a href="#ELEMENT_ACCESS.add_context-222"><span class="linenos">222</span></a>
-</span><span id="ELEMENT_ACCESS.add_context-223"><a href="#ELEMENT_ACCESS.add_context-223"><span class="linenos">223</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ELEMENT_ACCESS.add_context-199"><a href="#ELEMENT_ACCESS.add_context-199"><span class="linenos">199</span></a>    <span class="k">def</span> <span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS.add_context-200"><a href="#ELEMENT_ACCESS.add_context-200"><span class="linenos">200</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS.add_context-201"><a href="#ELEMENT_ACCESS.add_context-201"><span class="linenos">201</span></a><span class="sd">        Add context to this `ELEMENT_ACCESS` node.</span>
+</span><span id="ELEMENT_ACCESS.add_context-202"><a href="#ELEMENT_ACCESS.add_context-202"><span class="linenos">202</span></a>
+</span><span id="ELEMENT_ACCESS.add_context-203"><a href="#ELEMENT_ACCESS.add_context-203"><span class="linenos">203</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="ELEMENT_ACCESS.add_context-204"><a href="#ELEMENT_ACCESS.add_context-204"><span class="linenos">204</span></a>
+</span><span id="ELEMENT_ACCESS.add_context-205"><a href="#ELEMENT_ACCESS.add_context-205"><span class="linenos">205</span></a><span class="sd">        Parameters</span>
+</span><span id="ELEMENT_ACCESS.add_context-206"><a href="#ELEMENT_ACCESS.add_context-206"><span class="linenos">206</span></a><span class="sd">        ----------</span>
+</span><span id="ELEMENT_ACCESS.add_context-207"><a href="#ELEMENT_ACCESS.add_context-207"><span class="linenos">207</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="ELEMENT_ACCESS.add_context-208"><a href="#ELEMENT_ACCESS.add_context-208"><span class="linenos">208</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="ELEMENT_ACCESS.add_context-209"><a href="#ELEMENT_ACCESS.add_context-209"><span class="linenos">209</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS.add_context-210"><a href="#ELEMENT_ACCESS.add_context-210"><span class="linenos">210</span></a>
+</span><span id="ELEMENT_ACCESS.add_context-211"><a href="#ELEMENT_ACCESS.add_context-211"><span class="linenos">211</span></a>        <span class="n">_context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS.add_context-212"><a href="#ELEMENT_ACCESS.add_context-212"><span class="linenos">212</span></a>        <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="ELEMENT_ACCESS.add_context-213"><a href="#ELEMENT_ACCESS.add_context-213"><span class="linenos">213</span></a>
+</span><span id="ELEMENT_ACCESS.add_context-214"><a href="#ELEMENT_ACCESS.add_context-214"><span class="linenos">214</span></a>        <span class="k">if</span> <span class="n">_context</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS.add_context-215"><a href="#ELEMENT_ACCESS.add_context-215"><span class="linenos">215</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LOAD&quot;</span>
+</span><span id="ELEMENT_ACCESS.add_context-216"><a href="#ELEMENT_ACCESS.add_context-216"><span class="linenos">216</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_VALUE&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS.add_context-217"><a href="#ELEMENT_ACCESS.add_context-217"><span class="linenos">217</span></a>
+</span><span id="ELEMENT_ACCESS.add_context-218"><a href="#ELEMENT_ACCESS.add_context-218"><span class="linenos">218</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="ELEMENT_ACCESS.add_context-219"><a href="#ELEMENT_ACCESS.add_context-219"><span class="linenos">219</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ADDRESS&quot;</span>
+</span><span id="ELEMENT_ACCESS.add_context-220"><a href="#ELEMENT_ACCESS.add_context-220"><span class="linenos">220</span></a>            <span class="n">symbol</span> <span class="o">=</span> <span class="n">NODE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ELEMENT_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="ELEMENT_ACCESS.add_context-221"><a href="#ELEMENT_ACCESS.add_context-221"><span class="linenos">221</span></a>
+</span><span id="ELEMENT_ACCESS.add_context-222"><a href="#ELEMENT_ACCESS.add_context-222"><span class="linenos">222</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
 </span></pre></div>
 
 

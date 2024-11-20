@@ -297,15 +297,9 @@
 </span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>
 </span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>        <span class="c1"># Add to global variables definitions, first</span>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;global_vars&quot;</span><span class="p">]:</span>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>
-</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>        <span class="c1"># ...and to the rest of the code</span>
-</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]:</span>
-</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
-</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;global_vars&quot;</span><span class="p">],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]:</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;instruction_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></pre></div>
 
 
@@ -519,15 +513,9 @@
 </span><span id="CodeGenerator-207"><a href="#CodeGenerator-207"><span class="linenos">207</span></a>
 </span><span id="CodeGenerator-208"><a href="#CodeGenerator-208"><span class="linenos">208</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span id="CodeGenerator-209"><a href="#CodeGenerator-209"><span class="linenos">209</span></a>
-</span><span id="CodeGenerator-210"><a href="#CodeGenerator-210"><span class="linenos">210</span></a>        <span class="c1"># Add to global variables definitions, first</span>
-</span><span id="CodeGenerator-211"><a href="#CodeGenerator-211"><span class="linenos">211</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;global_vars&quot;</span><span class="p">]:</span>
-</span><span id="CodeGenerator-212"><a href="#CodeGenerator-212"><span class="linenos">212</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
-</span><span id="CodeGenerator-213"><a href="#CodeGenerator-213"><span class="linenos">213</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="CodeGenerator-214"><a href="#CodeGenerator-214"><span class="linenos">214</span></a>
-</span><span id="CodeGenerator-215"><a href="#CodeGenerator-215"><span class="linenos">215</span></a>        <span class="c1"># ...and to the rest of the code</span>
-</span><span id="CodeGenerator-216"><a href="#CodeGenerator-216"><span class="linenos">216</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]:</span>
-</span><span id="CodeGenerator-217"><a href="#CodeGenerator-217"><span class="linenos">217</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
-</span><span id="CodeGenerator-218"><a href="#CodeGenerator-218"><span class="linenos">218</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="CodeGenerator-210"><a href="#CodeGenerator-210"><span class="linenos">210</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;global_vars&quot;</span><span class="p">],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]:</span>
+</span><span id="CodeGenerator-211"><a href="#CodeGenerator-211"><span class="linenos">211</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;instruction_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
+</span><span id="CodeGenerator-212"><a href="#CodeGenerator-212"><span class="linenos">212</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></pre></div>
 
 

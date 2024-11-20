@@ -175,18 +175,16 @@
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>        <span class="n">var_def_code</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">get_variable_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">),</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>            <span class="p">}</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="p">}</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">get_variable_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">),</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>            <span class="p">}</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>        <span class="p">}</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_def_code</span><span class="p">)</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_def_code</span><span class="p">)</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span></pre></div>
 
 
@@ -290,18 +288,16 @@
 </span><span id="VAR_DEF-97"><a href="#VAR_DEF-97"><span class="linenos"> 97</span></a>        <span class="n">var_def_code</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="VAR_DEF-98"><a href="#VAR_DEF-98"><span class="linenos"> 98</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span>
 </span><span id="VAR_DEF-99"><a href="#VAR_DEF-99"><span class="linenos"> 99</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="VAR_DEF-100"><a href="#VAR_DEF-100"><span class="linenos">100</span></a>
-</span><span id="VAR_DEF-101"><a href="#VAR_DEF-101"><span class="linenos">101</span></a>                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-</span><span id="VAR_DEF-102"><a href="#VAR_DEF-102"><span class="linenos">102</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-</span><span id="VAR_DEF-103"><a href="#VAR_DEF-103"><span class="linenos">103</span></a>                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">get_variable_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">),</span>
-</span><span id="VAR_DEF-104"><a href="#VAR_DEF-104"><span class="linenos">104</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span>
-</span><span id="VAR_DEF-105"><a href="#VAR_DEF-105"><span class="linenos">105</span></a>            <span class="p">}</span>
-</span><span id="VAR_DEF-106"><a href="#VAR_DEF-106"><span class="linenos">106</span></a>        <span class="p">}</span>
-</span><span id="VAR_DEF-107"><a href="#VAR_DEF-107"><span class="linenos">107</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="VAR_DEF-100"><a href="#VAR_DEF-100"><span class="linenos">100</span></a>                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span id="VAR_DEF-101"><a href="#VAR_DEF-101"><span class="linenos">101</span></a>                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">get_variable_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">),</span>
+</span><span id="VAR_DEF-102"><a href="#VAR_DEF-102"><span class="linenos">102</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span>
+</span><span id="VAR_DEF-103"><a href="#VAR_DEF-103"><span class="linenos">103</span></a>            <span class="p">}</span>
+</span><span id="VAR_DEF-104"><a href="#VAR_DEF-104"><span class="linenos">104</span></a>        <span class="p">}</span>
+</span><span id="VAR_DEF-105"><a href="#VAR_DEF-105"><span class="linenos">105</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="VAR_DEF-106"><a href="#VAR_DEF-106"><span class="linenos">106</span></a>
+</span><span id="VAR_DEF-107"><a href="#VAR_DEF-107"><span class="linenos">107</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_def_code</span><span class="p">)</span>
 </span><span id="VAR_DEF-108"><a href="#VAR_DEF-108"><span class="linenos">108</span></a>
-</span><span id="VAR_DEF-109"><a href="#VAR_DEF-109"><span class="linenos">109</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_def_code</span><span class="p">)</span>
-</span><span id="VAR_DEF-110"><a href="#VAR_DEF-110"><span class="linenos">110</span></a>
-</span><span id="VAR_DEF-111"><a href="#VAR_DEF-111"><span class="linenos">111</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="VAR_DEF-109"><a href="#VAR_DEF-109"><span class="linenos">109</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span></pre></div>
 
 
@@ -480,18 +476,16 @@ attributes is padded with an additional left space.</p>
 </span><span id="VAR_DEF.generate_code-97"><a href="#VAR_DEF.generate_code-97"><span class="linenos"> 97</span></a>        <span class="n">var_def_code</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="VAR_DEF.generate_code-98"><a href="#VAR_DEF.generate_code-98"><span class="linenos"> 98</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span>
 </span><span id="VAR_DEF.generate_code-99"><a href="#VAR_DEF.generate_code-99"><span class="linenos"> 99</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="VAR_DEF.generate_code-100"><a href="#VAR_DEF.generate_code-100"><span class="linenos">100</span></a>
-</span><span id="VAR_DEF.generate_code-101"><a href="#VAR_DEF.generate_code-101"><span class="linenos">101</span></a>                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-</span><span id="VAR_DEF.generate_code-102"><a href="#VAR_DEF.generate_code-102"><span class="linenos">102</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-</span><span id="VAR_DEF.generate_code-103"><a href="#VAR_DEF.generate_code-103"><span class="linenos">103</span></a>                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">get_variable_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">),</span>
-</span><span id="VAR_DEF.generate_code-104"><a href="#VAR_DEF.generate_code-104"><span class="linenos">104</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span>
-</span><span id="VAR_DEF.generate_code-105"><a href="#VAR_DEF.generate_code-105"><span class="linenos">105</span></a>            <span class="p">}</span>
-</span><span id="VAR_DEF.generate_code-106"><a href="#VAR_DEF.generate_code-106"><span class="linenos">106</span></a>        <span class="p">}</span>
-</span><span id="VAR_DEF.generate_code-107"><a href="#VAR_DEF.generate_code-107"><span class="linenos">107</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="VAR_DEF.generate_code-100"><a href="#VAR_DEF.generate_code-100"><span class="linenos">100</span></a>                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span id="VAR_DEF.generate_code-101"><a href="#VAR_DEF.generate_code-101"><span class="linenos">101</span></a>                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">get_variable_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">),</span>
+</span><span id="VAR_DEF.generate_code-102"><a href="#VAR_DEF.generate_code-102"><span class="linenos">102</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span>
+</span><span id="VAR_DEF.generate_code-103"><a href="#VAR_DEF.generate_code-103"><span class="linenos">103</span></a>            <span class="p">}</span>
+</span><span id="VAR_DEF.generate_code-104"><a href="#VAR_DEF.generate_code-104"><span class="linenos">104</span></a>        <span class="p">}</span>
+</span><span id="VAR_DEF.generate_code-105"><a href="#VAR_DEF.generate_code-105"><span class="linenos">105</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="VAR_DEF.generate_code-106"><a href="#VAR_DEF.generate_code-106"><span class="linenos">106</span></a>
+</span><span id="VAR_DEF.generate_code-107"><a href="#VAR_DEF.generate_code-107"><span class="linenos">107</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_def_code</span><span class="p">)</span>
 </span><span id="VAR_DEF.generate_code-108"><a href="#VAR_DEF.generate_code-108"><span class="linenos">108</span></a>
-</span><span id="VAR_DEF.generate_code-109"><a href="#VAR_DEF.generate_code-109"><span class="linenos">109</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_def_code</span><span class="p">)</span>
-</span><span id="VAR_DEF.generate_code-110"><a href="#VAR_DEF.generate_code-110"><span class="linenos">110</span></a>
-</span><span id="VAR_DEF.generate_code-111"><a href="#VAR_DEF.generate_code-111"><span class="linenos">111</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="VAR_DEF.generate_code-109"><a href="#VAR_DEF.generate_code-109"><span class="linenos">109</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span></pre></div>
 
 
