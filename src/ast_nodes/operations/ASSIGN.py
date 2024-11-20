@@ -86,6 +86,4 @@ class ASSIGN(Operation):
 
         operation_code.append(assign_code)
 
-        print(operation_code)
-
         return register, operation_code
