@@ -22,7 +22,7 @@ class FUNC_CALL(Node):
 
     @override
     def __init__(self, function_call_metadata: dict) -> None:
-        function_id: int = function_call_metadata["called_function_metadata"]["relative_position"]
+        function_id: int = function_call_metadata["called_function_metadata"]["id"]
         super().__init__(function_id)
 
         _function_type: str = function_call_metadata["called_function_metadata"]["type"]
@@ -149,7 +149,7 @@ class FUNC_CALL(Node):
         Parameters
         ----------
         prime : int
-            A prime number that represents the relative position of the `Node`
+            A prime number that represents the ID of the `Node`
             in the AST.
 
         Returns

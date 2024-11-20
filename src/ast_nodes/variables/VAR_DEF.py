@@ -21,10 +21,10 @@ class VAR_DEF(Node):
     @override
     def __init__(self, variable_metadata: dict) -> None:
 
-        relative_position: int = variable_metadata.get("relative_position")
+        id: int = variable_metadata.get("id")
         type: str = variable_metadata.get("type")
 
-        super().__init__(relative_position, type)
+        super().__init__(id, type)
 
         self.variable_metadata: dict = variable_metadata
         self.instruction: str = "ALLOC"
@@ -97,7 +97,7 @@ class VAR_DEF(Node):
             "instruction": self.instruction,
             "metadata": {
 
-                "relative_position": self.value,
+                "id": self.value,
                 "type": "int",
                 "size": get_variable_size(self.variable_metadata),
                 "register": register

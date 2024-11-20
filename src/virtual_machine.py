@@ -87,11 +87,11 @@ class VirtualMachine:
 
         # Program variables: values and addresses
         variables_info = {
-            variable_relative_position: {
+            variable_id: {
                 "address": variable_value
             }
 
-            for variable_relative_position, variable_value
+            for variable_id, variable_value
             in self.variables.items()
         }
 
@@ -101,8 +101,8 @@ class VirtualMachine:
 
         _str += "Variables:\n  "
         _str += "\n  ".join(
-            f"Relative position: {relative_position}\n  Data: {data}\n"
-            for relative_position, data in variables_info.items()
+            f"ID: {id}\n  Data: {data}\n"
+            for id, data in variables_info.items()
         )
 
         return _str
@@ -211,7 +211,7 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        # Value represents the variable to load's relative position in the
+        # Value represents the variable to load's ID in the
         # source code.
         variable_to_load: int = instruction_params["value"]
         variable_address: int = int(self.variables[variable_to_load], 16)
@@ -255,7 +255,7 @@ class VirtualMachine:
         
         variable_address: str = hex(self.memory_pointer)
 
-        variable_relative_position: int = instruction_params["relative_position"]
+        variable_id: int = instruction_params["id"]
         variable_size: int = instruction_params["size"]
         variable_address_register: int = instruction_params["register"]
 
@@ -269,7 +269,7 @@ class VirtualMachine:
             raise MemoryError(err_msg)
 
         self.registers[variable_address_register] = variable_address
-        self.variables[variable_relative_position] = variable_address
+        self.variables[variable_id] = variable_address
         self.memory_pointer = updated_memory_pointer
 
     def AND(
@@ -744,9 +744,9 @@ class VirtualMachine:
         """
 
         # Handle the `program_counter` for it to point to the function code
-        called_function_relative_position: int = instruction_params["value"]
+        called_function_id: int = instruction_params["value"]
         called_function_name: str = (
-            list(self.program["functions"].keys())[called_function_relative_position - 1]
+            list(self.program["functions"].keys())[called_function_id - 1]
         )
         called_function_start: int = (
             self.program["functions"][called_function_name]["start"]
@@ -830,7 +830,7 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        # Value represents the variable to load's relative position in the
+        # Value represents the variable to load's ID in the
         # source code.
         variable_to_load: int = instruction_params["value"]
         variable_address: int = int(self.variables[variable_to_load], 16)
@@ -1219,7 +1219,7 @@ class VirtualMachine:
         lhs_register_contents: Union[int, str] = self.registers[lhs_register]
 
         # Case 1: writing to some simple variable (i.e., the `lhs_register`
-        # contains its `relative_position`)
+        # contains its `id`)
         if isinstance(lhs_register_contents, int):
             variable_address: str = self.variables[lhs_register_contents]
 

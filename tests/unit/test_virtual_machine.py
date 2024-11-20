@@ -103,21 +103,21 @@ def test_ADDRESS() -> None:
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=10)
 
-    variable_relative_position = 2
+    variable_id = 2
     expected_value_register = 3
     expected_address = "0x8"
 
-    # I.e., save the contents of the variable of relative position `2` to
+    # I.e., save the contents of the variable of ID `2` to
     # register `3`
     instruction_params = {
         "register": expected_value_register,
-        "value": variable_relative_position,
+        "value": variable_id,
     }
 
     vm.variables = {
         0: "0x0",
         1: "0x4",
-        variable_relative_position: expected_address
+        variable_id: expected_address
     }
 
     vm.ADDRESS(instruction_params=instruction_params)
@@ -133,7 +133,7 @@ def test_ADDRESS() -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 4,
-                "relative_position": 0,
+                "id": 0,
                 "register": 0
             },
             "expected_result": {
@@ -147,7 +147,7 @@ def test_ADDRESS() -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 8,
-                "relative_position": 0,
+                "id": 0,
                 "register": 0
             },
             "expected_result": {
@@ -161,7 +161,7 @@ def test_ADDRESS() -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 12,
-                "relative_position": 0,
+                "id": 0,
                 "register": 0
             },
             "expected_result": {
@@ -193,7 +193,7 @@ def test_ALLOC_success(test_suite) -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 4,
-                "relative_position": 0,
+                "id": 0,
                 "register": 0
             },
             "vm_settings": {
@@ -206,7 +206,7 @@ def test_ALLOC_success(test_suite) -> None:
             "instruction_params": {
                 "id": 0,
                 "size": 8,
-                "relative_position": 0,
+                "id": 0,
                 "register": 0
             },
             "vm_settings": {
@@ -744,7 +744,7 @@ def test_LOAD() -> None:
     expected_value = 77
     expected_value_register = 3
 
-    # I.e., save the contents of the variable of relative position `2` to
+    # I.e., save the contents of the variable of ID `2` to
     # register `3`
     instruction_params = {
         "register": expected_value_register,
@@ -961,7 +961,7 @@ def test_STORE_simple() -> None:
     """
     Test the `VirtualMachine.STORE` method when handling simple variables.
 
-    In this case, `register` contains the register with the `relative_position`
+    In this case, `register` contains the register with the `id`
     of the variable to be written to.
     """
 

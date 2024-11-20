@@ -20,10 +20,10 @@ class STRUCT_DEF(Node):
 
     @override
     def __init__(self, struct_metadata: dict[str, dict[str, dict]]) -> None:
-        relative_position: int = struct_metadata.get("relative_position")
+        id: int = struct_metadata.get("id")
         _type: str = struct_metadata.get("type")
 
-        super().__init__(relative_position, type=_type)
+        super().__init__(id, type=_type)
 
         self.active: bool = struct_metadata.get("active")
         self.struct_metadata = struct_metadata
@@ -58,13 +58,13 @@ class STRUCT_DEF(Node):
         during the object initialization.
 
         This method does not manipulate the `prime` parameter, as the notion of
-        relative position of this `STRUCT_DEF` in the code is already obtained
+        ID of this `STRUCT_DEF` in the code is already obtained
         from the `struct_metadata`. Thus, it returns the same given `prime`.
 
         Parameters
         ----------
         prime : int
-            A prime number that represents the relative position of the `Node`
+            A prime number that represents the ID of the `Node`
             in the AST.
 
         Returns

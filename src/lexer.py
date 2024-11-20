@@ -145,13 +145,13 @@ class Lexer:
             symbol_collection=symbol_collection
         )
 
-        # Register the functions and its definitions' relative position
+        # Register the functions and its definitions' ID
         self.functions = {
             func_name: {
-                "relative_position": func_relative_position,
+                "id": func_id,
                 "prime": func_prime
             }
-            for func_name, (func_relative_position, func_prime)
+            for func_name, (func_id, func_prime)
             in zip(
                 functions_scopes.keys(),
                 zip(
@@ -284,12 +284,12 @@ class Lexer:
                         struct_idx=idx
                     )
 
-                    struct_relative_position = len(self.globals["structs"]) + 1
+                    struct_id = len(self.globals["structs"]) + 1
                     struct_prime = self.struct_prime
                     self.struct_prime = next_prime(struct_prime)
 
                     self.globals["structs"][struct_name] = {
-                        "relative_position": struct_relative_position,
+                        "id": struct_id,
                         "prime": struct_prime,
                         "attributes": struct_attributes,
                         "active": False
@@ -312,9 +312,9 @@ class Lexer:
                     if definition_metadata:
                         variable_name, variable_metadata = definition_metadata
 
-                        var_relative_position = self.variable_count + 1
+                        var_id = self.variable_count + 1
                         var_prime = self.variable_prime
-                        variable_metadata["relative_position"] = var_relative_position
+                        variable_metadata["id"] = var_id
                         variable_metadata["prime"] = var_prime
                         self.globals["variables"][variable_name] = variable_metadata
 
@@ -426,7 +426,7 @@ class Lexer:
                     )
                     existing_variables.append(variable_name)
 
-                    var_relative_position = self.variable_count + 1
+                    var_id = self.variable_count + 1
                     var_prime = self.variable_prime
 
                     self.variable_count += 1
@@ -434,7 +434,7 @@ class Lexer:
 
                     variable_metadata = {
                         "name": variable_name,
-                        "relative_position": var_relative_position,
+                        "id": var_id,
                         "prime": var_prime,
                         **variable_type
                     }
@@ -968,7 +968,7 @@ class Lexer:
                         )
                         raise SyntaxError(err_msg)
 
-                    parameter_relative_position = self.variable_count + 1
+                    parameter_id = self.variable_count + 1
                     parameter_prime = self.variable_prime
 
                     self.variable_count += 1
@@ -976,7 +976,7 @@ class Lexer:
 
                     parameters[param_name] = {
                         "type": param_type,
-                        "relative_position": parameter_relative_position,
+                        "id": parameter_id,
                         "prime": parameter_prime
                     }
                     curr_idx += 2

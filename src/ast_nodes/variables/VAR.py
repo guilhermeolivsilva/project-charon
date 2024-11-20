@@ -15,17 +15,17 @@ class VAR(Node):
     Parameters
     ----------
     variable_metadata : dict[str, str]
-        A dictionary containing the relative position where it was first
+        A dictionary containing the ID where it was first
         declared in the original source code, and its type.
     """
 
     @override
     def __init__(self, variable_metadata: dict[str, str]) -> None:
-        relative_position = variable_metadata.get("relative_position")
-        super().__init__(relative_position)
+        id = variable_metadata.get("id")
+        super().__init__(id)
 
         self.variable_metadata: dict[str, str] = variable_metadata
-        self.relative_position: int = relative_position
+        self.id: int = id
         self.type = self.variable_metadata.get("type")
 
         # Handle the `instruction` and `symbol`. This defaults to the `read`

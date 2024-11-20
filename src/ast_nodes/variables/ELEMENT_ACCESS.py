@@ -182,7 +182,7 @@ class ELEMENT_ACCESS(Node):
         Parameters
         ----------
         prime : int
-            A prime number that represents the relative position of the `Node`
+            A prime number that represents the ID of the `Node`
             in the AST.
 
         Returns
