@@ -140,25 +140,14 @@ class RET_SYM(Node):
         return register, code_metadata
 
     @override
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of the current `RET_SYM`, and set this attribute.
 
         For `RET_SYM` nodes, certificate the child `returned_value` first, and
         then the `RET_SYM` itself.
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
         """
 
-        prime = self.returned_value.certificate(prime)
+        self.returned_value.certificate()
 
-        return super().certificate(prime)
+        super().certificate()

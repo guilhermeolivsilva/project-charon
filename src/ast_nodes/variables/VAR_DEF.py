@@ -29,16 +29,13 @@ class VAR_DEF(Node):
         self.variable_metadata: dict = variable_metadata
         self.instruction: str = "ALLOC"
 
-        # The `type_certificate` is a placeholder! The `frontend` certificator
-        # is responsible for filling it later.
         prime: int = variable_metadata["prime"]
+        self.size: int = get_variable_size(variable_metadata)
         self.symbol: str = (
             f"({self.symbol})"
             + f"^({prime})"
+            + f"^({self.size})"
         )
-
-        length = self.variable_metadata.get("length", 1)
-        self.symbol += f"^({type}_certificate)" * length
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -97,7 +94,7 @@ class VAR_DEF(Node):
             "instruction": self.instruction,
             "metadata": {
                 "id": self.value,
-                "size": get_variable_size(self.variable_metadata),
+                "size": self.size,
                 "register": register
             }
         }

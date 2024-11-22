@@ -13,9 +13,6 @@ class Operation(Node):
     """
     Implement the representation of an operation for the AST.
 
-    An operation is either the addition (`ADD`), subtraction (`SUB`),
-    comparison (`LT`), or attribution (`SET`) of two nodes.
-
     Parameters
     ----------
     lhs : Node
@@ -29,7 +26,6 @@ class Operation(Node):
     @override
     def __init__(
         self,
-
         lhs: Node,
         rhs: Node,
         supports_float: bool = True,
@@ -48,27 +44,6 @@ class Operation(Node):
             self.type: str = self._compute_operation_type()
 
         self.symbol: str = self._compute_symbol()
-
-    @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `Operation` nodes, obtain the certificates, recursively, from the
-        `lhs` and `rhs` subtrees first, and then from the `Operation` node
-        itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `Node`.
-        """
-
-        return [
-            *self.lhs.get_certificate_label(),
-            *self.rhs.get_certificate_label(),
-            *super().get_certificate_label(),
-        ]
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -158,29 +133,26 @@ class Operation(Node):
         return register, code_metadata
 
     @override
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of the current `Operation`, and set this attribute.
 
         For `Operation` nodes, certificate the `lhs` and `rhs` children first,
         and then the `Operation` itself.
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
         """
 
-        prime = self.lhs.certificate(prime)
-        prime = self.rhs.certificate(prime)
+        operation_certificate_label = f"({self.symbol})"
 
-        return super().certificate(prime)
+        self.lhs.certificate()
+        self.rhs.certificate()
+
+        lhs_certificate_label = self.lhs.get_certificate_label().pop()
+        operation_certificate_label += f"^({lhs_certificate_label})"
+
+        rhs_certificate_label = self.rhs.get_certificate_label().pop()
+        operation_certificate_label += f"^({rhs_certificate_label})"
+
+        self.certificate_label = operation_certificate_label
     
     def _compute_operation_type(self) -> str:
         """

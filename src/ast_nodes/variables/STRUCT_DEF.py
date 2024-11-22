@@ -27,7 +27,6 @@ class STRUCT_DEF(Node):
 
         self.active: bool = struct_metadata.get("active")
         self.struct_metadata = struct_metadata
-        self.symbol: str = self._compute_symbol()
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -50,30 +49,15 @@ class STRUCT_DEF(Node):
         print(f"{' ' * (indent + 1)} Attributes: {_attribute_types}")
 
     @override
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of this `STRUCT_DEF`.
 
         For `STRUCT_DEF` nodes, the certificate is simply the `symbol` set
         during the object initialization.
-
-        This method does not manipulate the `prime` parameter, as the notion of
-        ID of this `STRUCT_DEF` in the code is already obtained
-        from the `struct_metadata`. Thus, it returns the same given `prime`.
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
         """
 
-        return prime
+        return None
 
     @override
     def generate_code(self, register: int) -> tuple[
@@ -114,7 +98,7 @@ class STRUCT_DEF(Node):
         """
 
         return self.symbol
-    
+
     def get_attribute_types(self) -> list[str]:
         """
         Get the types of the attributes of this struct.
@@ -134,7 +118,7 @@ class STRUCT_DEF(Node):
         ]
 
         return attribute_types
-    
+
     def is_active(self) -> bool:
         """
         Tell whether this struct definition is `active` or not.
@@ -149,23 +133,3 @@ class STRUCT_DEF(Node):
         """
 
         return self.active
-    
-    def _compute_symbol(self) -> str:
-        """
-        Compute the symbol of this struct.
-
-        The symbol is a string, created by joining subsequent exponentiations
-        ("^") of each of the attributes' type.
-
-        Returns
-        -------
-        attributes_symbol : str
-            The symbol of this struct.
-        """
-
-        attributes_symbol: str = "^".join(
-            f"({TYPE_SYMBOLS_MAP[attribute['type']]['type_symbol']})"
-            for attribute in self.struct_metadata["attributes"].values()
-        )
-
-        return attributes_symbol

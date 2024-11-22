@@ -145,30 +145,19 @@ class FUNC_DEF(Node):
         return register, code_metadata
 
     @override
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of this `FUNC_DEF`.
 
         To achieve this, certificate its `parameters` and `statements`,
         recursively and in order. The `FUNC_DEF` node itself does not have a
         certificate.
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
         """
 
         for parameter in self.parameters:
-            prime = parameter.certificate(prime)
+            parameter.certificate()
 
-        return self.statements.certificate(prime)
+        self.statements.certificate()
     
     def _define_vars_from_args(self, parameters: dict[str, dict]) -> list[PARAM]:
         """

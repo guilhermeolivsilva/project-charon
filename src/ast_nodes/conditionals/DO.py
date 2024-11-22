@@ -4,8 +4,6 @@ from typing import Union
 
 from typing_extensions import override
 
-from src.utils import next_prime
-
 from src.ast_nodes.node import Node
 from src.ast_nodes.conditionals.conditional import Conditional
 
@@ -115,30 +113,17 @@ class DO(Conditional):
         return register, do_code
 
     @override
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of the current `DO`, and set this attribute.
 
         For `DO` nodes, certificate the `parenthesis_expression` and `loop`
         subtrees first, recursively, and then the `DO` node itself.
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
         """
 
         # The `statement_if_true` is the actual internal name of the `loop`
         # subtree.
-        prime = self.statement_if_true.certificate(prime)
-        prime = self.parenthesis_expression.certificate(prime)
+        self.statement_if_true.certificate()
+        self.parenthesis_expression.certificate()
 
-        self.set_certificate_label(certificate_label=f"({prime})^({self.symbol})")
-
-        return next_prime(prime)
+        self.certificate_label = f"({self.symbol})"

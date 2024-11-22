@@ -152,7 +152,7 @@ class IFELSE(Conditional):
         return register, ifelse_code
 
     @override
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of the current `IFELSE`, and set this attribute.
 
@@ -160,19 +160,8 @@ class IFELSE(Conditional):
         recursively, and the `IFELSE` itself, and then the children
         `statement` nodes -- also recursively -- in order (i.e., the
         `statement_if_true` and then the `statement_if_false` subtrees).
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
         """
 
-        prime = super().certificate(prime)
+        super().certificate()
 
-        return self.statement_if_false.certificate(prime)
+        self.statement_if_false.certificate()

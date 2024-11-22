@@ -15,7 +15,7 @@ class VAR(Node):
     Parameters
     ----------
     variable_metadata : dict[str, str]
-        A dictionary containing the ID where it was first
+        A dictionary containing the unique ID generated when it was first
         declared in the original source code, and its type.
     """
 
@@ -76,7 +76,6 @@ class VAR(Node):
         code_metadata = {
             "instruction": self.instruction,
             "metadata": {
-
                 "register": register,
                 "value": self.value
             }
@@ -106,6 +105,11 @@ class VAR(Node):
         ----------
         context : dict[str, str]
             The context of this variable use.
+
+        Notes
+        -----
+        This method also changes the `symbol` attribute according to the
+        instruction being used.
         """
 
         context: str = context.get("context", "read")
@@ -118,4 +122,4 @@ class VAR(Node):
             self.instruction: str = "ADDRESS"
             symbol: str = NODE_SYMBOLS_MAP.get("VAR_ADDRESS")
 
-        self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})"
+        self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})^(2)"

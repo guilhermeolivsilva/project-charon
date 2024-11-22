@@ -30,10 +30,8 @@ class CST(Node):
         if type not in TYPE_SYMBOLS_MAP:
             raise TypeError(f"Constant has invalid type '{type}'")
 
-        _type_symbol: int
         _type_to_enforce: callable
-
-        _type_symbol, _type_to_enforce = TYPE_SYMBOLS_MAP[type].values()
+        _, _type_to_enforce = TYPE_SYMBOLS_MAP[type].values()
         super().__init__(_type_to_enforce(value))
 
         self.type = type
@@ -41,4 +39,4 @@ class CST(Node):
 
         # We apply this linear transformation so we get rid of zeroes
         value_exponent = value + 1 if value >= 0 else value
-        self.symbol: str = f"({self.symbol})^({value_exponent})^({_type_symbol})"
+        self.symbol: str = f"({self.symbol})^({value_exponent}))"

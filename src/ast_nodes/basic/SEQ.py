@@ -101,26 +101,13 @@ class SEQ(Node):
 
         return register, code_metadata
 
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of the current `SEQ`, and set this attribute.
 
         For `SEQ` nodes, certificate the child nodes in the same order as they
         appear in the `children` list. The `SEQ` node itself is not certified.
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
         """
 
         for child in self.children:
-            prime = child.certificate(prime)
-
-        return prime
+            child.certificate()

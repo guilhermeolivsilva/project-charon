@@ -3,7 +3,6 @@
 from typing import Union
 
 from src.ast_nodes.certificate_mapping import NODE_SYMBOLS_MAP
-from src.utils import next_prime
 
 
 class Node:
@@ -110,18 +109,6 @@ class Node:
 
         return self.type
 
-    def set_certificate_label(self, certificate_label: str) -> None:
-        """
-        Set the `certificate_label` of the Node.
-
-        Parameters
-        ----------
-        certificate_label : str
-            The new `certificate_label` to set.
-        """
-
-        self.certificate_label = certificate_label
-
     def get_certificate_label(self) -> list[str]:
         """
         Get the contents of `certificate_label`.
@@ -209,30 +196,10 @@ class Node:
 
         return register, [code_metadata]
 
-    def certificate(self, prime: int) -> int:
-        """
-        Compute the certificate of the current `Node`, and set this attribute.
+    def certificate(self) -> None:
+        """Compute the certificate of the current `Node`, and set this attribute."""
 
-        This method returns an integer, that corresponds to a prime number that
-        comes after the given `prime` (immediately after or not) in
-        order to allow recursively certificate the nodes of a subtree of the
-        AST.
-
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
-        """
-
-        self.set_certificate_label(certificate_label=f"({prime})^({self.symbol})")
-
-        return next_prime(prime)
+        self.certificate_label = f"({self.symbol})"
 
 
 def get_node_certificate_symbol(node: "Node") -> str:

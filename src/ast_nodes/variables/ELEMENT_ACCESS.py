@@ -37,7 +37,6 @@ class ELEMENT_ACCESS(Node):
     @override
     def __init__(
         self,
-
         variable: VAR,
         element: Union[CST, VAR]
     ) -> None:
@@ -59,32 +58,14 @@ class ELEMENT_ACCESS(Node):
         self.element: Union[CST, VAR] = element
         self.type: str = self._compute_element_type()
 
+        # The access type defaults to `static`, but can be changed to `dynamic`
+        # by the `_compute_element_offset` method.
+        self.access_type: str = "static"
+        self.element_offset: dict = self._compute_element_offset()
+
         # Handle the `instruction` and `symbol`. This defaults to the `read`
         # case, but can be changed by the AST as it is built
         self.add_context(context={"context": "read"})
-
-    @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `ELEMENT_ACCESS` nodes, obtain the certificates, recursively, from
-        the `variable` and `element` subtrees first, and then from the
-        `ELEMENT_ACCESS` node itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `Node`.
-        """
-
-        certificate_label: list = [
-            *self.variable.get_certificate_label(),
-            *self.element.get_certificate_label(),
-            *super().get_certificate_label(),
-        ]
-
-        return certificate_label
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -147,10 +128,9 @@ class ELEMENT_ACCESS(Node):
                 register=register
             )
             code_metadata.extend(element_code)
-            element_register = register - 1
 
-        else:
-            element_register = None
+            element_register = register - 1
+            self.element_offset["offset_register"] = element_register
 
         element_access_code = {
             "instruction": self.instruction,
@@ -160,14 +140,9 @@ class ELEMENT_ACCESS(Node):
             }
         }
 
-        # Compute the offset, in bytes, to reach the accessed element
-        element_offset: dict = self._compute_element_offset(
-            element_register=element_register
-        )
-
         element_access_code["metadata"] = {
             **element_access_code["metadata"],
-            **element_offset
+            **self.element_offset
         }
 
         code_metadata.append(element_access_code)
@@ -177,29 +152,41 @@ class ELEMENT_ACCESS(Node):
         return register, code_metadata
 
     @override
-    def certificate(self, prime: int) -> int:
+    def certificate(self) -> None:
         """
         Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.
 
-        For `ELEMENT_ACCESS` nodes, certificate `variable` and `element`
-        children first, and then the `ELEMENT_ACCESS` itself.
+        For `ELEMENT_ACCESS` nodes, the certificate is composed by the symbol
+        associated to the instruction being used (VALUE or ADDRESS) together
+        with the `prime` of the variable being accessed and a composition of
+        access type and offset.
 
-        Parameters
-        ----------
-        prime : int
-            A prime number that represents the ID of the `Node`
-            in the AST.
-
-        Returns
-        -------
-        : int
-            A prime number that comes after the given `prime`.
+        If statically accessed, the composition will be `2^(offset + 1)`. The +1
+        is to avoid `0` exponents. This is the case for arrays indexed by a
+        constant, or access to struct attributes.
+        
+        If dynamically accessed, the composition will be `3^(prime of the
+        indexing variable)`. This is the case for arrays indexed by a variable.
         """
 
-        prime = self.variable.certificate(prime)
-        prime = self.element.certificate(prime)
+        certificate_label = f"({self.symbol})"
 
-        return super().certificate(prime)
+        # Add the prime of the variable being accessed
+        variable_metadata = self.variable.get_metadata()
+        variable_prime = variable_metadata["prime"]
+        certificate_label += f"^({variable_prime})"
+
+        # Add the access type composition
+        if self.access_type == "static":
+            offset_size = self.element_offset["offset_size"]
+            certificate_label += f"^(2^{offset_size + 1})"
+
+        else:
+            indexing_variable_metadata = self.element.get_metadata()
+            indexing_variable_prime = indexing_variable_metadata["prime"]
+            certificate_label += f"^(3^{indexing_variable_prime})"
+
+        self.certificate_label = certificate_label
     
     def add_context(self, context: dict[str, str]) -> None:
         """
@@ -218,11 +205,11 @@ class ELEMENT_ACCESS(Node):
 
         if _context == "read":
             self.instruction: str = "LOAD"
-            symbol = NODE_SYMBOLS_MAP.get("ELEMENT_VALUE")
+            symbol = NODE_SYMBOLS_MAP.get("VAR_VALUE")
 
         else:
             self.instruction: str = "ADDRESS"
-            symbol = NODE_SYMBOLS_MAP.get("ELEMENT_ADDRESS")
+            symbol = NODE_SYMBOLS_MAP.get("VAR_ADDRESS")
 
         self.symbol = f"({symbol})"
     
@@ -256,7 +243,7 @@ class ELEMENT_ACCESS(Node):
 
         return accessed_attribute_type
 
-    def _compute_element_offset(self, element_register: Union[int, None]) -> dict:
+    def _compute_element_offset(self) -> dict:
         """
         Compute the number of bytes to offset in order to reach the accessed element.
 
@@ -268,12 +255,6 @@ class ELEMENT_ACCESS(Node):
         dinamically indexed).
         - C: the `variable` is a struct, and the `element` is, necessarily, a
         constant.
-
-        Parameters
-        ----------
-        element_register : Union[int, None]
-            The number of the register that contains the value of the `element`.
-            Will only be used in case B. If `None`, it means it is not case B.
 
         Returns
         -------
@@ -296,8 +277,11 @@ class ELEMENT_ACCESS(Node):
 
             # Case B
             else:
-                element_offset["offset_register"] = element_register
+                # Fill the `offset_register` when generating code
+                element_offset["offset_register"] = None
                 element_offset["offset_size"] = variable_type_size
+
+                self.access_type = "dynamic"
         
         # Case C
         else:
