@@ -222,28 +222,17 @@
 </span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>
 </span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="nd">@override</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        Compute the certificate of the current `RET_SYM`, and set this attribute.</span>
 </span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
 </span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">        For `RET_SYM` nodes, certificate the child `returned_value` first, and</span>
 </span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">        then the `RET_SYM` itself.</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        Parameters</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">        ----------</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        prime : int</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">            in the AST.</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">        Returns</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        -------</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">        : int</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returned_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">returned_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -391,28 +380,17 @@
 </span><span id="RET_SYM-141"><a href="#RET_SYM-141"><span class="linenos">141</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="RET_SYM-142"><a href="#RET_SYM-142"><span class="linenos">142</span></a>
 </span><span id="RET_SYM-143"><a href="#RET_SYM-143"><span class="linenos">143</span></a>    <span class="nd">@override</span>
-</span><span id="RET_SYM-144"><a href="#RET_SYM-144"><span class="linenos">144</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="RET_SYM-144"><a href="#RET_SYM-144"><span class="linenos">144</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="RET_SYM-145"><a href="#RET_SYM-145"><span class="linenos">145</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="RET_SYM-146"><a href="#RET_SYM-146"><span class="linenos">146</span></a><span class="sd">        Compute the certificate of the current `RET_SYM`, and set this attribute.</span>
 </span><span id="RET_SYM-147"><a href="#RET_SYM-147"><span class="linenos">147</span></a>
 </span><span id="RET_SYM-148"><a href="#RET_SYM-148"><span class="linenos">148</span></a><span class="sd">        For `RET_SYM` nodes, certificate the child `returned_value` first, and</span>
 </span><span id="RET_SYM-149"><a href="#RET_SYM-149"><span class="linenos">149</span></a><span class="sd">        then the `RET_SYM` itself.</span>
-</span><span id="RET_SYM-150"><a href="#RET_SYM-150"><span class="linenos">150</span></a>
-</span><span id="RET_SYM-151"><a href="#RET_SYM-151"><span class="linenos">151</span></a><span class="sd">        Parameters</span>
-</span><span id="RET_SYM-152"><a href="#RET_SYM-152"><span class="linenos">152</span></a><span class="sd">        ----------</span>
-</span><span id="RET_SYM-153"><a href="#RET_SYM-153"><span class="linenos">153</span></a><span class="sd">        prime : int</span>
-</span><span id="RET_SYM-154"><a href="#RET_SYM-154"><span class="linenos">154</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="RET_SYM-155"><a href="#RET_SYM-155"><span class="linenos">155</span></a><span class="sd">            in the AST.</span>
-</span><span id="RET_SYM-156"><a href="#RET_SYM-156"><span class="linenos">156</span></a>
-</span><span id="RET_SYM-157"><a href="#RET_SYM-157"><span class="linenos">157</span></a><span class="sd">        Returns</span>
-</span><span id="RET_SYM-158"><a href="#RET_SYM-158"><span class="linenos">158</span></a><span class="sd">        -------</span>
-</span><span id="RET_SYM-159"><a href="#RET_SYM-159"><span class="linenos">159</span></a><span class="sd">        : int</span>
-</span><span id="RET_SYM-160"><a href="#RET_SYM-160"><span class="linenos">160</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="RET_SYM-161"><a href="#RET_SYM-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="RET_SYM-162"><a href="#RET_SYM-162"><span class="linenos">162</span></a>
-</span><span id="RET_SYM-163"><a href="#RET_SYM-163"><span class="linenos">163</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returned_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="RET_SYM-164"><a href="#RET_SYM-164"><span class="linenos">164</span></a>
-</span><span id="RET_SYM-165"><a href="#RET_SYM-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="RET_SYM-150"><a href="#RET_SYM-150"><span class="linenos">150</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="RET_SYM-151"><a href="#RET_SYM-151"><span class="linenos">151</span></a>
+</span><span id="RET_SYM-152"><a href="#RET_SYM-152"><span class="linenos">152</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">returned_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="RET_SYM-153"><a href="#RET_SYM-153"><span class="linenos">153</span></a>
+</span><span id="RET_SYM-154"><a href="#RET_SYM-154"><span class="linenos">154</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -683,35 +661,24 @@ code_metadata : list of dict
                     <div class="decorator decorator-override">@override</div>
 
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">prime</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="RET_SYM.certificate-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#RET_SYM.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="RET_SYM.certificate-143"><a href="#RET_SYM.certificate-143"><span class="linenos">143</span></a>    <span class="nd">@override</span>
-</span><span id="RET_SYM.certificate-144"><a href="#RET_SYM.certificate-144"><span class="linenos">144</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="RET_SYM.certificate-144"><a href="#RET_SYM.certificate-144"><span class="linenos">144</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="RET_SYM.certificate-145"><a href="#RET_SYM.certificate-145"><span class="linenos">145</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="RET_SYM.certificate-146"><a href="#RET_SYM.certificate-146"><span class="linenos">146</span></a><span class="sd">        Compute the certificate of the current `RET_SYM`, and set this attribute.</span>
 </span><span id="RET_SYM.certificate-147"><a href="#RET_SYM.certificate-147"><span class="linenos">147</span></a>
 </span><span id="RET_SYM.certificate-148"><a href="#RET_SYM.certificate-148"><span class="linenos">148</span></a><span class="sd">        For `RET_SYM` nodes, certificate the child `returned_value` first, and</span>
 </span><span id="RET_SYM.certificate-149"><a href="#RET_SYM.certificate-149"><span class="linenos">149</span></a><span class="sd">        then the `RET_SYM` itself.</span>
-</span><span id="RET_SYM.certificate-150"><a href="#RET_SYM.certificate-150"><span class="linenos">150</span></a>
-</span><span id="RET_SYM.certificate-151"><a href="#RET_SYM.certificate-151"><span class="linenos">151</span></a><span class="sd">        Parameters</span>
-</span><span id="RET_SYM.certificate-152"><a href="#RET_SYM.certificate-152"><span class="linenos">152</span></a><span class="sd">        ----------</span>
-</span><span id="RET_SYM.certificate-153"><a href="#RET_SYM.certificate-153"><span class="linenos">153</span></a><span class="sd">        prime : int</span>
-</span><span id="RET_SYM.certificate-154"><a href="#RET_SYM.certificate-154"><span class="linenos">154</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="RET_SYM.certificate-155"><a href="#RET_SYM.certificate-155"><span class="linenos">155</span></a><span class="sd">            in the AST.</span>
-</span><span id="RET_SYM.certificate-156"><a href="#RET_SYM.certificate-156"><span class="linenos">156</span></a>
-</span><span id="RET_SYM.certificate-157"><a href="#RET_SYM.certificate-157"><span class="linenos">157</span></a><span class="sd">        Returns</span>
-</span><span id="RET_SYM.certificate-158"><a href="#RET_SYM.certificate-158"><span class="linenos">158</span></a><span class="sd">        -------</span>
-</span><span id="RET_SYM.certificate-159"><a href="#RET_SYM.certificate-159"><span class="linenos">159</span></a><span class="sd">        : int</span>
-</span><span id="RET_SYM.certificate-160"><a href="#RET_SYM.certificate-160"><span class="linenos">160</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="RET_SYM.certificate-161"><a href="#RET_SYM.certificate-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="RET_SYM.certificate-162"><a href="#RET_SYM.certificate-162"><span class="linenos">162</span></a>
-</span><span id="RET_SYM.certificate-163"><a href="#RET_SYM.certificate-163"><span class="linenos">163</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">returned_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="RET_SYM.certificate-164"><a href="#RET_SYM.certificate-164"><span class="linenos">164</span></a>
-</span><span id="RET_SYM.certificate-165"><a href="#RET_SYM.certificate-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="RET_SYM.certificate-150"><a href="#RET_SYM.certificate-150"><span class="linenos">150</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="RET_SYM.certificate-151"><a href="#RET_SYM.certificate-151"><span class="linenos">151</span></a>
+</span><span id="RET_SYM.certificate-152"><a href="#RET_SYM.certificate-152"><span class="linenos">152</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">returned_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="RET_SYM.certificate-153"><a href="#RET_SYM.certificate-153"><span class="linenos">153</span></a>
+</span><span id="RET_SYM.certificate-154"><a href="#RET_SYM.certificate-154"><span class="linenos">154</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -719,17 +686,6 @@ code_metadata : list of dict
 
 <p>For <code><a href="#RET_SYM">RET_SYM</a></code> nodes, certificate the child <code><a href="#RET_SYM.returned_value">returned_value</a></code> first, and
 then the <code><a href="#RET_SYM">RET_SYM</a></code> itself.</p>
-
-<h2 id="parameters">Parameters</h2>
-
-<p>prime : int
-    A prime number that represents the ID of the <code>Node</code>
-    in the AST.</p>
-
-<h2 id="returns">Returns</h2>
-
-<p>: int
-    A prime number that comes after the given <code>prime</code>.</p>
 </div>
 
 
@@ -745,7 +701,6 @@ then the <code><a href="#RET_SYM">RET_SYM</a></code> itself.</p>
                 <dd id="RET_SYM.symbol" class="variable"><a href="../node.html#Node.symbol">symbol</a></dd>
                 <dd id="RET_SYM.get_value" class="function"><a href="../node.html#Node.get_value">get_value</a></dd>
                 <dd id="RET_SYM.get_type" class="function"><a href="../node.html#Node.get_type">get_type</a></dd>
-                <dd id="RET_SYM.set_certificate_label" class="function"><a href="../node.html#Node.set_certificate_label">set_certificate_label</a></dd>
 
             </div>
                                 </dl>

@@ -233,72 +233,61 @@
 </span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
 </span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>    <span class="nd">@override</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        Compute the certificate of this `FUNC_DEF`.</span>
 </span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
 </span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        To achieve this, certificate its `parameters` and `statements`,</span>
 </span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">        recursively and in order. The `FUNC_DEF` node itself does not have a</span>
 </span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">        certificate.</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">        Parameters</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        ----------</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">        prime : int</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">            in the AST.</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        Returns</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        -------</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        : int</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>            <span class="n">parameter</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>    
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>    <span class="k">def</span> <span class="nf">_define_vars_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]:</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        Create `PARAM` nodes to be contain the received parameters.</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        Parameters</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">        ----------</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">        parameters : dict</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">            A dict with variable metadata to generate `PARAM` nodes from.</span>
 </span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>    
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>    <span class="k">def</span> <span class="nf">_define_vars_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]:</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">        Create `PARAM` nodes to be contain the received parameters.</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">        Parameters</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">        ----------</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">        parameters : dict</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">            A dict with variable metadata to generate `PARAM` nodes from.</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">        Returns</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">        -------</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">        variables : list[PARAM]</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">            A list of `PARAM` nodes. Might be empty, if the function does not</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">            take any parameters.</span>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>        <span class="n">variables</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>        <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter_metadata</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>            <span class="n">variable_metadata</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">parameter_name</span><span class="p">,</span>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>                <span class="o">**</span><span class="n">parameter_metadata</span>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>            <span class="p">}</span>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>            <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PARAM</span><span class="p">(</span><span class="n">variable_metadata</span><span class="o">=</span><span class="n">variable_metadata</span><span class="p">))</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>        <span class="k">return</span> <span class="n">variables</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>    
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>    <span class="k">def</span> <span class="nf">get_function_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">        Get the name of this function.</span>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">        Returns</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">        -------</span>
-</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="sd">        function_name : str</span>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">            The name of the function.</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>        <span class="n">function_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>
-</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>        <span class="k">return</span> <span class="n">function_name</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">        Returns</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">        -------</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">        variables : list[PARAM]</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">            A list of `PARAM` nodes. Might be empty, if the function does not</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">            take any parameters.</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="n">variables</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>        <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter_metadata</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>            <span class="n">variable_metadata</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">parameter_name</span><span class="p">,</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>                <span class="o">**</span><span class="n">parameter_metadata</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>            <span class="p">}</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>            <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PARAM</span><span class="p">(</span><span class="n">variable_metadata</span><span class="o">=</span><span class="n">variable_metadata</span><span class="p">))</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>        <span class="k">return</span> <span class="n">variables</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>    
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>    <span class="k">def</span> <span class="nf">get_function_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">        Get the name of this function.</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">        Returns</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a><span class="sd">        -------</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">        function_name : str</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">            The name of the function.</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>        <span class="n">function_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>        <span class="k">return</span> <span class="n">function_name</span>
 </span></pre></div>
 
 
@@ -450,72 +439,61 @@
 </span><span id="FUNC_DEF-146"><a href="#FUNC_DEF-146"><span class="linenos">146</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="FUNC_DEF-147"><a href="#FUNC_DEF-147"><span class="linenos">147</span></a>
 </span><span id="FUNC_DEF-148"><a href="#FUNC_DEF-148"><span class="linenos">148</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_DEF-149"><a href="#FUNC_DEF-149"><span class="linenos">149</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="FUNC_DEF-149"><a href="#FUNC_DEF-149"><span class="linenos">149</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="FUNC_DEF-150"><a href="#FUNC_DEF-150"><span class="linenos">150</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="FUNC_DEF-151"><a href="#FUNC_DEF-151"><span class="linenos">151</span></a><span class="sd">        Compute the certificate of this `FUNC_DEF`.</span>
 </span><span id="FUNC_DEF-152"><a href="#FUNC_DEF-152"><span class="linenos">152</span></a>
 </span><span id="FUNC_DEF-153"><a href="#FUNC_DEF-153"><span class="linenos">153</span></a><span class="sd">        To achieve this, certificate its `parameters` and `statements`,</span>
 </span><span id="FUNC_DEF-154"><a href="#FUNC_DEF-154"><span class="linenos">154</span></a><span class="sd">        recursively and in order. The `FUNC_DEF` node itself does not have a</span>
 </span><span id="FUNC_DEF-155"><a href="#FUNC_DEF-155"><span class="linenos">155</span></a><span class="sd">        certificate.</span>
-</span><span id="FUNC_DEF-156"><a href="#FUNC_DEF-156"><span class="linenos">156</span></a>
-</span><span id="FUNC_DEF-157"><a href="#FUNC_DEF-157"><span class="linenos">157</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_DEF-158"><a href="#FUNC_DEF-158"><span class="linenos">158</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_DEF-159"><a href="#FUNC_DEF-159"><span class="linenos">159</span></a><span class="sd">        prime : int</span>
-</span><span id="FUNC_DEF-160"><a href="#FUNC_DEF-160"><span class="linenos">160</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="FUNC_DEF-161"><a href="#FUNC_DEF-161"><span class="linenos">161</span></a><span class="sd">            in the AST.</span>
-</span><span id="FUNC_DEF-162"><a href="#FUNC_DEF-162"><span class="linenos">162</span></a>
-</span><span id="FUNC_DEF-163"><a href="#FUNC_DEF-163"><span class="linenos">163</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_DEF-164"><a href="#FUNC_DEF-164"><span class="linenos">164</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_DEF-165"><a href="#FUNC_DEF-165"><span class="linenos">165</span></a><span class="sd">        : int</span>
-</span><span id="FUNC_DEF-166"><a href="#FUNC_DEF-166"><span class="linenos">166</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="FUNC_DEF-167"><a href="#FUNC_DEF-167"><span class="linenos">167</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF-168"><a href="#FUNC_DEF-168"><span class="linenos">168</span></a>
-</span><span id="FUNC_DEF-169"><a href="#FUNC_DEF-169"><span class="linenos">169</span></a>        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
-</span><span id="FUNC_DEF-170"><a href="#FUNC_DEF-170"><span class="linenos">170</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="FUNC_DEF-156"><a href="#FUNC_DEF-156"><span class="linenos">156</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF-157"><a href="#FUNC_DEF-157"><span class="linenos">157</span></a>
+</span><span id="FUNC_DEF-158"><a href="#FUNC_DEF-158"><span class="linenos">158</span></a>        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+</span><span id="FUNC_DEF-159"><a href="#FUNC_DEF-159"><span class="linenos">159</span></a>            <span class="n">parameter</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="FUNC_DEF-160"><a href="#FUNC_DEF-160"><span class="linenos">160</span></a>
+</span><span id="FUNC_DEF-161"><a href="#FUNC_DEF-161"><span class="linenos">161</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="FUNC_DEF-162"><a href="#FUNC_DEF-162"><span class="linenos">162</span></a>    
+</span><span id="FUNC_DEF-163"><a href="#FUNC_DEF-163"><span class="linenos">163</span></a>    <span class="k">def</span> <span class="nf">_define_vars_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]:</span>
+</span><span id="FUNC_DEF-164"><a href="#FUNC_DEF-164"><span class="linenos">164</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF-165"><a href="#FUNC_DEF-165"><span class="linenos">165</span></a><span class="sd">        Create `PARAM` nodes to be contain the received parameters.</span>
+</span><span id="FUNC_DEF-166"><a href="#FUNC_DEF-166"><span class="linenos">166</span></a>
+</span><span id="FUNC_DEF-167"><a href="#FUNC_DEF-167"><span class="linenos">167</span></a><span class="sd">        Parameters</span>
+</span><span id="FUNC_DEF-168"><a href="#FUNC_DEF-168"><span class="linenos">168</span></a><span class="sd">        ----------</span>
+</span><span id="FUNC_DEF-169"><a href="#FUNC_DEF-169"><span class="linenos">169</span></a><span class="sd">        parameters : dict</span>
+</span><span id="FUNC_DEF-170"><a href="#FUNC_DEF-170"><span class="linenos">170</span></a><span class="sd">            A dict with variable metadata to generate `PARAM` nodes from.</span>
 </span><span id="FUNC_DEF-171"><a href="#FUNC_DEF-171"><span class="linenos">171</span></a>
-</span><span id="FUNC_DEF-172"><a href="#FUNC_DEF-172"><span class="linenos">172</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="FUNC_DEF-173"><a href="#FUNC_DEF-173"><span class="linenos">173</span></a>    
-</span><span id="FUNC_DEF-174"><a href="#FUNC_DEF-174"><span class="linenos">174</span></a>    <span class="k">def</span> <span class="nf">_define_vars_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]:</span>
-</span><span id="FUNC_DEF-175"><a href="#FUNC_DEF-175"><span class="linenos">175</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF-176"><a href="#FUNC_DEF-176"><span class="linenos">176</span></a><span class="sd">        Create `PARAM` nodes to be contain the received parameters.</span>
-</span><span id="FUNC_DEF-177"><a href="#FUNC_DEF-177"><span class="linenos">177</span></a>
-</span><span id="FUNC_DEF-178"><a href="#FUNC_DEF-178"><span class="linenos">178</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_DEF-179"><a href="#FUNC_DEF-179"><span class="linenos">179</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_DEF-180"><a href="#FUNC_DEF-180"><span class="linenos">180</span></a><span class="sd">        parameters : dict</span>
-</span><span id="FUNC_DEF-181"><a href="#FUNC_DEF-181"><span class="linenos">181</span></a><span class="sd">            A dict with variable metadata to generate `PARAM` nodes from.</span>
-</span><span id="FUNC_DEF-182"><a href="#FUNC_DEF-182"><span class="linenos">182</span></a>
-</span><span id="FUNC_DEF-183"><a href="#FUNC_DEF-183"><span class="linenos">183</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_DEF-184"><a href="#FUNC_DEF-184"><span class="linenos">184</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_DEF-185"><a href="#FUNC_DEF-185"><span class="linenos">185</span></a><span class="sd">        variables : list[PARAM]</span>
-</span><span id="FUNC_DEF-186"><a href="#FUNC_DEF-186"><span class="linenos">186</span></a><span class="sd">            A list of `PARAM` nodes. Might be empty, if the function does not</span>
-</span><span id="FUNC_DEF-187"><a href="#FUNC_DEF-187"><span class="linenos">187</span></a><span class="sd">            take any parameters.</span>
-</span><span id="FUNC_DEF-188"><a href="#FUNC_DEF-188"><span class="linenos">188</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF-189"><a href="#FUNC_DEF-189"><span class="linenos">189</span></a>
-</span><span id="FUNC_DEF-190"><a href="#FUNC_DEF-190"><span class="linenos">190</span></a>        <span class="n">variables</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="FUNC_DEF-191"><a href="#FUNC_DEF-191"><span class="linenos">191</span></a>
-</span><span id="FUNC_DEF-192"><a href="#FUNC_DEF-192"><span class="linenos">192</span></a>        <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter_metadata</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span id="FUNC_DEF-193"><a href="#FUNC_DEF-193"><span class="linenos">193</span></a>            <span class="n">variable_metadata</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="FUNC_DEF-194"><a href="#FUNC_DEF-194"><span class="linenos">194</span></a>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">parameter_name</span><span class="p">,</span>
-</span><span id="FUNC_DEF-195"><a href="#FUNC_DEF-195"><span class="linenos">195</span></a>                <span class="o">**</span><span class="n">parameter_metadata</span>
-</span><span id="FUNC_DEF-196"><a href="#FUNC_DEF-196"><span class="linenos">196</span></a>            <span class="p">}</span>
-</span><span id="FUNC_DEF-197"><a href="#FUNC_DEF-197"><span class="linenos">197</span></a>
-</span><span id="FUNC_DEF-198"><a href="#FUNC_DEF-198"><span class="linenos">198</span></a>            <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PARAM</span><span class="p">(</span><span class="n">variable_metadata</span><span class="o">=</span><span class="n">variable_metadata</span><span class="p">))</span>
-</span><span id="FUNC_DEF-199"><a href="#FUNC_DEF-199"><span class="linenos">199</span></a>
-</span><span id="FUNC_DEF-200"><a href="#FUNC_DEF-200"><span class="linenos">200</span></a>        <span class="k">return</span> <span class="n">variables</span>
-</span><span id="FUNC_DEF-201"><a href="#FUNC_DEF-201"><span class="linenos">201</span></a>    
-</span><span id="FUNC_DEF-202"><a href="#FUNC_DEF-202"><span class="linenos">202</span></a>    <span class="k">def</span> <span class="nf">get_function_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="FUNC_DEF-203"><a href="#FUNC_DEF-203"><span class="linenos">203</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF-204"><a href="#FUNC_DEF-204"><span class="linenos">204</span></a><span class="sd">        Get the name of this function.</span>
-</span><span id="FUNC_DEF-205"><a href="#FUNC_DEF-205"><span class="linenos">205</span></a>
-</span><span id="FUNC_DEF-206"><a href="#FUNC_DEF-206"><span class="linenos">206</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_DEF-207"><a href="#FUNC_DEF-207"><span class="linenos">207</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_DEF-208"><a href="#FUNC_DEF-208"><span class="linenos">208</span></a><span class="sd">        function_name : str</span>
-</span><span id="FUNC_DEF-209"><a href="#FUNC_DEF-209"><span class="linenos">209</span></a><span class="sd">            The name of the function.</span>
-</span><span id="FUNC_DEF-210"><a href="#FUNC_DEF-210"><span class="linenos">210</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF-211"><a href="#FUNC_DEF-211"><span class="linenos">211</span></a>
-</span><span id="FUNC_DEF-212"><a href="#FUNC_DEF-212"><span class="linenos">212</span></a>        <span class="n">function_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-</span><span id="FUNC_DEF-213"><a href="#FUNC_DEF-213"><span class="linenos">213</span></a>
-</span><span id="FUNC_DEF-214"><a href="#FUNC_DEF-214"><span class="linenos">214</span></a>        <span class="k">return</span> <span class="n">function_name</span>
+</span><span id="FUNC_DEF-172"><a href="#FUNC_DEF-172"><span class="linenos">172</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_DEF-173"><a href="#FUNC_DEF-173"><span class="linenos">173</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_DEF-174"><a href="#FUNC_DEF-174"><span class="linenos">174</span></a><span class="sd">        variables : list[PARAM]</span>
+</span><span id="FUNC_DEF-175"><a href="#FUNC_DEF-175"><span class="linenos">175</span></a><span class="sd">            A list of `PARAM` nodes. Might be empty, if the function does not</span>
+</span><span id="FUNC_DEF-176"><a href="#FUNC_DEF-176"><span class="linenos">176</span></a><span class="sd">            take any parameters.</span>
+</span><span id="FUNC_DEF-177"><a href="#FUNC_DEF-177"><span class="linenos">177</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF-178"><a href="#FUNC_DEF-178"><span class="linenos">178</span></a>
+</span><span id="FUNC_DEF-179"><a href="#FUNC_DEF-179"><span class="linenos">179</span></a>        <span class="n">variables</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PARAM</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="FUNC_DEF-180"><a href="#FUNC_DEF-180"><span class="linenos">180</span></a>
+</span><span id="FUNC_DEF-181"><a href="#FUNC_DEF-181"><span class="linenos">181</span></a>        <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter_metadata</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="FUNC_DEF-182"><a href="#FUNC_DEF-182"><span class="linenos">182</span></a>            <span class="n">variable_metadata</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="FUNC_DEF-183"><a href="#FUNC_DEF-183"><span class="linenos">183</span></a>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">parameter_name</span><span class="p">,</span>
+</span><span id="FUNC_DEF-184"><a href="#FUNC_DEF-184"><span class="linenos">184</span></a>                <span class="o">**</span><span class="n">parameter_metadata</span>
+</span><span id="FUNC_DEF-185"><a href="#FUNC_DEF-185"><span class="linenos">185</span></a>            <span class="p">}</span>
+</span><span id="FUNC_DEF-186"><a href="#FUNC_DEF-186"><span class="linenos">186</span></a>
+</span><span id="FUNC_DEF-187"><a href="#FUNC_DEF-187"><span class="linenos">187</span></a>            <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PARAM</span><span class="p">(</span><span class="n">variable_metadata</span><span class="o">=</span><span class="n">variable_metadata</span><span class="p">))</span>
+</span><span id="FUNC_DEF-188"><a href="#FUNC_DEF-188"><span class="linenos">188</span></a>
+</span><span id="FUNC_DEF-189"><a href="#FUNC_DEF-189"><span class="linenos">189</span></a>        <span class="k">return</span> <span class="n">variables</span>
+</span><span id="FUNC_DEF-190"><a href="#FUNC_DEF-190"><span class="linenos">190</span></a>    
+</span><span id="FUNC_DEF-191"><a href="#FUNC_DEF-191"><span class="linenos">191</span></a>    <span class="k">def</span> <span class="nf">get_function_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="FUNC_DEF-192"><a href="#FUNC_DEF-192"><span class="linenos">192</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF-193"><a href="#FUNC_DEF-193"><span class="linenos">193</span></a><span class="sd">        Get the name of this function.</span>
+</span><span id="FUNC_DEF-194"><a href="#FUNC_DEF-194"><span class="linenos">194</span></a>
+</span><span id="FUNC_DEF-195"><a href="#FUNC_DEF-195"><span class="linenos">195</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_DEF-196"><a href="#FUNC_DEF-196"><span class="linenos">196</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_DEF-197"><a href="#FUNC_DEF-197"><span class="linenos">197</span></a><span class="sd">        function_name : str</span>
+</span><span id="FUNC_DEF-198"><a href="#FUNC_DEF-198"><span class="linenos">198</span></a><span class="sd">            The name of the function.</span>
+</span><span id="FUNC_DEF-199"><a href="#FUNC_DEF-199"><span class="linenos">199</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF-200"><a href="#FUNC_DEF-200"><span class="linenos">200</span></a>
+</span><span id="FUNC_DEF-201"><a href="#FUNC_DEF-201"><span class="linenos">201</span></a>        <span class="n">function_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="FUNC_DEF-202"><a href="#FUNC_DEF-202"><span class="linenos">202</span></a>
+</span><span id="FUNC_DEF-203"><a href="#FUNC_DEF-203"><span class="linenos">203</span></a>        <span class="k">return</span> <span class="n">function_name</span>
 </span></pre></div>
 
 
@@ -813,37 +791,26 @@ code_metadata : list of dict
                     <div class="decorator decorator-override">@override</div>
 
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">prime</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="FUNC_DEF.certificate-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#FUNC_DEF.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_DEF.certificate-148"><a href="#FUNC_DEF.certificate-148"><span class="linenos">148</span></a>    <span class="nd">@override</span>
-</span><span id="FUNC_DEF.certificate-149"><a href="#FUNC_DEF.certificate-149"><span class="linenos">149</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="FUNC_DEF.certificate-149"><a href="#FUNC_DEF.certificate-149"><span class="linenos">149</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="FUNC_DEF.certificate-150"><a href="#FUNC_DEF.certificate-150"><span class="linenos">150</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="FUNC_DEF.certificate-151"><a href="#FUNC_DEF.certificate-151"><span class="linenos">151</span></a><span class="sd">        Compute the certificate of this `FUNC_DEF`.</span>
 </span><span id="FUNC_DEF.certificate-152"><a href="#FUNC_DEF.certificate-152"><span class="linenos">152</span></a>
 </span><span id="FUNC_DEF.certificate-153"><a href="#FUNC_DEF.certificate-153"><span class="linenos">153</span></a><span class="sd">        To achieve this, certificate its `parameters` and `statements`,</span>
 </span><span id="FUNC_DEF.certificate-154"><a href="#FUNC_DEF.certificate-154"><span class="linenos">154</span></a><span class="sd">        recursively and in order. The `FUNC_DEF` node itself does not have a</span>
 </span><span id="FUNC_DEF.certificate-155"><a href="#FUNC_DEF.certificate-155"><span class="linenos">155</span></a><span class="sd">        certificate.</span>
-</span><span id="FUNC_DEF.certificate-156"><a href="#FUNC_DEF.certificate-156"><span class="linenos">156</span></a>
-</span><span id="FUNC_DEF.certificate-157"><a href="#FUNC_DEF.certificate-157"><span class="linenos">157</span></a><span class="sd">        Parameters</span>
-</span><span id="FUNC_DEF.certificate-158"><a href="#FUNC_DEF.certificate-158"><span class="linenos">158</span></a><span class="sd">        ----------</span>
-</span><span id="FUNC_DEF.certificate-159"><a href="#FUNC_DEF.certificate-159"><span class="linenos">159</span></a><span class="sd">        prime : int</span>
-</span><span id="FUNC_DEF.certificate-160"><a href="#FUNC_DEF.certificate-160"><span class="linenos">160</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="FUNC_DEF.certificate-161"><a href="#FUNC_DEF.certificate-161"><span class="linenos">161</span></a><span class="sd">            in the AST.</span>
-</span><span id="FUNC_DEF.certificate-162"><a href="#FUNC_DEF.certificate-162"><span class="linenos">162</span></a>
-</span><span id="FUNC_DEF.certificate-163"><a href="#FUNC_DEF.certificate-163"><span class="linenos">163</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_DEF.certificate-164"><a href="#FUNC_DEF.certificate-164"><span class="linenos">164</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_DEF.certificate-165"><a href="#FUNC_DEF.certificate-165"><span class="linenos">165</span></a><span class="sd">        : int</span>
-</span><span id="FUNC_DEF.certificate-166"><a href="#FUNC_DEF.certificate-166"><span class="linenos">166</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="FUNC_DEF.certificate-167"><a href="#FUNC_DEF.certificate-167"><span class="linenos">167</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF.certificate-168"><a href="#FUNC_DEF.certificate-168"><span class="linenos">168</span></a>
-</span><span id="FUNC_DEF.certificate-169"><a href="#FUNC_DEF.certificate-169"><span class="linenos">169</span></a>        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
-</span><span id="FUNC_DEF.certificate-170"><a href="#FUNC_DEF.certificate-170"><span class="linenos">170</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="FUNC_DEF.certificate-171"><a href="#FUNC_DEF.certificate-171"><span class="linenos">171</span></a>
-</span><span id="FUNC_DEF.certificate-172"><a href="#FUNC_DEF.certificate-172"><span class="linenos">172</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="FUNC_DEF.certificate-156"><a href="#FUNC_DEF.certificate-156"><span class="linenos">156</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF.certificate-157"><a href="#FUNC_DEF.certificate-157"><span class="linenos">157</span></a>
+</span><span id="FUNC_DEF.certificate-158"><a href="#FUNC_DEF.certificate-158"><span class="linenos">158</span></a>        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+</span><span id="FUNC_DEF.certificate-159"><a href="#FUNC_DEF.certificate-159"><span class="linenos">159</span></a>            <span class="n">parameter</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="FUNC_DEF.certificate-160"><a href="#FUNC_DEF.certificate-160"><span class="linenos">160</span></a>
+</span><span id="FUNC_DEF.certificate-161"><a href="#FUNC_DEF.certificate-161"><span class="linenos">161</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -852,17 +819,6 @@ code_metadata : list of dict
 <p>To achieve this, certificate its <code><a href="#FUNC_DEF.parameters">parameters</a></code> and <code><a href="#FUNC_DEF.statements">statements</a></code>,
 recursively and in order. The <code><a href="#FUNC_DEF">FUNC_DEF</a></code> node itself does not have a
 certificate.</p>
-
-<h2 id="parameters">Parameters</h2>
-
-<p>prime : int
-    A prime number that represents the ID of the <code>Node</code>
-    in the AST.</p>
-
-<h2 id="returns">Returns</h2>
-
-<p>: int
-    A prime number that comes after the given <code>prime</code>.</p>
 </div>
 
 
@@ -878,19 +834,19 @@ certificate.</p>
 
     </div>
     <a class="headerlink" href="#FUNC_DEF.get_function_name"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_DEF.get_function_name-202"><a href="#FUNC_DEF.get_function_name-202"><span class="linenos">202</span></a>    <span class="k">def</span> <span class="nf">get_function_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="FUNC_DEF.get_function_name-203"><a href="#FUNC_DEF.get_function_name-203"><span class="linenos">203</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF.get_function_name-204"><a href="#FUNC_DEF.get_function_name-204"><span class="linenos">204</span></a><span class="sd">        Get the name of this function.</span>
-</span><span id="FUNC_DEF.get_function_name-205"><a href="#FUNC_DEF.get_function_name-205"><span class="linenos">205</span></a>
-</span><span id="FUNC_DEF.get_function_name-206"><a href="#FUNC_DEF.get_function_name-206"><span class="linenos">206</span></a><span class="sd">        Returns</span>
-</span><span id="FUNC_DEF.get_function_name-207"><a href="#FUNC_DEF.get_function_name-207"><span class="linenos">207</span></a><span class="sd">        -------</span>
-</span><span id="FUNC_DEF.get_function_name-208"><a href="#FUNC_DEF.get_function_name-208"><span class="linenos">208</span></a><span class="sd">        function_name : str</span>
-</span><span id="FUNC_DEF.get_function_name-209"><a href="#FUNC_DEF.get_function_name-209"><span class="linenos">209</span></a><span class="sd">            The name of the function.</span>
-</span><span id="FUNC_DEF.get_function_name-210"><a href="#FUNC_DEF.get_function_name-210"><span class="linenos">210</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="FUNC_DEF.get_function_name-211"><a href="#FUNC_DEF.get_function_name-211"><span class="linenos">211</span></a>
-</span><span id="FUNC_DEF.get_function_name-212"><a href="#FUNC_DEF.get_function_name-212"><span class="linenos">212</span></a>        <span class="n">function_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-</span><span id="FUNC_DEF.get_function_name-213"><a href="#FUNC_DEF.get_function_name-213"><span class="linenos">213</span></a>
-</span><span id="FUNC_DEF.get_function_name-214"><a href="#FUNC_DEF.get_function_name-214"><span class="linenos">214</span></a>        <span class="k">return</span> <span class="n">function_name</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="FUNC_DEF.get_function_name-191"><a href="#FUNC_DEF.get_function_name-191"><span class="linenos">191</span></a>    <span class="k">def</span> <span class="nf">get_function_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="FUNC_DEF.get_function_name-192"><a href="#FUNC_DEF.get_function_name-192"><span class="linenos">192</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF.get_function_name-193"><a href="#FUNC_DEF.get_function_name-193"><span class="linenos">193</span></a><span class="sd">        Get the name of this function.</span>
+</span><span id="FUNC_DEF.get_function_name-194"><a href="#FUNC_DEF.get_function_name-194"><span class="linenos">194</span></a>
+</span><span id="FUNC_DEF.get_function_name-195"><a href="#FUNC_DEF.get_function_name-195"><span class="linenos">195</span></a><span class="sd">        Returns</span>
+</span><span id="FUNC_DEF.get_function_name-196"><a href="#FUNC_DEF.get_function_name-196"><span class="linenos">196</span></a><span class="sd">        -------</span>
+</span><span id="FUNC_DEF.get_function_name-197"><a href="#FUNC_DEF.get_function_name-197"><span class="linenos">197</span></a><span class="sd">        function_name : str</span>
+</span><span id="FUNC_DEF.get_function_name-198"><a href="#FUNC_DEF.get_function_name-198"><span class="linenos">198</span></a><span class="sd">            The name of the function.</span>
+</span><span id="FUNC_DEF.get_function_name-199"><a href="#FUNC_DEF.get_function_name-199"><span class="linenos">199</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="FUNC_DEF.get_function_name-200"><a href="#FUNC_DEF.get_function_name-200"><span class="linenos">200</span></a>
+</span><span id="FUNC_DEF.get_function_name-201"><a href="#FUNC_DEF.get_function_name-201"><span class="linenos">201</span></a>        <span class="n">function_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="FUNC_DEF.get_function_name-202"><a href="#FUNC_DEF.get_function_name-202"><span class="linenos">202</span></a>
+</span><span id="FUNC_DEF.get_function_name-203"><a href="#FUNC_DEF.get_function_name-203"><span class="linenos">203</span></a>        <span class="k">return</span> <span class="n">function_name</span>
 </span></pre></div>
 
 
@@ -916,7 +872,6 @@ certificate.</p>
                 <dd id="FUNC_DEF.symbol" class="variable"><a href="../node.html#Node.symbol">symbol</a></dd>
                 <dd id="FUNC_DEF.get_value" class="function"><a href="../node.html#Node.get_value">get_value</a></dd>
                 <dd id="FUNC_DEF.get_type" class="function"><a href="../node.html#Node.get_type">get_type</a></dd>
-                <dd id="FUNC_DEF.set_certificate_label" class="function"><a href="../node.html#Node.set_certificate_label">set_certificate_label</a></dd>
 
             </div>
                                 </dl>

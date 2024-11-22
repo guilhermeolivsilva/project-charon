@@ -183,29 +183,16 @@
 </span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        For `SEQ` nodes, certificate the child nodes in the same order as they</span>
 </span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">        appear in the `children` list. The `SEQ` node itself is not certified.</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">        Parameters</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        ----------</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">        prime : int</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">            in the AST.</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        Returns</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">        -------</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">        : int</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="k">return</span> <span class="n">prime</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>            <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -315,29 +302,16 @@
 </span><span id="SEQ-102"><a href="#SEQ-102"><span class="linenos">102</span></a>
 </span><span id="SEQ-103"><a href="#SEQ-103"><span class="linenos">103</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="SEQ-104"><a href="#SEQ-104"><span class="linenos">104</span></a>
-</span><span id="SEQ-105"><a href="#SEQ-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="SEQ-105"><a href="#SEQ-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ-106"><a href="#SEQ-106"><span class="linenos">106</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ-107"><a href="#SEQ-107"><span class="linenos">107</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="SEQ-108"><a href="#SEQ-108"><span class="linenos">108</span></a>
 </span><span id="SEQ-109"><a href="#SEQ-109"><span class="linenos">109</span></a><span class="sd">        For `SEQ` nodes, certificate the child nodes in the same order as they</span>
 </span><span id="SEQ-110"><a href="#SEQ-110"><span class="linenos">110</span></a><span class="sd">        appear in the `children` list. The `SEQ` node itself is not certified.</span>
-</span><span id="SEQ-111"><a href="#SEQ-111"><span class="linenos">111</span></a>
-</span><span id="SEQ-112"><a href="#SEQ-112"><span class="linenos">112</span></a><span class="sd">        Parameters</span>
-</span><span id="SEQ-113"><a href="#SEQ-113"><span class="linenos">113</span></a><span class="sd">        ----------</span>
-</span><span id="SEQ-114"><a href="#SEQ-114"><span class="linenos">114</span></a><span class="sd">        prime : int</span>
-</span><span id="SEQ-115"><a href="#SEQ-115"><span class="linenos">115</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="SEQ-116"><a href="#SEQ-116"><span class="linenos">116</span></a><span class="sd">            in the AST.</span>
-</span><span id="SEQ-117"><a href="#SEQ-117"><span class="linenos">117</span></a>
-</span><span id="SEQ-118"><a href="#SEQ-118"><span class="linenos">118</span></a><span class="sd">        Returns</span>
-</span><span id="SEQ-119"><a href="#SEQ-119"><span class="linenos">119</span></a><span class="sd">        -------</span>
-</span><span id="SEQ-120"><a href="#SEQ-120"><span class="linenos">120</span></a><span class="sd">        : int</span>
-</span><span id="SEQ-121"><a href="#SEQ-121"><span class="linenos">121</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="SEQ-122"><a href="#SEQ-122"><span class="linenos">122</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="SEQ-123"><a href="#SEQ-123"><span class="linenos">123</span></a>
-</span><span id="SEQ-124"><a href="#SEQ-124"><span class="linenos">124</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="SEQ-125"><a href="#SEQ-125"><span class="linenos">125</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="SEQ-126"><a href="#SEQ-126"><span class="linenos">126</span></a>
-</span><span id="SEQ-127"><a href="#SEQ-127"><span class="linenos">127</span></a>        <span class="k">return</span> <span class="n">prime</span>
+</span><span id="SEQ-111"><a href="#SEQ-111"><span class="linenos">111</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ-112"><a href="#SEQ-112"><span class="linenos">112</span></a>
+</span><span id="SEQ-113"><a href="#SEQ-113"><span class="linenos">113</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="SEQ-114"><a href="#SEQ-114"><span class="linenos">114</span></a>            <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -573,35 +547,22 @@ The <code><a href="#SEQ">SEQ</a></code> node itself does not generate code, for 
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">prime</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="SEQ.certificate-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#SEQ.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.certificate-105"><a href="#SEQ.certificate-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.certificate-105"><a href="#SEQ.certificate-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ.certificate-106"><a href="#SEQ.certificate-106"><span class="linenos">106</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ.certificate-107"><a href="#SEQ.certificate-107"><span class="linenos">107</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="SEQ.certificate-108"><a href="#SEQ.certificate-108"><span class="linenos">108</span></a>
 </span><span id="SEQ.certificate-109"><a href="#SEQ.certificate-109"><span class="linenos">109</span></a><span class="sd">        For `SEQ` nodes, certificate the child nodes in the same order as they</span>
 </span><span id="SEQ.certificate-110"><a href="#SEQ.certificate-110"><span class="linenos">110</span></a><span class="sd">        appear in the `children` list. The `SEQ` node itself is not certified.</span>
-</span><span id="SEQ.certificate-111"><a href="#SEQ.certificate-111"><span class="linenos">111</span></a>
-</span><span id="SEQ.certificate-112"><a href="#SEQ.certificate-112"><span class="linenos">112</span></a><span class="sd">        Parameters</span>
-</span><span id="SEQ.certificate-113"><a href="#SEQ.certificate-113"><span class="linenos">113</span></a><span class="sd">        ----------</span>
-</span><span id="SEQ.certificate-114"><a href="#SEQ.certificate-114"><span class="linenos">114</span></a><span class="sd">        prime : int</span>
-</span><span id="SEQ.certificate-115"><a href="#SEQ.certificate-115"><span class="linenos">115</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="SEQ.certificate-116"><a href="#SEQ.certificate-116"><span class="linenos">116</span></a><span class="sd">            in the AST.</span>
-</span><span id="SEQ.certificate-117"><a href="#SEQ.certificate-117"><span class="linenos">117</span></a>
-</span><span id="SEQ.certificate-118"><a href="#SEQ.certificate-118"><span class="linenos">118</span></a><span class="sd">        Returns</span>
-</span><span id="SEQ.certificate-119"><a href="#SEQ.certificate-119"><span class="linenos">119</span></a><span class="sd">        -------</span>
-</span><span id="SEQ.certificate-120"><a href="#SEQ.certificate-120"><span class="linenos">120</span></a><span class="sd">        : int</span>
-</span><span id="SEQ.certificate-121"><a href="#SEQ.certificate-121"><span class="linenos">121</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="SEQ.certificate-122"><a href="#SEQ.certificate-122"><span class="linenos">122</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="SEQ.certificate-123"><a href="#SEQ.certificate-123"><span class="linenos">123</span></a>
-</span><span id="SEQ.certificate-124"><a href="#SEQ.certificate-124"><span class="linenos">124</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="SEQ.certificate-125"><a href="#SEQ.certificate-125"><span class="linenos">125</span></a>            <span class="n">prime</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="SEQ.certificate-126"><a href="#SEQ.certificate-126"><span class="linenos">126</span></a>
-</span><span id="SEQ.certificate-127"><a href="#SEQ.certificate-127"><span class="linenos">127</span></a>        <span class="k">return</span> <span class="n">prime</span>
+</span><span id="SEQ.certificate-111"><a href="#SEQ.certificate-111"><span class="linenos">111</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ.certificate-112"><a href="#SEQ.certificate-112"><span class="linenos">112</span></a>
+</span><span id="SEQ.certificate-113"><a href="#SEQ.certificate-113"><span class="linenos">113</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="SEQ.certificate-114"><a href="#SEQ.certificate-114"><span class="linenos">114</span></a>            <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -609,17 +570,6 @@ The <code><a href="#SEQ">SEQ</a></code> node itself does not generate code, for 
 
 <p>For <code><a href="#SEQ">SEQ</a></code> nodes, certificate the child nodes in the same order as they
 appear in the <code><a href="#SEQ.children">children</a></code> list. The <code><a href="#SEQ">SEQ</a></code> node itself is not certified.</p>
-
-<h2 id="parameters">Parameters</h2>
-
-<p>prime : int
-    A prime number that represents the ID of the <code>Node</code>
-    in the AST.</p>
-
-<h2 id="returns">Returns</h2>
-
-<p>: int
-    A prime number that comes after the given <code>prime</code>.</p>
 </div>
 
 
@@ -636,7 +586,6 @@ appear in the <code><a href="#SEQ.children">children</a></code> list. The <code>
                 <dd id="SEQ.symbol" class="variable"><a href="../node.html#Node.symbol">symbol</a></dd>
                 <dd id="SEQ.get_value" class="function"><a href="../node.html#Node.get_value">get_value</a></dd>
                 <dd id="SEQ.get_type" class="function"><a href="../node.html#Node.get_type">get_type</a></dd>
-                <dd id="SEQ.set_certificate_label" class="function"><a href="../node.html#Node.set_certificate_label">set_certificate_label</a></dd>
 
             </div>
                                 </dl>

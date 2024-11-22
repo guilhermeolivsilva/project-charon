@@ -231,7 +231,7 @@
 </span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
 </span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>
 </span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>    <span class="nd">@override</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
 </span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>
@@ -239,22 +239,11 @@
 </span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
 </span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
 </span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        Parameters</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        ----------</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        prime : int</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">            in the AST.</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">        Returns</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">        -------</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">        : int</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -414,7 +403,7 @@
 </span><span id="IFELSE-153"><a href="#IFELSE-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
 </span><span id="IFELSE-154"><a href="#IFELSE-154"><span class="linenos">154</span></a>
 </span><span id="IFELSE-155"><a href="#IFELSE-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-156"><a href="#IFELSE-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="IFELSE-156"><a href="#IFELSE-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="IFELSE-157"><a href="#IFELSE-157"><span class="linenos">157</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE-158"><a href="#IFELSE-158"><span class="linenos">158</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
 </span><span id="IFELSE-159"><a href="#IFELSE-159"><span class="linenos">159</span></a>
@@ -422,22 +411,11 @@
 </span><span id="IFELSE-161"><a href="#IFELSE-161"><span class="linenos">161</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
 </span><span id="IFELSE-162"><a href="#IFELSE-162"><span class="linenos">162</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
 </span><span id="IFELSE-163"><a href="#IFELSE-163"><span class="linenos">163</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="IFELSE-164"><a href="#IFELSE-164"><span class="linenos">164</span></a>
-</span><span id="IFELSE-165"><a href="#IFELSE-165"><span class="linenos">165</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE-166"><a href="#IFELSE-166"><span class="linenos">166</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE-167"><a href="#IFELSE-167"><span class="linenos">167</span></a><span class="sd">        prime : int</span>
-</span><span id="IFELSE-168"><a href="#IFELSE-168"><span class="linenos">168</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="IFELSE-169"><a href="#IFELSE-169"><span class="linenos">169</span></a><span class="sd">            in the AST.</span>
-</span><span id="IFELSE-170"><a href="#IFELSE-170"><span class="linenos">170</span></a>
-</span><span id="IFELSE-171"><a href="#IFELSE-171"><span class="linenos">171</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE-172"><a href="#IFELSE-172"><span class="linenos">172</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE-173"><a href="#IFELSE-173"><span class="linenos">173</span></a><span class="sd">        : int</span>
-</span><span id="IFELSE-174"><a href="#IFELSE-174"><span class="linenos">174</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="IFELSE-175"><a href="#IFELSE-175"><span class="linenos">175</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE-176"><a href="#IFELSE-176"><span class="linenos">176</span></a>
-</span><span id="IFELSE-177"><a href="#IFELSE-177"><span class="linenos">177</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="IFELSE-178"><a href="#IFELSE-178"><span class="linenos">178</span></a>
-</span><span id="IFELSE-179"><a href="#IFELSE-179"><span class="linenos">179</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="IFELSE-164"><a href="#IFELSE-164"><span class="linenos">164</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE-165"><a href="#IFELSE-165"><span class="linenos">165</span></a>
+</span><span id="IFELSE-166"><a href="#IFELSE-166"><span class="linenos">166</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="IFELSE-167"><a href="#IFELSE-167"><span class="linenos">167</span></a>
+</span><span id="IFELSE-168"><a href="#IFELSE-168"><span class="linenos">168</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -712,14 +690,14 @@ ifelse_code : list of dict
                     <div class="decorator decorator-override">@override</div>
 
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">prime</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="IFELSE.certificate-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#IFELSE.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.certificate-155"><a href="#IFELSE.certificate-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.certificate-156"><a href="#IFELSE.certificate-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="IFELSE.certificate-156"><a href="#IFELSE.certificate-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="IFELSE.certificate-157"><a href="#IFELSE.certificate-157"><span class="linenos">157</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE.certificate-158"><a href="#IFELSE.certificate-158"><span class="linenos">158</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
 </span><span id="IFELSE.certificate-159"><a href="#IFELSE.certificate-159"><span class="linenos">159</span></a>
@@ -727,22 +705,11 @@ ifelse_code : list of dict
 </span><span id="IFELSE.certificate-161"><a href="#IFELSE.certificate-161"><span class="linenos">161</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
 </span><span id="IFELSE.certificate-162"><a href="#IFELSE.certificate-162"><span class="linenos">162</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
 </span><span id="IFELSE.certificate-163"><a href="#IFELSE.certificate-163"><span class="linenos">163</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="IFELSE.certificate-164"><a href="#IFELSE.certificate-164"><span class="linenos">164</span></a>
-</span><span id="IFELSE.certificate-165"><a href="#IFELSE.certificate-165"><span class="linenos">165</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE.certificate-166"><a href="#IFELSE.certificate-166"><span class="linenos">166</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE.certificate-167"><a href="#IFELSE.certificate-167"><span class="linenos">167</span></a><span class="sd">        prime : int</span>
-</span><span id="IFELSE.certificate-168"><a href="#IFELSE.certificate-168"><span class="linenos">168</span></a><span class="sd">            A prime number that represents the ID of the `Node`</span>
-</span><span id="IFELSE.certificate-169"><a href="#IFELSE.certificate-169"><span class="linenos">169</span></a><span class="sd">            in the AST.</span>
-</span><span id="IFELSE.certificate-170"><a href="#IFELSE.certificate-170"><span class="linenos">170</span></a>
-</span><span id="IFELSE.certificate-171"><a href="#IFELSE.certificate-171"><span class="linenos">171</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE.certificate-172"><a href="#IFELSE.certificate-172"><span class="linenos">172</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE.certificate-173"><a href="#IFELSE.certificate-173"><span class="linenos">173</span></a><span class="sd">        : int</span>
-</span><span id="IFELSE.certificate-174"><a href="#IFELSE.certificate-174"><span class="linenos">174</span></a><span class="sd">            A prime number that comes after the given `prime`.</span>
-</span><span id="IFELSE.certificate-175"><a href="#IFELSE.certificate-175"><span class="linenos">175</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE.certificate-176"><a href="#IFELSE.certificate-176"><span class="linenos">176</span></a>
-</span><span id="IFELSE.certificate-177"><a href="#IFELSE.certificate-177"><span class="linenos">177</span></a>        <span class="n">prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
-</span><span id="IFELSE.certificate-178"><a href="#IFELSE.certificate-178"><span class="linenos">178</span></a>
-</span><span id="IFELSE.certificate-179"><a href="#IFELSE.certificate-179"><span class="linenos">179</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</span><span id="IFELSE.certificate-164"><a href="#IFELSE.certificate-164"><span class="linenos">164</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE.certificate-165"><a href="#IFELSE.certificate-165"><span class="linenos">165</span></a>
+</span><span id="IFELSE.certificate-166"><a href="#IFELSE.certificate-166"><span class="linenos">166</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="IFELSE.certificate-167"><a href="#IFELSE.certificate-167"><span class="linenos">167</span></a>
+</span><span id="IFELSE.certificate-168"><a href="#IFELSE.certificate-168"><span class="linenos">168</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -752,17 +719,6 @@ ifelse_code : list of dict
 recursively, and the <code><a href="#IFELSE">IFELSE</a></code> itself, and then the children
 <code>statement</code> nodes -- also recursively -- in order (i.e., the
 <code><a href="#IFELSE.statement_if_true">statement_if_true</a></code> and then the <code><a href="#IFELSE.statement_if_false">statement_if_false</a></code> subtrees).</p>
-
-<h2 id="parameters">Parameters</h2>
-
-<p>prime : int
-    A prime number that represents the ID of the <code>Node</code>
-    in the AST.</p>
-
-<h2 id="returns">Returns</h2>
-
-<p>: int
-    A prime number that comes after the given <code>prime</code>.</p>
 </div>
 
 
@@ -784,7 +740,6 @@ recursively, and the <code><a href="#IFELSE">IFELSE</a></code> itself, and then 
                 <dd id="IFELSE.symbol" class="variable"><a href="../node.html#Node.symbol">symbol</a></dd>
                 <dd id="IFELSE.get_value" class="function"><a href="../node.html#Node.get_value">get_value</a></dd>
                 <dd id="IFELSE.get_type" class="function"><a href="../node.html#Node.get_type">get_type</a></dd>
-                <dd id="IFELSE.set_certificate_label" class="function"><a href="../node.html#Node.set_certificate_label">set_certificate_label</a></dd>
 
             </div>
                                 </dl>
