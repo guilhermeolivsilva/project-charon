@@ -46,6 +46,28 @@ class Operation(Node):
         self.symbol: str = self._compute_symbol()
 
     @override
+    def get_certificate_label(self) -> list[str]:
+        """
+        Get the contents of `certificate_label`.
+
+        For `Operation` nodes, obtain the certificates, recursively, from the
+        `lhs` and `rhs` subtrees first, and then from the `Operation` node
+        itself.
+
+        Returns
+        -------
+        : list of str
+            A list containing the certificate label of the `Node`.
+        """
+
+        return [
+            *self.lhs.get_certificate_label(),
+            *self.rhs.get_certificate_label(),
+            *super().get_certificate_label(),
+        ]
+
+
+    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `Operation`.
