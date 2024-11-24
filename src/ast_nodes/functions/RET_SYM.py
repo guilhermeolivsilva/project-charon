@@ -41,12 +41,7 @@ class RET_SYM(Node):
             A list containing the certificate label of the `Node`.
         """
 
-        certificate_label: list[str] = [
-            *self.returned_value.get_certificate_label(),
-            *super().get_certificate_label(),
-        ]
-
-        return certificate_label
+        return super().get_certificate_label()
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -149,5 +144,6 @@ class RET_SYM(Node):
         """
 
         self.returned_value.certificate()
+        _returned_value_certificate = self.returned_value.get_certificate_label().pop()
 
-        super().certificate()
+        self.certificate_label = f"(({self.symbol})^{_returned_value_certificate})"

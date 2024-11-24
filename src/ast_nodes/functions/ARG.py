@@ -47,10 +47,7 @@ class ARG(Node):
             A list containing the certificate label of the `Node`.
         """
 
-        return [
-            *self.argument_value.get_certificate_label(),
-            *super().get_certificate_label()
-        ]
+        return super().get_certificate_label()
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -137,5 +134,6 @@ class ARG(Node):
         """
 
         self.argument_value.certificate()
+        _argument_value_certificate = self.argument_value.get_certificate_label().pop()
 
-        super().certificate()
+        self.certificate_label = f"(({self.symbol})^{_argument_value_certificate})"
