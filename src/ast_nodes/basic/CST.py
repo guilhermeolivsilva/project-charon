@@ -39,4 +39,4 @@ class CST(Node):
 
         # We apply this linear transformation so we get rid of zeroes
         value_exponent = value + 1 if value >= 0 else value
-        self.symbol: str = f"({self.symbol})^({value_exponent}))"
+        self.symbol: str = f"({self.symbol})^({value_exponent})"
