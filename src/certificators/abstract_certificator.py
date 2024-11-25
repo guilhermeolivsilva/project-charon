@@ -8,6 +8,7 @@ class AbstractCertificator:
 
     def __init__(self, **kwargs) -> None:
         self.computed_certificate: list[str] = []
+        self.initial_prime: int = 2
 
     @abstractmethod
     def certificate(self, **kwargs) -> list[str]:

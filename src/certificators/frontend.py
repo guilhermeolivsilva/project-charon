@@ -1,11 +1,14 @@
 """Certificator for the frontend representation of Tiny C programs."""
 
+import re
+
 from typing_extensions import override
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.ast_nodes.variables.STRUCT_DEF import STRUCT_DEF
 from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 from src.certificators.abstract_certificator import AbstractCertificator
+from src.utils import next_prime
 
 
 class FrontendCertificator(AbstractCertificator):
@@ -40,10 +43,16 @@ class FrontendCertificator(AbstractCertificator):
         ast_certificate = self._certificate_ast()
         types_symbols = self._compute_types_symbols()
 
-        self.computed_certificate = self._certificate_types(
+        typed_certificate = self._certificate_types(
             ast_certificate=ast_certificate,
             types_symbols=types_symbols
         )
+
+        encoded_certificate = self._add_positional_primes(
+            typed_certificate=typed_certificate
+        )
+
+        self.computed_certificate = encoded_certificate
 
         return self.computed_certificate
 
@@ -117,7 +126,7 @@ class FrontendCertificator(AbstractCertificator):
         Returns
         -------
         type_certificated_labels : list[str]
-            The certificate with certificated labels.
+            The certificate with certificated types.
         """
 
         type_certificated_labels: list[str] = []
@@ -148,3 +157,51 @@ class FrontendCertificator(AbstractCertificator):
             type_certificated_labels.append(parsed_label)
 
         return type_certificated_labels
+    
+    def _add_positional_primes(self, typed_certificate: list[str]) -> list[str]:
+        """
+        Add primes that encode the position of operations to the certificate.
+
+        Parameters
+        ----------
+        typed_certificate : list[str]
+            The certificate with certificated types.
+
+        Returns
+        -------
+        encoded_certificate : list[str]
+            The certificate with encoded positions.
+        """
+
+        idx = 0
+        current_prime = self.initial_prime
+        encoded_certificate: list[str] = []
+
+        while idx < len(typed_certificate):
+            current_certificate = typed_certificate[idx]
+            encoded_position_certificate = f"{current_prime}^{current_certificate}"
+
+            # Propagate the encoded certificate
+            propagation_idx = idx
+
+            while propagation_idx < (len(typed_certificate)):
+                typed_certificate[propagation_idx] = typed_certificate[
+                    propagation_idx
+                ].replace(
+                    current_certificate,
+                    encoded_position_certificate
+                )
+
+                propagation_idx += 1
+
+            encoded_certificate.append(encoded_position_certificate)
+            current_prime = next_prime(current_prime)
+            idx += 1
+
+        # Collapse certificates with multiple positional primes
+        pattern = re.compile(r'(\d+)\^(?:\d+\^)+')
+        encoded_certificate = [
+            pattern.sub(r'\1^', s) for s in encoded_certificate
+        ]
+
+        return encoded_certificate
