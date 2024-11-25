@@ -129,98 +129,96 @@
 </span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
 </span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>        <span class="p">]</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>    <span class="nd">@override</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>    <span class="nd">@override</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        with an additional left space.</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">        Parameters</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">        ----------</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>    <span class="nd">@override</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="p">]:</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        Parameters</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        ----------</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        register : int</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">            Node.</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">        Returns</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        -------</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        register : int</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">            `instruction`and `value`.</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">argument_value_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="p">)</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_value_code</span><span class="p">)</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="c1"># they are not the same</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">arg_typecast</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>                <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>            <span class="p">)</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arg_typecast</span><span class="p">)</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>            <span class="p">}</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="p">}</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>    <span class="nd">@override</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        the `ARG` itself.</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Parameters</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        ----------</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="nd">@override</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>    <span class="p">]:</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        Parameters</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        ----------</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">        register : int</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">            Node.</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        Returns</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        -------</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        register : int</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        code_metadata : list of dict</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">            `instruction`and `value`.</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">argument_value_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="p">)</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_value_code</span><span class="p">)</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="c1"># they are not the same</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">arg_typecast</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>                <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>            <span class="p">)</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arg_typecast</span><span class="p">)</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>            <span class="p">}</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="p">}</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="nd">@override</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">        the `ARG` itself.</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 </span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">)&quot;</span>
 </span></pre></div>
 
 
@@ -273,98 +271,96 @@
 </span><span id="ARG-48"><a href="#ARG-48"><span class="linenos"> 48</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
 </span><span id="ARG-49"><a href="#ARG-49"><span class="linenos"> 49</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="ARG-50"><a href="#ARG-50"><span class="linenos"> 50</span></a>
-</span><span id="ARG-51"><a href="#ARG-51"><span class="linenos"> 51</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="ARG-52"><a href="#ARG-52"><span class="linenos"> 52</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="ARG-53"><a href="#ARG-53"><span class="linenos"> 53</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
-</span><span id="ARG-54"><a href="#ARG-54"><span class="linenos"> 54</span></a>        <span class="p">]</span>
-</span><span id="ARG-55"><a href="#ARG-55"><span class="linenos"> 55</span></a>
-</span><span id="ARG-56"><a href="#ARG-56"><span class="linenos"> 56</span></a>    <span class="nd">@override</span>
-</span><span id="ARG-57"><a href="#ARG-57"><span class="linenos"> 57</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ARG-58"><a href="#ARG-58"><span class="linenos"> 58</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ARG-59"><a href="#ARG-59"><span class="linenos"> 59</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
+</span><span id="ARG-51"><a href="#ARG-51"><span class="linenos"> 51</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="ARG-52"><a href="#ARG-52"><span class="linenos"> 52</span></a>
+</span><span id="ARG-53"><a href="#ARG-53"><span class="linenos"> 53</span></a>    <span class="nd">@override</span>
+</span><span id="ARG-54"><a href="#ARG-54"><span class="linenos"> 54</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ARG-55"><a href="#ARG-55"><span class="linenos"> 55</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG-56"><a href="#ARG-56"><span class="linenos"> 56</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
+</span><span id="ARG-57"><a href="#ARG-57"><span class="linenos"> 57</span></a>
+</span><span id="ARG-58"><a href="#ARG-58"><span class="linenos"> 58</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
+</span><span id="ARG-59"><a href="#ARG-59"><span class="linenos"> 59</span></a><span class="sd">        with an additional left space.</span>
 </span><span id="ARG-60"><a href="#ARG-60"><span class="linenos"> 60</span></a>
-</span><span id="ARG-61"><a href="#ARG-61"><span class="linenos"> 61</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
-</span><span id="ARG-62"><a href="#ARG-62"><span class="linenos"> 62</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="ARG-63"><a href="#ARG-63"><span class="linenos"> 63</span></a>
-</span><span id="ARG-64"><a href="#ARG-64"><span class="linenos"> 64</span></a><span class="sd">        Parameters</span>
-</span><span id="ARG-65"><a href="#ARG-65"><span class="linenos"> 65</span></a><span class="sd">        ----------</span>
-</span><span id="ARG-66"><a href="#ARG-66"><span class="linenos"> 66</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="ARG-67"><a href="#ARG-67"><span class="linenos"> 67</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="ARG-68"><a href="#ARG-68"><span class="linenos"> 68</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ARG-69"><a href="#ARG-69"><span class="linenos"> 69</span></a>
-</span><span id="ARG-70"><a href="#ARG-70"><span class="linenos"> 70</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="ARG-71"><a href="#ARG-71"><span class="linenos"> 71</span></a>
-</span><span id="ARG-72"><a href="#ARG-72"><span class="linenos"> 72</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="ARG-73"><a href="#ARG-73"><span class="linenos"> 73</span></a>
-</span><span id="ARG-74"><a href="#ARG-74"><span class="linenos"> 74</span></a>    <span class="nd">@override</span>
-</span><span id="ARG-75"><a href="#ARG-75"><span class="linenos"> 75</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="ARG-76"><a href="#ARG-76"><span class="linenos"> 76</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="ARG-77"><a href="#ARG-77"><span class="linenos"> 77</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
-</span><span id="ARG-78"><a href="#ARG-78"><span class="linenos"> 78</span></a>    <span class="p">]:</span>
-</span><span id="ARG-79"><a href="#ARG-79"><span class="linenos"> 79</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ARG-80"><a href="#ARG-80"><span class="linenos"> 80</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
-</span><span id="ARG-81"><a href="#ARG-81"><span class="linenos"> 81</span></a>
-</span><span id="ARG-82"><a href="#ARG-82"><span class="linenos"> 82</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
-</span><span id="ARG-83"><a href="#ARG-83"><span class="linenos"> 83</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
-</span><span id="ARG-84"><a href="#ARG-84"><span class="linenos"> 84</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
-</span><span id="ARG-85"><a href="#ARG-85"><span class="linenos"> 85</span></a>
-</span><span id="ARG-86"><a href="#ARG-86"><span class="linenos"> 86</span></a><span class="sd">        Parameters</span>
-</span><span id="ARG-87"><a href="#ARG-87"><span class="linenos"> 87</span></a><span class="sd">        ----------</span>
-</span><span id="ARG-88"><a href="#ARG-88"><span class="linenos"> 88</span></a><span class="sd">        register : int</span>
-</span><span id="ARG-89"><a href="#ARG-89"><span class="linenos"> 89</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="ARG-90"><a href="#ARG-90"><span class="linenos"> 90</span></a><span class="sd">            Node.</span>
-</span><span id="ARG-91"><a href="#ARG-91"><span class="linenos"> 91</span></a>
-</span><span id="ARG-92"><a href="#ARG-92"><span class="linenos"> 92</span></a><span class="sd">        Returns</span>
-</span><span id="ARG-93"><a href="#ARG-93"><span class="linenos"> 93</span></a><span class="sd">        -------</span>
-</span><span id="ARG-94"><a href="#ARG-94"><span class="linenos"> 94</span></a><span class="sd">        register : int</span>
-</span><span id="ARG-95"><a href="#ARG-95"><span class="linenos"> 95</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="ARG-96"><a href="#ARG-96"><span class="linenos"> 96</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="ARG-97"><a href="#ARG-97"><span class="linenos"> 97</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="ARG-98"><a href="#ARG-98"><span class="linenos"> 98</span></a><span class="sd">            `instruction`and `value`.</span>
-</span><span id="ARG-99"><a href="#ARG-99"><span class="linenos"> 99</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ARG-100"><a href="#ARG-100"><span class="linenos">100</span></a>
-</span><span id="ARG-101"><a href="#ARG-101"><span class="linenos">101</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="ARG-102"><a href="#ARG-102"><span class="linenos">102</span></a>
-</span><span id="ARG-103"><a href="#ARG-103"><span class="linenos">103</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">argument_value_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="ARG-104"><a href="#ARG-104"><span class="linenos">104</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="ARG-105"><a href="#ARG-105"><span class="linenos">105</span></a>        <span class="p">)</span>
-</span><span id="ARG-106"><a href="#ARG-106"><span class="linenos">106</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_value_code</span><span class="p">)</span>
-</span><span id="ARG-107"><a href="#ARG-107"><span class="linenos">107</span></a>
-</span><span id="ARG-108"><a href="#ARG-108"><span class="linenos">108</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
-</span><span id="ARG-109"><a href="#ARG-109"><span class="linenos">109</span></a>        <span class="c1"># they are not the same</span>
-</span><span id="ARG-110"><a href="#ARG-110"><span class="linenos">110</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
-</span><span id="ARG-111"><a href="#ARG-111"><span class="linenos">111</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">arg_typecast</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
-</span><span id="ARG-112"><a href="#ARG-112"><span class="linenos">112</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
-</span><span id="ARG-113"><a href="#ARG-113"><span class="linenos">113</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
-</span><span id="ARG-114"><a href="#ARG-114"><span class="linenos">114</span></a>                <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="ARG-115"><a href="#ARG-115"><span class="linenos">115</span></a>            <span class="p">)</span>
-</span><span id="ARG-116"><a href="#ARG-116"><span class="linenos">116</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arg_typecast</span><span class="p">)</span>
-</span><span id="ARG-117"><a href="#ARG-117"><span class="linenos">117</span></a>
-</span><span id="ARG-118"><a href="#ARG-118"><span class="linenos">118</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
-</span><span id="ARG-119"><a href="#ARG-119"><span class="linenos">119</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="ARG-120"><a href="#ARG-120"><span class="linenos">120</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ARG-121"><a href="#ARG-121"><span class="linenos">121</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="ARG-122"><a href="#ARG-122"><span class="linenos">122</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="ARG-123"><a href="#ARG-123"><span class="linenos">123</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="ARG-124"><a href="#ARG-124"><span class="linenos">124</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
-</span><span id="ARG-125"><a href="#ARG-125"><span class="linenos">125</span></a>            <span class="p">}</span>
-</span><span id="ARG-126"><a href="#ARG-126"><span class="linenos">126</span></a>        <span class="p">}</span>
-</span><span id="ARG-127"><a href="#ARG-127"><span class="linenos">127</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
-</span><span id="ARG-128"><a href="#ARG-128"><span class="linenos">128</span></a>
-</span><span id="ARG-129"><a href="#ARG-129"><span class="linenos">129</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
-</span><span id="ARG-130"><a href="#ARG-130"><span class="linenos">130</span></a>
-</span><span id="ARG-131"><a href="#ARG-131"><span class="linenos">131</span></a>    <span class="nd">@override</span>
-</span><span id="ARG-132"><a href="#ARG-132"><span class="linenos">132</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ARG-133"><a href="#ARG-133"><span class="linenos">133</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ARG-134"><a href="#ARG-134"><span class="linenos">134</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
-</span><span id="ARG-135"><a href="#ARG-135"><span class="linenos">135</span></a>
-</span><span id="ARG-136"><a href="#ARG-136"><span class="linenos">136</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
-</span><span id="ARG-137"><a href="#ARG-137"><span class="linenos">137</span></a><span class="sd">        the `ARG` itself.</span>
-</span><span id="ARG-138"><a href="#ARG-138"><span class="linenos">138</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-61"><a href="#ARG-61"><span class="linenos"> 61</span></a><span class="sd">        Parameters</span>
+</span><span id="ARG-62"><a href="#ARG-62"><span class="linenos"> 62</span></a><span class="sd">        ----------</span>
+</span><span id="ARG-63"><a href="#ARG-63"><span class="linenos"> 63</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="ARG-64"><a href="#ARG-64"><span class="linenos"> 64</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="ARG-65"><a href="#ARG-65"><span class="linenos"> 65</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-66"><a href="#ARG-66"><span class="linenos"> 66</span></a>
+</span><span id="ARG-67"><a href="#ARG-67"><span class="linenos"> 67</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="ARG-68"><a href="#ARG-68"><span class="linenos"> 68</span></a>
+</span><span id="ARG-69"><a href="#ARG-69"><span class="linenos"> 69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="ARG-70"><a href="#ARG-70"><span class="linenos"> 70</span></a>
+</span><span id="ARG-71"><a href="#ARG-71"><span class="linenos"> 71</span></a>    <span class="nd">@override</span>
+</span><span id="ARG-72"><a href="#ARG-72"><span class="linenos"> 72</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="ARG-73"><a href="#ARG-73"><span class="linenos"> 73</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="ARG-74"><a href="#ARG-74"><span class="linenos"> 74</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
+</span><span id="ARG-75"><a href="#ARG-75"><span class="linenos"> 75</span></a>    <span class="p">]:</span>
+</span><span id="ARG-76"><a href="#ARG-76"><span class="linenos"> 76</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG-77"><a href="#ARG-77"><span class="linenos"> 77</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
+</span><span id="ARG-78"><a href="#ARG-78"><span class="linenos"> 78</span></a>
+</span><span id="ARG-79"><a href="#ARG-79"><span class="linenos"> 79</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
+</span><span id="ARG-80"><a href="#ARG-80"><span class="linenos"> 80</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
+</span><span id="ARG-81"><a href="#ARG-81"><span class="linenos"> 81</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
+</span><span id="ARG-82"><a href="#ARG-82"><span class="linenos"> 82</span></a>
+</span><span id="ARG-83"><a href="#ARG-83"><span class="linenos"> 83</span></a><span class="sd">        Parameters</span>
+</span><span id="ARG-84"><a href="#ARG-84"><span class="linenos"> 84</span></a><span class="sd">        ----------</span>
+</span><span id="ARG-85"><a href="#ARG-85"><span class="linenos"> 85</span></a><span class="sd">        register : int</span>
+</span><span id="ARG-86"><a href="#ARG-86"><span class="linenos"> 86</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="ARG-87"><a href="#ARG-87"><span class="linenos"> 87</span></a><span class="sd">            Node.</span>
+</span><span id="ARG-88"><a href="#ARG-88"><span class="linenos"> 88</span></a>
+</span><span id="ARG-89"><a href="#ARG-89"><span class="linenos"> 89</span></a><span class="sd">        Returns</span>
+</span><span id="ARG-90"><a href="#ARG-90"><span class="linenos"> 90</span></a><span class="sd">        -------</span>
+</span><span id="ARG-91"><a href="#ARG-91"><span class="linenos"> 91</span></a><span class="sd">        register : int</span>
+</span><span id="ARG-92"><a href="#ARG-92"><span class="linenos"> 92</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="ARG-93"><a href="#ARG-93"><span class="linenos"> 93</span></a><span class="sd">        code_metadata : list of dict</span>
+</span><span id="ARG-94"><a href="#ARG-94"><span class="linenos"> 94</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="ARG-95"><a href="#ARG-95"><span class="linenos"> 95</span></a><span class="sd">            `instruction`and `value`.</span>
+</span><span id="ARG-96"><a href="#ARG-96"><span class="linenos"> 96</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-97"><a href="#ARG-97"><span class="linenos"> 97</span></a>
+</span><span id="ARG-98"><a href="#ARG-98"><span class="linenos"> 98</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="ARG-99"><a href="#ARG-99"><span class="linenos"> 99</span></a>
+</span><span id="ARG-100"><a href="#ARG-100"><span class="linenos">100</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">argument_value_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="ARG-101"><a href="#ARG-101"><span class="linenos">101</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="ARG-102"><a href="#ARG-102"><span class="linenos">102</span></a>        <span class="p">)</span>
+</span><span id="ARG-103"><a href="#ARG-103"><span class="linenos">103</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_value_code</span><span class="p">)</span>
+</span><span id="ARG-104"><a href="#ARG-104"><span class="linenos">104</span></a>
+</span><span id="ARG-105"><a href="#ARG-105"><span class="linenos">105</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
+</span><span id="ARG-106"><a href="#ARG-106"><span class="linenos">106</span></a>        <span class="c1"># they are not the same</span>
+</span><span id="ARG-107"><a href="#ARG-107"><span class="linenos">107</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
+</span><span id="ARG-108"><a href="#ARG-108"><span class="linenos">108</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">arg_typecast</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
+</span><span id="ARG-109"><a href="#ARG-109"><span class="linenos">109</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
+</span><span id="ARG-110"><a href="#ARG-110"><span class="linenos">110</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
+</span><span id="ARG-111"><a href="#ARG-111"><span class="linenos">111</span></a>                <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="ARG-112"><a href="#ARG-112"><span class="linenos">112</span></a>            <span class="p">)</span>
+</span><span id="ARG-113"><a href="#ARG-113"><span class="linenos">113</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arg_typecast</span><span class="p">)</span>
+</span><span id="ARG-114"><a href="#ARG-114"><span class="linenos">114</span></a>
+</span><span id="ARG-115"><a href="#ARG-115"><span class="linenos">115</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
+</span><span id="ARG-116"><a href="#ARG-116"><span class="linenos">116</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="ARG-117"><a href="#ARG-117"><span class="linenos">117</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="ARG-118"><a href="#ARG-118"><span class="linenos">118</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
+</span><span id="ARG-119"><a href="#ARG-119"><span class="linenos">119</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="ARG-120"><a href="#ARG-120"><span class="linenos">120</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
+</span><span id="ARG-121"><a href="#ARG-121"><span class="linenos">121</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="ARG-122"><a href="#ARG-122"><span class="linenos">122</span></a>            <span class="p">}</span>
+</span><span id="ARG-123"><a href="#ARG-123"><span class="linenos">123</span></a>        <span class="p">}</span>
+</span><span id="ARG-124"><a href="#ARG-124"><span class="linenos">124</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
+</span><span id="ARG-125"><a href="#ARG-125"><span class="linenos">125</span></a>
+</span><span id="ARG-126"><a href="#ARG-126"><span class="linenos">126</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+</span><span id="ARG-127"><a href="#ARG-127"><span class="linenos">127</span></a>
+</span><span id="ARG-128"><a href="#ARG-128"><span class="linenos">128</span></a>    <span class="nd">@override</span>
+</span><span id="ARG-129"><a href="#ARG-129"><span class="linenos">129</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ARG-130"><a href="#ARG-130"><span class="linenos">130</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG-131"><a href="#ARG-131"><span class="linenos">131</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
+</span><span id="ARG-132"><a href="#ARG-132"><span class="linenos">132</span></a>
+</span><span id="ARG-133"><a href="#ARG-133"><span class="linenos">133</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
+</span><span id="ARG-134"><a href="#ARG-134"><span class="linenos">134</span></a><span class="sd">        the `ARG` itself.</span>
+</span><span id="ARG-135"><a href="#ARG-135"><span class="linenos">135</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-136"><a href="#ARG-136"><span class="linenos">136</span></a>
+</span><span id="ARG-137"><a href="#ARG-137"><span class="linenos">137</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="ARG-138"><a href="#ARG-138"><span class="linenos">138</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 </span><span id="ARG-139"><a href="#ARG-139"><span class="linenos">139</span></a>
-</span><span id="ARG-140"><a href="#ARG-140"><span class="linenos">140</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
-</span><span id="ARG-141"><a href="#ARG-141"><span class="linenos">141</span></a>
-</span><span id="ARG-142"><a href="#ARG-142"><span class="linenos">142</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="ARG-140"><a href="#ARG-140"><span class="linenos">140</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">)&quot;</span>
 </span></pre></div>
 
 
@@ -454,10 +450,7 @@ parameter_type : str
 </span><span id="ARG.get_certificate_label-48"><a href="#ARG.get_certificate_label-48"><span class="linenos">48</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
 </span><span id="ARG.get_certificate_label-49"><a href="#ARG.get_certificate_label-49"><span class="linenos">49</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="ARG.get_certificate_label-50"><a href="#ARG.get_certificate_label-50"><span class="linenos">50</span></a>
-</span><span id="ARG.get_certificate_label-51"><a href="#ARG.get_certificate_label-51"><span class="linenos">51</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="ARG.get_certificate_label-52"><a href="#ARG.get_certificate_label-52"><span class="linenos">52</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="ARG.get_certificate_label-53"><a href="#ARG.get_certificate_label-53"><span class="linenos">53</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
-</span><span id="ARG.get_certificate_label-54"><a href="#ARG.get_certificate_label-54"><span class="linenos">54</span></a>        <span class="p">]</span>
+</span><span id="ARG.get_certificate_label-51"><a href="#ARG.get_certificate_label-51"><span class="linenos">51</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -486,23 +479,23 @@ first, and then from the <code><a href="#ARG">ARG</a></code> node itself.</p>
 
     </div>
     <a class="headerlink" href="#ARG.print"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ARG.print-56"><a href="#ARG.print-56"><span class="linenos">56</span></a>    <span class="nd">@override</span>
-</span><span id="ARG.print-57"><a href="#ARG.print-57"><span class="linenos">57</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ARG.print-58"><a href="#ARG.print-58"><span class="linenos">58</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ARG.print-59"><a href="#ARG.print-59"><span class="linenos">59</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ARG.print-53"><a href="#ARG.print-53"><span class="linenos">53</span></a>    <span class="nd">@override</span>
+</span><span id="ARG.print-54"><a href="#ARG.print-54"><span class="linenos">54</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ARG.print-55"><a href="#ARG.print-55"><span class="linenos">55</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG.print-56"><a href="#ARG.print-56"><span class="linenos">56</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
+</span><span id="ARG.print-57"><a href="#ARG.print-57"><span class="linenos">57</span></a>
+</span><span id="ARG.print-58"><a href="#ARG.print-58"><span class="linenos">58</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
+</span><span id="ARG.print-59"><a href="#ARG.print-59"><span class="linenos">59</span></a><span class="sd">        with an additional left space.</span>
 </span><span id="ARG.print-60"><a href="#ARG.print-60"><span class="linenos">60</span></a>
-</span><span id="ARG.print-61"><a href="#ARG.print-61"><span class="linenos">61</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
-</span><span id="ARG.print-62"><a href="#ARG.print-62"><span class="linenos">62</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="ARG.print-63"><a href="#ARG.print-63"><span class="linenos">63</span></a>
-</span><span id="ARG.print-64"><a href="#ARG.print-64"><span class="linenos">64</span></a><span class="sd">        Parameters</span>
-</span><span id="ARG.print-65"><a href="#ARG.print-65"><span class="linenos">65</span></a><span class="sd">        ----------</span>
-</span><span id="ARG.print-66"><a href="#ARG.print-66"><span class="linenos">66</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="ARG.print-67"><a href="#ARG.print-67"><span class="linenos">67</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="ARG.print-68"><a href="#ARG.print-68"><span class="linenos">68</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ARG.print-69"><a href="#ARG.print-69"><span class="linenos">69</span></a>
-</span><span id="ARG.print-70"><a href="#ARG.print-70"><span class="linenos">70</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="ARG.print-71"><a href="#ARG.print-71"><span class="linenos">71</span></a>
-</span><span id="ARG.print-72"><a href="#ARG.print-72"><span class="linenos">72</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="ARG.print-61"><a href="#ARG.print-61"><span class="linenos">61</span></a><span class="sd">        Parameters</span>
+</span><span id="ARG.print-62"><a href="#ARG.print-62"><span class="linenos">62</span></a><span class="sd">        ----------</span>
+</span><span id="ARG.print-63"><a href="#ARG.print-63"><span class="linenos">63</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="ARG.print-64"><a href="#ARG.print-64"><span class="linenos">64</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="ARG.print-65"><a href="#ARG.print-65"><span class="linenos">65</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG.print-66"><a href="#ARG.print-66"><span class="linenos">66</span></a>
+</span><span id="ARG.print-67"><a href="#ARG.print-67"><span class="linenos">67</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
+</span><span id="ARG.print-68"><a href="#ARG.print-68"><span class="linenos">68</span></a>
+</span><span id="ARG.print-69"><a href="#ARG.print-69"><span class="linenos">69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -531,62 +524,62 @@ with an additional left space.</p>
 
     </div>
     <a class="headerlink" href="#ARG.generate_code"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ARG.generate_code-74"><a href="#ARG.generate_code-74"><span class="linenos"> 74</span></a>    <span class="nd">@override</span>
-</span><span id="ARG.generate_code-75"><a href="#ARG.generate_code-75"><span class="linenos"> 75</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="ARG.generate_code-76"><a href="#ARG.generate_code-76"><span class="linenos"> 76</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="ARG.generate_code-77"><a href="#ARG.generate_code-77"><span class="linenos"> 77</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
-</span><span id="ARG.generate_code-78"><a href="#ARG.generate_code-78"><span class="linenos"> 78</span></a>    <span class="p">]:</span>
-</span><span id="ARG.generate_code-79"><a href="#ARG.generate_code-79"><span class="linenos"> 79</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ARG.generate_code-80"><a href="#ARG.generate_code-80"><span class="linenos"> 80</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
-</span><span id="ARG.generate_code-81"><a href="#ARG.generate_code-81"><span class="linenos"> 81</span></a>
-</span><span id="ARG.generate_code-82"><a href="#ARG.generate_code-82"><span class="linenos"> 82</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
-</span><span id="ARG.generate_code-83"><a href="#ARG.generate_code-83"><span class="linenos"> 83</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
-</span><span id="ARG.generate_code-84"><a href="#ARG.generate_code-84"><span class="linenos"> 84</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
-</span><span id="ARG.generate_code-85"><a href="#ARG.generate_code-85"><span class="linenos"> 85</span></a>
-</span><span id="ARG.generate_code-86"><a href="#ARG.generate_code-86"><span class="linenos"> 86</span></a><span class="sd">        Parameters</span>
-</span><span id="ARG.generate_code-87"><a href="#ARG.generate_code-87"><span class="linenos"> 87</span></a><span class="sd">        ----------</span>
-</span><span id="ARG.generate_code-88"><a href="#ARG.generate_code-88"><span class="linenos"> 88</span></a><span class="sd">        register : int</span>
-</span><span id="ARG.generate_code-89"><a href="#ARG.generate_code-89"><span class="linenos"> 89</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="ARG.generate_code-90"><a href="#ARG.generate_code-90"><span class="linenos"> 90</span></a><span class="sd">            Node.</span>
-</span><span id="ARG.generate_code-91"><a href="#ARG.generate_code-91"><span class="linenos"> 91</span></a>
-</span><span id="ARG.generate_code-92"><a href="#ARG.generate_code-92"><span class="linenos"> 92</span></a><span class="sd">        Returns</span>
-</span><span id="ARG.generate_code-93"><a href="#ARG.generate_code-93"><span class="linenos"> 93</span></a><span class="sd">        -------</span>
-</span><span id="ARG.generate_code-94"><a href="#ARG.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">        register : int</span>
-</span><span id="ARG.generate_code-95"><a href="#ARG.generate_code-95"><span class="linenos"> 95</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="ARG.generate_code-96"><a href="#ARG.generate_code-96"><span class="linenos"> 96</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="ARG.generate_code-97"><a href="#ARG.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
-</span><span id="ARG.generate_code-98"><a href="#ARG.generate_code-98"><span class="linenos"> 98</span></a><span class="sd">            `instruction`and `value`.</span>
-</span><span id="ARG.generate_code-99"><a href="#ARG.generate_code-99"><span class="linenos"> 99</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ARG.generate_code-100"><a href="#ARG.generate_code-100"><span class="linenos">100</span></a>
-</span><span id="ARG.generate_code-101"><a href="#ARG.generate_code-101"><span class="linenos">101</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="ARG.generate_code-102"><a href="#ARG.generate_code-102"><span class="linenos">102</span></a>
-</span><span id="ARG.generate_code-103"><a href="#ARG.generate_code-103"><span class="linenos">103</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">argument_value_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="ARG.generate_code-104"><a href="#ARG.generate_code-104"><span class="linenos">104</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="ARG.generate_code-105"><a href="#ARG.generate_code-105"><span class="linenos">105</span></a>        <span class="p">)</span>
-</span><span id="ARG.generate_code-106"><a href="#ARG.generate_code-106"><span class="linenos">106</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_value_code</span><span class="p">)</span>
-</span><span id="ARG.generate_code-107"><a href="#ARG.generate_code-107"><span class="linenos">107</span></a>
-</span><span id="ARG.generate_code-108"><a href="#ARG.generate_code-108"><span class="linenos">108</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
-</span><span id="ARG.generate_code-109"><a href="#ARG.generate_code-109"><span class="linenos">109</span></a>        <span class="c1"># they are not the same</span>
-</span><span id="ARG.generate_code-110"><a href="#ARG.generate_code-110"><span class="linenos">110</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
-</span><span id="ARG.generate_code-111"><a href="#ARG.generate_code-111"><span class="linenos">111</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">arg_typecast</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
-</span><span id="ARG.generate_code-112"><a href="#ARG.generate_code-112"><span class="linenos">112</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
-</span><span id="ARG.generate_code-113"><a href="#ARG.generate_code-113"><span class="linenos">113</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
-</span><span id="ARG.generate_code-114"><a href="#ARG.generate_code-114"><span class="linenos">114</span></a>                <span class="n">register</span><span class="o">=</span><span class="n">register</span>
-</span><span id="ARG.generate_code-115"><a href="#ARG.generate_code-115"><span class="linenos">115</span></a>            <span class="p">)</span>
-</span><span id="ARG.generate_code-116"><a href="#ARG.generate_code-116"><span class="linenos">116</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arg_typecast</span><span class="p">)</span>
-</span><span id="ARG.generate_code-117"><a href="#ARG.generate_code-117"><span class="linenos">117</span></a>
-</span><span id="ARG.generate_code-118"><a href="#ARG.generate_code-118"><span class="linenos">118</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
-</span><span id="ARG.generate_code-119"><a href="#ARG.generate_code-119"><span class="linenos">119</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="ARG.generate_code-120"><a href="#ARG.generate_code-120"><span class="linenos">120</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ARG.generate_code-121"><a href="#ARG.generate_code-121"><span class="linenos">121</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="ARG.generate_code-122"><a href="#ARG.generate_code-122"><span class="linenos">122</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="ARG.generate_code-123"><a href="#ARG.generate_code-123"><span class="linenos">123</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="ARG.generate_code-124"><a href="#ARG.generate_code-124"><span class="linenos">124</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
-</span><span id="ARG.generate_code-125"><a href="#ARG.generate_code-125"><span class="linenos">125</span></a>            <span class="p">}</span>
-</span><span id="ARG.generate_code-126"><a href="#ARG.generate_code-126"><span class="linenos">126</span></a>        <span class="p">}</span>
-</span><span id="ARG.generate_code-127"><a href="#ARG.generate_code-127"><span class="linenos">127</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
-</span><span id="ARG.generate_code-128"><a href="#ARG.generate_code-128"><span class="linenos">128</span></a>
-</span><span id="ARG.generate_code-129"><a href="#ARG.generate_code-129"><span class="linenos">129</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ARG.generate_code-71"><a href="#ARG.generate_code-71"><span class="linenos"> 71</span></a>    <span class="nd">@override</span>
+</span><span id="ARG.generate_code-72"><a href="#ARG.generate_code-72"><span class="linenos"> 72</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="ARG.generate_code-73"><a href="#ARG.generate_code-73"><span class="linenos"> 73</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="ARG.generate_code-74"><a href="#ARG.generate_code-74"><span class="linenos"> 74</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span>
+</span><span id="ARG.generate_code-75"><a href="#ARG.generate_code-75"><span class="linenos"> 75</span></a>    <span class="p">]:</span>
+</span><span id="ARG.generate_code-76"><a href="#ARG.generate_code-76"><span class="linenos"> 76</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG.generate_code-77"><a href="#ARG.generate_code-77"><span class="linenos"> 77</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
+</span><span id="ARG.generate_code-78"><a href="#ARG.generate_code-78"><span class="linenos"> 78</span></a>
+</span><span id="ARG.generate_code-79"><a href="#ARG.generate_code-79"><span class="linenos"> 79</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
+</span><span id="ARG.generate_code-80"><a href="#ARG.generate_code-80"><span class="linenos"> 80</span></a><span class="sd">        node first, and then generate a `MOV` instruction to save the</span>
+</span><span id="ARG.generate_code-81"><a href="#ARG.generate_code-81"><span class="linenos"> 81</span></a><span class="sd">        `argument_value` in the `arg` register.</span>
+</span><span id="ARG.generate_code-82"><a href="#ARG.generate_code-82"><span class="linenos"> 82</span></a>
+</span><span id="ARG.generate_code-83"><a href="#ARG.generate_code-83"><span class="linenos"> 83</span></a><span class="sd">        Parameters</span>
+</span><span id="ARG.generate_code-84"><a href="#ARG.generate_code-84"><span class="linenos"> 84</span></a><span class="sd">        ----------</span>
+</span><span id="ARG.generate_code-85"><a href="#ARG.generate_code-85"><span class="linenos"> 85</span></a><span class="sd">        register : int</span>
+</span><span id="ARG.generate_code-86"><a href="#ARG.generate_code-86"><span class="linenos"> 86</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="ARG.generate_code-87"><a href="#ARG.generate_code-87"><span class="linenos"> 87</span></a><span class="sd">            Node.</span>
+</span><span id="ARG.generate_code-88"><a href="#ARG.generate_code-88"><span class="linenos"> 88</span></a>
+</span><span id="ARG.generate_code-89"><a href="#ARG.generate_code-89"><span class="linenos"> 89</span></a><span class="sd">        Returns</span>
+</span><span id="ARG.generate_code-90"><a href="#ARG.generate_code-90"><span class="linenos"> 90</span></a><span class="sd">        -------</span>
+</span><span id="ARG.generate_code-91"><a href="#ARG.generate_code-91"><span class="linenos"> 91</span></a><span class="sd">        register : int</span>
+</span><span id="ARG.generate_code-92"><a href="#ARG.generate_code-92"><span class="linenos"> 92</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="ARG.generate_code-93"><a href="#ARG.generate_code-93"><span class="linenos"> 93</span></a><span class="sd">        code_metadata : list of dict</span>
+</span><span id="ARG.generate_code-94"><a href="#ARG.generate_code-94"><span class="linenos"> 94</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the related</span>
+</span><span id="ARG.generate_code-95"><a href="#ARG.generate_code-95"><span class="linenos"> 95</span></a><span class="sd">            `instruction`and `value`.</span>
+</span><span id="ARG.generate_code-96"><a href="#ARG.generate_code-96"><span class="linenos"> 96</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG.generate_code-97"><a href="#ARG.generate_code-97"><span class="linenos"> 97</span></a>
+</span><span id="ARG.generate_code-98"><a href="#ARG.generate_code-98"><span class="linenos"> 98</span></a>        <span class="n">code_metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="ARG.generate_code-99"><a href="#ARG.generate_code-99"><span class="linenos"> 99</span></a>
+</span><span id="ARG.generate_code-100"><a href="#ARG.generate_code-100"><span class="linenos">100</span></a>        <span class="n">register</span><span class="p">,</span> <span class="n">argument_value_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="ARG.generate_code-101"><a href="#ARG.generate_code-101"><span class="linenos">101</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="ARG.generate_code-102"><a href="#ARG.generate_code-102"><span class="linenos">102</span></a>        <span class="p">)</span>
+</span><span id="ARG.generate_code-103"><a href="#ARG.generate_code-103"><span class="linenos">103</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument_value_code</span><span class="p">)</span>
+</span><span id="ARG.generate_code-104"><a href="#ARG.generate_code-104"><span class="linenos">104</span></a>
+</span><span id="ARG.generate_code-105"><a href="#ARG.generate_code-105"><span class="linenos">105</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
+</span><span id="ARG.generate_code-106"><a href="#ARG.generate_code-106"><span class="linenos">106</span></a>        <span class="c1"># they are not the same</span>
+</span><span id="ARG.generate_code-107"><a href="#ARG.generate_code-107"><span class="linenos">107</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
+</span><span id="ARG.generate_code-108"><a href="#ARG.generate_code-108"><span class="linenos">108</span></a>            <span class="n">register</span><span class="p">,</span> <span class="n">arg_typecast</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
+</span><span id="ARG.generate_code-109"><a href="#ARG.generate_code-109"><span class="linenos">109</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
+</span><span id="ARG.generate_code-110"><a href="#ARG.generate_code-110"><span class="linenos">110</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
+</span><span id="ARG.generate_code-111"><a href="#ARG.generate_code-111"><span class="linenos">111</span></a>                <span class="n">register</span><span class="o">=</span><span class="n">register</span>
+</span><span id="ARG.generate_code-112"><a href="#ARG.generate_code-112"><span class="linenos">112</span></a>            <span class="p">)</span>
+</span><span id="ARG.generate_code-113"><a href="#ARG.generate_code-113"><span class="linenos">113</span></a>            <span class="n">code_metadata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arg_typecast</span><span class="p">)</span>
+</span><span id="ARG.generate_code-114"><a href="#ARG.generate_code-114"><span class="linenos">114</span></a>
+</span><span id="ARG.generate_code-115"><a href="#ARG.generate_code-115"><span class="linenos">115</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
+</span><span id="ARG.generate_code-116"><a href="#ARG.generate_code-116"><span class="linenos">116</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span id="ARG.generate_code-117"><a href="#ARG.generate_code-117"><span class="linenos">117</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="ARG.generate_code-118"><a href="#ARG.generate_code-118"><span class="linenos">118</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
+</span><span id="ARG.generate_code-119"><a href="#ARG.generate_code-119"><span class="linenos">119</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="ARG.generate_code-120"><a href="#ARG.generate_code-120"><span class="linenos">120</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
+</span><span id="ARG.generate_code-121"><a href="#ARG.generate_code-121"><span class="linenos">121</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="ARG.generate_code-122"><a href="#ARG.generate_code-122"><span class="linenos">122</span></a>            <span class="p">}</span>
+</span><span id="ARG.generate_code-123"><a href="#ARG.generate_code-123"><span class="linenos">123</span></a>        <span class="p">}</span>
+</span><span id="ARG.generate_code-124"><a href="#ARG.generate_code-124"><span class="linenos">124</span></a>        <span class="n">code_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
+</span><span id="ARG.generate_code-125"><a href="#ARG.generate_code-125"><span class="linenos">125</span></a>
+</span><span id="ARG.generate_code-126"><a href="#ARG.generate_code-126"><span class="linenos">126</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span></pre></div>
 
 
@@ -625,18 +618,19 @@ code_metadata : list of dict
 
     </div>
     <a class="headerlink" href="#ARG.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ARG.certificate-131"><a href="#ARG.certificate-131"><span class="linenos">131</span></a>    <span class="nd">@override</span>
-</span><span id="ARG.certificate-132"><a href="#ARG.certificate-132"><span class="linenos">132</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ARG.certificate-133"><a href="#ARG.certificate-133"><span class="linenos">133</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ARG.certificate-134"><a href="#ARG.certificate-134"><span class="linenos">134</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
-</span><span id="ARG.certificate-135"><a href="#ARG.certificate-135"><span class="linenos">135</span></a>
-</span><span id="ARG.certificate-136"><a href="#ARG.certificate-136"><span class="linenos">136</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
-</span><span id="ARG.certificate-137"><a href="#ARG.certificate-137"><span class="linenos">137</span></a><span class="sd">        the `ARG` itself.</span>
-</span><span id="ARG.certificate-138"><a href="#ARG.certificate-138"><span class="linenos">138</span></a><span class="sd">        &quot;&quot;&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ARG.certificate-128"><a href="#ARG.certificate-128"><span class="linenos">128</span></a>    <span class="nd">@override</span>
+</span><span id="ARG.certificate-129"><a href="#ARG.certificate-129"><span class="linenos">129</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ARG.certificate-130"><a href="#ARG.certificate-130"><span class="linenos">130</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG.certificate-131"><a href="#ARG.certificate-131"><span class="linenos">131</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
+</span><span id="ARG.certificate-132"><a href="#ARG.certificate-132"><span class="linenos">132</span></a>
+</span><span id="ARG.certificate-133"><a href="#ARG.certificate-133"><span class="linenos">133</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
+</span><span id="ARG.certificate-134"><a href="#ARG.certificate-134"><span class="linenos">134</span></a><span class="sd">        the `ARG` itself.</span>
+</span><span id="ARG.certificate-135"><a href="#ARG.certificate-135"><span class="linenos">135</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG.certificate-136"><a href="#ARG.certificate-136"><span class="linenos">136</span></a>
+</span><span id="ARG.certificate-137"><a href="#ARG.certificate-137"><span class="linenos">137</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="ARG.certificate-138"><a href="#ARG.certificate-138"><span class="linenos">138</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 </span><span id="ARG.certificate-139"><a href="#ARG.certificate-139"><span class="linenos">139</span></a>
-</span><span id="ARG.certificate-140"><a href="#ARG.certificate-140"><span class="linenos">140</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
-</span><span id="ARG.certificate-141"><a href="#ARG.certificate-141"><span class="linenos">141</span></a>
-</span><span id="ARG.certificate-142"><a href="#ARG.certificate-142"><span class="linenos">142</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">()</span>
+</span><span id="ARG.certificate-140"><a href="#ARG.certificate-140"><span class="linenos">140</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">)&quot;</span>
 </span></pre></div>
 
 
