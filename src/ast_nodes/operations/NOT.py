@@ -102,7 +102,7 @@ class NOT(Node):
             "metadata": {
 
                 "register": register,
-                "expression_register": expression_register
+                "value": expression_register
             }
         }
         register += 1

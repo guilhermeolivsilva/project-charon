@@ -270,8 +270,8 @@ class VirtualMachine:
             offset *= self.registers[offset_register]
 
         variable_address += offset
-        destination_register: int = instruction_params["register"]
-        self.registers[destination_register] = hex(variable_address)
+        value: int = instruction_params["register"]
+        self.registers[value] = hex(variable_address)
 
     def ALLOC(
         self,
@@ -408,10 +408,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        destination_register: int = instruction_params["register"]
+        value: int = instruction_params["register"]
         constant_value: int = instruction_params["value"]
 
-        self.registers[destination_register] = constant_value
+        self.registers[value] = constant_value
 
     def DIV(
         self,
@@ -708,10 +708,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params["source_register"]
-        destination_register: int = instruction_params["destination_register"]
+        register: int = instruction_params["register"]
+        value: int = instruction_params["value"]
 
-        self.registers[destination_register] = int(self.registers[source_register])
+        self.registers[value] = int(self.registers[register])
 
     def FSUB(
         self,
@@ -891,8 +891,8 @@ class VirtualMachine:
         variable_address += offset
         variable_value: Union[int, float] = self.memory[hex(variable_address)]
 
-        destination_register: int = instruction_params["register"]
-        self.registers[destination_register] = variable_value
+        value: int = instruction_params["register"]
+        self.registers[value] = variable_value
 
     def LSHIFT(
         self,
@@ -1067,7 +1067,7 @@ class VirtualMachine:
         the language does not support boolean literals (`True` and `False`).
         """
 
-        expression = self.registers[instruction_params["expression_register"]]
+        expression = self.registers[instruction_params["value"]]
 
         self.registers[instruction_params["register"]] = int(not expression)
 
@@ -1141,10 +1141,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params["source_register"]
-        destination_register: int = instruction_params["destination_register"]
+        register: int = instruction_params["register"]
+        value: int = instruction_params["value"]
 
-        self.registers[destination_register] = self.registers[source_register]
+        self.registers[value] = self.registers[register]
 
     def SITOFP(
         self,
@@ -1162,10 +1162,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params["source_register"]
-        destination_register: int = instruction_params["destination_register"]
+        register: int = instruction_params["register"]
+        value: int = instruction_params["value"]
 
-        self.registers[destination_register] = float(self.registers[source_register])
+        self.registers[value] = float(self.registers[register])
 
     def STORE(
         self,
@@ -1230,16 +1230,16 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        source_register: int = instruction_params["source_register"]
-        destination_register: int = instruction_params["destination_register"]
+        register: int = instruction_params["register"]
+        value: int = instruction_params["value"]
 
-        value_to_truncate: int = self.registers[source_register]
+        value_to_truncate: int = self.registers[register]
         truncated_value: int = value_to_truncate & 0xFFFF
 
         if truncated_value & 0x8000:
             truncated_value -= 0x100000
 
-        self.registers[destination_register] = truncated_value
+        self.registers[value] = truncated_value
 
     def _get_variable_address(
         self,

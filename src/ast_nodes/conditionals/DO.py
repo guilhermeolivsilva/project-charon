@@ -90,7 +90,7 @@ class DO(Conditional):
             {
                 "instruction": "NOT",
                 "metadata": {
-                    "expression_register": conditional_register,
+                    "value": conditional_register,
                     "register": register
                 }
             },

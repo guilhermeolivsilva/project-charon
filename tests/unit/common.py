@@ -896,7 +896,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "SITOFP",
-            "metadata": {"source_register": 16, "destination_register": 17},
+            "metadata": {"register": 16, "value": 17},
             "instruction_id": 26,
         },
         {
@@ -906,7 +906,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "FPTOSI",
-            "metadata": {"source_register": 18, "destination_register": 19},
+            "metadata": {"register": 18, "value": 19},
             "instruction_id": 28,
         },
         {
@@ -1067,7 +1067,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "SITOFP",
-            "metadata": {"source_register": 40, "destination_register": 41},
+            "metadata": {"register": 40, "value": 41},
             "instruction_id": 61,
         },
         {
@@ -1077,7 +1077,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "FPTOSI",
-            "metadata": {"source_register": 42, "destination_register": 43},
+            "metadata": {"register": 42, "value": 43},
             "instruction_id": 63,
         },
         {
