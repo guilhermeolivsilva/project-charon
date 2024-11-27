@@ -15,52 +15,6 @@ class VirtualMachine:
         The memory size, in bytes, to use.
     """
 
-    variables_instructions: list[str] = [
-        "ADDRESS",
-        "LOAD"
-    ]
-
-    constants_instructions: list[str] = ["CONSTANT"]
-
-    type_cast_instructions: list[str] = [
-        "FPTOSI",
-        "SIGNEXT",
-        "SITOFP",
-        "TRUNC"
-    ]
-
-    unops_instructions: list[str] = [
-        "NOT",
-        "STORE"
-    ]
-
-    binops_instructions: list[str] = [
-        "ADD",
-        "AND",
-        "BITAND",
-        "BITOR",
-        "DIV",
-        "EQ",
-        "FADD",
-        "FAND",
-        "FDIV",
-        "FEQ",
-        "FGT",
-        "FLT",
-        "FMULT",
-        "FNEQ",
-        "FOR",
-        "FSUB",
-        "GT",
-        "LSHIFT",
-        "MOD",
-        "MULT",
-        "NEQ",
-        "OR",
-        "RSHIFT",
-        "SUB"
-    ]
-
     def __init__(
         self,
         program: dict[str, Union[list, dict]],
