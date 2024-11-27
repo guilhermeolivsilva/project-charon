@@ -3,8 +3,7 @@
 from typing_extensions import override
 
 from src.certificators.abstract_certificator import AbstractCertificator
-from src.virtual_machine import VirtualMachine
-from src.utils import next_prime
+from src.utils import next_prime, INSTRUCTIONS_CATEGORIES
 
 
 class BackendCertificator(AbstractCertificator):
@@ -61,32 +60,32 @@ class BackendCertificator(AbstractCertificator):
                 "source": instruction
             }
 
-            if instruction in [
-                *VirtualMachine.constants_instructions,
-                *VirtualMachine.variables_instructions
-            ]:
-                source_metadata["metadata"] = {
-                    "value": metadata["value"]
-                }
+            try:
+                if instruction in [
+                    *INSTRUCTIONS_CATEGORIES["constants"],
+                    *INSTRUCTIONS_CATEGORIES["variables"]
+                ]:
+                    source_metadata["metadata"] = {
+                        "value": metadata["value"]
+                    }
 
-            elif instruction in VirtualMachine.type_cast_instructions:
-                source_metadata["metadata"] = {
-                    "operand": metadata["value"]
-                }
+                elif instruction in INSTRUCTIONS_CATEGORIES["type_casts"]:
+                    source_metadata["metadata"] = {
+                        "operand": metadata["value"]
+                    }
 
-            elif instruction in VirtualMachine.unops_instructions:
-                source_metadata["metadata"] = {
-                    "operand": self.register_tracker[metadata["value"]]
-                }
+                elif instruction in INSTRUCTIONS_CATEGORIES["unops"]:
+                    source_metadata["metadata"] = {
+                        "operand": self.register_tracker[metadata["value"]]
+                    }
 
-            elif instruction in VirtualMachine.binops_instructions:
-                source_metadata["metadata"] = {
-                    "lhs_operand": self.register_tracker[metadata["lhs_register"]],
-                    "rhs_operand": self.register_tracker[metadata["rhs_register"]]
-                }
+                elif instruction in INSTRUCTIONS_CATEGORIES["binops"]:
+                    source_metadata["metadata"] = {
+                        "lhs_operand": self.register_tracker[metadata["lhs_register"]],
+                        "rhs_operand": self.register_tracker[metadata["rhs_register"]]
+                    }
 
-            #TODO: add functions (call, return)
-            else:
+            except KeyError:
                 print(f"Handler for {instruction} has not been implemented yet")
                 idx += 1
                 continue

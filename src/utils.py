@@ -223,45 +223,136 @@ def get_variable_size(variable_metadata: dict) -> int:
     return var_size * var_length
 
 
-__NODES = [
-    "CST",
-    "VAR_DEF",
-    "VAR_VALUE",
-    "VAR_ADDRESS",
-    "FUNC_CALL",
-    "PARAM",
-    "ARG",
-    "RET_SYM",
-    "PROG",
-    "ASSIGN",
-    "ADD",
-    "SUB",
-    "MULT",
-    "DIV",
-    "MOD",
-    "LESS",
-    "GREATER",
-    "EQUAL",
-    "DIFF",
-    "AND",
-    "OR",
-    "LSHIFT",
-    "RSHIFT",
-    "BITAND",
-    "BITOR",
-    "NOT",
-    "IF",
-    "IFELSE",
-    "WHILE",
-    "DO"
+def flatten_list(list_of_lists: list[list], drop_duplicates: bool = True) -> list:
+    """
+    Flatten a list of lists into a single list.
+
+    Parameters
+    ----------
+    list_of_lists : list[list]
+        The list to be flattened.
+    drop_duplicates : bool (optional, default = True)
+        Whether or not duplicates should be removed from the final list.
+
+    Returns
+    -------
+    flattened_list : list
+        The flattened list.
+    """
+
+    flattened_list = [
+        element
+        for _list in list_of_lists.values()
+        for element in _list
+    ]
+
+    if drop_duplicates:
+        flattened_list = list(set(flattened_list))
+
+    return flattened_list
+
+
+__TYPE_CASTS = [
+    "FPTOSI",
+    "SIGNEXT",
+    "SITOFP",
+    "TRUNC"
 ]
 
+
+__VARIABLES = {
+    "VAR_DEF": ["ALLOC"],
+    "VAR_VALUE": ["LOAD"],
+    "VAR_ADDRESS": ["ADDRESS"]
+}
+
+
+__CONSTANTS = {
+    "CST": ["CONSTANT"]
+}
+
+
+__UNOPS = {
+    "ASSIGN": ["STORE"],
+    "NOT": ["NOT"]
+}
+
+
+__BINOPS = {
+    "ADD": ["ADD", "FADD"],
+    "SUB": ["SUB", "FSUB"],
+    "MULT": ["MULT", "FMULT"],
+    "DIV": ["DIV", "FDIV"],
+    "MOD": ["MOD"],
+    "LESS": ["LT", "FLT"],
+    "GREATER": ["GT", "FGT"],
+    "EQUAL": ["EQ", "FEQ"],
+    "DIFF": ["NEQ", "FNEQ"],
+    "AND": ["AND", "FAND"],
+    "OR": ["OR", "FOR"],
+    "LSHIFT": ["LSHIFT"],
+    "RSHIFT": ["RSHIFT"],
+    "BITAND": ["BITAND"],
+    "BITOR": ["BITOR"]
+}
+
+
+__JUMPS = {
+    "FUNC_CALL": ["JAL", "MOV"],
+    "RET_SYM": ["MOV", "JR"],
+    "IF": ["JZ"],
+    "IFELSE": ["JZ"],
+    "WHILE": ["JZ"],
+    "DO": ["NOT", "JZ"]
+}
+
+
+__FUNCTIONS = {
+    "PARAM": ["ALLOC", "STORE"],
+    "ARG": ["MOV"]
+}
+
+
+__MISC = {
+    "PROG": ["HALT"]
+}
+
+
+# Nodes kinds and their associated instructions
+NODE_TO_INSTRUCTION_MAPPING = {
+    **__VARIABLES,
+    **__CONSTANTS,
+    **__UNOPS,
+    **__BINOPS,
+    **__JUMPS,
+    **__FUNCTIONS,
+    **__MISC
+}
+
+
+INSTRUCTIONS_CATEGORIES = {
+    "variables": flatten_list(__VARIABLES),
+    "constants": flatten_list(__CONSTANTS),
+    "unops": flatten_list(__UNOPS),
+    "binops": flatten_list(__BINOPS),
+    "jumps": flatten_list(__JUMPS),
+    "functions": flatten_list(__FUNCTIONS),
+    "misc": flatten_list(__MISC),
+    "type_casts": __TYPE_CASTS
+}
+
+
+NODES = [
+    node_kind
+    for category in NODE_TO_INSTRUCTION_MAPPING.values()
+    for node_kind in category
+]
 
 NODE_SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
-        __NODES,
-        primes_list(len(__NODES))
+        NODES,
+        primes_list(len(NODES))
     )
 }
 
