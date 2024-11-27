@@ -7,8 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.basic.CST import CST
-from src.ast_nodes.certificate_mapping import NODE_SYMBOLS_MAP, TYPE_SYMBOLS_MAP
-from src.utils import builtin_types
+from src.utils import builtin_types, NODE_SYMBOLS_MAP, TYPE_SYMBOLS_MAP
 
 
 class ELEMENT_ACCESS(Node):

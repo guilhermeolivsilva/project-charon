@@ -3,7 +3,7 @@
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
+from src.utils import TYPE_SYMBOLS_MAP
 
 
 class CST(Node):

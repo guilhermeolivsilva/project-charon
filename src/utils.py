@@ -221,3 +221,59 @@ def get_variable_size(variable_metadata: dict) -> int:
         var_size += get_variable_size({"type": attr_type})
 
     return var_size * var_length
+
+
+__NODES = [
+    "CST",
+    "VAR_DEF",
+    "VAR_VALUE",
+    "VAR_ADDRESS",
+    "FUNC_CALL",
+    "PARAM",
+    "ARG",
+    "RET_SYM",
+    "PROG",
+    "ASSIGN",
+    "ADD",
+    "SUB",
+    "MULT",
+    "DIV",
+    "MOD",
+    "LESS",
+    "GREATER",
+    "EQUAL",
+    "DIFF",
+    "AND",
+    "OR",
+    "LSHIFT",
+    "RSHIFT",
+    "BITAND",
+    "BITOR",
+    "NOT",
+    "IF",
+    "IFELSE",
+    "WHILE",
+    "DO"
+]
+
+
+NODE_SYMBOLS_MAP = {
+    certificate: str(base)
+    for certificate, base in zip(
+        __NODES,
+        primes_list(len(__NODES))
+    )
+}
+
+
+TYPE_SYMBOLS_MAP = {
+    _type: {
+        "type_symbol": base,
+        "enforce": float if _type == "float" else int
+    }
+
+    for _type, base in zip(
+        builtin_types.keys(),
+        primes_list(len(builtin_types.keys()))
+    )
+}

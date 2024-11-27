@@ -5,8 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
-from src.utils import type_cast
+from src.utils import type_cast, TYPE_SYMBOLS_MAP
 
 
 class Operation(Node):

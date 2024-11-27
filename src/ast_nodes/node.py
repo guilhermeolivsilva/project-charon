@@ -2,7 +2,7 @@
 
 from typing import Union
 
-from src.ast_nodes.certificate_mapping import NODE_SYMBOLS_MAP
+from src.utils import NODE_SYMBOLS_MAP
 
 
 class Node:

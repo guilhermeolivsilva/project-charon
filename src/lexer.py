@@ -3,8 +3,7 @@
 from copy import deepcopy
 from typing import Union
 
-from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
-from src.utils import next_prime, primes_list
+from src.utils import next_prime, primes_list, TYPE_SYMBOLS_MAP
 
 
 class Lexer:

@@ -6,9 +6,8 @@ from typing_extensions import override
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.ast_nodes.variables.STRUCT_DEF import STRUCT_DEF
-from src.ast_nodes.certificate_mapping import TYPE_SYMBOLS_MAP
 from src.certificators.abstract_certificator import AbstractCertificator
-from src.utils import next_prime
+from src.utils import next_prime, TYPE_SYMBOLS_MAP
 
 
 class FrontendCertificator(AbstractCertificator):
