@@ -92,3 +92,52 @@ class BackendCertificator(AbstractCertificator):
 
             self.register_tracker[register] = source_metadata
             idx += 1
+
+    def _identify_jz(self, instruction: dict[str, dict], index: int) -> str:
+        """
+        TODO
+        """
+
+        _jump_size: int = instruction["metadata"]["jump_size"]
+        
+        _instruction_right_before_jump_target_idx = index + _jump_size - 1
+
+        _jumps_forward = self._is_jump_forward(index)
+        _lands_on_instruction_preceeded_by_unconditional_jump = self._is_unconditional_jump(_instruction_right_before_jump_target_idx)
+
+        if _jumps_forward:
+            if _lands_on_instruction_preceeded_by_unconditional_jump:
+                _preceeding_unconditional_jump_is_forward = self._is_jump_forward(_instruction_right_before_jump_target_idx)
+                
+                if _preceeding_unconditional_jump_is_forward:
+                    return "if else"
+                else:
+                    return "while"
+            else:
+                return "if"
+        else:
+            return "do while"
+
+    def _is_jump_forward(self, instruction_idx: int) -> bool:
+        """
+        TODO
+        """
+
+        instruction = self.program["code"][instruction_idx]
+
+        return (
+            "jump_size" in instruction["metadata"]
+            and instruction["metadata"]["jump_size"] > 0
+        )
+
+    def _is_unconditional_jump(self, instruction_idx: int) -> bool:
+        """
+        TODO
+        """
+
+        instruction = self.program["code"][instruction_idx]
+
+        return (
+            "conditional_register" in instruction["metadata"]
+            and instruction["metadata"]["conditional_register"] == "zero"
+        )
