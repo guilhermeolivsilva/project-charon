@@ -214,8 +214,8 @@
 </span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="c1"># Direct casts</span>
 </span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    <span class="n">_default_metadata</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
 </span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="p">}</span>
 </span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>    <span class="p">}</span>
 </span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>
@@ -682,8 +682,8 @@
 </span><span id="type_cast-124"><a href="#type_cast-124"><span class="linenos">124</span></a>    <span class="c1"># Direct casts</span>
 </span><span id="type_cast-125"><a href="#type_cast-125"><span class="linenos">125</span></a>    <span class="n">_default_metadata</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="type_cast-126"><a href="#type_cast-126"><span class="linenos">126</span></a>        <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="type_cast-127"><a href="#type_cast-127"><span class="linenos">127</span></a>            <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="type_cast-128"><a href="#type_cast-128"><span class="linenos">128</span></a>            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span>
+</span><span id="type_cast-127"><a href="#type_cast-127"><span class="linenos">127</span></a>            <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="type_cast-128"><a href="#type_cast-128"><span class="linenos">128</span></a>            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
 </span><span id="type_cast-129"><a href="#type_cast-129"><span class="linenos">129</span></a>        <span class="p">}</span>
 </span><span id="type_cast-130"><a href="#type_cast-130"><span class="linenos">130</span></a>    <span class="p">}</span>
 </span><span id="type_cast-131"><a href="#type_cast-131"><span class="linenos">131</span></a>
@@ -914,7 +914,7 @@ drop_duplicates : bool (optional, default = True)
                     <div class="attr variable">
             <span class="name">INSTRUCTIONS_CATEGORIES</span>        =
 <input id="INSTRUCTIONS_CATEGORIES-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;variables&#39;: [&#39;ALLOC&#39;, &#39;ADDRESS&#39;, &#39;LOAD&#39;], &#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STORE&#39;], &#39;binops&#39;: [&#39;OR&#39;, &#39;GT&#39;, &#39;ADD&#39;, &#39;FLT&#39;, &#39;FSUB&#39;, &#39;FOR&#39;, &#39;BITAND&#39;, &#39;DIV&#39;, &#39;SUB&#39;, &#39;FEQ&#39;, &#39;LSHIFT&#39;, &#39;AND&#39;, &#39;EQ&#39;, &#39;FDIV&#39;, &#39;MULT&#39;, &#39;FADD&#39;, &#39;LT&#39;, &#39;FGT&#39;, &#39;FAND&#39;, &#39;BITOR&#39;, &#39;RSHIFT&#39;, &#39;MOD&#39;, &#39;NEQ&#39;, &#39;FNEQ&#39;, &#39;FMULT&#39;], &#39;jumps&#39;: [&#39;JAL&#39;, &#39;JR&#39;, &#39;MOV&#39;, &#39;JZ&#39;, &#39;NOT&#39;], &#39;functions&#39;: [&#39;ALLOC&#39;, &#39;MOV&#39;, &#39;STORE&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
+            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;variables&#39;: [&#39;ADDRESS&#39;, &#39;ALLOC&#39;, &#39;LOAD&#39;], &#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STORE&#39;], &#39;binops&#39;: [&#39;FLT&#39;, &#39;FAND&#39;, &#39;EQ&#39;, &#39;OR&#39;, &#39;GT&#39;, &#39;NEQ&#39;, &#39;SUB&#39;, &#39;ADD&#39;, &#39;AND&#39;, &#39;FGT&#39;, &#39;DIV&#39;, &#39;BITOR&#39;, &#39;BITAND&#39;, &#39;FEQ&#39;, &#39;RSHIFT&#39;, &#39;FDIV&#39;, &#39;FADD&#39;, &#39;FSUB&#39;, &#39;LSHIFT&#39;, &#39;FMULT&#39;, &#39;FOR&#39;, &#39;MULT&#39;, &#39;MOD&#39;, &#39;FNEQ&#39;, &#39;LT&#39;], &#39;jumps&#39;: [&#39;JZ&#39;, &#39;MOV&#39;, &#39;NOT&#39;, &#39;JR&#39;, &#39;JAL&#39;], &#39;functions&#39;: [&#39;MOV&#39;, &#39;ALLOC&#39;, &#39;STORE&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
 
         
     </div>
