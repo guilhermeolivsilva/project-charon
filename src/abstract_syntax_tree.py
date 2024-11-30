@@ -159,6 +159,7 @@ class AbstractSyntaxTree:
 
         if self.current_symbol == "SEMI":
             self._next_symbol()
+            return
 
         statement_handler_map = {
             "FUNC_CALL": self._func_call,
@@ -348,7 +349,9 @@ class AbstractSyntaxTree:
                 statement_node.add_child(temp_node)
 
             child_statement = self._statement()
-            statement_node.add_child(child_statement)
+
+            if child_statement is not None:
+                statement_node.add_child(child_statement)
 
         self._next_symbol()
 
