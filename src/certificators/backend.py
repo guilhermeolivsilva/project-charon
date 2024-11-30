@@ -20,8 +20,20 @@ class BackendCertificator(AbstractCertificator):
     def __init__(self, program: dict[str, dict]) -> None:
         super().__init__()
 
+        # Input
         self.program = program
+        self.instruction_list = [
+            *self.program["global_vars"],
+            *self.program["code"]
+        ]
+
+        # Track the origin of a register's contents
         self.register_tracker: dict[int, dict] = {}
+
+        # Tell whether an instruction has been accounted for in the
+        # certification process or not. Maps the index of `instruction_list`
+        # to `True` if already certified, or `False` otherwise.
+        self.instruction_status: dict[int, bool] = {}
 
     @override
     def certificate(self, **kwargs) -> list[str]:
@@ -39,13 +51,9 @@ class BackendCertificator(AbstractCertificator):
         """
 
         idx = 0
-        instruction_list = [
-            *self.program["global_vars"],
-            *self.program["code"]
-        ]
 
-        while idx < len(instruction_list):
-            bytecode = instruction_list[idx]
+        while idx < len(self.instruction_list):
+            bytecode = self.instruction_list[idx]
 
             instruction = bytecode["instruction"]
 
@@ -95,7 +103,24 @@ class BackendCertificator(AbstractCertificator):
 
     def _identify_jz(self, instruction: dict[str, dict], index: int) -> str:
         """
-        TODO
+        Tell the semantics of a conditional jump.
+
+        Conditional jumps are used to implement four control flow constructs:
+        `if`, `if/else`, `while`, and `do/while`. As the certification considers
+        what kind of control flow is being used, this method aims to identify
+        the construct based on the pattern of its context.
+
+        Parameters
+        ----------
+        instruction : dict[str, dict]
+            The instruction and its bytecode metadata.
+        index : int
+            The index of `instruction` in `self.instruction_list`.
+
+        Returns
+        -------
+        : str (values="IF", "IFELSE", "WHILE", "DO")
+            The semantics of the conditional jump.
         """
 
         _jump_size: int = instruction["metadata"]["jump_size"]
@@ -103,27 +128,41 @@ class BackendCertificator(AbstractCertificator):
         _instruction_right_before_jump_target_idx = index + _jump_size - 1
 
         _jumps_forward = self._is_jump_forward(index)
-        _lands_on_instruction_preceeded_by_unconditional_jump = self._is_unconditional_jump(_instruction_right_before_jump_target_idx)
+        _lands_on_instruction_preceeded_by_unconditional_jump = self._is_unconditional_jump(
+            _instruction_right_before_jump_target_idx
+        )
 
         if _jumps_forward:
             if _lands_on_instruction_preceeded_by_unconditional_jump:
-                _preceeding_unconditional_jump_is_forward = self._is_jump_forward(_instruction_right_before_jump_target_idx)
+                _preceeding_unconditional_jump_is_forward = self._is_jump_forward(
+                    _instruction_right_before_jump_target_idx
+                )
                 
                 if _preceeding_unconditional_jump_is_forward:
-                    return "if else"
+                    return "IFELSE"
                 else:
-                    return "while"
+                    return "WHILE"
             else:
-                return "if"
+                return "IF"
         else:
-            return "do while"
+            return "DO"
 
     def _is_jump_forward(self, instruction_idx: int) -> bool:
         """
-        TODO
+        Tell whether a jump instruction goes forward or backwards.
+
+        Parameters
+        ----------
+        instruction_idx : int
+            The index of the jump instruction in `self.instruction_list`.
+
+        Returns
+        -------
+        : bool
+            True if the jump is forward (`jump_size` > 0), False otherwise.
         """
 
-        instruction = self.program["code"][instruction_idx]
+        instruction = self.instruction_list[instruction_idx]
 
         return (
             "jump_size" in instruction["metadata"]
@@ -132,10 +171,24 @@ class BackendCertificator(AbstractCertificator):
 
     def _is_unconditional_jump(self, instruction_idx: int) -> bool:
         """
-        TODO
+        Tell whether a conditional jump actually implements an unconditional one.
+        
+        Such jumps are `JZ` instructions that use the `zero` register as the
+        condition. This register will always contain `0`, and thus the jump
+        always occur.
+
+        Parameters
+        ----------
+        instruction_idx : int
+            The index of the jump instruction in `self.instruction_list`.
+
+        Returns
+        -------
+        : bool
+            True if the jump is unconditional, False otherwise.
         """
 
-        instruction = self.program["code"][instruction_idx]
+        instruction = self.instruction_list[instruction_idx]
 
         return (
             "conditional_register" in instruction["metadata"]
