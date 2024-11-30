@@ -665,7 +665,7 @@ class VirtualMachine:
         register: int = instruction_params["register"]
         value: int = instruction_params["value"]
 
-        self.registers[value] = int(self.registers[register])
+        self.registers[register] = int(self.registers[value])
 
     def FSUB(
         self,
@@ -1098,7 +1098,7 @@ class VirtualMachine:
         register: int = instruction_params["register"]
         value: int = instruction_params["value"]
 
-        self.registers[value] = self.registers[register]
+        self.registers[register] = self.registers[value]
 
     def SITOFP(
         self,
@@ -1119,7 +1119,7 @@ class VirtualMachine:
         register: int = instruction_params["register"]
         value: int = instruction_params["value"]
 
-        self.registers[value] = float(self.registers[register])
+        self.registers[register] = float(self.registers[value])
 
     def STORE(
         self,
@@ -1187,13 +1187,13 @@ class VirtualMachine:
         register: int = instruction_params["register"]
         value: int = instruction_params["value"]
 
-        value_to_truncate: int = self.registers[register]
+        value_to_truncate: int = self.registers[value]
         truncated_value: int = value_to_truncate & 0xFFFF
 
         if truncated_value & 0x8000:
             truncated_value -= 0x100000
 
-        self.registers[value] = truncated_value
+        self.registers[register] = truncated_value
 
     def _get_variable_address(
         self,

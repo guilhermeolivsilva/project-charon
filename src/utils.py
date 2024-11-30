@@ -123,8 +123,8 @@ def type_cast(original_type: str, target_type: str, register: int) -> tuple[
     # Direct casts
     _default_metadata = {
         "metadata": {
-            "register": register - 1,
-            "value": register
+            "register": register,
+            "value": register - 1
         }
     }
 
