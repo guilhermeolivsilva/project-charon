@@ -77,7 +77,7 @@ class VAR(Node):
             "instruction": self.instruction,
             "metadata": {
                 "register": register,
-                "value": self.value
+                "id": self.value
             }
         }
 

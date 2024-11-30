@@ -806,17 +806,17 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 5, "value": 5},
+            "metadata": {"register": 5, "id": 5},
             "instruction_id": 8,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 6, "value": 3},
+            "metadata": {"register": 6, "id": 3},
             "instruction_id": 9,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 7, "value": 4},
+            "metadata": {"register": 7, "id": 4},
             "instruction_id": 10,
         },
         {
@@ -831,17 +831,17 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 9, "value": 2},
+            "metadata": {"register": 9, "id": 2},
             "instruction_id": 13,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 10, "value": 2, "offset_size": 0},
+            "metadata": {"register": 10, "id": 2, "offset_size": 0},
             "instruction_id": 14,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 11, "value": 5},
+            "metadata": {"register": 11, "id": 5},
             "instruction_id": 15,
         },
         {
@@ -851,7 +851,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 12, "value": 2},
+            "metadata": {"register": 12, "id": 2},
             "instruction_id": 17,
         },
         {
@@ -886,12 +886,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 15, "value": 6},
+            "metadata": {"register": 15, "id": 6},
             "instruction_id": 24,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 16, "value": 7},
+            "metadata": {"register": 16, "id": 7},
             "instruction_id": 25,
         },
         {
@@ -946,7 +946,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 23, "value": 10},
+            "metadata": {"register": 23, "id": 10},
             "instruction_id": 36,
         },
         {
@@ -966,7 +966,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 26, "value": 11},
+            "metadata": {"register": 26, "id": 11},
             "instruction_id": 40,
         },
         {
@@ -991,12 +991,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 30, "value": 13},
+            "metadata": {"register": 30, "id": 13},
             "instruction_id": 45,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 31, "value": 13, "offset_size": 0},
+            "metadata": {"register": 31, "id": 13, "offset_size": 0},
             "instruction_id": 46,
         },
         {
@@ -1011,17 +1011,17 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 33, "value": 10},
+            "metadata": {"register": 33, "id": 10},
             "instruction_id": 49,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 34, "value": 10},
+            "metadata": {"register": 34, "id": 10},
             "instruction_id": 50,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 35, "value": 11},
+            "metadata": {"register": 35, "id": 11},
             "instruction_id": 51,
         },
         {
@@ -1057,12 +1057,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 39, "value": 11},
+            "metadata": {"register": 39, "id": 11},
             "instruction_id": 59,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 40, "value": 10},
+            "metadata": {"register": 40, "id": 10},
             "instruction_id": 60,
         },
         {
@@ -1097,7 +1097,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 45, "value": 14},
+            "metadata": {"register": 45, "id": 14},
             "instruction_id": 67,
         },
         {
@@ -1138,12 +1138,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 50, "value": 15},
+            "metadata": {"register": 50, "id": 15},
             "instruction_id": 76,
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 51, "value": 15, "offset_size": 20},
+            "metadata": {"register": 51, "id": 15, "offset_size": 20},
             "instruction_id": 77,
         },
         {
@@ -1163,7 +1163,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 54, "value": 14},
+            "metadata": {"register": 54, "id": 14},
             "instruction_id": 81,
         },
         {
@@ -1188,7 +1188,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 59, "value": 14},
+            "metadata": {"register": 59, "id": 14},
             "instruction_id": 86,
         },
         {
@@ -1208,7 +1208,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 63, "value": 14},
+            "metadata": {"register": 63, "id": 14},
             "instruction_id": 90,
         },
         {
@@ -1233,12 +1233,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 67, "value": 16},
+            "metadata": {"register": 67, "id": 16},
             "instruction_id": 95,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 68, "value": 14},
+            "metadata": {"register": 68, "id": 14},
             "instruction_id": 96,
         },
         {
@@ -1263,12 +1263,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "ADDRESS",
-            "metadata": {"register": 71, "value": 16},
+            "metadata": {"register": 71, "id": 16},
             "instruction_id": 101,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 72, "value": 14},
+            "metadata": {"register": 72, "id": 14},
             "instruction_id": 102,
         },
         {
@@ -1288,12 +1288,12 @@ MACHINE_CODE = {
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 75, "value": 14},
+            "metadata": {"register": 75, "id": 14},
             "instruction_id": 106,
         },
         {
             "instruction": "LOAD",
-            "metadata": {"register": 76, "value": 16},
+            "metadata": {"register": 76, "id": 16},
             "instruction_id": 107,
         },
         {

@@ -111,7 +111,7 @@ def test_ADDRESS() -> None:
     # register `3`
     instruction_params = {
         "register": expected_value_register,
-        "value": variable_id,
+        "id": variable_id,
     }
 
     vm.variables = {
@@ -748,7 +748,7 @@ def test_LOAD() -> None:
     # register `3`
     instruction_params = {
         "register": expected_value_register,
-        "value": 2,
+        "id": 2,
     }
 
     vm.variables = {

@@ -135,7 +135,7 @@ class ELEMENT_ACCESS(Node):
             "instruction": self.instruction,
             "metadata": {
                 "register": register,
-                "value": self.variable.get_value(),
+                "id": self.variable.get_value(),
             }
         }
 

@@ -213,7 +213,7 @@ class VirtualMachine:
 
         # Value represents the variable to load's ID in the
         # source code.
-        variable_to_load: int = instruction_params["value"]
+        variable_to_load: int = instruction_params["id"]
         variable_address: int = int(self.variables[variable_to_load], 16)
 
         offset_size: int = instruction_params.get("offset_size", 0)
@@ -832,7 +832,7 @@ class VirtualMachine:
 
         # Value represents the variable to load's ID in the
         # source code.
-        variable_to_load: int = instruction_params["value"]
+        variable_to_load: int = instruction_params["id"]
         variable_address: int = int(self.variables[variable_to_load], 16)
 
         offset_size: int = instruction_params.get("offset_size", 0)
