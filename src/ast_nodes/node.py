@@ -2,7 +2,7 @@
 
 from typing import Union
 
-from src.utils import NODE_SYMBOLS_MAP
+from src.utils import get_certificate_symbol
 
 
 class Node:
@@ -34,7 +34,7 @@ class Node:
         # Each `Node` specialization must set its own `instruction` and
         # `symbol`.
         self.instruction: str = None
-        self.symbol: str = get_node_certificate_symbol(self)
+        self.symbol: str = get_certificate_symbol(self)
 
     def __eq__(self, other: "Node") -> bool:
         """
@@ -200,21 +200,3 @@ class Node:
         """Compute the certificate of the current `Node`, and set this attribute."""
 
         self.certificate_label = f"({self.symbol})"
-
-
-def get_node_certificate_symbol(node: "Node") -> str:
-    """
-    Get the certificate symbol associated with the given AST Node.
-
-    Parameters
-    ----------
-    node : Node
-        A subclass of the `Node` class.
-
-    Returns
-    -------
-    : str
-        The associated certificate symbol.
-    """
-
-    return NODE_SYMBOLS_MAP.get(type(node).__name__)

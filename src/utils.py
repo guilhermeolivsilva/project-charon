@@ -252,6 +252,28 @@ def flatten_list(list_of_lists: list[list], drop_duplicates: bool = True) -> lis
     return flattened_list
 
 
+def get_certificate_symbol(operation) -> str:
+    """
+    Get the certificate symbol associated with the given operation.
+
+    Parameters
+    ----------
+    operation : str or Node
+        The operation to get the certificate symbol of.
+
+    Returns
+    -------
+    : str
+        The associated certificate symbol.
+    """
+
+    # This is ugly.
+    if not isinstance(operation, str):
+        operation = type(operation).__name__
+
+    return SYMBOLS_MAP.get(operation)
+
+
 __TYPE_CASTS = [
     "FPTOSI",
     "SIGNEXT",
@@ -348,7 +370,7 @@ NODES = [
     for node_kind in category
 ]
 
-NODE_SYMBOLS_MAP = {
+SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
         NODES,

@@ -7,7 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.basic.CST import CST
-from src.utils import builtin_types, NODE_SYMBOLS_MAP, TYPE_SYMBOLS_MAP
+from src.utils import builtin_types, get_certificate_symbol, TYPE_SYMBOLS_MAP
 
 
 class ELEMENT_ACCESS(Node):
@@ -204,11 +204,11 @@ class ELEMENT_ACCESS(Node):
 
         if _context == "read":
             self.instruction: str = "LOAD"
-            symbol = NODE_SYMBOLS_MAP.get("VAR_VALUE")
+            symbol = get_certificate_symbol("VAR_VALUE")
 
         else:
             self.instruction: str = "ADDRESS"
-            symbol = NODE_SYMBOLS_MAP.get("VAR_ADDRESS")
+            symbol = get_certificate_symbol("VAR_ADDRESS")
 
         self.symbol = f"({symbol})"
     

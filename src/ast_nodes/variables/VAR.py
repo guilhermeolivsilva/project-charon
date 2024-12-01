@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import NODE_SYMBOLS_MAP
+from src.utils import get_certificate_symbol
 
 
 class VAR(Node):
@@ -116,10 +116,10 @@ class VAR(Node):
 
         if context == "read":
             self.instruction: str = "LOAD"
-            symbol: str = NODE_SYMBOLS_MAP.get("VAR_VALUE")
+            symbol: str = get_certificate_symbol("VAR_VALUE")
 
         else:
             self.instruction: str = "ADDRESS"
-            symbol: str = NODE_SYMBOLS_MAP.get("VAR_ADDRESS")
+            symbol: str = get_certificate_symbol("VAR_ADDRESS")
 
         self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})^(2)"
