@@ -342,39 +342,33 @@ __MISC = {
 
 # Nodes kinds and their associated instructions
 NODE_TO_INSTRUCTION_MAPPING = {
-    **__VARIABLES,
     **__CONSTANTS,
+    **__VARIABLES,
+    **__FUNCTIONS,
+    **__JUMPS,
     **__UNOPS,
     **__BINOPS,
-    **__JUMPS,
-    **__FUNCTIONS,
     **__MISC
 }
 
 
 INSTRUCTIONS_CATEGORIES = {
-    "variables": flatten_list(__VARIABLES),
     "constants": flatten_list(__CONSTANTS),
+    "variables": flatten_list(__VARIABLES),
+    "functions": flatten_list(__FUNCTIONS),
+    "jumps": flatten_list(__JUMPS),
     "unops": flatten_list(__UNOPS),
     "binops": flatten_list(__BINOPS),
-    "jumps": flatten_list(__JUMPS),
-    "functions": flatten_list(__FUNCTIONS),
     "misc": flatten_list(__MISC),
     "type_casts": __TYPE_CASTS
 }
 
 
-NODES = [
-    node_kind
-    for category in NODE_TO_INSTRUCTION_MAPPING.values()
-    for node_kind in category
-]
-
 SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
-        NODES,
-        primes_list(len(NODES))
+        NODE_TO_INSTRUCTION_MAPPING.keys(),
+        primes_list(len(NODE_TO_INSTRUCTION_MAPPING.keys()))
     )
 }
 
