@@ -48,14 +48,13 @@ class FUNC_CALL(Node):
             A list containing the certificate label of the `Node`.
         """
 
-        certificate_label: list = []
+        certificate_label: str = super().get_certificate_label().pop()
 
         for argument in self.arguments:
-            certificate_label.extend(argument.get_certificate_label())
+            _argument_certificate = argument.get_certificate_label().pop()
+            certificate_label += f"^{_argument_certificate}"
 
-        certificate_label.append(*super().get_certificate_label())
-
-        return certificate_label
+        return [certificate_label]
 
     @override
     def print(self, indent: int = 0) -> None:
