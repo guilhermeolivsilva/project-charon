@@ -122,4 +122,6 @@ class VAR(Node):
             self.instruction: str = "ADDRESS"
             symbol: str = get_certificate_symbol("VAR_ADDRESS")
 
-        self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})^(2)"
+        # Add ^1 because it means memory offset + 1. As this is a regular
+        # variable – and not an array nor struct –, the offset is always 0.
+        self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})^(2^1)"
