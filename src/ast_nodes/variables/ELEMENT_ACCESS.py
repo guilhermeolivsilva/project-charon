@@ -122,7 +122,7 @@ class ELEMENT_ACCESS(Node):
         # Only generate `element` code if it is an dynamically accessed array.
         # Statically accessed arrays and structs only need the offset, and this
         # is calculated `_compute_element_offset`.
-        if self.is_array and isinstance(self.element, VAR):
+        if self.access_type == "dynamic":
             register, element_code = self.element.generate_code(
                 register=register
             )
