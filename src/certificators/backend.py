@@ -3,7 +3,7 @@
 from typing_extensions import override
 
 from src.certificators.abstract_certificator import AbstractCertificator
-from src.utils import get_certificate_symbol, next_prime, INSTRUCTIONS_CATEGORIES
+from src.utils import get_certificate_symbol, next_prime, primes_list, INSTRUCTIONS_CATEGORIES
 
 
 class BackendCertificator(AbstractCertificator):
@@ -34,7 +34,15 @@ class BackendCertificator(AbstractCertificator):
 
         self.current_positional_prime = self.initial_prime
         self.current_variable_prime = self.initial_prime
-        self.current_function_prime = self.initial_prime
+
+        _functions_ids = range(1, len(program["functions"]) + 1)
+        self.functions_primes: dict[int, int] = {
+            function_id: prime
+            for function_id, prime in zip(
+                _functions_ids,
+                primes_list(len(_functions_ids))
+            )
+        }
 
         # Tell whether an instruction has been accounted for in the
         # certification process or not. Maps the ID of `instruction_list` to
@@ -100,53 +108,13 @@ class BackendCertificator(AbstractCertificator):
 
         instruction = bytecode["instruction"]
 
-        # Corner case instructions – i.e., instructions that have a particular
-        # design and need to be treated individually.
-        special_instructions_handlers: dict[str, dict] = {
-            "ALLOC": self._handle_alloc_instruction,
-            "STORE": self._handle_store_instruction,
-            "MOV": self._handle_mov_instruction
-        }
-
-        grouped_instructions_handlers: dict[str, dict] = {
-            # Variables
-            **{
-                _instruction: self._handle_variables
-                for _instruction in INSTRUCTIONS_CATEGORIES["variables"]
-            },
-
-            # Constants
-            **{
-                _instruction: self._handle_constants
-                for _instruction in INSTRUCTIONS_CATEGORIES["constants"]
-            },
-
-            # Type casts
-            **{
-                _instruction: self._handle_type_casts
-                for _instruction in INSTRUCTIONS_CATEGORIES["type_casts"]
-            },
-
-            # Unary operations
-            **{
-                _instruction: self._handle_operations
-                for _instruction in INSTRUCTIONS_CATEGORIES["unops"]
-            },
-
-            # Binary operations
-            **{
-                _instruction: self._handle_operations
-                for _instruction in INSTRUCTIONS_CATEGORIES["binops"]
-            },
-        }
-
         try:
-            if instruction in special_instructions_handlers:
-                handler = special_instructions_handlers[instruction]
+            if instruction in self.special_instructions_handlers:
+                handler = self.special_instructions_handlers[instruction]
 
             else:
-                handler = grouped_instructions_handlers[instruction]
-                
+                handler = self.grouped_instructions_handlers[instruction]
+
             certificate = handler(bytecode)
 
         except KeyError as e:
@@ -254,14 +222,18 @@ class BackendCertificator(AbstractCertificator):
         """
         Handle a `MOV` instruction.
 
-        `MOV` instructions have three use cases:
+        `MOV` instructions have two use cases:
 
-        1. Moving values from a general use register to the `arg` register, when
-        setting up a function call;
-        2. Moving the value from a general use register to the `ret_value`
-        register, when returning from a function.
-        3. Moving the returned value stored in the `ret_value` register to a
-        general use register, right after the `JAL` instruction.
+        1. Function call: there are `MOV` instructions for both moving the
+        arguments values to the `arg` register (i.e., to move data from a
+        general use register to the `arg` register), and to retrieve the value
+        the call returned (i.e., to move data from the `ret_value` register to a
+        general use register).
+        2. Function return: the `MOV` instruction moves the value to return from
+        a function, stored in a general use register, to the `ret_value`
+        register.
+
+        This method dispatches the correct handler for each case.
 
         Parameters
         ----------
@@ -274,6 +246,99 @@ class BackendCertificator(AbstractCertificator):
             The `MOV` instruction certificate.
         """
 
+        if self.__is_function_return(bytecode):
+            return self._handle_return(bytecode)
+        else:
+            return self._handle_function_call(bytecode)
+
+    def _handle_function_call(self, bytecode: dict[str, dict]) -> str:
+        """
+        Handle a function call.
+
+        Function calls are composed by a sequence of zero or more `MOV`
+        instructions that move data from general use registers to `arg`, and a
+        pair `JAL` + `MOV` that moves data from `ret_value` to a general use
+        register.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+
+        Returns
+        -------
+        certificate : str
+            The function call certificate.
+        """
+
+        current_bytecode = bytecode
+        current_bytecode_idx = bytecode["instruction_id"] - 1
+
+        next_bytecode = self.bytecode_list[current_bytecode_idx + 1]
+
+        # Iterate over the instructions until we find the `JAL` + `MOV` pair,
+        # certificating the bytecode we find along the way
+        args_certificates = ""
+
+        while not self.__is_function_call(
+            bytecode_pair=(current_bytecode, next_bytecode)
+        ):
+            # Get the "final" certificate of the argument, as it has already
+            # been computed
+            if current_bytecode["instruction"] == "MOV":
+                source_register = current_bytecode["metadata"]["value"]
+                _arg_certificate = (
+                    self.register_tracker[source_register]
+                                         ["metadata"]
+                                         ["certificate"]
+                )
+                args_certificates += f"^{_arg_certificate}"
+
+            # Compute the argument certificate. We don't really care about this
+            # value right now, so we ignore it. We only need to add it to
+            # `self.register_tracker` – so it can be retrieved by the code block
+            # above
+            else:
+                current_instruction = current_bytecode["instruction"]
+                handler = self.grouped_instructions_handlers[current_instruction]
+                _ = handler(current_bytecode)
+
+            self.instruction_status[current_bytecode["instruction_id"]] = True
+
+            # ...and move the sliding window to the next pair
+            current_bytecode = next_bytecode
+            current_bytecode_idx += 1
+            next_bytecode = self.bytecode_list[current_bytecode_idx + 1]
+
+        # Once we find the function call pair, produce the final certificate
+        # `current_bytecode` -> JAL
+        # `next_bytecode` -> MOV
+        function_id = current_bytecode["metadata"]["value"]
+        function_prime = self.functions_primes[function_id]
+        function_register = next_bytecode["metadata"]["register"]
+
+        symbol = get_certificate_symbol("FUNC_CALL")
+
+        certificate = f"({symbol})^({function_prime})" + args_certificates
+
+        register_metadata = {
+            "source": "FUNC_CALL",
+            "metadata": {
+                "certificate": certificate,
+                "prime": function_prime,
+            }
+        }
+
+        self.register_tracker[function_register] = register_metadata
+
+        # Tag both of the instructions associated with the function call as
+        # certificated
+        self.instruction_status[current_bytecode["instruction_id"]] = True
+        self.instruction_status[next_bytecode["instruction_id"]] = True
+
+        return certificate
+
+    def _handle_return(self, bytecode: dict[str, dict]) -> str:
         ...
     
     def _handle_variables(self, bytecode: dict[str, dict]) -> None:
@@ -422,7 +487,6 @@ class BackendCertificator(AbstractCertificator):
 
         ...
 
-
     def __is_param(self, bytecode: dict[str, dict]) -> tuple[bool, dict[str, dict]]:
         """
         Tell whether a `ALLOC` instruction is a parameter handler.
@@ -455,6 +519,59 @@ class BackendCertificator(AbstractCertificator):
         rhs_register = next_bytecode["metadata"]["value"]
         return (rhs_register == "arg", next_bytecode)
 
+    def __is_function_return(self, bytecode: dict[str, dict]) -> bool:
+        """
+        Tell whether a `MOV` instruction is handling a function return.
+
+        For it to handle a function return, it must move data from a general use
+        register to the `ret_value` register. Also, the following instruction
+        must be `JR`.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+
+        Returns
+        -------
+        : bool
+            `True` if it is a function return, `False` otherwise.
+        """
+
+        current_bytecode_idx = bytecode["instruction_id"] - 1
+        next_bytecode = self.bytecode_list[current_bytecode_idx + 1]
+
+        return (
+            bytecode["metadata"]["register"] == "ret_value"
+            and next_bytecode["instruction"] == "JR"
+        )
+    
+    def __is_function_call(self, bytecode_pair: tuple[dict, dict]) -> bool:
+        """
+        Tell whether a pair of bytecodes handle a function call.
+
+        For it to handle a function call, the first bytecode must contain a
+        `JAL` instruction, and the second, a `MOV` instruction that moves data
+        from `ret_value` to a general use register.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+
+        Returns
+        -------
+        : bool
+            `True` if it is a function call, `False` otherwise.
+        """
+
+        first_bytecode, second_bytecode = bytecode_pair
+
+        return (
+            first_bytecode["instruction"] == "JAL"
+            and second_bytecode["instruction"] == "MOV"
+            and second_bytecode["metadata"]["value"] == "ret_value"
+        )
     
     def __identify_jz(self, bytecode: dict[str, dict], index: int) -> str:
         """
