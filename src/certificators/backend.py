@@ -52,6 +52,48 @@ class BackendCertificator(AbstractCertificator):
             for bytecode in self.bytecode_list
         }
 
+        # Corner case instructions – i.e., instructions that have a particular
+        # design and need to be treated individually.
+        self.special_instructions_handlers: dict[str, dict] = {
+            "ALLOC": self._handle_alloc_instruction,
+            "STORE": self._handle_store_instruction,
+            "MOV": self._handle_mov_instruction,
+            "JZ": self._handle_jump,
+            "HALT": self._handle_halt
+        }
+
+        self.grouped_instructions_handlers: dict[str, dict] = {
+            # Variables
+            **{
+                _instruction: self._handle_variables
+                for _instruction in INSTRUCTIONS_CATEGORIES["variables"]
+            },
+
+            # Constants
+            **{
+                _instruction: self._handle_constants
+                for _instruction in INSTRUCTIONS_CATEGORIES["constants"]
+            },
+
+            # Type casts
+            **{
+                _instruction: self._handle_type_casts
+                for _instruction in INSTRUCTIONS_CATEGORIES["type_casts"]
+            },
+
+            # Unary operations
+            **{
+                _instruction: self._handle_operations
+                for _instruction in INSTRUCTIONS_CATEGORIES["unops"]
+            },
+
+            # Binary operations
+            **{
+                _instruction: self._handle_operations
+                for _instruction in INSTRUCTIONS_CATEGORIES["binops"]
+            },
+        }
+
     @override
     def certificate(self, **kwargs) -> list[str]:
         """
