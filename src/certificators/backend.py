@@ -537,19 +537,21 @@ class BackendCertificator(AbstractCertificator):
         symbol = get_certificate_symbol("CST")
 
         certificate = (
-            f"({symbol})"
+            f"{self.current_positional_prime}"
+            + f"^({symbol})"
             + f"^({_constant_value_exponent})"
         )
 
         register_metadata = {
             "source": "CONSTANT",
             "metadata": {
-                "value": constant_value,
-                "certificate": certificate
+                "certificate": certificate,
+                "value": constant_value
             }
         }
 
         self.register_tracker[register] = register_metadata
+        self.instruction_status[bytecode["instruction_id"]] = True
 
     def _handle_type_casts(self, bytecode: dict[str, dict]) -> None:
         """
