@@ -381,7 +381,48 @@ class BackendCertificator(AbstractCertificator):
         return certificate
 
     def _handle_return(self, bytecode: dict[str, dict]) -> str:
-        ...
+        """
+        Handle a function return.
+
+        Function returns are composed by a pair of `MOV` that moves data from
+        general use registers to `ret_value`, and a `JR` that jumps to an
+        instruction whose index is stored in some general use register.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+
+        Returns
+        -------
+        certificate : str
+            The function return certificate.
+        """
+        
+        current_bytecode = bytecode
+        current_bytecode_idx = bytecode["instruction_id"] - 1
+        next_bytecode_idx = current_bytecode_idx + 1
+
+        next_bytecode = self.bytecode_list[next_bytecode_idx]
+
+        # Just to be sure it is a `MOV` + `JR` pair.
+        self.__assert_is_return(bytecode_pair=(current_bytecode, next_bytecode))
+
+        # Build the certificate
+        symbol = get_certificate_symbol("RET_SYM")
+        certificate = (
+            f"{self.current_positional_prime}"
+            + f"^({symbol})"
+        )
+        
+        self.instruction_status[current_bytecode["instruction_id"]] = True
+        self.instruction_status[next_bytecode["instruction_id"]] = True
+
+        return certificate
+
+    def _handle_jump(self, bytecode: dict[str, dict]) -> str:
+        self.instruction_status[bytecode["instruction_id"]] = True
+        print("TODO!:", self.__identify_jz(bytecode))
     
     def _handle_variables(self, bytecode: dict[str, dict]) -> None:
         """
