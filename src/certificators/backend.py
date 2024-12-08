@@ -568,7 +568,11 @@ class BackendCertificator(AbstractCertificator):
         register = metadata["register"]
 
         original_value_register = metadata["value"]
-        original_value_certificate = self.register_tracker[original_value_register]
+        original_value_certificate = (
+            self.register_tracker[original_value_register]
+                                 ["metadata"]
+                                 ["certificate"]
+        )
 
         source_metadata = {
             "source": instruction,
@@ -579,6 +583,7 @@ class BackendCertificator(AbstractCertificator):
         }
 
         self.register_tracker[register] = source_metadata
+        self.instruction_status[bytecode["instruction_id"]] = True
     
     def _handle_operations(self, bytecode: dict[str, dict]) -> str:
         """
