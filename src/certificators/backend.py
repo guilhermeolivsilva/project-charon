@@ -587,7 +587,17 @@ class BackendCertificator(AbstractCertificator):
     
     def _handle_operations(self, bytecode: dict[str, dict]) -> str:
         """
-        ...
+        Handle unary and binary operations.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+
+        Returns
+        -------
+        certificate : str
+            The operation certificate.
         """
 
         instruction = bytecode["instruction"]
@@ -595,24 +605,43 @@ class BackendCertificator(AbstractCertificator):
         register = metadata["register"]
 
         if instruction in INSTRUCTIONS_CATEGORIES["unops"]:
-                keys = ["operand"]
-                metadata_keys = ["value"]
+            keys = ["operand"]
+            metadata_keys = ["value"]
 
         else:
-                keys = ["lhs_operand", "rhs_operand"]
-                metadata_keys = ["lhs_register", "rhs_register"]
+            keys = ["lhs_operand", "rhs_operand"]
+            metadata_keys = ["lhs_register", "rhs_register"]
+
+        # Build the certificate
+        symbol = get_certificate_symbol(instruction)
+        operands_certificates = ""
+
+        for metadata_key in metadata_keys:
+            _operand_metadata = self.register_tracker[metadata[metadata_key]]
+            _operand_certificate = _operand_metadata["metadata"]["certificate"]
+            operands_certificates += f"^({_operand_certificate})"
+
+        certificate = (
+            f"{self.current_positional_prime}"
+            + f"^({symbol})"
+            + operands_certificates
+        )
 
         source_metadata = {
             "source": instruction,
             "metadata": {
-                key: self.register_tracker[metadata[metadata_key]]
-                for key, metadata_key in zip(keys, metadata_keys)
+                "certificate": certificate
             }
         }
+        source_metadata["metadata"].update({
+            key: self.register_tracker[metadata[metadata_key]]
+            for key, metadata_key in zip(keys, metadata_keys)
+        })
 
         self.register_tracker[register] = source_metadata
+        self.instruction_status[bytecode["instruction_id"]] = True
 
-        ...
+        return certificate
 
     def __is_param(self, bytecode: dict[str, dict]) -> tuple[bool, dict[str, dict]]:
         """
