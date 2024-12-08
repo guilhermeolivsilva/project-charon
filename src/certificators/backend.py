@@ -123,7 +123,12 @@ class BackendCertificator(AbstractCertificator):
             self.current_positional_prime = next_prime(
                 self.current_positional_prime
             )
-            self.instruction_status[bytecode_id] = True
+
+        # Assert all the instructions have been accounted for
+        _err_msg = "Certification failed: there are uncertificated instructions."
+        assert all(self.instruction_status.values()), _err_msg
+
+        return self.computed_certificate
 
     def _certificate_instruction(self, bytecode: dict[str, dict]) -> str:
         """
@@ -217,6 +222,7 @@ class BackendCertificator(AbstractCertificator):
 
         self.register_tracker[register] = register_metadata
         self.variable_prime_tracker[metadata["id"]] = self.current_variable_prime
+        self.instruction_status[bytecode["instruction_id"]] = True
 
         self.current_variable_prime = next_prime(self.current_variable_prime)
 
@@ -729,7 +735,37 @@ class BackendCertificator(AbstractCertificator):
             and second_bytecode["metadata"]["value"] == "ret_value"
         )
     
-    def __identify_jz(self, bytecode: dict[str, dict], index: int) -> str:
+    def __assert_is_return(self, bytecode_pair: tuple[dict, dict]) -> None:
+        """
+        Assert a pair of bytecodes handle a function return.
+
+        For it to handle a function return, the first bytecode must contain a
+        `MOV` instruction that moves data from a general use register to
+        `ret_value`, and the second, a `JR` instruction.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+
+        Raises
+        ------
+        ValueError
+            Raised if the assertion fails.
+        """
+
+        first_bytecode, second_bytecode = bytecode_pair
+
+        is_return = (
+            first_bytecode["instruction"] == "MOV"
+            and first_bytecode["metadata"]["register"] == "ret_value"
+            and second_bytecode["instruction"] == "JR"
+        )
+
+        if not is_return:
+            raise ValueError("Malformed return pair.")
+    
+    def __identify_jz(self, bytecode: dict[str, dict]) -> str:
         """
         Tell the semantics of a conditional jump.
 
@@ -742,8 +778,6 @@ class BackendCertificator(AbstractCertificator):
         ----------
         bytecode : dict[str, dict]
             The instruction and its bytecode metadata.
-        index : int
-            The index of `instruction` in `self.bytecode_list`.
 
         Returns
         -------
@@ -751,20 +785,30 @@ class BackendCertificator(AbstractCertificator):
             The semantics of the conditional jump.
         """
 
+        bytecode_idx = bytecode["instruction_id"] - 1
         _jump_size: int = bytecode["metadata"]["jump_size"]
-        
-        _instruction_right_before_jump_target_idx = index + _jump_size - 1
 
-        _jumps_forward = self.__is_jump_forward(index)
-        _lands_on_instruction_preceeded_by_unconditional_jump = self.__is_unconditional_jump(
+        _instruction_right_before_jump_target_idx = bytecode_idx + _jump_size - 1
+        _instruction_right_before_jump_target = self.bytecode_list[
             _instruction_right_before_jump_target_idx
+        ]
+
+        _jumps_forward = self.__is_jump_forward(bytecode)
+        _lands_on_instruction_preceeded_by_unconditional_jump = self.__is_unconditional_jump(
+            _instruction_right_before_jump_target
         )
 
         if _jumps_forward:
             if _lands_on_instruction_preceeded_by_unconditional_jump:
                 _preceeding_unconditional_jump_is_forward = self.__is_jump_forward(
-                    _instruction_right_before_jump_target_idx
+                    _instruction_right_before_jump_target
                 )
+
+                # Tag the unconditional jump as certificated
+                _instruction_right_before_jump_target_id = (
+                    _instruction_right_before_jump_target["instruction_id"]
+                )
+                self.instruction_status[_instruction_right_before_jump_target_id] = True
                 
                 if _preceeding_unconditional_jump_is_forward:
                     return "IFELSE"
@@ -775,14 +819,14 @@ class BackendCertificator(AbstractCertificator):
         else:
             return "DO"
 
-    def __is_jump_forward(self, bytecode_idx: int) -> bool:
+    def __is_jump_forward(self, bytecode: dict[str, dict]) -> bool:
         """
         Tell whether a jump instruction goes forward or backwards.
 
         Parameters
         ----------
         bytecode_idx : int
-            The index of the jump instruction in `self.bytecode_list`.
+            The jump bytecode.
 
         Returns
         -------
@@ -790,14 +834,12 @@ class BackendCertificator(AbstractCertificator):
             True if the jump is forward (`jump_size` > 0), False otherwise.
         """
 
-        instruction = self.bytecode_list[bytecode_idx]
-
         return (
-            "jump_size" in instruction["metadata"]
-            and instruction["metadata"]["jump_size"] > 0
+            "jump_size" in bytecode["metadata"]
+            and bytecode["metadata"]["jump_size"] > 0
         )
 
-    def __is_unconditional_jump(self, bytecode_idx: int) -> bool:
+    def __is_unconditional_jump(self, bytecode: dict[str, dict]) -> bool:
         """
         Tell whether a conditional jump actually implements an unconditional one.
         
@@ -807,16 +849,14 @@ class BackendCertificator(AbstractCertificator):
 
         Parameters
         ----------
-        bytecode_idx : int
-            The index of the jump bytecode in `self.bytecode_list`.
+        bytecode : dict[str, dict]
+            The jump bytecode.
 
         Returns
         -------
         : bool
             True if the jump is unconditional, False otherwise.
         """
-
-        bytecode = self.bytecode_list[bytecode_idx]
 
         return (
             "conditional_register" in bytecode["metadata"]
