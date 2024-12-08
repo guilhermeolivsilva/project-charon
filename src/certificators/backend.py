@@ -305,7 +305,7 @@ class BackendCertificator(AbstractCertificator):
         Handle a function call.
 
         Function calls are composed by a sequence of zero or more `MOV`
-        instructions that move data from general use registers to `arg`, and a
+        instructions that moves data from general use registers to `arg`, and a
         pair `JAL` + `MOV` that moves data from `ret_value` to a general use
         register.
 
@@ -368,7 +368,11 @@ class BackendCertificator(AbstractCertificator):
 
         symbol = get_certificate_symbol("FUNC_CALL")
 
-        certificate = f"({symbol})^({function_prime})" + args_certificates
+        certificate = (
+            f"{self.current_positional_prime}^"
+            + f"({symbol})^({function_prime})"
+            + args_certificates
+        )
 
         register_metadata = {
             "source": "FUNC_CALL",
