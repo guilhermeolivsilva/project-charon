@@ -461,8 +461,11 @@ class BackendCertificator(AbstractCertificator):
         # If there's `offset_register` in the metadata, then its accessing an
         # array using a variable for index.
         if metadata.get("offset_register"):
-            # TODO
-            indexing = f"^(3^{...})"
+            _indexing_variable = self.register_tracker[
+                metadata["offset_register"]
+            ]
+            _indexing_variable_prime = _indexing_variable["metadata"]["prime"]
+            indexing = f"^(3^{_indexing_variable_prime})"
 
         # If not, then it might be an array accessed with a constant for index,
         # a struct attribute, or a "simple" variable. For either case, we'll
