@@ -237,23 +237,35 @@ class BackendCertificator(AbstractCertificator):
             The `STORE` instruction certificate.
         """
 
-        
-        instruction = bytecode["instruction"]
         metadata = bytecode["metadata"]
 
-        register = metadata["register"]
+        lhs_metadata = self.register_tracker[metadata["register"]]
+        lhs_certificate = lhs_metadata["metadata"]["certificate"]
+
+        rhs_metadata = self.register_tracker[metadata["value"]]
+        rhs_certificate = rhs_metadata["metadata"]["certificate"]
+
+        symbol = get_certificate_symbol("ASSIGN")
+        certificate = (
+            f"{self.current_positional_prime}"
+            + f"^({symbol})"
+            + f"^({lhs_certificate})"
+            + f"^({rhs_certificate})"
+        )
 
         source_metadata = {
-            "source": instruction,
+            "source": "STORE",
             "metadata": {
-                "lhs_operand": self.register_tracker[register],
-                "rhs_operand": self.register_tracker[metadata["value"]]
+                "certificate": certificate,
+                "lhs_operand": lhs_metadata,
+                "rhs_operand": rhs_metadata
             }
         }
 
-        self.register_tracker[register] = source_metadata
+        self.register_tracker[metadata["register"]] = source_metadata
+        self.instruction_status[bytecode["instruction_id"]] = True
 
-        ...
+        return certificate
 
     def _handle_mov_instruction(self, bytecode: dict[str, dict]) -> str:
         """
