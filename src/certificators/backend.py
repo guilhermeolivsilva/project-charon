@@ -115,11 +115,6 @@ class BackendCertificator(AbstractCertificator):
             if self.instruction_status[bytecode_id]:
                 continue
 
-            instruction = bytecode["instruction"]
-
-            if instruction == "HALT":
-                break
-
             certificate = self._certificate_instruction(bytecode=bytecode)
 
             if certificate:
@@ -476,6 +471,29 @@ class BackendCertificator(AbstractCertificator):
         }
 
         self.register_tracker[register] = register_metadata
+        self.instruction_status[bytecode["instruction_id"]] = True
+    
+    def _handle_halt(self, bytecode: dict[str, dict]) -> str:
+        """
+        Handle the program ending instruction.
+
+        Programs are ended by `HALT`.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+        """
+
+        symbol = get_certificate_symbol("PROG")
+        certificate = (
+            f"{self.current_positional_prime}"
+            + f"^({symbol})"
+        )
+
+        self.instruction_status[bytecode["instruction_id"]] = True
+
+        return certificate
     
     def _handle_constants(self, bytecode: dict[str, dict]) -> None:
         """
