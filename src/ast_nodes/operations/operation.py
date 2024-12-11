@@ -42,30 +42,6 @@ class Operation(Node):
         else:
             self.type: str = self._compute_operation_type()
 
-        self.symbol: str = self._compute_symbol()
-
-    @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `Operation` nodes, obtain the certificates, recursively, from the
-        `lhs` and `rhs` subtrees first, and then from the `Operation` node
-        itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `Node`.
-        """
-
-        return [
-            *self.lhs.get_certificate_label(),
-            *self.rhs.get_certificate_label(),
-            *super().get_certificate_label(),
-        ]
-
-
     @override
     def print(self, indent: int = 0) -> None:
         """
@@ -218,27 +194,6 @@ class Operation(Node):
             )
         
         return operation_type
-
-    def _compute_symbol(self) -> str:
-        """
-        Compute the symbol of this `Operation`.
-
-        The symbol is composed by the basic symbol of the operation itself,
-        plus the types of its left and right hand sides.
-
-        Returns
-        -------
-        : str
-            The symbol computed with left and right hand sides types.
-        """
-
-        lhs_type = self.lhs.get_type()
-        lhs_type_symbol = TYPE_SYMBOLS_MAP.get(lhs_type).get("type_symbol")
-
-        rhs_type = self.rhs.get_type()
-        rhs_type_symbol = TYPE_SYMBOLS_MAP.get(rhs_type).get("type_symbol")
-
-        return f"({self.symbol})^({lhs_type_symbol})^({rhs_type_symbol})"
     
     def _compute_instruction(self, base_instruction: str) -> str:
         """
