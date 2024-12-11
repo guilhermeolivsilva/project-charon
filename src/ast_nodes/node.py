@@ -2,7 +2,7 @@
 
 from typing import Union
 
-from src.utils import get_certificate_symbol
+from src.utils import get_certificate_symbol, next_prime
 
 
 class Node:
@@ -196,7 +196,22 @@ class Node:
 
         return register, [code_metadata]
 
-    def certificate(self) -> None:
-        """Compute the certificate of the current `Node`, and set this attribute."""
+    def certificate(self, positional_prime: int) -> int:
+        """
+        Compute the certificate of the current `Node`, and set this attribute.
 
-        self.certificate_label = f"({self.symbol})"
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
+        """
+
+        self.certificate_label = f"{positional_prime}^({self.symbol})"
+
+        return next_prime(positional_prime)

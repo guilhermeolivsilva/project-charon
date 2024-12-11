@@ -24,6 +24,7 @@ class FrontendCertificator(AbstractCertificator):
         super().__init__()
 
         self.ast: AbstractSyntaxTree = ast
+        self.initial_prime = 2
 
     @override
     def certificate(self, **kwargs) -> list[str]:
@@ -39,19 +40,7 @@ class FrontendCertificator(AbstractCertificator):
             The list of labels that compose the computed certificate.
         """
 
-        ast_certificate = self._certificate_ast()
-        types_symbols = self._compute_types_symbols()
-
-        typed_certificate = self._certificate_types(
-            ast_certificate=ast_certificate,
-            types_symbols=types_symbols
-        )
-
-        encoded_certificate = self._add_positional_primes(
-            typed_certificate=typed_certificate
-        )
-
-        self.computed_certificate = encoded_certificate
+        self.computed_certificate = self._certificate_ast()
 
         return self.computed_certificate
 
@@ -68,139 +57,7 @@ class FrontendCertificator(AbstractCertificator):
             The list of labels of the AST certificate.
         """
 
-        _ = self.ast.root.certificate()
+        _ = self.ast.root.certificate(positional_prime=self.initial_prime)
         ast_certificate = self.ast.root.get_certificate_label()
 
         return ast_certificate
-    
-    def _compute_types_symbols(self) -> dict[str, str]:
-        """
-        Compute the symbols the user-defined types (i.e., structs).
-
-        Returns
-        -------
-        types_symbols : dict[str, str]
-            A (type, symbol) mapping.
-        """
-
-        built_in_types_symbols = {
-            key: value["type_symbol"]
-            for key, value in TYPE_SYMBOLS_MAP.items()
-        }
-        struct_types_symbols: dict[str, str] = {}
-
-        struct_def_nodes: list[STRUCT_DEF] = [
-            node for node in self.ast.root.children
-            if isinstance(node, STRUCT_DEF) and node.is_active()
-        ]
-
-        for struct_def in struct_def_nodes:
-            struct_type = struct_def.get_type()
-            struct_symbol = struct_def.get_symbol()
-
-            struct_types_symbols[struct_type] = struct_symbol
-
-        types_symbols: dict[str, str] = {
-            **built_in_types_symbols,
-            **struct_types_symbols
-        }
-
-        return types_symbols
-    
-    def _certificate_types(
-        self,
-        ast_certificate: list[str],
-        types_symbols: dict[str, str]
-    ) -> list[str]:
-        """
-        Certificate the types from labels in an AST certificate list.
-
-        Parameters
-        ----------
-        ast_certificate : list[str]
-            The "raw" certificate of an AST.
-        types_symbols : dict[str, str]
-            A (type, symbol) mapping.
-
-        Returns
-        -------
-        type_certificated_labels : list[str]
-            The certificate with certificated types.
-        """
-
-        type_certificated_labels: list[str] = []
-
-        for label in ast_certificate:
-            parsed_label = label
-
-            # Extract the placeholder and replace it with the type symbol
-            if "_certificate" in label:
-                label_to_parse = "".join(
-                    reversed(label[:label.index("_certificate")])
-                )
-                idx = 0
-
-                # This is a trick! All placeholders are within parenthesis. So,
-                # we only have to iterate until we find the opening one!
-                type_name = ""
-                while label_to_parse[idx] != "(":
-                    type_name = label_to_parse[idx] + type_name
-                    idx += 1
-
-                type_symbol = types_symbols[type_name]
-                parsed_label = label.replace(
-                    type_name + "_certificate",
-                    str(type_symbol)
-                )
-
-            type_certificated_labels.append(parsed_label)
-
-        return type_certificated_labels
-    
-    def _add_positional_primes(self, typed_certificate: list[str]) -> list[str]:
-        """
-        Add primes that encode the position of operations to the certificate.
-
-        Parameters
-        ----------
-        typed_certificate : list[str]
-            The certificate with certificated types.
-
-        Returns
-        -------
-        encoded_certificate : list[str]
-            The certificate with encoded positions.
-        """
-
-        idx = 0
-        current_prime = self.initial_prime
-        encoded_certificate: list[str] = []
-
-        while idx < len(typed_certificate):
-            current_certificate = typed_certificate[idx]
-            encoded_position_certificate = f"{current_prime}^{current_certificate}"
-
-            # Propagate the encoded certificate
-            propagation_idx = idx
-
-            while propagation_idx < (len(typed_certificate)):
-                typed_certificate[propagation_idx] = typed_certificate[
-                    propagation_idx
-                ].replace(
-                    current_certificate,
-                    encoded_position_certificate
-                )
-
-                propagation_idx += 1
-
-            encoded_certificate.append(encoded_position_certificate)
-            current_prime = next_prime(current_prime)
-            idx += 1
-
-        # Collapse certificates with multiple positional primes
-        pattern = re.compile(r'(\d+)\^(?:\d+\^)+')
-        encoded_certificate = [
-            pattern.sub(r'\1^', s) for s in encoded_certificate
-        ]
-
-        return encoded_certificate

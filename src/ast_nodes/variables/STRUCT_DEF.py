@@ -49,15 +49,26 @@ class STRUCT_DEF(Node):
         print(f"{' ' * (indent + 1)} Attributes: {_attribute_types}")
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of this `STRUCT_DEF`.
 
         For `STRUCT_DEF` nodes, the certificate is simply the `symbol` set
         during the object initialization.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The very same received prime -- this node has no certificate itself.
         """
 
-        return None
+        return positional_prime
 
     @override
     def generate_code(self, register: int) -> tuple[

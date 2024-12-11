@@ -101,13 +101,27 @@ class SEQ(Node):
 
         return register, code_metadata
 
-    def certificate(self) -> None:
+    @override
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the current `SEQ`, and set this attribute.
 
         For `SEQ` nodes, certificate the child nodes in the same order as they
         appear in the `children` list. The `SEQ` node itself is not certified.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
         for child in self.children:
-            child.certificate()
+            positional_prime = child.certificate(positional_prime)
+
+        return positional_prime

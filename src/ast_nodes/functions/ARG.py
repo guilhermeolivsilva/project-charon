@@ -7,7 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.basic.CST import CST
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
-from src.utils import type_cast
+from src.utils import type_cast, next_prime
 
 
 class ARG(Node):
@@ -125,15 +125,31 @@ class ARG(Node):
         return register, code_metadata
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the this `ARG`, and set this attribute.
 
         For `ARG` nodes, certificate the `argument_value` node first, and then
         the `ARG` itself.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
-        self.argument_value.certificate()
+        positional_prime = self.argument_value.certificate()
         _argument_value_certificate = self.argument_value.get_certificate_label().pop()
 
-        self.certificate_label = f"(({self.symbol})^{_argument_value_certificate})"
+        self.certificate_label = (
+            f"{positional_prime}^"
+            + f"(({self.symbol})^{_argument_value_certificate})"
+        )
+
+        return next_prime(positional_prime)

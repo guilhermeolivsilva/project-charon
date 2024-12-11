@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import type_cast
+from src.utils import next_prime, type_cast
 
 
 class RET_SYM(Node):
@@ -135,15 +135,31 @@ class RET_SYM(Node):
         return register, code_metadata
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the current `RET_SYM`, and set this attribute.
 
         For `RET_SYM` nodes, certificate the child `returned_value` first, and
         then the `RET_SYM` itself.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
-        self.returned_value.certificate()
+        positional_prime = self.returned_value.certificate(positional_prime)
         _returned_value_certificate = self.returned_value.get_certificate_label().pop()
 
-        self.certificate_label = f"(({self.symbol})^{_returned_value_certificate})"
+        self.certificate_label = (
+            f"{positional_prime}^"
+            + f"(({self.symbol})^{_returned_value_certificate})"
+        )
+
+        return next_prime(positional_prime)

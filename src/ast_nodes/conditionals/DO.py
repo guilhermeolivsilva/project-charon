@@ -113,17 +113,28 @@ class DO(Conditional):
         return register, do_code
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the current `DO`, and set this attribute.
 
         For `DO` nodes, certificate the `parenthesis_expression` and `loop`
         subtrees first, recursively, and then the `DO` node itself.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
         # The `statement_if_true` is the actual internal name of the `loop`
         # subtree.
-        self.statement_if_true.certificate()
-        self.parenthesis_expression.certificate()
+        positional_prime = self.statement_if_true.certificate(positional_prime)
+        positional_prime = self.parenthesis_expression.certificate(positional_prime)
 
-        self.certificate_label = f"({self.symbol})"
+        return super().certificate(positional_prime)

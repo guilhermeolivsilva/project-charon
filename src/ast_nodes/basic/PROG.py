@@ -118,15 +118,26 @@ class PROG(Node):
         return register, code_metadata
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of `PROG`, and set this attribute.
 
         For `PROG` nodes, certificate the `first_statement`, recursively, and
         then the `PROG` node itself.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
         for child in self.children:
-            child.certificate()
+            positional_prime = child.certificate(positional_prime)
 
-        super().certificate()
+        return super().certificate(positional_prime)

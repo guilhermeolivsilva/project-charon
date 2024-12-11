@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import type_cast, TYPE_SYMBOLS_MAP
+from src.utils import next_prime, type_cast, TYPE_SYMBOLS_MAP
 
 
 class Operation(Node):
@@ -130,18 +130,29 @@ class Operation(Node):
         return register, code_metadata
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the current `Operation`, and set this attribute.
 
         For `Operation` nodes, certificate the `lhs` and `rhs` children first,
         and then the `Operation` itself.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
         operation_certificate_label = f"({self.symbol})"
 
-        self.lhs.certificate()
-        self.rhs.certificate()
+        positional_prime = self.lhs.certificate(positional_prime)
+        positional_prime = self.rhs.certificate(positional_prime)
 
         lhs_certificate_label = self.lhs.get_certificate_label().pop()
         operation_certificate_label += f"^({lhs_certificate_label})"
@@ -149,7 +160,12 @@ class Operation(Node):
         rhs_certificate_label = self.rhs.get_certificate_label().pop()
         operation_certificate_label += f"^({rhs_certificate_label})"
 
-        self.certificate_label = operation_certificate_label
+        self.certificate_label = (
+            f"{positional_prime}^"
+            + f"({operation_certificate_label})"
+        )
+
+        return next_prime(positional_prime)
     
     def _compute_operation_type(self) -> str:
         """

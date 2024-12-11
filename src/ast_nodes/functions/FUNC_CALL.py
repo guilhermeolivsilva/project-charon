@@ -137,18 +137,29 @@ class FUNC_CALL(Node):
         return register, code_metadata
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the current `FUNC_CALL`, and set this attribute.
 
         For `FUNC_CALL` nodes, certificate each `argument` child first, and
         then the `FUNC_CALL` itself.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
         for argument in self.arguments:
-            argument.certificate()
+            positional_prime = argument.certificate()
 
-        super().certificate()
+        return super().certificate(positional_prime)
 
     def _build_children_nodes(self) -> list[Node]:
         arguments = self.function_call_metadata["arguments"]

@@ -7,7 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.basic.CST import CST
-from src.utils import builtin_types, get_certificate_symbol, TYPE_SYMBOLS_MAP
+from src.utils import builtin_types, get_certificate_symbol, next_prime, TYPE_SYMBOLS_MAP
 
 
 class ELEMENT_ACCESS(Node):
@@ -151,7 +151,7 @@ class ELEMENT_ACCESS(Node):
         return register, code_metadata
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.
 
@@ -166,6 +166,17 @@ class ELEMENT_ACCESS(Node):
         
         If dynamically accessed, the composition will be `3^(prime of the
         indexing variable)`. This is the case for arrays indexed by a variable.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
         certificate_label = f"({self.symbol})"
@@ -185,7 +196,9 @@ class ELEMENT_ACCESS(Node):
             indexing_variable_prime = indexing_variable_metadata["prime"]
             certificate_label += f"^(3^{indexing_variable_prime})"
 
-        self.certificate_label = certificate_label
+        self.certificate_label = f"{positional_prime}^({certificate_label})"
+
+        return next_prime(positional_prime)
     
     def add_context(self, context: dict[str, str]) -> None:
         """

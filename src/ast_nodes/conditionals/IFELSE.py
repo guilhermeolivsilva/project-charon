@@ -152,7 +152,7 @@ class IFELSE(Conditional):
         return register, ifelse_code
 
     @override
-    def certificate(self) -> None:
+    def certificate(self, positional_prime: int) -> int:
         """
         Compute the certificate of the current `IFELSE`, and set this attribute.
 
@@ -160,8 +160,19 @@ class IFELSE(Conditional):
         recursively, and the `IFELSE` itself, and then the children
         `statement` nodes -- also recursively -- in order (i.e., the
         `statement_if_true` and then the `statement_if_false` subtrees).
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
-        super().certificate()
+        positional_prime = super().certificate(positional_prime)
 
-        self.statement_if_false.certificate()
+        return self.statement_if_false.certificate(positional_prime)
