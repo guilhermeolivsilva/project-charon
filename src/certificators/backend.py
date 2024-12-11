@@ -427,9 +427,20 @@ class BackendCertificator(AbstractCertificator):
 
         # Build the certificate
         symbol = get_certificate_symbol("RET_SYM")
+
+        # Get the returned value certificate
+        returned_value_data = self.register_tracker[
+            current_bytecode["metadata"]["value"]
+        ]
+        returned_value_certificate = (
+            returned_value_data["metadata"]
+                               ["certificate"]
+        )
+
         certificate = (
             f"{self.current_positional_prime}"
             + f"^({symbol})"
+            + f"^({returned_value_certificate})"
         )
         
         self.instruction_status[current_bytecode["instruction_id"]] = True
@@ -438,8 +449,36 @@ class BackendCertificator(AbstractCertificator):
         return certificate
 
     def _handle_jump(self, bytecode: dict[str, dict]) -> str:
+        """
+        Handle a jump.
+
+        This method only handles `JZ` jumps. For `JR`, see `self._handle_return`.
+        For `JAL`, see `self._handle_function_call`.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The instruction and its bytecode metadata.
+
+        Returns
+        -------
+        certificate : str
+            The jump certificate.
+        """
+
+        # Identify the jump: IF, IFELSE, WHILE, DO
+        jump_kind = self.__identify_jz(bytecode)
+
+        # Build the certificate
+        symbol = get_certificate_symbol(jump_kind)
+        certificate = (
+            f"{self.current_positional_prime}"
+            + f"^({symbol})"
+        )
+
         self.instruction_status[bytecode["instruction_id"]] = True
-        print("TODO!:", self.__identify_jz(bytecode))
+
+        return certificate
     
     def _handle_variables(self, bytecode: dict[str, dict]) -> None:
         """
