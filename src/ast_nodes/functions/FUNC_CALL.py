@@ -157,7 +157,7 @@ class FUNC_CALL(Node):
         """
 
         for argument in self.arguments:
-            positional_prime = argument.certificate()
+            positional_prime = argument.certificate(positional_prime)
 
         return super().certificate(positional_prime)
 

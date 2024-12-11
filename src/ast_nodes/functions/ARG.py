@@ -144,7 +144,7 @@ class ARG(Node):
             The prime that comes immediately after `positional_prime`.
         """
 
-        positional_prime = self.argument_value.certificate()
+        positional_prime = self.argument_value.certificate(positional_prime)
         _argument_value_certificate = self.argument_value.get_certificate_label().pop()
 
         self.certificate_label = (
