@@ -124,4 +124,4 @@ class VAR(Node):
 
         # Add ^1 because it means memory offset + 1. As this is a regular
         # variable – and not an array nor struct –, the offset is always 0.
-        self.symbol: str = f"({symbol})^({self.variable_metadata['prime']})^(2^1)"
+        self.symbol: str = f"{symbol}^({self.variable_metadata['prime']})^(2^1)"
