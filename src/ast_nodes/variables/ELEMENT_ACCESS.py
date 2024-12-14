@@ -114,11 +114,6 @@ class ELEMENT_ACCESS(Node):
 
         code_metadata: list[dict[str, Union[int, str]]] = []
 
-        register, variable_code = self.variable.generate_code(
-            register=register
-        )
-        code_metadata.extend(variable_code)
-
         # Only generate `element` code if it is an dynamically accessed array.
         # Statically accessed arrays and structs only need the offset, and this
         # is calculated `_compute_element_offset`.
@@ -179,7 +174,7 @@ class ELEMENT_ACCESS(Node):
             The prime that comes immediately after `positional_prime`.
         """
 
-        certificate_label = f"({self.symbol})"
+        certificate_label = f"{self.symbol}"
 
         # Add the prime of the variable being accessed
         variable_metadata = self.variable.get_metadata()
@@ -223,7 +218,7 @@ class ELEMENT_ACCESS(Node):
             self.instruction: str = "ADDRESS"
             symbol = get_certificate_symbol("VAR_ADDRESS")
 
-        self.symbol = f"({symbol})"
+        self.symbol = f"{symbol}"
     
     def _compute_element_type(self) -> str:
         """
