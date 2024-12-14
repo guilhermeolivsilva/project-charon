@@ -59,6 +59,30 @@ def next_prime(number: int) -> int:
         next_number += 1
 
 
+def previous_prime(number: int) -> int:
+    """
+    Compute the prime immediately before `number`.
+
+    Parameters
+    ----------
+    number : int
+        The reference number.
+
+    Returns
+    -------
+    next_number : int
+        The first prime before `number`.
+    """
+
+    previous_number = number - 1
+
+    while True:
+        if is_prime(previous_number):
+            return previous_number
+
+        previous_number -= 1
+
+
 def primes_list(length: int) -> list[int]:
     """
     Compute a list of prime numbers with a given `length`.
