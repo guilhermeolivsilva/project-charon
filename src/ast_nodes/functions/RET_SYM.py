@@ -28,22 +28,6 @@ class RET_SYM(Node):
         self.type: str = type
 
     @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `RET_SYM` nodes, obtain the certificates, recursively, from the
-        `returned_value` subtree first, and then from the `RET_SYM` node itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `Node`.
-        """
-
-        return super().get_certificate_label()
-
-    @override
     def print(self, indent: int = 0) -> None:
         """
         Print the string representation of this `RET_SYM`.
