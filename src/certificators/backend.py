@@ -3,7 +3,13 @@
 from typing_extensions import override
 
 from src.certificators.abstract_certificator import AbstractCertificator
-from src.utils import get_certificate_symbol, next_prime, primes_list, INSTRUCTIONS_CATEGORIES
+from src.utils import (
+    get_certificate_symbol,
+    next_prime,
+    previous_prime,
+    primes_list,
+    INSTRUCTIONS_CATEGORIES
+)
 
 
 class BackendCertificator(AbstractCertificator):
@@ -75,12 +81,6 @@ class BackendCertificator(AbstractCertificator):
                 for _instruction in INSTRUCTIONS_CATEGORIES["constants"]
             },
 
-            # Type casts
-            **{
-                _instruction: self._handle_type_casts
-                for _instruction in INSTRUCTIONS_CATEGORIES["type_casts"]
-            },
-
             # Unary operations
             **{
                 _instruction: self._handle_operations
@@ -92,6 +92,11 @@ class BackendCertificator(AbstractCertificator):
                 _instruction: self._handle_operations
                 for _instruction in INSTRUCTIONS_CATEGORIES["binops"]
             },
+        }
+
+        self.type_cast_handlers = {
+            _instruction: self._handle_type_casts
+            for _instruction in INSTRUCTIONS_CATEGORIES["type_casts"]
         }
 
     @override
@@ -110,6 +115,8 @@ class BackendCertificator(AbstractCertificator):
 
         for bytecode in self.bytecode_list:
             bytecode_id = bytecode["instruction_id"]
+
+            # print("current id:", bytecode_id)
 
             # Skip instructions that have already been certificated.
             if self.instruction_status[bytecode_id]:
@@ -154,8 +161,21 @@ class BackendCertificator(AbstractCertificator):
             if instruction in self.special_instructions_handlers:
                 handler = self.special_instructions_handlers[instruction]
 
+            elif instruction in self.type_cast_handlers:
+                handler = self._handle_type_casts
+
+                # Offset the `current_position_prime` increment made by the type
+                # casts handler
+                self.current_positional_prime = previous_prime(
+                    self.current_positional_prime
+                )
+
             else:
                 handler = self.grouped_instructions_handlers[instruction]
+
+            # print(f"certificating {instruction} (id: {bytecode['instruction_id']}) with {handler}")
+            # print(f"current prime: {self.current_positional_prime}")
+            # print("")
 
             certificate = handler(bytecode)
 
@@ -199,7 +219,6 @@ class BackendCertificator(AbstractCertificator):
             store_id = next_bytecode["instruction_id"]
             self.instruction_status[store_id] = True
             source = "PARAM"
-
             symbol = get_certificate_symbol("PARAM")
         else:
             symbol = get_certificate_symbol("VAR_DEF")
@@ -207,16 +226,17 @@ class BackendCertificator(AbstractCertificator):
 
         certificate = (
             f"{self.current_positional_prime}"
-            + f"^({symbol})"
+            + f"^(({symbol})"
             + f"^({self.current_variable_prime})"
-            + f"^({allocated_size})"
+            + f"^({allocated_size}))"
         )
 
         register_metadata = {
             "source": source,
             "metadata": {
                 "certificate": certificate,
-                "prime": self.current_variable_prime
+                "prime": self.current_variable_prime,
+                "positional_prime": self.current_positional_prime
             }
         }
 
@@ -251,12 +271,20 @@ class BackendCertificator(AbstractCertificator):
         rhs_metadata = self.register_tracker[metadata["value"]]
         rhs_certificate = rhs_metadata["metadata"]["certificate"]
 
+        # Pop `rhs_certificate` from `computed_certificate` to avoid
+        # adding it twice, if applicable
+        try:
+            _rhs_operand_certificate_idx = self.computed_certificate.index(rhs_certificate)
+            self.computed_certificate.pop(_rhs_operand_certificate_idx)
+        except ValueError:
+            pass
+
         symbol = get_certificate_symbol("ASSIGN")
         certificate = (
             f"{self.current_positional_prime}"
             + f"^({symbol})"
             + f"^({lhs_certificate})"
-            + f"^({rhs_certificate})"
+            + f"*({rhs_certificate}))"
         )
 
         source_metadata = {
@@ -264,7 +292,8 @@ class BackendCertificator(AbstractCertificator):
             "metadata": {
                 "certificate": certificate,
                 "lhs_operand": lhs_metadata,
-                "rhs_operand": rhs_metadata
+                "rhs_operand": rhs_metadata,
+                "positional_prime": self.current_positional_prime
             }
         }
 
@@ -342,21 +371,43 @@ class BackendCertificator(AbstractCertificator):
             # been computed
             if current_bytecode["instruction"] == "MOV":
                 source_register = current_bytecode["metadata"]["value"]
-                _arg_certificate = (
+                _arg_base_certificate = (
                     self.register_tracker[source_register]
                                          ["metadata"]
                                          ["certificate"]
                 )
-                args_certificates += f"^{_arg_certificate}"
+
+                _arg_certificate_symbol = get_certificate_symbol("ARG")
+                _arg_certificate = (
+                    f"{self.current_positional_prime}"
+                    + f"(({_arg_certificate_symbol})^"
+                    + f"{_arg_base_certificate})"
+                )
+
+                args_certificates += f"*({_arg_certificate})"
+                self.current_positional_prime = next_prime(
+                    self.current_positional_prime
+                )
 
             # Compute the argument certificate. We don't really care about this
             # value right now, so we ignore it. We only need to add it to
             # `self.register_tracker` – so it can be retrieved by the code block
             # above
             else:
+                # This `_handlers` is just to pool together `type_cast_handlers`
+                # and `grouped_instructions_handlers`.
+                _handlers = {
+                    **self.type_cast_handlers,
+                    **self.grouped_instructions_handlers
+                }
+
                 current_instruction = current_bytecode["instruction"]
-                handler = self.grouped_instructions_handlers[current_instruction]
+                handler = _handlers[current_instruction]
                 _ = handler(current_bytecode)
+
+                self.current_positional_prime = next_prime(
+                    self.current_positional_prime
+                )
 
             self.instruction_status[current_bytecode["instruction_id"]] = True
 
@@ -376,7 +427,7 @@ class BackendCertificator(AbstractCertificator):
 
         certificate = (
             f"{self.current_positional_prime}^"
-            + f"({symbol})^({function_prime})"
+            + f"(({symbol})^({function_prime}))"
             + args_certificates
         )
 
@@ -385,6 +436,7 @@ class BackendCertificator(AbstractCertificator):
             "metadata": {
                 "certificate": certificate,
                 "prime": function_prime,
+                "positional_prime": self.current_positional_prime
             }
         }
 
@@ -439,8 +491,8 @@ class BackendCertificator(AbstractCertificator):
 
         certificate = (
             f"{self.current_positional_prime}"
-            + f"^({symbol})"
-            + f"^({returned_value_certificate})"
+            + f"^(({symbol})"
+            + f"^({returned_value_certificate}))"
         )
         
         self.instruction_status[current_bytecode["instruction_id"]] = True
@@ -512,6 +564,12 @@ class BackendCertificator(AbstractCertificator):
             _indexing_variable_prime = _indexing_variable["metadata"]["prime"]
             indexing = f"^(3^{_indexing_variable_prime})"
 
+            # Use the previous prime because the `LOAD` instruction regarding
+            # the index prime is already being accounted for by this certificate
+            self.current_positional_prime = (
+                previous_prime(self.current_positional_prime)
+            )
+
         # If not, then it might be an array accessed with a constant for index,
         # a struct attribute, or a "simple" variable. For either case, we'll
         # use `offset + 1` (`offset` = 0 for "simple" variables).
@@ -521,7 +579,7 @@ class BackendCertificator(AbstractCertificator):
 
         certificate = (
             f"{self.current_positional_prime}"
-            + f"^({symbol})"
+            + f"^({symbol}"
             + f"^({variable_prime})"
             + indexing
         )
@@ -530,7 +588,8 @@ class BackendCertificator(AbstractCertificator):
             "source": instruction,
             "metadata": {
                 "certificate": certificate,
-                "prime": variable_prime
+                "prime": variable_prime,
+                "positional_prime": self.current_positional_prime
             }
         }
 
@@ -583,15 +642,16 @@ class BackendCertificator(AbstractCertificator):
 
         certificate = (
             f"{self.current_positional_prime}"
-            + f"^({symbol})"
-            + f"^({_constant_value_exponent})"
+            + f"^(({symbol})"
+            + f"^({_constant_value_exponent}))"
         )
 
         register_metadata = {
             "source": "CONSTANT",
             "metadata": {
                 "certificate": certificate,
-                "value": constant_value
+                "value": constant_value,
+                "positional_prime": self.current_positional_prime
             }
         }
 
@@ -623,7 +683,8 @@ class BackendCertificator(AbstractCertificator):
             "source": instruction,
             "metadata": {
                 "operand": original_value_register,
-                "certificate": original_value_certificate
+                "certificate": original_value_certificate,
+                "positional_prime": self.current_positional_prime
             }
         }
 
@@ -664,18 +725,32 @@ class BackendCertificator(AbstractCertificator):
         for metadata_key in metadata_keys:
             _operand_metadata = self.register_tracker[metadata[metadata_key]]
             _operand_certificate = _operand_metadata["metadata"]["certificate"]
-            operands_certificates += f"^({_operand_certificate})"
+            operands_certificates += f"({_operand_certificate})*"
+
+            # Pop `_operand_certificate` from `computed_certificate` to avoid
+            # adding it twice, if applicable
+            try:
+                _operand_certificate_idx = (
+                    self.computed_certificate.index(_operand_certificate)
+                )
+                self.computed_certificate.pop(_operand_certificate_idx)
+            except ValueError:
+                continue
+
+        # Clip the trailing `^`
+        operands_certificates = operands_certificates[:-1]
 
         certificate = (
             f"{self.current_positional_prime}"
             + f"^({symbol})"
-            + operands_certificates
+            + f"^{operands_certificates})"
         )
 
         source_metadata = {
             "source": instruction,
             "metadata": {
-                "certificate": certificate
+                "certificate": certificate,
+                "positional_prime": self.current_positional_prime
             }
         }
         source_metadata["metadata"].update({
