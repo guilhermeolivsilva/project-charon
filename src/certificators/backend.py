@@ -271,13 +271,9 @@ class BackendCertificator(AbstractCertificator):
         rhs_metadata = self.register_tracker[metadata["value"]]
         rhs_certificate = rhs_metadata["metadata"]["certificate"]
 
-        # Pop `rhs_certificate` from `computed_certificate` to avoid
+        # Remove `rhs_certificate` from `computed_certificate` to avoid
         # adding it twice, if applicable
-        try:
-            _rhs_operand_certificate_idx = self.computed_certificate.index(rhs_certificate)
-            self.computed_certificate.pop(_rhs_operand_certificate_idx)
-        except ValueError:
-            pass
+        self.__remove_duplicate(certificate=rhs_certificate)
 
         symbol = get_certificate_symbol("ASSIGN")
         certificate = (
@@ -729,13 +725,7 @@ class BackendCertificator(AbstractCertificator):
 
             # Pop `_operand_certificate` from `computed_certificate` to avoid
             # adding it twice, if applicable
-            try:
-                _operand_certificate_idx = (
-                    self.computed_certificate.index(_operand_certificate)
-                )
-                self.computed_certificate.pop(_operand_certificate_idx)
-            except ValueError:
-                continue
+            self.__remove_duplicate(certificate=_operand_certificate)
 
         # Clip the trailing `^`
         operands_certificates = operands_certificates[:-1]
@@ -976,3 +966,22 @@ class BackendCertificator(AbstractCertificator):
             "conditional_register" in bytecode["metadata"]
             and bytecode["metadata"]["conditional_register"] == "zero"
         )
+    
+    def __remove_duplicate(self, certificate: str) -> None:
+        """
+        Remove an entry from `self.computed_certificate` to avoid duplicates.
+
+        Parameters
+        ----------
+        certificate : str
+            The certificate to remove from `self.computed_certificate`.
+        """
+
+        try:
+            certificate_idx = (
+                self.computed_certificate.index(certificate)
+            )
+            self.computed_certificate.pop(certificate_idx)
+        except ValueError:
+            pass
+
