@@ -485,6 +485,8 @@ class BackendCertificator(AbstractCertificator):
                                ["certificate"]
         )
 
+        self.__remove_duplicate(certificate=returned_value_certificate)
+
         certificate = (
             f"{self.current_positional_prime}"
             + f"^(({symbol})"
