@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import TYPE_SYMBOLS_MAP
+from src.utils import next_prime
 
 
 class NOT(Node):
@@ -23,28 +23,8 @@ class NOT(Node):
         super().__init__()
 
         self.expression: Node = expression
-        self.symbol: str = self._compute_symbol()
         self.instruction: str = "NOT"
         self.type: str = "int"
-
-    @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `NOT` nodes, obtain the certificates, recursively, from the
-        `expression` subtree first, and then from the `NOT` node itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `NOT` node.
-        """
-
-        return [
-            *self.expression.get_certificate_label(),
-            self.certificate_label
-        ]
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -110,21 +90,35 @@ class NOT(Node):
         code_metadata.append(this_code)
 
         return register, code_metadata
-
-    def _compute_symbol(self) -> str:
+    
+    @override
+    def certificate(self, positional_prime: int) -> int:
         """
-        Compute the symbol of this `Operation`.
+        Compute the certificate of `NOT`, and set this attribute.
 
-        The symbol is composed by the basic symbol of the operation itself,
-        plus the types of its left and right hand sides.
+        For `NOT` nodes, first certificate the `expression` children node, and
+        then the `NOT` node itself.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
 
         Returns
         -------
-        : str
-            The symbol computed with left and right hand sides types.
+        : int
+            The prime that comes immediately after `positional_prime`.
         """
 
-        expression_type = self.expression.get_type()
-        expression_type_symbol = TYPE_SYMBOLS_MAP.get(expression_type).get("type_symbol")
+        # Certificate the negated `expression`
+        positional_prime = self.expression.certificate(positional_prime)
+        expression_certificate_label = self.expression.get_certificate_label().pop()
 
-        return f"{self.symbol}^{expression_type_symbol}"
+        self.certificate_label = (
+            f"{positional_prime}"
+            + f"({self.symbol})"
+            + f"^({expression_certificate_label})"
+        )
+
+        return next_prime(positional_prime)
