@@ -2,6 +2,7 @@
 
 import pytest
 
+from src.certificators import BackendCertificator, FrontendCertificator
 from src.runner import create_instance
 
 
@@ -250,3 +251,115 @@ def test_bitwise_operation(test_suite: dict) -> None:
     vm.run()
 
     assert vm.get_memory() == test_suite["expected_memory"]
+
+
+@pytest.mark.parametrize(
+    "test_suite",
+    [
+        {
+            "function_name": "addition",
+            "operator": "+"
+        },
+        {
+            "function_name": "subtraction",
+            "operator": "-"
+        },
+        {
+            "function_name": "multiplication",
+            "operator": "*"
+        },
+        {
+            "function_name": "division",
+            "operator": "/"
+        },
+        {
+            "function_name": "greater_than",
+            "operator": ">"
+        },
+        {
+            "function_name": "less_than",
+            "operator": "<"
+        },
+        {
+            "function_name": "equal",
+            "operator": "=="
+        },
+        {
+            "function_name": "not_equal",
+            "operator": "!="
+        },
+        {
+            "function_name": "logical_and",
+            "operator": "&&"
+        },
+        {
+            "function_name": "logical_or",
+            "operator": "||"
+        },
+    ]
+)
+def test_operation_certification(test_suite: dict) -> None:
+    """Test the front and backend certification."""
+
+    test_parameters = {
+        key: value
+        for key, value in test_suite.items()
+        if key in ["function_name", "operator"]
+    }
+
+    instance = create_instance(source_code=SOURCE_CODE.format(**test_parameters))
+    
+    ast = instance.get_ast()
+    frontend_certificate = FrontendCertificator(ast=ast).certificate()
+
+    program = instance.get_program()
+    backend_certificate = BackendCertificator(program=program).certificate()
+
+    assert frontend_certificate == backend_certificate
+
+
+@pytest.mark.parametrize(
+    "test_suite",
+    [
+        {
+            "function_name": "left_shift",
+            "operator": "<<"
+        },
+        {
+            "function_name": "right_shift",
+            "operator": ">>"
+        },
+        {
+            "function_name": "bitwise_and",
+            "operator": "&"
+        },
+        {
+            "function_name": "bitwise_or",
+            "operator": "|"
+        },
+        {
+            "function_name": "module",
+            "operator": "%"
+        },
+    ]
+)
+def test_bitwise_operation(test_suite: dict) -> None:
+    """Test the front and backend certification."""
+
+    test_parameters = {
+        key: value
+        for key, value in test_suite.items()
+        if key in ["function_name", "operator"]
+    }
+
+    instance = create_instance(
+        source_code=BITWISE_SOURCE_CODE.format(**test_parameters)
+    )
+
+    ast = instance.get_ast()
+    frontend_certificate = FrontendCertificator(ast=ast).certificate()
+
+    program = instance.get_program()
+    backend_certificate = BackendCertificator(program=program).certificate()
+
+    assert frontend_certificate == backend_certificate

@@ -1,5 +1,6 @@
 """Test if the language correctly computes the Greatest Common Divisor (GCD)."""
 
+from src.certificators import BackendCertificator, FrontendCertificator
 from src.runner import create_instance
 
 SOURCE_CODE = """
@@ -33,3 +34,17 @@ def test_gcd() -> None:
 
     expected_memory = {'0x0': 25, '0x4': 25}
     assert vm.get_memory() == expected_memory
+
+
+def test_array_certification() -> None:
+    """Test the front and backend certification."""
+
+    instance = create_instance(source_code=SOURCE_CODE)
+
+    ast = instance.get_ast()
+    frontend_certificate = FrontendCertificator(ast=ast).certificate()
+
+    program = instance.get_program()
+    backend_certificate = BackendCertificator(program=program).certificate()
+
+    assert frontend_certificate == backend_certificate
