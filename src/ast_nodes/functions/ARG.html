@@ -231,10 +231,11 @@
 </span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
 </span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^&quot;</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>        <span class="p">)</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>        <span class="p">)</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -389,10 +390,11 @@
 </span><span id="ARG-150"><a href="#ARG-150"><span class="linenos">150</span></a>
 </span><span id="ARG-151"><a href="#ARG-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="ARG-152"><a href="#ARG-152"><span class="linenos">152</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^&quot;</span>
-</span><span id="ARG-153"><a href="#ARG-153"><span class="linenos">153</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="ARG-154"><a href="#ARG-154"><span class="linenos">154</span></a>        <span class="p">)</span>
-</span><span id="ARG-155"><a href="#ARG-155"><span class="linenos">155</span></a>
-</span><span id="ARG-156"><a href="#ARG-156"><span class="linenos">156</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="ARG-153"><a href="#ARG-153"><span class="linenos">153</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="ARG-154"><a href="#ARG-154"><span class="linenos">154</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="ARG-155"><a href="#ARG-155"><span class="linenos">155</span></a>        <span class="p">)</span>
+</span><span id="ARG-156"><a href="#ARG-156"><span class="linenos">156</span></a>
+</span><span id="ARG-157"><a href="#ARG-157"><span class="linenos">157</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -675,10 +677,11 @@ code_metadata : list of dict
 </span><span id="ARG.certificate-150"><a href="#ARG.certificate-150"><span class="linenos">150</span></a>
 </span><span id="ARG.certificate-151"><a href="#ARG.certificate-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="ARG.certificate-152"><a href="#ARG.certificate-152"><span class="linenos">152</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^&quot;</span>
-</span><span id="ARG.certificate-153"><a href="#ARG.certificate-153"><span class="linenos">153</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;((</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)^</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="ARG.certificate-154"><a href="#ARG.certificate-154"><span class="linenos">154</span></a>        <span class="p">)</span>
-</span><span id="ARG.certificate-155"><a href="#ARG.certificate-155"><span class="linenos">155</span></a>
-</span><span id="ARG.certificate-156"><a href="#ARG.certificate-156"><span class="linenos">156</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="ARG.certificate-153"><a href="#ARG.certificate-153"><span class="linenos">153</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="ARG.certificate-154"><a href="#ARG.certificate-154"><span class="linenos">154</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">_argument_value_certificate</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="ARG.certificate-155"><a href="#ARG.certificate-155"><span class="linenos">155</span></a>        <span class="p">)</span>
+</span><span id="ARG.certificate-156"><a href="#ARG.certificate-156"><span class="linenos">156</span></a>
+</span><span id="ARG.certificate-157"><a href="#ARG.certificate-157"><span class="linenos">157</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
