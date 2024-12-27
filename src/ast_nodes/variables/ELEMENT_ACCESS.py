@@ -174,7 +174,7 @@ class ELEMENT_ACCESS(Node):
             The prime that comes immediately after `positional_prime`.
         """
 
-        certificate_label = f"{self.symbol}"
+        certificate_label = f"({self.symbol})"
 
         # Add the prime of the variable being accessed
         variable_metadata = self.variable.get_metadata()
@@ -184,12 +184,12 @@ class ELEMENT_ACCESS(Node):
         # Add the access type composition
         if self.access_type == "static":
             offset_size = self.element_offset["offset_size"]
-            certificate_label += f"^(2^{offset_size + 1})"
+            certificate_label += f"^(2)^({offset_size + 1})"
 
         else:
             indexing_variable_metadata = self.element.get_metadata()
             indexing_variable_prime = indexing_variable_metadata["prime"]
-            certificate_label += f"^(3^{indexing_variable_prime})"
+            certificate_label += f"^(3)^({indexing_variable_prime})"
 
         self.certificate_label = f"{positional_prime}^({certificate_label})"
 

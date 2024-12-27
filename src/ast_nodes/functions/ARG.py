@@ -149,7 +149,8 @@ class ARG(Node):
 
         self.certificate_label = (
             f"{positional_prime}^"
-            + f"(({self.symbol})^{_argument_value_certificate})"
+            + f"({self.symbol})"
+            + f"*{_argument_value_certificate}"
         )
 
         return next_prime(positional_prime)

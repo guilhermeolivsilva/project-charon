@@ -52,7 +52,7 @@ class FUNC_CALL(Node):
 
         for argument in self.arguments:
             _argument_certificate = argument.get_certificate_label().pop()
-            certificate_label += f"^{_argument_certificate}"
+            certificate_label += f"*{_argument_certificate}"
 
         return [certificate_label]
 

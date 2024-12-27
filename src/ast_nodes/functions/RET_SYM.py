@@ -142,8 +142,9 @@ class RET_SYM(Node):
         _returned_value_certificate = self.returned_value.get_certificate_label().pop()
 
         self.certificate_label = (
-            f"{positional_prime}^"
-            + f"(({self.symbol})^({_returned_value_certificate}))"
+            f"{positional_prime}"
+            + f"^({self.symbol})"
+            + f"*{_returned_value_certificate}"
         )
 
         return next_prime(positional_prime)

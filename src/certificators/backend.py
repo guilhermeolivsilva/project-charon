@@ -279,8 +279,8 @@ class BackendCertificator(AbstractCertificator):
         certificate = (
             f"{self.current_positional_prime}"
             + f"^({symbol})"
-            + f"^({lhs_certificate})"
-            + f"*({rhs_certificate}))"
+            + f"*{lhs_certificate}"
+            + f"*{rhs_certificate}"
         )
 
         source_metadata = {
@@ -358,7 +358,7 @@ class BackendCertificator(AbstractCertificator):
 
         # Iterate over the instructions until we find the `JAL` + `MOV` pair,
         # certificating the bytecode we find along the way
-        args_certificates = ""
+        args_certificates = []
 
         while not self.__is_function_call(
             bytecode_pair=(current_bytecode, next_bytecode)
@@ -376,11 +376,11 @@ class BackendCertificator(AbstractCertificator):
                 _arg_certificate_symbol = get_certificate_symbol("ARG")
                 _arg_certificate = (
                     f"{self.current_positional_prime}"
-                    + f"(({_arg_certificate_symbol})^"
-                    + f"{_arg_base_certificate})"
+                    + f"^({_arg_certificate_symbol})"
+                    + f"*{_arg_base_certificate}"
                 )
 
-                args_certificates += f"*({_arg_certificate})"
+                args_certificates.append(_arg_certificate)
                 self.current_positional_prime = next_prime(
                     self.current_positional_prime
                 )
@@ -424,7 +424,7 @@ class BackendCertificator(AbstractCertificator):
         certificate = (
             f"{self.current_positional_prime}^"
             + f"(({symbol})^({function_prime}))"
-            + args_certificates
+            + f"*{'*'.join(args_certificates)}"
         )
 
         register_metadata = {
@@ -489,8 +489,8 @@ class BackendCertificator(AbstractCertificator):
 
         certificate = (
             f"{self.current_positional_prime}"
-            + f"^(({symbol})"
-            + f"^({returned_value_certificate}))"
+            + f"^({symbol})"
+            + f"*{returned_value_certificate}"
         )
         
         self.instruction_status[current_bytecode["instruction_id"]] = True
@@ -560,7 +560,7 @@ class BackendCertificator(AbstractCertificator):
                 metadata["offset_register"]
             ]
             _indexing_variable_prime = _indexing_variable["metadata"]["prime"]
-            indexing = f"^(3^{_indexing_variable_prime})"
+            indexing = f"^(3)^({_indexing_variable_prime}))"
 
             # Use the previous prime because the `LOAD` instruction regarding
             # the index prime is already being accounted for by this certificate
@@ -573,11 +573,11 @@ class BackendCertificator(AbstractCertificator):
         # use `offset + 1` (`offset` = 0 for "simple" variables).
         else:
             offset_size = metadata.get("offset_size", 0)
-            indexing = f"^(2^{offset_size + 1})"
+            indexing = f"^(2)^({offset_size + 1}))"
 
         certificate = (
             f"{self.current_positional_prime}"
-            + f"^({symbol}"
+            + f"^(({symbol})"
             + f"^({variable_prime})"
             + indexing
         )
@@ -736,24 +736,21 @@ class BackendCertificator(AbstractCertificator):
 
         # Build the certificate
         symbol = get_certificate_symbol(instruction)
-        operands_certificates = ""
+        operands_certificates = []
 
         for metadata_key in metadata_keys:
             _operand_metadata = self.register_tracker[metadata[metadata_key]]
             _operand_certificate = _operand_metadata["metadata"]["certificate"]
-            operands_certificates += f"({_operand_certificate})*"
+            operands_certificates.append(_operand_certificate)
 
             # Pop `_operand_certificate` from `computed_certificate` to avoid
             # adding it twice, if applicable
             self.__remove_duplicate(certificate=_operand_certificate)
 
-        # Clip the trailing `^`
-        operands_certificates = operands_certificates[:-1]
-
         certificate = (
             f"{self.current_positional_prime}"
             + f"^({symbol})"
-            + f"^{operands_certificates})"
+            + f"*{'*'.join(operands_certificates)}"
         )
 
         source_metadata = {

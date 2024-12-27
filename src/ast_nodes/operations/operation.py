@@ -149,24 +149,25 @@ class Operation(Node):
             The prime that comes immediately after `positional_prime`.
         """
 
-        operation_certificate_label = ""
-
         positional_prime = self.lhs.certificate(positional_prime)
-        positional_prime = self.rhs.certificate(positional_prime)
-
         lhs_certificate_label = self.lhs.get_certificate_label().pop()
-        operation_certificate_label += f"{lhs_certificate_label}"
 
+        positional_prime = self.rhs.certificate(positional_prime)
         rhs_certificate_label = self.rhs.get_certificate_label().pop()
-        operation_certificate_label += f"*({rhs_certificate_label})"
 
-        self.certificate_label = (
+        operation_certificate_label = (
             f"{positional_prime}^"
             + f"({self.symbol})"
-            + f"^({operation_certificate_label})"
+        )
+        positional_prime = next_prime(positional_prime)
+
+        self.certificate_label = (
+            operation_certificate_label
+            + f"*{lhs_certificate_label}"
+            + f"*{rhs_certificate_label}"
         )
 
-        return next_prime(positional_prime)
+        return positional_prime
     
     def _compute_operation_type(self) -> str:
         """

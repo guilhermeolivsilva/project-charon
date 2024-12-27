@@ -117,8 +117,8 @@ class NOT(Node):
 
         self.certificate_label = (
             f"{positional_prime}"
-            + f"({self.symbol})"
-            + f"^({expression_certificate_label})"
+            + f"^({self.symbol})"
+            + f"*{expression_certificate_label}"
         )
 
         return next_prime(positional_prime)
