@@ -24,7 +24,6 @@ class FrontendCertificator(AbstractCertificator):
         super().__init__()
 
         self.ast: AbstractSyntaxTree = ast
-        self.initial_prime = 2
 
     @override
     def certificate(self, **kwargs) -> list[str]:
