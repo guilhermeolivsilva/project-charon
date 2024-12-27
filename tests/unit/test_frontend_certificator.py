@@ -1,28 +1,23 @@
 """Implement unit tests for the `src.certificators.frontend` module."""
 
-from copy import deepcopy
-
-from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.certificators import FrontendCertificator
-
-SOURCE_CODE = []
-
-EXPECTED_CERTIFICATE = []
+from tests.unit.common import ABSTRACT_SYNTAX_TREE, CERTIFICATE
 
 
 def test_init() -> None:
     """Test the instantiation of FrontendCertificator objects."""
 
-    ...
+    frontend_certificator = FrontendCertificator(ast=ABSTRACT_SYNTAX_TREE)
+
+    assert frontend_certificator.computed_certificate == []
+    assert frontend_certificator.initial_prime == 2
+    assert frontend_certificator.ast == ABSTRACT_SYNTAX_TREE
 
 
 def test_certificate():
     """Test the FrontendCertificator.certificate method."""
 
-    ...
+    frontend_certificator = FrontendCertificator(ast=ABSTRACT_SYNTAX_TREE)
+    frontend_certificator.certificate()
 
-
-def test_get_certificate():
-    """Test the FrontendCertificator.get_certificate method."""
-
-    ...
+    assert frontend_certificator.get_certificate() == CERTIFICATE
