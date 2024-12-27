@@ -516,7 +516,7 @@ class BackendCertificator(AbstractCertificator):
             The jump certificate.
         """
 
-        # Identify the jump: IF, IFELSE, WHILE, DO
+        # Identify the jump: `IF`, `IFELSE`, `WHILE`, `DO`
         jump_kind = self.__identify_jz(bytecode)
 
         # Build the certificate
@@ -707,6 +707,24 @@ class BackendCertificator(AbstractCertificator):
         instruction = bytecode["instruction"]
         metadata = bytecode["metadata"]
         register = metadata["register"]
+
+        # Handle a corner case: `NOT` followed by `JZ`, where `JZ` is identified
+        # to be a `DO` operation (DO/WHILE operations are built with a `NOT` +
+        # `JZ` instructions pair)
+        current_instruction_index = bytecode["instruction_id"] - 1
+        next_instruction_index = current_instruction_index + 1
+
+        next_bytecode = self.bytecode_list[next_instruction_index]
+        next_instruction = next_bytecode["instruction"]
+
+        if instruction == "NOT" and next_instruction == "JZ":
+            _jump_kind = self.__identify_jz(next_bytecode)
+
+            if _jump_kind == "DO":
+                # If it indeed is a `DO` operation, tag the current bytecode
+                # as certificated and handle the following jump
+                self.instruction_status[bytecode["instruction_id"]] = True
+                return self._handle_jump(next_bytecode)
 
         if instruction in INSTRUCTIONS_CATEGORIES["unops"]:
             keys = ["operand"]
