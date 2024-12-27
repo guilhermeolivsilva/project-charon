@@ -65,6 +65,7 @@ class BackendCertificator(AbstractCertificator):
             "STORE": self._handle_store_instruction,
             "MOV": self._handle_mov_instruction,
             "JZ": self._handle_jump,
+            "JAL": self._handle_function_call,
             "HALT": self._handle_halt
         }
 
@@ -357,7 +358,7 @@ class BackendCertificator(AbstractCertificator):
         next_bytecode = self.bytecode_list[current_bytecode_idx + 1]
 
         # Iterate over the instructions until we find the `JAL` + `MOV` pair,
-        # certificating the bytecode we find along the way
+        # certificating the bytecodes we find along the way
         args_certificates = []
 
         while not self.__is_function_call(
@@ -424,8 +425,10 @@ class BackendCertificator(AbstractCertificator):
         certificate = (
             f"{self.current_positional_prime}^"
             + f"(({symbol})^({function_prime}))"
-            + f"*{'*'.join(args_certificates)}"
         )
+
+        if args_certificates:
+            certificate += f"*{'*'.join(args_certificates)}"
 
         register_metadata = {
             "source": "FUNC_CALL",
