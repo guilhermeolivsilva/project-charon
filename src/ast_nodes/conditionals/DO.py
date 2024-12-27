@@ -6,6 +6,7 @@ from typing_extensions import override
 
 from src.ast_nodes.node import Node
 from src.ast_nodes.conditionals.conditional import Conditional
+from src.utils import next_prime
 
 
 class DO(Conditional):
@@ -137,4 +138,7 @@ class DO(Conditional):
         positional_prime = self.statement_if_true.certificate(positional_prime)
         positional_prime = self.parenthesis_expression.certificate(positional_prime)
 
-        return super().certificate(positional_prime)
+        self.certificate_label = f"{positional_prime}^({self.symbol})"
+
+        return next_prime(positional_prime)
+
