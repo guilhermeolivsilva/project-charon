@@ -11,7 +11,7 @@ class Lexer:
         "do": "DO_SYM",
         "while": "WHILE_SYM",
         "if": "IF_SYM",
-        "else": "ELSE_SYM"
+        "else": "ELSE_SYM",
     }
 
     symbols: dict[str, str] = {
@@ -22,7 +22,7 @@ class Lexer:
         "(": "LPAR",
         ")": "RPAR",
         ";": "SEMI",
-        ".": "DOT"
+        ".": "DOT",
     }
 
     operators: dict[str, str] = {
@@ -42,7 +42,7 @@ class Lexer:
         "|": "BITOR",
         "==": "EQUAL",
         "!=": "DIFF",
-        "!": "NOT"
+        "!": "NOT",
     }
 
     # Map built-in types to pseudonymous
@@ -55,12 +55,10 @@ class Lexer:
         **conditionals,
         **symbols,
         **operators,
-
         # Additional reserved words that are not in previous categories
         "struct": "STRUCT_DEF",
         "return": "RET_SYM",
-
-        **types
+        **types,
     }
 
     def __init__(self, source_code: str) -> None:
@@ -75,10 +73,7 @@ class Lexer:
 
         self.source_code: str = source_code
         self.functions: dict[str, dict] = {}
-        self.globals: dict[str, dict] = {
-            "structs": {},
-            "variables": {}
-        }
+        self.globals: dict[str, dict] = {"structs": {}, "variables": {}}
 
         self.variable_count: int = 0
 
@@ -99,7 +94,7 @@ class Lexer:
             The `globals` key contains a dictionary such as
 
             {
-                "variables": { 
+                "variables": {
                     <variable name>: <variable type>,
                     ...
                 },
@@ -146,33 +141,25 @@ class Lexer:
 
         # Register the functions and its definitions' ID
         self.functions = {
-            func_name: {
-                "id": func_id,
-                "prime": func_prime
-            }
-            for func_name, (func_id, func_prime)
-            in zip(
+            func_name: {"id": func_id, "prime": func_prime}
+            for func_name, (func_id, func_prime) in zip(
                 functions_scopes.keys(),
                 zip(
                     range(1, len(functions_scopes) + 1),
-                    primes_list(len(functions_scopes))
-                )
+                    primes_list(len(functions_scopes)),
+                ),
             )
         }
 
         for function in functions_scopes:
             function_data: dict[str, str] = self._parse_function(
-                symbol_collection,
-                **functions_scopes.get(function)
+                symbol_collection, **functions_scopes.get(function)
             )
 
             # Extend the registered functions with the parsed function data
             self.functions[function].update(function_data)
 
-        return {
-            "globals": self.globals,
-            "functions": self.functions
-        }
+        return {"globals": self.globals, "functions": self.functions}
 
     def split_source(self) -> list[str]:
         """
@@ -209,9 +196,7 @@ class Lexer:
         remove_empty_filter = (
             lambda curr_token: curr_token if len(curr_token) > 0 else None
         )
-        tokenized_source = list(
-            filter(remove_empty_filter, source_code)
-        )
+        tokenized_source = list(filter(remove_empty_filter, source_code))
 
         return tokenized_source
 
@@ -248,7 +233,7 @@ class Lexer:
                 pass
 
         return symbol_collection
-    
+
     def _parse_globals(self, symbol_collection: list[str]) -> None:
         """
         Parse the struct types and variables to be available globally.
@@ -276,11 +261,9 @@ class Lexer:
             # We are only interested in structs and variables. Thus, we'll only
             # handle these constructs for now.
             if not len(curly_brackets_stack):
-
                 if token == "struct":
                     struct_name, struct_attributes = self._handle_struct_definition(
-                        symbol_collection=symbol_collection,
-                        struct_idx=idx
+                        symbol_collection=symbol_collection, struct_idx=idx
                     )
 
                     struct_id = len(self.globals["structs"]) + 1
@@ -291,7 +274,7 @@ class Lexer:
                         "id": struct_id,
                         "prime": struct_prime,
                         "attributes": struct_attributes,
-                        "active": False
+                        "active": False,
                     }
 
                 elif token in self.globals["structs"]:
@@ -301,7 +284,7 @@ class Lexer:
                     definition_metadata = self._handle_variable_definition(
                         symbol_collection=symbol_collection,
                         token_idx=idx,
-                        existing_variables=[*self.globals.get("variables").keys()]
+                        existing_variables=[*self.globals.get("variables").keys()],
                     )
 
                     # The `_handle_variable_definition` method will return an
@@ -321,10 +304,7 @@ class Lexer:
                         self.variable_count += 1
 
     def _parse_function(
-        self,
-        symbol_collection: list[str],
-        start_idx: int,
-        end_idx: int
+        self, symbol_collection: list[str], start_idx: int, end_idx: int
     ) -> dict[str, str]:
         """
         Parse the scope of a function defined in the source code.
@@ -352,16 +332,13 @@ class Lexer:
         function_name = symbol_collection[start_idx + 1]
         function_type = symbol_collection[start_idx]
         parameters = self._extract_parameters(
-            symbol_collection=symbol_collection,
-            function_idx=start_idx
+            symbol_collection=symbol_collection, function_idx=start_idx
         )
 
         # Parse the statements, and initialize the list of statements with a
         # left curly bracket ({ -- `LCBRA`)
         statements: list[tuple[str, dict]] = [("LCBRA", {})]
-        statements_start_idx = (
-            symbol_collection[start_idx : end_idx].index("{") + 1
-        )
+        statements_start_idx = symbol_collection[start_idx:end_idx].index("{") + 1
 
         function_symbol_collection = symbol_collection[
             start_idx + statements_start_idx : end_idx
@@ -372,15 +349,9 @@ class Lexer:
         # Make it easier to check if a symbol is used without being defined
         global_variables = deepcopy(self.globals.get("variables"))
         local_variables = deepcopy(parameters)
-        available_variables = {
-            **global_variables,
-            **local_variables
-        }
+        available_variables = {**global_variables, **local_variables}
 
-        available_types: list[str] = [
-            *self.types,
-            *self.globals["structs"]
-        ]
+        available_types: list[str] = [*self.types, *self.globals["structs"]]
 
         while idx < len(function_symbol_collection):
             curr_token = function_symbol_collection[idx]
@@ -406,8 +377,7 @@ class Lexer:
             # Handle struct attributes
             elif "." in curr_token:
                 attribute_access_metadata = self._handle_struct_attribute(
-                    token=curr_token,
-                    available_variables=available_variables
+                    token=curr_token, available_variables=available_variables
                 )
 
                 statements.extend(attribute_access_metadata)
@@ -415,13 +385,12 @@ class Lexer:
 
             # Handle variables (definition, manipulation) and function calls
             elif curr_token not in self.reserved_words:
-
                 # First, check if it is a variable definition.
                 try:
                     variable_name, variable_type = self._handle_variable_definition(
                         symbol_collection=function_symbol_collection,
                         token_idx=idx,
-                        existing_variables=existing_variables
+                        existing_variables=existing_variables,
                     )
                     existing_variables.append(variable_name)
 
@@ -435,7 +404,7 @@ class Lexer:
                         "name": variable_name,
                         "id": var_id,
                         "prime": var_prime,
-                        **variable_type
+                        **variable_type,
                     }
 
                     available_variables[variable_name] = variable_metadata
@@ -447,12 +416,14 @@ class Lexer:
                     called_function_name, arguments = self._handle_function_call(
                         symbol_collection=function_symbol_collection,
                         available_variables=available_variables,
-                        function_call_idx=idx
+                        function_call_idx=idx,
                     )
 
                     function_call_metadata = {
                         "arguments": arguments,
-                        "called_function_metadata": self.functions[called_function_name]
+                        "called_function_metadata": self.functions[
+                            called_function_name
+                        ],
                     }
 
                     statements.append(("FUNC_CALL", function_call_metadata))
@@ -478,15 +449,13 @@ class Lexer:
         function_metadata = {
             "type": function_type,
             "parameters": parameters,
-            "statements": statements
+            "statements": statements,
         }
 
         return function_metadata
 
     def _handle_struct_definition(
-        self,
-        symbol_collection: list[str],
-        struct_idx: int
+        self, symbol_collection: list[str], struct_idx: int
     ) -> tuple[str, dict[str, str], int]:
         """
         Handle a struct type definition.
@@ -532,7 +501,7 @@ class Lexer:
             if subset[idx] == "}":
                 break
 
-            attr_type, attr_name = subset[idx:idx + 2]
+            attr_type, attr_name = subset[idx : idx + 2]
 
             if attr_name in attributes:
                 err_msg = (
@@ -540,7 +509,7 @@ class Lexer:
                     f" '{struct_name}'"
                 )
                 raise SyntaxError(err_msg)
-            
+
             is_builtin_type = attr_type in self.types
             if not is_builtin_type:
                 # Flag the struct type to be `active`, as a variable of its
@@ -553,10 +522,7 @@ class Lexer:
                         + f" is being declared with unknown type {attr_type}."
                     )
 
-            attributes[attr_name] = {
-                "type": attr_type,
-                "attr_pointer": len(attributes)
-            }
+            attributes[attr_name] = {"type": attr_type, "attr_pointer": len(attributes)}
 
             # Expected format: `<attr_type>` `<attr_name>` `;`.
             # Thus, offset 3 tokens
@@ -574,8 +540,7 @@ class Lexer:
             # 2. Check if all the types are valid
             if attr_type not in self.types or attr_type is None:
                 err_msg = (
-                    f"Unknown type '{attr_type}' of struct attribute"
-                    f" '{attr_name}'"
+                    f"Unknown type '{attr_type}' of struct attribute" f" '{attr_name}'"
                 )
                 raise SyntaxError(err_msg)
 
@@ -595,7 +560,7 @@ class Lexer:
         self,
         symbol_collection: list[str],
         token_idx: int,
-        existing_variables: list[str]
+        existing_variables: list[str],
     ) -> tuple[str, str]:
         """
         Handle a variable definition.
@@ -630,18 +595,15 @@ class Lexer:
                `=`, `[`, `]`).
         """
 
-        available_types: list[str] = [
-            *self.types,
-            *self.globals["structs"]
-        ]
+        available_types: list[str] = [*self.types, *self.globals["structs"]]
 
         try:
             # First, discard tokens that represent reserved words/symbols or constants
             variable_name = symbol_collection[token_idx]
 
-            if variable_name in self.reserved_words or 'cst' in variable_name:
+            if variable_name in self.reserved_words or "cst" in variable_name:
                 return tuple()
-            
+
             if variable_name in existing_variables:
                 raise SyntaxError(f"Redefinition of variable {variable_name}")
 
@@ -650,7 +612,7 @@ class Lexer:
 
             previous_token_is_valid_type = previous_token in [
                 *available_types,
-                "struct"
+                "struct",
             ]
             simple_variable_definition = next_token in [";", "="]
             array_definition = next_token == "["
@@ -666,13 +628,12 @@ class Lexer:
                 "=",
                 "[",
                 "]",
-                *available_types
+                *available_types,
             ]
 
             if not next_token_is_valid:
                 err_msg = (
-                    "Syntax error near definition of variable"
-                    f" '{variable_name}'"
+                    "Syntax error near definition of variable" f" '{variable_name}'"
                 )
                 raise SyntaxError(err_msg)
 
@@ -689,24 +650,24 @@ class Lexer:
                             + f" unknown type {variable_type}."
                         )
 
-                variable_metadata = {
-                    "type": variable_type
-                }
+                variable_metadata = {"type": variable_type}
 
                 # Export attributes information if it is a struct!
                 if variable_type in self.globals["structs"]:
                     variable_metadata = {
                         **variable_metadata,
-                        "attributes": self.globals["structs"][variable_type]["attributes"]
+                        "attributes": self.globals["structs"][variable_type][
+                            "attributes"
+                        ],
                     }
 
                 if simple_variable_definition:
                     return variable_name, variable_metadata
-            
+
                 elif array_definition:
                     array_length = _handle_constant(
                         annotated_constant=symbol_collection[token_idx + 2],
-                        number_only=True
+                        number_only=True,
                     )
 
                     # Remove the left and right brackets, and the array length
@@ -714,29 +675,22 @@ class Lexer:
                     # not be mistaken with array item accesses.
                     del symbol_collection[token_idx + 1 : token_idx + 4]
 
-                    array_metadata = {
-                        **variable_metadata,
-                        "length": array_length
-                    }
+                    array_metadata = {**variable_metadata, "length": array_length}
 
                     return variable_name, array_metadata
-            
+
             elif not previous_token_is_valid_type:
                 err_msg = (
-                    f"Variable '{variable_name}' of unknown type"
-                    f" '{variable_type}'"
+                    f"Variable '{variable_name}' of unknown type" f" '{variable_type}'"
                 )
                 raise SyntaxError(err_msg)
 
         except IndexError:
             return tuple()
- 
-    def _handle_struct_attribute(
-        self,
-        token: str,
-        available_variables: dict[str, dict[str, str]]
-    ) -> list[str, tuple]:
 
+    def _handle_struct_attribute(
+        self, token: str, available_variables: dict[str, dict[str, str]]
+    ) -> list[str, tuple]:
         struct_var, struct_attr = token.split(".")
 
         # Check if the variable has been declared
@@ -755,27 +709,23 @@ class Lexer:
         var_metadata = available_variables[struct_var]
         struct_metadata = self.globals["structs"][struct_type]
 
-        struct_attribute_metadata = {
-            **struct_metadata,
-            **var_metadata
-        }
+        struct_attribute_metadata = {**struct_metadata, **var_metadata}
 
-        attr_pointer = (
-            list(self.globals["structs"][struct_type]["attributes"])
-                .index(struct_attr)
+        attr_pointer = list(self.globals["structs"][struct_type]["attributes"]).index(
+            struct_attr
         )
 
         return [
             ("VAR", struct_attribute_metadata),
             ("DOT", {}),
-            ("CST", {"type": "int", "value": attr_pointer})
+            ("CST", {"type": "int", "value": attr_pointer}),
         ]
 
     def _handle_function_call(
         self,
         symbol_collection: list[str],
         available_variables: dict[str, str],
-        function_call_idx: int
+        function_call_idx: int,
     ) -> tuple[str, list[dict]]:
         """
         Handle a function call to extract the callee and arguments.
@@ -810,7 +760,7 @@ class Lexer:
 
         arguments: list[dict] = []
 
-        for token in symbol_collection[function_call_idx + 1:]:
+        for token in symbol_collection[function_call_idx + 1 :]:
             if token == "(":
                 continue
 
@@ -819,26 +769,19 @@ class Lexer:
 
             # Export the variable metadata
             if token in available_variables:
-                argument = {
-                    "variable": True,
-                    **available_variables[token]
-                }
+                argument = {"variable": True, **available_variables[token]}
 
             # If not a variable, then it's a constant. Thus, save it to the
             # `arguments` list after extracting its actual value.
             else:
-                argument = {
-                    "variable": False,
-                    **_handle_constant(token)
-                }
-            
+                argument = {"variable": False, **_handle_constant(token)}
+
             arguments.append(argument)
 
         return function_name, arguments
 
     def _compute_functions_scopes_limits(
-        self,
-        symbol_collection: list[str]
+        self, symbol_collection: list[str]
     ) -> dict[str, dict[str, int]]:
         """
         Compute the indices that bound each scope in the `symbol_collection`.
@@ -868,7 +811,7 @@ class Lexer:
 
                     scopes_limits[function_name] = {
                         "start_idx": start_idx,
-                        "end_idx": end_idx
+                        "end_idx": end_idx,
                     }
 
             except IndexError:
@@ -877,9 +820,7 @@ class Lexer:
         return scopes_limits
 
     def _is_function_definition(
-        self,
-        symbol_collection: list[str],
-        token_idx: int
+        self, symbol_collection: list[str], token_idx: int
     ) -> bool:
         """
         Decide whether given a token is a function definition.
@@ -899,19 +840,15 @@ class Lexer:
 
         previous_token_is_type = symbol_collection[token_idx - 1] in [
             *self.types,
-            *self.globals["structs"].keys()
+            *self.globals["structs"].keys(),
         ]
 
-        next_token_is_left_parenthesis = (
-            symbol_collection[token_idx + 1] == "("
-        )
+        next_token_is_left_parenthesis = symbol_collection[token_idx + 1] == "("
 
         return previous_token_is_type and next_token_is_left_parenthesis
 
     def _extract_parameters(
-        self,
-        symbol_collection: list[str],
-        function_idx: int
+        self, symbol_collection: list[str], function_idx: int
     ) -> dict[str, str]:
         """
         Extract the parameters from a function.
@@ -940,7 +877,7 @@ class Lexer:
                name).
              - a parameter has unknown type.
         """
-        
+
         # Align with the index of the left parenthesis (add 2 to offset).
         curr_idx: int = function_idx + 2
         parameters: dict[str, str] = {}
@@ -976,7 +913,7 @@ class Lexer:
                     parameters[param_name] = {
                         "type": param_type,
                         "id": parameter_id,
-                        "prime": parameter_prime
+                        "prime": parameter_prime,
                     }
                     curr_idx += 2
 
@@ -988,7 +925,7 @@ class Lexer:
         return parameters
 
 
-def _find_function_bounds(symbol_collection: list[str], token_idx: int) -> int: 
+def _find_function_bounds(symbol_collection: list[str], token_idx: int) -> int:
     curly_brackets_stack = []
     parsing_started = False
     parsing_ended = False
@@ -1014,25 +951,21 @@ def _find_function_bounds(symbol_collection: list[str], token_idx: int) -> int:
 
 
 def _handle_constant(
-    annotated_constant: str,
-    number_only: bool = False
+    annotated_constant: str, number_only: bool = False
 ) -> Union[int, float]:
     if "int" in annotated_constant:
         str_to_offset = "int_cst_"
 
-        value = int(annotated_constant[len(str_to_offset):])
+        value = int(annotated_constant[len(str_to_offset) :])
         _type = "int"
-    
+
     else:
         str_to_offset = "float_cst_"
 
         _type = "float"
-        value = float(annotated_constant[len(str_to_offset):])
+        value = float(annotated_constant[len(str_to_offset) :])
 
     if number_only:
         return value
 
-    return {
-        "type": _type,
-        "value": value
-    }
+    return {"type": _type, "value": value}

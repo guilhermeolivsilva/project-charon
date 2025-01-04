@@ -30,6 +30,7 @@ int main() {
 }
 """
 
+
 def test_fib() -> None:
     """
     Test the computation of the 10th element of the Fibonacci sequence.
@@ -41,7 +42,7 @@ def test_fib() -> None:
     vm = instance.get_vm()
     vm.run()
 
-    expected_memory = {'0x0': 10, '0x4': 34, '0x8': 55, '0xc': 21}
+    expected_memory = {"0x0": 10, "0x4": 34, "0x8": 55, "0xc": 21}
     assert vm.get_memory() == expected_memory
 
 

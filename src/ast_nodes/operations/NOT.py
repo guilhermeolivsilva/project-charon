@@ -45,10 +45,9 @@ class NOT(Node):
         self.expression.print(indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str, None]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str, None]]]]:
         """
         Generate the code associated with this `Operation`.
 
@@ -79,18 +78,14 @@ class NOT(Node):
 
         this_code = {
             "instruction": self.instruction,
-            "metadata": {
-
-                "register": register,
-                "value": expression_register
-            }
+            "metadata": {"register": register, "value": expression_register},
         }
         register += 1
 
         code_metadata.append(this_code)
 
         return register, code_metadata
-    
+
     @override
     def certificate(self, positional_prime: int) -> int:
         """

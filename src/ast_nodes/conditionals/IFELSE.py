@@ -74,10 +74,9 @@ class IFELSE(Conditional):
         self.statement_if_false.print(indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `IFELSE`.
 
@@ -104,9 +103,10 @@ class IFELSE(Conditional):
             `instruction`and `value`.
         """
 
-        register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
-            register=register
-        )
+        (
+            register,
+            parenthesis_expression_code,
+        ) = self.parenthesis_expression.generate_code(register=register)
         conditional_register: int = register - 1
 
         register, statement_if_true_code = self.statement_if_true.generate_code(
@@ -125,8 +125,8 @@ class IFELSE(Conditional):
             "instruction": "JZ",
             "metadata": {
                 "conditional_register": conditional_register,
-                "jump_size": instructions_to_jump_over_if
-            }
+                "jump_size": instructions_to_jump_over_if,
+            },
         }
 
         # The jump target is the amount of instructions in the
@@ -137,8 +137,8 @@ class IFELSE(Conditional):
             "instruction": "JZ",
             "metadata": {
                 "conditional_register": "zero",
-                "jump_size": instructions_to_jump_over_else
-            }
+                "jump_size": instructions_to_jump_over_else,
+            },
         }
 
         ifelse_code: list[dict[str, Union[int, str]]] = [

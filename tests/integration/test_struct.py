@@ -22,6 +22,7 @@ int main() {
 }
 """
 
+
 def test_struct():
     """Test a simple struct."""
 
@@ -29,7 +30,7 @@ def test_struct():
     vm = instance.get_vm()
     vm.run()
 
-    expected_memory = {'0x0': 10, '0x4': 10.150331125827813, '0x8': 101}
+    expected_memory = {"0x0": 10, "0x4": 10.150331125827813, "0x8": 101}
 
     assert vm.get_memory() == expected_memory
 

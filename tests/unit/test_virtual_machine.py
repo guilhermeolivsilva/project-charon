@@ -18,12 +18,7 @@ def test_init() -> None:
     assert vm.memory_size == memory_size
     assert vm.memory_pointer == 0x0
     assert vm.program_counter == 0
-    assert vm.registers == {
-        "arg": [],
-        "ret_address": [],
-        "ret_value": [],
-        "zero": 0
-    }
+    assert vm.registers == {"arg": [], "ret_address": [], "ret_value": [], "zero": 0}
     assert vm.variables == {}
 
 
@@ -34,17 +29,17 @@ def test_get_memory() -> None:
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=memory_size)
     vm.memory = {
-        '0x0': 1,
-        '0x1': None,
-        '0x2': None,
-        '0x3': None,
-        '0x4': 2,
-        '0x5': None,
-        '0x6': 35,
-        '0x7': None
+        "0x0": 1,
+        "0x1": None,
+        "0x2": None,
+        "0x3": None,
+        "0x4": 2,
+        "0x5": None,
+        "0x6": 35,
+        "0x7": None,
     }
 
-    expected_memory = {'0x0': 1, '0x4': 2, '0x6': 35}
+    expected_memory = {"0x0": 1, "0x4": 2, "0x6": 35}
 
     assert vm.get_memory() == expected_memory
 
@@ -57,16 +52,16 @@ def test_run() -> None:
     vm.run()
 
     expected_memory = {
-        '0x30': 3,
-        '0x34': 1,
-        '0x38': 2,
-        '0x3c': 1,
-        '0x40': 2.0,
-        '0x46': 1,
-        '0x4e': 2.0,
-        '0x52': 123,
-        '0x6a': 1,
-        '0x7e': 1
+        "0x30": 3,
+        "0x34": 1,
+        "0x38": 2,
+        "0x3c": 1,
+        "0x40": 2.0,
+        "0x46": 1,
+        "0x4e": 2.0,
+        "0x52": 123,
+        "0x6a": 1,
+        "0x7e": 1,
     }
 
     assert vm.get_memory() == expected_memory
@@ -90,7 +85,7 @@ def test_ADD() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.ADD(instruction_params=instruction_params)
@@ -114,11 +109,7 @@ def test_ADDRESS() -> None:
         "id": variable_id,
     }
 
-    vm.variables = {
-        0: "0x0",
-        1: "0x4",
-        variable_id: expected_address
-    }
+    vm.variables = {0: "0x0", 1: "0x4", variable_id: expected_address}
 
     vm.ADDRESS(instruction_params=instruction_params)
 
@@ -130,46 +121,20 @@ def test_ADDRESS() -> None:
     [
         # Simple variable
         {
-            "instruction_params": {
-                "id": 0,
-                "size": 4,
-                "id": 0,
-                "register": 0
-            },
-            "expected_result": {
-                "memory_pointer": 4,
-                "variables": {0: "0x0"}
-            }
+            "instruction_params": {"id": 0, "size": 4, "id": 0, "register": 0},
+            "expected_result": {"memory_pointer": 4, "variables": {0: "0x0"}},
         },
-
         # Struct
         {
-            "instruction_params": {
-                "id": 0,
-                "size": 8,
-                "id": 0,
-                "register": 0
-            },
-            "expected_result": {
-                "memory_pointer": 8,
-                "variables": {0: "0x0"}
-            }
+            "instruction_params": {"id": 0, "size": 8, "id": 0, "register": 0},
+            "expected_result": {"memory_pointer": 8, "variables": {0: "0x0"}},
         },
-
         # Array
         {
-            "instruction_params": {
-                "id": 0,
-                "size": 12,
-                "id": 0,
-                "register": 0
-            },
-            "expected_result": {
-                "memory_pointer": 12,
-                "variables": {0: "0x0"}
-            }
+            "instruction_params": {"id": 0, "size": 12, "id": 0, "register": 0},
+            "expected_result": {"memory_pointer": 12, "variables": {0: "0x0"}},
         },
-    ]
+    ],
 )
 def test_ALLOC_success(test_suite) -> None:
     """Test the `VirtualMachine.ALLOC` method for successful allocations."""
@@ -190,30 +155,15 @@ def test_ALLOC_success(test_suite) -> None:
     [
         # Upfront full memory
         {
-            "instruction_params": {
-                "id": 0,
-                "size": 4,
-                "id": 0,
-                "register": 0
-            },
-            "vm_settings": {
-                "memory_size": 0
-            }
+            "instruction_params": {"id": 0, "size": 4, "id": 0, "register": 0},
+            "vm_settings": {"memory_size": 0},
         },
-
         # Memory does not have enough space for the new variable
         {
-            "instruction_params": {
-                "id": 0,
-                "size": 8,
-                "id": 0,
-                "register": 0
-            },
-            "vm_settings": {
-                "memory_size": 4
-            }
+            "instruction_params": {"id": 0, "size": 8, "id": 0, "register": 0},
+            "vm_settings": {"memory_size": 4},
         },
-    ]
+    ],
 )
 def test_ALLOC_failure(test_suite) -> None:
     """Test the `VirtualMachine.ALLOC` method for failed allocations."""
@@ -244,7 +194,7 @@ def test_AND() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.AND(instruction_params=instruction_params)
@@ -270,7 +220,7 @@ def test_BITAND() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.BITAND(instruction_params=instruction_params)
@@ -296,7 +246,7 @@ def test_BITOR() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.BITOR(instruction_params=instruction_params)
@@ -315,7 +265,7 @@ def test_CONSTANT() -> None:
     instruction_params = {
         "register": result_register,
         "value": expected_value,
-        "type": "int"
+        "type": "int",
     }
 
     vm.CONSTANT(instruction_params=instruction_params)
@@ -341,7 +291,7 @@ def test_DIV() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.DIV(instruction_params=instruction_params)
@@ -367,7 +317,7 @@ def test_EQ() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.EQ(instruction_params=instruction_params)
@@ -393,7 +343,7 @@ def test_FADD() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.FADD(instruction_params=instruction_params)
@@ -419,7 +369,7 @@ def test_FAND() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.FAND(instruction_params=instruction_params)
@@ -445,7 +395,7 @@ def test_FDIV() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.FDIV(instruction_params=instruction_params)
@@ -471,7 +421,7 @@ def test_FEQ() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.FEQ(instruction_params=instruction_params)
@@ -497,7 +447,7 @@ def test_FGT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.GT(instruction_params=instruction_params)
@@ -523,7 +473,7 @@ def test_FLT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.LT(instruction_params=instruction_params)
@@ -549,7 +499,7 @@ def test_FMULT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.MULT(instruction_params=instruction_params)
@@ -575,7 +525,7 @@ def test_FNEQ() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.FNEQ(instruction_params=instruction_params)
@@ -601,12 +551,13 @@ def test_FOR() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.OR(instruction_params=instruction_params)
 
     assert vm.registers[result_register] == expected_result
+
 
 def test_FSUB() -> None:
     """Test the `VirtualMachine.FSUB` method."""
@@ -626,7 +577,7 @@ def test_FSUB() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.SUB(instruction_params=instruction_params)
@@ -652,7 +603,7 @@ def test_GT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.GT(instruction_params=instruction_params)
@@ -677,9 +628,7 @@ def test_JR() -> None:
 
     vm.registers[jump_register] = jump_size
 
-    instruction_params = {
-        "register": jump_register
-    }
+    instruction_params = {"register": jump_register}
 
     vm.JR(instruction_params=instruction_params)
 
@@ -701,7 +650,7 @@ def test_JZ_true() -> None:
 
     instruction_params = {
         "conditional_register": conditional_register,
-        "jump_size": jump_size
+        "jump_size": jump_size,
     }
 
     vm.registers[conditional_register] = 1
@@ -726,7 +675,7 @@ def test_JZ_false() -> None:
 
     instruction_params = {
         "conditional_register": conditional_register,
-        "jump_size": jump_size
+        "jump_size": jump_size,
     }
 
     vm.registers[conditional_register] = 0
@@ -751,11 +700,7 @@ def test_LOAD() -> None:
         "id": 2,
     }
 
-    vm.variables = {
-        0: "0x0",
-        1: "0x4",
-        2: "0x8"
-    }
+    vm.variables = {0: "0x0", 1: "0x4", 2: "0x8"}
 
     vm.memory = {
         "0x0": 123,
@@ -767,7 +712,7 @@ def test_LOAD() -> None:
         "0x6": 32,
         "0x7": 34,
         "0x8": expected_value,
-        "0x9": 7
+        "0x9": 7,
     }
 
     vm.LOAD(instruction_params=instruction_params)
@@ -793,7 +738,7 @@ def test_LSHIFT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.LSHIFT(instruction_params=instruction_params)
@@ -819,7 +764,7 @@ def test_LT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.LT(instruction_params=instruction_params)
@@ -845,7 +790,7 @@ def test_MOD() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.MOD(instruction_params=instruction_params)
@@ -871,7 +816,7 @@ def test_MULT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.MULT(instruction_params=instruction_params)
@@ -897,7 +842,7 @@ def test_NEQ() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.NEQ(instruction_params=instruction_params)
@@ -923,7 +868,7 @@ def test_OR() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.OR(instruction_params=instruction_params)
@@ -949,7 +894,7 @@ def test_RSHIFT() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.RSHIFT(instruction_params=instruction_params)
@@ -967,16 +912,10 @@ def test_STORE_simple() -> None:
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
 
-    instruction_params = {
-        "register": 0,
-        "value": 1
-    }
+    instruction_params = {"register": 0, "value": 1}
 
     value_to_store = 23
-    vm.registers = {
-        0: 0,
-        1: value_to_store
-    }
+    vm.registers = {0: 0, 1: value_to_store}
 
     store_address = "0x0"
     vm.variables = {0: store_address}
@@ -989,24 +928,18 @@ def test_STORE_simple() -> None:
 def test_STORE_arrays_structs() -> None:
     """
     Test the `VirtualMachine.STORE` method when handling arrays/structs.
-    
+
     In this case, `register` contains the register with the address to write to.
     """
 
     vm = VirtualMachine(program=MACHINE_CODE, memory_size=20)
 
-    instruction_params = {
-        "register": 0,
-        "value": 1
-    }
+    instruction_params = {"register": 0, "value": 1}
 
     value_to_store = 23
     store_address = "0x8"
 
-    vm.registers = {
-        0: store_address,
-        1: value_to_store
-    }
+    vm.registers = {0: store_address, 1: value_to_store}
 
     vm.STORE(instruction_params)
 
@@ -1031,7 +964,7 @@ def test_SUB() -> None:
         "id": 15,
         "register": 2,
         "lhs_register": lhs_register,
-        "rhs_register": rhs_register
+        "rhs_register": rhs_register,
     }
 
     vm.SUB(instruction_params=instruction_params)

@@ -48,10 +48,9 @@ class DO(Conditional):
         ]
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `DO`.
 
@@ -75,12 +74,11 @@ class DO(Conditional):
             `instruction` and `value`.
         """
 
-        register, loop_code = self.statement_if_true.generate_code(
-            register=register
-        )
-        register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
-            register=register
-        )
+        register, loop_code = self.statement_if_true.generate_code(register=register)
+        (
+            register,
+            parenthesis_expression_code,
+        ) = self.parenthesis_expression.generate_code(register=register)
         conditional_register: int = register - 1
 
         # The jump target is the amount of instructions to be jumped in order
@@ -90,25 +88,22 @@ class DO(Conditional):
         conditional_jump = [
             {
                 "instruction": "NOT",
-                "metadata": {
-                    "value": conditional_register,
-                    "register": register
-                }
+                "metadata": {"value": conditional_register, "register": register},
             },
             {
                 "instruction": "JZ",
                 "metadata": {
                     "conditional_register": register,
-                    "jump_size": instructions_to_jump
-                }
-            }
+                    "jump_size": instructions_to_jump,
+                },
+            },
         ]
         register += 1
 
         do_code: list[dict[str, Union[int, str]]] = [
             *loop_code,
             *parenthesis_expression_code,
-            *conditional_jump
+            *conditional_jump,
         ]
 
         return register, do_code
@@ -141,4 +136,3 @@ class DO(Conditional):
         self.certificate_label = f"{positional_prime}^({self.symbol})"
 
         return next_prime(positional_prime)
-

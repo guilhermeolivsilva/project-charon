@@ -8,7 +8,7 @@ from src.utils import (
     next_prime,
     previous_prime,
     primes_list,
-    INSTRUCTIONS_CATEGORIES
+    INSTRUCTIONS_CATEGORIES,
 )
 
 
@@ -28,10 +28,7 @@ class BackendCertificator(AbstractCertificator):
 
         # Input
         self.program = program
-        self.bytecode_list = [
-            *self.program["global_vars"],
-            *self.program["code"]
-        ]
+        self.bytecode_list = [*self.program["global_vars"], *self.program["code"]]
 
         # Track the certificates and metadata associated with each register
         self.register_tracker: dict[int, dict] = {}
@@ -45,8 +42,7 @@ class BackendCertificator(AbstractCertificator):
         self.functions_primes: dict[int, int] = {
             function_id: prime
             for function_id, prime in zip(
-                _functions_ids,
-                primes_list(len(_functions_ids))
+                _functions_ids, primes_list(len(_functions_ids))
             )
         }
 
@@ -54,8 +50,7 @@ class BackendCertificator(AbstractCertificator):
         # certification process or not. Maps the ID of `instruction_list` to
         # `True` if already certificated, or `False` otherwise.
         self.instruction_status: dict[int, bool] = {
-            bytecode["instruction_id"]: False
-            for bytecode in self.bytecode_list
+            bytecode["instruction_id"]: False for bytecode in self.bytecode_list
         }
 
         # Corner case instructions – i.e., instructions that have a particular
@@ -66,7 +61,7 @@ class BackendCertificator(AbstractCertificator):
             "MOV": self._handle_mov_instruction,
             "JZ": self._handle_jump,
             "JAL": self._handle_function_call,
-            "HALT": self._handle_halt
+            "HALT": self._handle_halt,
         }
 
         self.grouped_instructions_handlers: dict[str, dict] = {
@@ -75,19 +70,16 @@ class BackendCertificator(AbstractCertificator):
                 _instruction: self._handle_variables
                 for _instruction in INSTRUCTIONS_CATEGORIES["variables"]
             },
-
             # Constants
             **{
                 _instruction: self._handle_constants
                 for _instruction in INSTRUCTIONS_CATEGORIES["constants"]
             },
-
             # Unary operations
             **{
                 _instruction: self._handle_operations
                 for _instruction in INSTRUCTIONS_CATEGORIES["unops"]
             },
-
             # Binary operations
             **{
                 _instruction: self._handle_operations
@@ -104,7 +96,7 @@ class BackendCertificator(AbstractCertificator):
     def certificate(self, **kwargs) -> list[str]:
         """
         Certificate the backend code.
-        
+
         This method iterates over the machine code and annotate each instruction
         with its relative position and contents.
 
@@ -128,9 +120,7 @@ class BackendCertificator(AbstractCertificator):
             if certificate:
                 self.computed_certificate.append(certificate)
 
-            self.current_positional_prime = next_prime(
-                self.current_positional_prime
-            )
+            self.current_positional_prime = next_prime(self.current_positional_prime)
 
         # Assert all the instructions have been accounted for
         _err_msg = "Certification failed: there are uncertificated instructions."
@@ -237,8 +227,8 @@ class BackendCertificator(AbstractCertificator):
             "metadata": {
                 "certificate": certificate,
                 "prime": self.current_variable_prime,
-                "positional_prime": self.current_positional_prime
-            }
+                "positional_prime": self.current_positional_prime,
+            },
         }
 
         self.register_tracker[register] = register_metadata
@@ -290,8 +280,8 @@ class BackendCertificator(AbstractCertificator):
                 "certificate": certificate,
                 "lhs_operand": lhs_metadata,
                 "rhs_operand": rhs_metadata,
-                "positional_prime": self.current_positional_prime
-            }
+                "positional_prime": self.current_positional_prime,
+            },
         }
 
         self.register_tracker[metadata["register"]] = source_metadata
@@ -368,11 +358,9 @@ class BackendCertificator(AbstractCertificator):
             # been computed
             if current_bytecode["instruction"] == "MOV":
                 source_register = current_bytecode["metadata"]["value"]
-                _arg_base_certificate = (
-                    self.register_tracker[source_register]
-                                         ["metadata"]
-                                         ["certificate"]
-                )
+                _arg_base_certificate = self.register_tracker[source_register][
+                    "metadata"
+                ]["certificate"]
 
                 _arg_certificate_symbol = get_certificate_symbol("ARG")
                 _arg_certificate = (
@@ -395,7 +383,7 @@ class BackendCertificator(AbstractCertificator):
                 # and `grouped_instructions_handlers`.
                 _handlers = {
                     **self.type_cast_handlers,
-                    **self.grouped_instructions_handlers
+                    **self.grouped_instructions_handlers,
                 }
 
                 current_instruction = current_bytecode["instruction"]
@@ -423,8 +411,7 @@ class BackendCertificator(AbstractCertificator):
         symbol = get_certificate_symbol("FUNC_CALL")
 
         certificate = (
-            f"{self.current_positional_prime}^"
-            + f"(({symbol})^({function_prime}))"
+            f"{self.current_positional_prime}^" + f"(({symbol})^({function_prime}))"
         )
 
         if args_certificates:
@@ -435,8 +422,8 @@ class BackendCertificator(AbstractCertificator):
             "metadata": {
                 "certificate": certificate,
                 "prime": function_prime,
-                "positional_prime": self.current_positional_prime
-            }
+                "positional_prime": self.current_positional_prime,
+            },
         }
 
         self.register_tracker[function_register] = register_metadata
@@ -466,7 +453,7 @@ class BackendCertificator(AbstractCertificator):
         certificate : str
             The function return certificate.
         """
-        
+
         current_bytecode = bytecode
         current_bytecode_idx = bytecode["instruction_id"] - 1
         next_bytecode_idx = current_bytecode_idx + 1
@@ -483,10 +470,7 @@ class BackendCertificator(AbstractCertificator):
         returned_value_data = self.register_tracker[
             current_bytecode["metadata"]["value"]
         ]
-        returned_value_certificate = (
-            returned_value_data["metadata"]
-                               ["certificate"]
-        )
+        returned_value_certificate = returned_value_data["metadata"]["certificate"]
 
         self.__remove_duplicate(certificate=returned_value_certificate)
 
@@ -495,7 +479,7 @@ class BackendCertificator(AbstractCertificator):
             + f"^({symbol})"
             + f"*{returned_value_certificate}"
         )
-        
+
         self.instruction_status[current_bytecode["instruction_id"]] = True
         self.instruction_status[next_bytecode["instruction_id"]] = True
 
@@ -524,15 +508,12 @@ class BackendCertificator(AbstractCertificator):
 
         # Build the certificate
         symbol = get_certificate_symbol(jump_kind)
-        certificate = (
-            f"{self.current_positional_prime}"
-            + f"^({symbol})"
-        )
+        certificate = f"{self.current_positional_prime}" + f"^({symbol})"
 
         self.instruction_status[bytecode["instruction_id"]] = True
 
         return certificate
-    
+
     def _handle_variables(self, bytecode: dict[str, dict]) -> None:
         """
         Handle variable use cases.
@@ -553,22 +534,20 @@ class BackendCertificator(AbstractCertificator):
             symbol = get_certificate_symbol("VAR_ADDRESS")
         else:
             symbol = get_certificate_symbol("VAR_VALUE")
-        
+
         variable_prime = self.variable_prime_tracker[metadata["id"]]
 
         # If there's `offset_register` in the metadata, then its accessing an
         # array using a variable for index.
         if metadata.get("offset_register"):
-            _indexing_variable = self.register_tracker[
-                metadata["offset_register"]
-            ]
+            _indexing_variable = self.register_tracker[metadata["offset_register"]]
             _indexing_variable_prime = _indexing_variable["metadata"]["prime"]
             indexing = f"^(3)^({_indexing_variable_prime}))"
 
             # Use the previous prime because the `LOAD` instruction regarding
             # the index prime is already being accounted for by this certificate
-            self.current_positional_prime = (
-                previous_prime(self.current_positional_prime)
+            self.current_positional_prime = previous_prime(
+                self.current_positional_prime
             )
 
         # If not, then it might be an array accessed with a constant for index,
@@ -590,13 +569,13 @@ class BackendCertificator(AbstractCertificator):
             "metadata": {
                 "certificate": certificate,
                 "prime": variable_prime,
-                "positional_prime": self.current_positional_prime
-            }
+                "positional_prime": self.current_positional_prime,
+            },
         }
 
         self.register_tracker[register] = register_metadata
         self.instruction_status[bytecode["instruction_id"]] = True
-    
+
     def _handle_halt(self, bytecode: dict[str, dict]) -> str:
         """
         Handle the program ending instruction.
@@ -610,15 +589,12 @@ class BackendCertificator(AbstractCertificator):
         """
 
         symbol = get_certificate_symbol("PROG")
-        certificate = (
-            f"{self.current_positional_prime}"
-            + f"^({symbol})"
-        )
+        certificate = f"{self.current_positional_prime}" + f"^({symbol})"
 
         self.instruction_status[bytecode["instruction_id"]] = True
 
         return certificate
-    
+
     def _handle_constants(self, bytecode: dict[str, dict]) -> None:
         """
         Handle constants.
@@ -652,8 +628,8 @@ class BackendCertificator(AbstractCertificator):
             "metadata": {
                 "certificate": certificate,
                 "value": constant_value,
-                "positional_prime": self.current_positional_prime
-            }
+                "positional_prime": self.current_positional_prime,
+            },
         }
 
         self.register_tracker[register] = register_metadata
@@ -674,24 +650,22 @@ class BackendCertificator(AbstractCertificator):
         register = metadata["register"]
 
         original_value_register = metadata["value"]
-        original_value_certificate = (
-            self.register_tracker[original_value_register]
-                                 ["metadata"]
-                                 ["certificate"]
-        )
+        original_value_certificate = self.register_tracker[original_value_register][
+            "metadata"
+        ]["certificate"]
 
         source_metadata = {
             "source": instruction,
             "metadata": {
                 "operand": original_value_register,
                 "certificate": original_value_certificate,
-                "positional_prime": self.current_positional_prime
-            }
+                "positional_prime": self.current_positional_prime,
+            },
         }
 
         self.register_tracker[register] = source_metadata
         self.instruction_status[bytecode["instruction_id"]] = True
-    
+
     def _handle_operations(self, bytecode: dict[str, dict]) -> str:
         """
         Handle unary and binary operations.
@@ -760,13 +734,15 @@ class BackendCertificator(AbstractCertificator):
             "source": instruction,
             "metadata": {
                 "certificate": certificate,
-                "positional_prime": self.current_positional_prime
-            }
+                "positional_prime": self.current_positional_prime,
+            },
         }
-        source_metadata["metadata"].update({
-            key: self.register_tracker[metadata[metadata_key]]
-            for key, metadata_key in zip(keys, metadata_keys)
-        })
+        source_metadata["metadata"].update(
+            {
+                key: self.register_tracker[metadata[metadata_key]]
+                for key, metadata_key in zip(keys, metadata_keys)
+            }
+        )
 
         self.register_tracker[register] = source_metadata
         self.instruction_status[bytecode["instruction_id"]] = True
@@ -792,7 +768,7 @@ class BackendCertificator(AbstractCertificator):
         next_bytecode : dict[str, dict]
             The next instruction and its bytecode metadata.
         """
-        
+
         current_instruction_index = bytecode["instruction_id"] - 1
         next_instruction_index = current_instruction_index + 1
 
@@ -801,7 +777,7 @@ class BackendCertificator(AbstractCertificator):
 
         if next_instruction != "STORE":
             return (False, next_bytecode)
-        
+
         rhs_register = next_bytecode["metadata"]["value"]
         return (rhs_register == "arg", next_bytecode)
 
@@ -831,7 +807,7 @@ class BackendCertificator(AbstractCertificator):
             bytecode["metadata"]["register"] == "ret_value"
             and next_bytecode["instruction"] == "JR"
         )
-    
+
     def __is_function_call(self, bytecode_pair: tuple[dict, dict]) -> bool:
         """
         Tell whether a pair of bytecodes handle a function call.
@@ -858,7 +834,7 @@ class BackendCertificator(AbstractCertificator):
             and second_bytecode["instruction"] == "MOV"
             and second_bytecode["metadata"]["value"] == "ret_value"
         )
-    
+
     def __assert_is_return(self, bytecode_pair: tuple[dict, dict]) -> None:
         """
         Assert a pair of bytecodes handle a function return.
@@ -888,7 +864,7 @@ class BackendCertificator(AbstractCertificator):
 
         if not is_return:
             raise ValueError("Malformed return pair.")
-    
+
     def __identify_jz(self, bytecode: dict[str, dict]) -> str:
         """
         Tell the semantics of a conditional jump.
@@ -918,8 +894,8 @@ class BackendCertificator(AbstractCertificator):
         ]
 
         _jumps_forward = self.__is_jump_forward(bytecode)
-        _lands_on_instruction_preceeded_by_unconditional_jump = self.__is_unconditional_jump(
-            _instruction_right_before_jump_target
+        _lands_on_instruction_preceeded_by_unconditional_jump = (
+            self.__is_unconditional_jump(_instruction_right_before_jump_target)
         )
 
         if _jumps_forward:
@@ -933,7 +909,7 @@ class BackendCertificator(AbstractCertificator):
                     _instruction_right_before_jump_target["instruction_id"]
                 )
                 self.instruction_status[_instruction_right_before_jump_target_id] = True
-                
+
                 if _preceeding_unconditional_jump_is_forward:
                     return "IFELSE"
                 else:
@@ -966,7 +942,7 @@ class BackendCertificator(AbstractCertificator):
     def __is_unconditional_jump(self, bytecode: dict[str, dict]) -> bool:
         """
         Tell whether a conditional jump actually implements an unconditional one.
-        
+
         Such jumps are `JZ` instructions that use the `zero` register as the
         condition. This register will always contain `0`, and thus the jump
         always occur.
@@ -986,7 +962,7 @@ class BackendCertificator(AbstractCertificator):
             "conditional_register" in bytecode["metadata"]
             and bytecode["metadata"]["conditional_register"] == "zero"
         )
-    
+
     def __remove_duplicate(self, certificate: str) -> None:
         """
         Remove an entry from `self.computed_certificate` to avoid duplicates.
@@ -998,10 +974,7 @@ class BackendCertificator(AbstractCertificator):
         """
 
         try:
-            certificate_idx = (
-                self.computed_certificate.index(certificate)
-            )
+            certificate_idx = self.computed_certificate.index(certificate)
             self.computed_certificate.pop(certificate_idx)
         except ValueError:
             pass
-

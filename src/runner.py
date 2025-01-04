@@ -43,7 +43,7 @@ class Charon:
         program: dict[str, dict],
         vm: VirtualMachine,
         frontend_certificator: FrontendCertificator,
-        backend_certificator: BackendCertificator
+        backend_certificator: BackendCertificator,
     ) -> None:
         self.parsed_source = parsed_source
         self.ast = ast

@@ -7,7 +7,12 @@ from typing_extensions import override
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
 from src.ast_nodes.basic.CST import CST
-from src.utils import builtin_types, get_certificate_symbol, next_prime, TYPE_SYMBOLS_MAP
+from src.utils import (
+    builtin_types,
+    get_certificate_symbol,
+    next_prime,
+    TYPE_SYMBOLS_MAP,
+)
 
 
 class ELEMENT_ACCESS(Node):
@@ -34,12 +39,7 @@ class ELEMENT_ACCESS(Node):
     """
 
     @override
-    def __init__(
-        self,
-        variable: VAR,
-        element: Union[CST, VAR]
-    ) -> None:
-
+    def __init__(self, variable: VAR, element: Union[CST, VAR]) -> None:
         variable_metadata = variable.get_metadata()
 
         self.is_array = "length" in variable_metadata
@@ -86,10 +86,9 @@ class ELEMENT_ACCESS(Node):
         self.element.print(indent=indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `ELEMENT_ACCESS`.
 
@@ -118,9 +117,7 @@ class ELEMENT_ACCESS(Node):
         # Statically accessed arrays and structs only need the offset, and this
         # is calculated `_compute_element_offset`.
         if self.access_type == "dynamic":
-            register, element_code = self.element.generate_code(
-                register=register
-            )
+            register, element_code = self.element.generate_code(register=register)
             code_metadata.extend(element_code)
 
             element_register = register - 1
@@ -131,12 +128,12 @@ class ELEMENT_ACCESS(Node):
             "metadata": {
                 "register": register,
                 "id": self.variable.get_value(),
-            }
+            },
         }
 
         element_access_code["metadata"] = {
             **element_access_code["metadata"],
-            **self.element_offset
+            **self.element_offset,
         }
 
         code_metadata.append(element_access_code)
@@ -158,7 +155,7 @@ class ELEMENT_ACCESS(Node):
         If statically accessed, the composition will be `2^(offset + 1)`. The +1
         is to avoid `0` exponents. This is the case for arrays indexed by a
         constant, or access to struct attributes.
-        
+
         If dynamically accessed, the composition will be `3^(prime of the
         indexing variable)`. This is the case for arrays indexed by a variable.
 
@@ -194,7 +191,7 @@ class ELEMENT_ACCESS(Node):
         self.certificate_label = f"{positional_prime}^({certificate_label})"
 
         return next_prime(positional_prime)
-    
+
     def add_context(self, context: dict[str, str]) -> None:
         """
         Add context to this `ELEMENT_ACCESS` node.
@@ -219,7 +216,7 @@ class ELEMENT_ACCESS(Node):
             symbol = get_certificate_symbol("VAR_ADDRESS")
 
         self.symbol = f"{symbol}"
-    
+
     def _compute_element_type(self) -> str:
         """
         Compute the type of this `ELEMENT_ACCESS`.
@@ -240,13 +237,15 @@ class ELEMENT_ACCESS(Node):
         # an array.
         if variable_type in TYPE_SYMBOLS_MAP:
             return variable_type
-        
+
         # If not, then it is an "actual" struct. Thus, get the type of the
         # element being accessed.
         struct_attributes = variable_metadata["attributes"]
         accessed_attribute_index: int = self.element.get_value()
         accessed_attribute_name: str = list(struct_attributes)[accessed_attribute_index]
-        accessed_attribute_type: str = struct_attributes[accessed_attribute_name]["type"]
+        accessed_attribute_type: str = struct_attributes[accessed_attribute_name][
+            "type"
+        ]
 
         return accessed_attribute_type
 
@@ -289,7 +288,7 @@ class ELEMENT_ACCESS(Node):
                 element_offset["offset_size"] = variable_type_size
 
                 self.access_type = "dynamic"
-        
+
         # Case C
         else:
             variable_metadata: dict = self.variable.get_metadata()

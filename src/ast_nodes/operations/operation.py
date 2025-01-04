@@ -29,7 +29,7 @@ class Operation(Node):
         rhs: Node,
         supports_float: bool = True,
         type: str = None,
-        **kwargs
+        **kwargs,
     ) -> None:
         super().__init__()
 
@@ -62,10 +62,9 @@ class Operation(Node):
         self.rhs.print(indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str, None]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str, None]]]]:
         """
         Generate the code associated with this `Operation`.
 
@@ -96,7 +95,7 @@ class Operation(Node):
             register, lhs_typecast = type_cast(
                 original_type=self.lhs.get_type(),
                 target_type=self.get_type(),
-                register=register
+                register=register,
             )
             code_metadata.extend(lhs_typecast)
 
@@ -109,7 +108,7 @@ class Operation(Node):
             register, rhs_typecast = type_cast(
                 original_type=self.rhs.get_type(),
                 target_type=self.get_type(),
-                register=register
+                register=register,
             )
             code_metadata.extend(rhs_typecast)
 
@@ -120,8 +119,8 @@ class Operation(Node):
             "metadata": {
                 "register": register,
                 "lhs_register": lhs_register,
-                "rhs_register": rhs_register
-            }
+                "rhs_register": rhs_register,
+            },
         }
         register += 1
 
@@ -155,10 +154,7 @@ class Operation(Node):
         positional_prime = self.rhs.certificate(positional_prime)
         rhs_certificate_label = self.rhs.get_certificate_label().pop()
 
-        operation_certificate_label = (
-            f"{positional_prime}^"
-            + f"({self.symbol})"
-        )
+        operation_certificate_label = f"{positional_prime}^" + f"({self.symbol})"
         positional_prime = next_prime(positional_prime)
 
         self.certificate_label = (
@@ -168,7 +164,7 @@ class Operation(Node):
         )
 
         return positional_prime
-    
+
     def _compute_operation_type(self) -> str:
         """
         Compute the type this `Operation` will return.
@@ -210,9 +206,9 @@ class Operation(Node):
                 f"{type(self).__name__} does not support floating point "
                 "numbers. Check the parameters."
             )
-        
+
         return operation_type
-    
+
     def _compute_instruction(self, base_instruction: str) -> str:
         """
         Compute `instruction` attribute to be used by an Operation node.

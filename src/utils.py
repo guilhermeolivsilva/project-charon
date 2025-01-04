@@ -3,11 +3,7 @@
 from typing import Union
 
 
-builtin_types: dict[str, int] = {
-    "short": 2,
-    "int": 4,
-    "float": 4
-}
+builtin_types: dict[str, int] = {"short": 2, "int": 4, "float": 4}
 
 
 def is_prime(number: int) -> bool:
@@ -28,7 +24,7 @@ def is_prime(number: int) -> bool:
     if number < 2:
         return False
 
-    for i in range(2, int(number ** 0.5) + 1):
+    for i in range(2, int(number**0.5) + 1):
         if number % i == 0:
             return False
 
@@ -112,10 +108,9 @@ def primes_list(length: int) -> list[int]:
     return primes
 
 
-def type_cast(original_type: str, target_type: str, register: int) -> tuple[
-    int,
-    list[dict[str, str]]
-]:
+def type_cast(
+    original_type: str, target_type: str, register: int
+) -> tuple[int, list[dict[str, str]]]:
     """
     Compute a type cast instruction from `original_type` to `target_type`.
 
@@ -145,36 +140,15 @@ def type_cast(original_type: str, target_type: str, register: int) -> tuple[
     """
 
     # Direct casts
-    _default_metadata = {
-        "metadata": {
-            "register": register,
-            "value": register - 1
-        }
-    }
+    _default_metadata = {"metadata": {"register": register, "value": register - 1}}
 
     cast_instruction_map: dict[dict, Union[str, dict]] = {
-        "short": {
-            "int": {
-                "instruction": "SIGNEXT",
-                **_default_metadata
-            }
-        },
+        "short": {"int": {"instruction": "SIGNEXT", **_default_metadata}},
         "int": {
-            "short": {
-                "instruction": "TRUNC",
-                **_default_metadata
-            },
-            "float": {
-                "instruction": "SITOFP",
-                **_default_metadata
-            }
+            "short": {"instruction": "TRUNC", **_default_metadata},
+            "float": {"instruction": "SITOFP", **_default_metadata},
         },
-        "float": {
-            "int": {
-                "instruction": "FPTOSI",
-                **_default_metadata
-            }
-        }
+        "float": {"int": {"instruction": "FPTOSI", **_default_metadata}},
     }
 
     code: list[dict[str, str]] = []
@@ -186,9 +160,7 @@ def type_cast(original_type: str, target_type: str, register: int) -> tuple[
         code.append(short_to_int)
 
         register, int_to_float = type_cast(
-            original_type="int",
-            target_type="float",
-            register=register + 1
+            original_type="int", target_type="float", register=register + 1
         )
         code.extend(int_to_float)
 
@@ -197,9 +169,7 @@ def type_cast(original_type: str, target_type: str, register: int) -> tuple[
         code.append(float_to_int)
 
         register, int_to_short = type_cast(
-            original_type="int",
-            target_type="short",
-            register=register + 1
+            original_type="int", target_type="short", register=register + 1
         )
         code.extend(int_to_short)
 
@@ -264,11 +234,7 @@ def flatten_list(list_of_lists: list[list], drop_duplicates: bool = True) -> lis
         The flattened list.
     """
 
-    flattened_list = [
-        element
-        for _list in list_of_lists.values()
-        for element in _list
-    ]
+    flattened_list = [element for _list in list_of_lists.values() for element in _list]
 
     if drop_duplicates:
         flattened_list = list(set(flattened_list))
@@ -276,30 +242,16 @@ def flatten_list(list_of_lists: list[list], drop_duplicates: bool = True) -> lis
     return flattened_list
 
 
-__TYPE_CASTS = [
-    "FPTOSI",
-    "SIGNEXT",
-    "SITOFP",
-    "TRUNC"
-]
+__TYPE_CASTS = ["FPTOSI", "SIGNEXT", "SITOFP", "TRUNC"]
 
 
-__VARIABLES = {
-    "VAR_DEF": ["ALLOC"],
-    "VAR_VALUE": ["LOAD"],
-    "VAR_ADDRESS": ["ADDRESS"]
-}
+__VARIABLES = {"VAR_DEF": ["ALLOC"], "VAR_VALUE": ["LOAD"], "VAR_ADDRESS": ["ADDRESS"]}
 
 
-__CONSTANTS = {
-    "CST": ["CONSTANT"]
-}
+__CONSTANTS = {"CST": ["CONSTANT"]}
 
 
-__UNOPS = {
-    "ASSIGN": ["STORE"],
-    "NOT": ["NOT"]
-}
+__UNOPS = {"ASSIGN": ["STORE"], "NOT": ["NOT"]}
 
 
 __BINOPS = {
@@ -317,13 +269,10 @@ __BINOPS = {
     "LSHIFT": ["LSHIFT"],
     "RSHIFT": ["RSHIFT"],
     "BITAND": ["BITAND"],
-    "BITOR": ["BITOR"]
+    "BITOR": ["BITOR"],
 }
 
-__OPERATIONS = {
-    **__UNOPS,
-    **__BINOPS
-}
+__OPERATIONS = {**__UNOPS, **__BINOPS}
 
 
 __JUMPS = {
@@ -332,19 +281,14 @@ __JUMPS = {
     "IF": ["JZ"],
     "IFELSE": ["JZ"],
     "WHILE": ["JZ"],
-    "DO": ["NOT", "JZ"]
+    "DO": ["NOT", "JZ"],
 }
 
 
-__FUNCTIONS = {
-    "PARAM": ["ALLOC", "STORE"],
-    "ARG": ["MOV"]
-}
+__FUNCTIONS = {"PARAM": ["ALLOC", "STORE"], "ARG": ["MOV"]}
 
 
-__MISC = {
-    "PROG": ["HALT"]
-}
+__MISC = {"PROG": ["HALT"]}
 
 
 # Nodes kinds and their associated instructions
@@ -355,7 +299,7 @@ NODE_TO_INSTRUCTION_MAPPING = {
     **__JUMPS,
     **__UNOPS,
     **__BINOPS,
-    **__MISC
+    **__MISC,
 }
 
 INSTRUCTION_OPERATION_TO_NODE_MAPPING = {
@@ -373,7 +317,7 @@ INSTRUCTIONS_CATEGORIES = {
     "unops": flatten_list(__UNOPS),
     "binops": flatten_list(__BINOPS),
     "misc": flatten_list(__MISC),
-    "type_casts": __TYPE_CASTS
+    "type_casts": __TYPE_CASTS,
 }
 
 
@@ -381,21 +325,14 @@ SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
         NODE_TO_INSTRUCTION_MAPPING.keys(),
-        primes_list(len(NODE_TO_INSTRUCTION_MAPPING.keys()))
+        primes_list(len(NODE_TO_INSTRUCTION_MAPPING.keys())),
     )
 }
 
 
 TYPE_SYMBOLS_MAP = {
-    _type: {
-        "type_symbol": base,
-        "enforce": float if _type == "float" else int
-    }
-
-    for _type, base in zip(
-        builtin_types.keys(),
-        primes_list(len(builtin_types.keys()))
-    )
+    _type: {"type_symbol": base, "enforce": float if _type == "float" else int}
+    for _type, base in zip(builtin_types.keys(), primes_list(len(builtin_types.keys())))
 }
 
 

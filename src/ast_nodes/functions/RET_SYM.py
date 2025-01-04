@@ -46,10 +46,9 @@ class RET_SYM(Node):
         self.returned_value.print(indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str, None]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str, None]]]]:
         """
         Generate the code associated with this `RET_SYM`.
 
@@ -90,7 +89,7 @@ class RET_SYM(Node):
             register, returned_value_typecast = type_cast(
                 original_type=returned_value_type,
                 target_type=function_return_type,
-                register=register
+                register=register,
             )
             code_metadata.extend(returned_value_typecast)
 
@@ -103,15 +102,10 @@ class RET_SYM(Node):
                 "instruction": "MOV",
                 "metadata": {
                     "register": "ret_value",
-                    "value": returned_value_code_register
-                }
+                    "value": returned_value_code_register,
+                },
             },
-            {
-                "instruction": "JR",
-                "metadata": {
-                    "register": "ret_address"
-                }
-            }
+            {"instruction": "JR", "metadata": {"register": "ret_address"}},
         ]
 
         code_metadata.extend(return_symbol_code)

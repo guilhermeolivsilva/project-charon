@@ -13,12 +13,7 @@ def test_init() -> None:
     cg = CodeGenerator(root=_ast_root)
 
     assert cg.root == ABSTRACT_SYNTAX_TREE_ROOT
-    assert cg.program == {
-        "structs": {},
-        "functions": {},
-        "global_vars": [],
-        "code": []
-    }
+    assert cg.program == {"structs": {}, "functions": {}, "global_vars": [], "code": []}
     assert cg.register == 0
 
 

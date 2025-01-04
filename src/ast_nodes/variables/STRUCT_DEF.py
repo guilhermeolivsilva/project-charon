@@ -71,10 +71,9 @@ class STRUCT_DEF(Node):
         return positional_prime
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `STRUCT_DEF`.
 

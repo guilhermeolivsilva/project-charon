@@ -46,11 +46,9 @@ class PROG(Node):
         certificate_label: list[str] = []
 
         for child in self.children:
-            certificate_label.extend([
-                label
-                for label in child.get_certificate_label()
-                if label is not None
-            ])
+            certificate_label.extend(
+                [label for label in child.get_certificate_label() if label is not None]
+            )
 
         certificate_label.extend(super().get_certificate_label())
 
@@ -76,10 +74,9 @@ class PROG(Node):
             child.print(indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str, None]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str, None]]]]:
         """
         Generate the code associated with this `PROG`.
 

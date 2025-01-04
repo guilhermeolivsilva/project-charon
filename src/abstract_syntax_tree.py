@@ -59,13 +59,12 @@ class AbstractSyntaxTree:
         self.parse_functions()
 
         return self.root
-        
+
     def parse_struct_definitions(self) -> None:
         """Parse struct definitions and add it to the Abstract Syntax Tree."""
 
-        struct_definitions: dict[str, dict] = (
-            self.source_code.get("globals")
-                            .get("structs")
+        struct_definitions: dict[str, dict] = self.source_code.get("globals").get(
+            "structs"
         )
 
         for struct_name, struct_metadata in struct_definitions.items():
@@ -78,9 +77,8 @@ class AbstractSyntaxTree:
     def parse_global_variables(self) -> None:
         """Parse global variables and add it to the Abstract Syntax Tree."""
 
-        global_variables: dict[str, dict] = (
-            self.source_code.get("globals")
-                            .get("variables")
+        global_variables: dict[str, dict] = self.source_code.get("globals").get(
+            "variables"
         )
 
         for variable_name, variable_metadata in global_variables.items():
@@ -106,8 +104,7 @@ class AbstractSyntaxTree:
             }
 
             function_def_node = FUNC_DEF(
-                function_name=function_name,
-                function_metadata=function_metadata
+                function_name=function_name, function_metadata=function_metadata
             )
 
             self.current_function_type = function_def_node.get_type()
@@ -168,16 +165,13 @@ class AbstractSyntaxTree:
             "IF_SYM": self._if_sym,
             "WHILE_SYM": self._while_sym,
             "DO_SYM": self._do_sym,
-            "LCBRA": self._brackets
+            "LCBRA": self._brackets,
         }
 
-        handler = statement_handler_map.get(
-            self.current_symbol,
-            self._handle_eol
-        )
+        handler = statement_handler_map.get(self.current_symbol, self._handle_eol)
 
         return handler()
-    
+
     def _func_call(self) -> FUNC_CALL:
         """
         Parse a call to a function.
@@ -207,8 +201,7 @@ class AbstractSyntaxTree:
         self._next_symbol()
 
         ret_sym_node = RET_SYM(
-            returned_value=self._handle_eol(),
-            type=self.current_function_type
+            returned_value=self._handle_eol(), type=self.current_function_type
         )
 
         return ret_sym_node
@@ -255,14 +248,14 @@ class AbstractSyntaxTree:
             return IFELSE(
                 parenthesis_expression=parenthesis_expression,
                 statement_if_true=statement_if_true,
-                statement_if_false=statement_if_false
+                statement_if_false=statement_if_false,
             )
-    
+
         return IF(
             parenthesis_expression=parenthesis_expression,
-            statement_if_true=statement_if_true
+            statement_if_true=statement_if_true,
         )
-    
+
     def _while_sym(self) -> Conditional:
         """
         Parse a `while` statement: `while <parenthesis_expression> <statement>`.
@@ -280,11 +273,8 @@ class AbstractSyntaxTree:
 
         loop = self._statement()
 
-        return WHILE(
-            parenthesis_expression=parenthesis_expression,
-            loop=loop
-        )
-    
+        return WHILE(parenthesis_expression=parenthesis_expression, loop=loop)
+
     def _do_sym(self) -> Conditional:
         """
         Parse a `do/while` statement: `do <statement> while <parenthesis_expression> ;`
@@ -306,18 +296,15 @@ class AbstractSyntaxTree:
             self._next_symbol()
         else:
             raise SyntaxError("Malformed `do` statement: missing `while`.")
-        
+
         parenthesis_expression = self._parenthesis_expression()
 
         if self.current_symbol == "SEMI":
             self._next_symbol()
         else:
             raise SyntaxError("Missing semicolon at the end of statement.")
-        
-        return DO(
-            parenthesis_expression=parenthesis_expression,
-            loop=loop
-        )
+
+        return DO(parenthesis_expression=parenthesis_expression, loop=loop)
 
     def _brackets(self) -> SEQ:
         """
@@ -330,7 +317,7 @@ class AbstractSyntaxTree:
         """
 
         statement_node = SEQ()
-    
+
         self._next_symbol()
 
         while self.current_symbol != "RCBRA":
@@ -339,12 +326,15 @@ class AbstractSyntaxTree:
             statement_node = SEQ()
 
             # Avoid multiple nested SEQ statements
-            both_are_seq = (
-                isinstance(temp_node, SEQ) and isinstance(statement_node, SEQ)
+            both_are_seq = isinstance(temp_node, SEQ) and isinstance(
+                statement_node, SEQ
             )
 
             if both_are_seq:
-                statement_node.children = [*temp_node.children, *statement_node.children]
+                statement_node.children = [
+                    *temp_node.children,
+                    *statement_node.children,
+                ]
             else:
                 statement_node.add_child(temp_node)
 
@@ -414,10 +404,7 @@ class AbstractSyntaxTree:
 
                 element = self._term()
 
-                expression_node = ELEMENT_ACCESS(
-                    variable=variable,
-                    element=element
-                )
+                expression_node = ELEMENT_ACCESS(variable=variable, element=element)
 
                 if self.current_symbol == "RBRA":
                     self._next_symbol()
@@ -442,10 +429,7 @@ class AbstractSyntaxTree:
 
         rhs = self._expression()
 
-        expression_node = ASSIGN(
-            lhs=lhs,
-            rhs=rhs
-        )
+        expression_node = ASSIGN(lhs=lhs, rhs=rhs)
 
         return expression_node
 
@@ -465,10 +449,7 @@ class AbstractSyntaxTree:
             self._next_symbol()
 
             right_expression = self._logical_and()
-            expression = OR(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = OR(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -488,10 +469,7 @@ class AbstractSyntaxTree:
             self._next_symbol()
 
             right_expression = self._bitwise_or()
-            expression = AND(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = AND(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -511,10 +489,7 @@ class AbstractSyntaxTree:
             self._next_symbol()
 
             right_expression = self._bitwise_and()
-            expression = BITOR(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = BITOR(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -534,10 +509,7 @@ class AbstractSyntaxTree:
             self._next_symbol()
 
             right_expression = self._equality()
-            expression = BITAND(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = BITAND(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -553,10 +525,7 @@ class AbstractSyntaxTree:
 
         expression = self._comparison()
 
-        _equality_nodes: dict[str, Operation] = {
-            "EQUAL": EQUAL,
-            "DIFF": DIFF
-        }
+        _equality_nodes: dict[str, Operation] = {"EQUAL": EQUAL, "DIFF": DIFF}
 
         while self.current_symbol in _equality_nodes.keys():
             _equality_class = _equality_nodes[self.current_symbol]
@@ -565,10 +534,7 @@ class AbstractSyntaxTree:
 
             right_expression = self._comparison()
 
-            expression = _equality_class(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = _equality_class(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -584,10 +550,7 @@ class AbstractSyntaxTree:
 
         expression = self._bit_shift()
 
-        _comparison_nodes: dict[str, Operation] = {
-            "LESS": LESS,
-            "GREATER": GREATER
-        }
+        _comparison_nodes: dict[str, Operation] = {"LESS": LESS, "GREATER": GREATER}
 
         while self.current_symbol in _comparison_nodes.keys():
             _comparison_class = _comparison_nodes[self.current_symbol]
@@ -596,10 +559,7 @@ class AbstractSyntaxTree:
 
             right_expression = self._bit_shift()
 
-            expression = _comparison_class(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = _comparison_class(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -615,10 +575,7 @@ class AbstractSyntaxTree:
 
         expression = self._addition()
 
-        _bit_shift_nodes: dict[str, Operation] = {
-            "LSHIFT": LSHIFT,
-            "RSHIFT": RSHIFT
-        }
+        _bit_shift_nodes: dict[str, Operation] = {"LSHIFT": LSHIFT, "RSHIFT": RSHIFT}
 
         while self.current_symbol in _bit_shift_nodes.keys():
             _bit_shift_class = _bit_shift_nodes[self.current_symbol]
@@ -627,10 +584,7 @@ class AbstractSyntaxTree:
 
             right_expression = self._addition()
 
-            expression = _bit_shift_class(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = _bit_shift_class(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -646,10 +600,7 @@ class AbstractSyntaxTree:
 
         expression = self._multiplication()
 
-        _addition_nodes: dict[str, Operation] = {
-            "ADD": ADD,
-            "SUB": SUB
-        }
+        _addition_nodes: dict[str, Operation] = {"ADD": ADD, "SUB": SUB}
 
         while self.current_symbol in _addition_nodes.keys():
             _addition_class = _addition_nodes[self.current_symbol]
@@ -658,10 +609,7 @@ class AbstractSyntaxTree:
 
             right_expression = self._multiplication()
 
-            expression = _addition_class(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = _addition_class(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -680,7 +628,7 @@ class AbstractSyntaxTree:
         _multiplication_nodes: dict[str, Operation] = {
             "MULT": MULT,
             "DIV": DIV,
-            "MOD": MOD
+            "MOD": MOD,
         }
 
         while self.current_symbol in _multiplication_nodes.keys():
@@ -690,10 +638,7 @@ class AbstractSyntaxTree:
 
             right_expression = self._unary_operation()
 
-            expression = _multiplication_class(
-                lhs=expression,
-                rhs=right_expression
-            )
+            expression = _multiplication_class(lhs=expression, rhs=right_expression)
 
         return expression
 
@@ -757,11 +702,7 @@ class AbstractSyntaxTree:
             The node representation of the term.
         """
 
-        terms_map: dict[str, Node] = {
-            "CST": CST,
-            "FUNC_CALL": FUNC_CALL,
-            "VAR": VAR
-        }
+        terms_map: dict[str, Node] = {"CST": CST, "FUNC_CALL": FUNC_CALL, "VAR": VAR}
 
         term_handler = terms_map[self.current_symbol]
         term_node = term_handler(self.current_value)

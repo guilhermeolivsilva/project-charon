@@ -50,10 +50,9 @@ class WHILE(Conditional):
         ]
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `WHILE`.
 
@@ -80,14 +79,13 @@ class WHILE(Conditional):
             `instruction`and `value`.
         """
 
-        register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
-            register=register
-        )
+        (
+            register,
+            parenthesis_expression_code,
+        ) = self.parenthesis_expression.generate_code(register=register)
         conditional_register: int = register - 1
 
-        register, loop_code = self.statement_if_true.generate_code(
-            register=register
-        )
+        register, loop_code = self.statement_if_true.generate_code(register=register)
 
         # Conditional jump to leave the loop if the `parenthesis_expression`
         # evaluates to `False` (add 2 to land right after the unconditional
@@ -97,26 +95,28 @@ class WHILE(Conditional):
             "instruction": "JZ",
             "metadata": {
                 "conditional_register": conditional_register,
-                "jump_size": instructions_to_jump_over_loop
-            }
+                "jump_size": instructions_to_jump_over_loop,
+            },
         }
 
         # Unconditional jump to go back to the `parenthesis_expression`
         # evaluation
-        instructions_to_jump_back_to_expression = 0 - (len(parenthesis_expression_code) + len(loop_code) + 1)
+        instructions_to_jump_back_to_expression = 0 - (
+            len(parenthesis_expression_code) + len(loop_code) + 1
+        )
         unconditional_jump = {
             "instruction": "JZ",
             "metadata": {
                 "conditional_register": "zero",
-                "jump_size": instructions_to_jump_back_to_expression
-            }
+                "jump_size": instructions_to_jump_back_to_expression,
+            },
         }
 
         while_code: list[dict[str, Union[int, str]]] = [
             *parenthesis_expression_code,
             conditional_jump,
             *loop_code,
-            unconditional_jump
+            unconditional_jump,
         ]
 
         return register, while_code

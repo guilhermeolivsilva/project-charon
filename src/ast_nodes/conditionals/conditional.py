@@ -19,9 +19,7 @@ class Conditional(Node):
     """
 
     @override
-    def __init__(
-        self, parenthesis_expression: Node, statement_if_true: Node
-    ) -> None:
+    def __init__(self, parenthesis_expression: Node, statement_if_true: Node) -> None:
         super().__init__(uses_register=False)
 
         self.parenthesis_expression: Node = parenthesis_expression

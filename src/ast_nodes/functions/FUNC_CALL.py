@@ -76,10 +76,9 @@ class FUNC_CALL(Node):
             argument.print(indent=indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str, None]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str, None]]]]:
         """
         Generate the code associated with this `FUNC_CALL`.
 
@@ -108,9 +107,7 @@ class FUNC_CALL(Node):
             register, argument_code = argument.generate_code(register=register)
 
             # Keep track of the registers containing the arguments values
-            arguments_registers.append(
-                argument_code[0].get("metadata").get("register")
-            )
+            arguments_registers.append(argument_code[0].get("metadata").get("register"))
 
             code_metadata.extend(argument_code)
 
@@ -118,17 +115,14 @@ class FUNC_CALL(Node):
         # jump-and-link (JAL), to keep track of the return address, and copy
         # the `returned_value_register` to `register`.
         func_call_code: list[dict[str, dict]] = [
-            {
-                "instruction": "JAL",
-                "metadata": {"value": self.value}
-            },
+            {"instruction": "JAL", "metadata": {"value": self.value}},
             {
                 "instruction": "MOV",
                 "metadata": {
                     "register": register,
                     "value": "ret_value",
-                }
-            }
+                },
+            },
         ]
         register += 1
 
@@ -164,10 +158,11 @@ class FUNC_CALL(Node):
     def _build_children_nodes(self) -> list[Node]:
         arguments = self.function_call_metadata["arguments"]
         parameters_types: list[str] = [
-            param["type"] for param in (
-                self.function_call_metadata["called_function_metadata"]
-                                           ["parameters"]
-                                           .values()
+            param["type"]
+            for param in (
+                self.function_call_metadata["called_function_metadata"][
+                    "parameters"
+                ].values()
             )
         ]
 
@@ -178,18 +173,13 @@ class FUNC_CALL(Node):
             _parameter_type = parameters_types[idx]
 
             if _is_variable:
-                argument_value = VAR(
-                    variable_metadata=argument_metadata
-                )
+                argument_value = VAR(variable_metadata=argument_metadata)
 
             else:
-                argument_value = CST(
-                    constant_metadata=argument_metadata
-                )
+                argument_value = CST(constant_metadata=argument_metadata)
 
             new_node = ARG(
-                argument_value=argument_value,
-                parameter_type=_parameter_type
+                argument_value=argument_value, parameter_type=_parameter_type
             )
 
             children_nodes.append(new_node)

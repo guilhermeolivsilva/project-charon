@@ -23,11 +23,7 @@ class ARG(Node):
     """
 
     @override
-    def __init__(
-        self,
-        argument_value: Union[CST, VAR],
-        parameter_type: str
-    ) -> None:
+    def __init__(self, argument_value: Union[CST, VAR], parameter_type: str) -> None:
         super().__init__()
 
         self.argument_value: Union[CST, VAR] = argument_value
@@ -68,10 +64,9 @@ class ARG(Node):
         self.argument_value.print(indent=indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str, None]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str, None]]]]:
         """
         Generate the code associated with this `ARG`.
 
@@ -107,7 +102,7 @@ class ARG(Node):
             register, arg_typecast = type_cast(
                 original_type=self.argument_value.get_type(),
                 target_type=self.parameter_type,
-                register=register
+                register=register,
             )
             code_metadata.extend(arg_typecast)
 
@@ -118,7 +113,7 @@ class ARG(Node):
             "metadata": {
                 "register": "arg",
                 "value": argument_value_register,
-            }
+            },
         }
         code_metadata.append(argument_store_code)
 

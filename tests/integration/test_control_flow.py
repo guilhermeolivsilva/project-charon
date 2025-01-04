@@ -22,6 +22,7 @@ int main() {{
 }}
 """
 
+
 def test_if() -> None:
     """Test the `if` case."""
 
@@ -32,7 +33,7 @@ def test_if() -> None:
     vm = instance.get_vm()
     vm.run()
 
-    expected_memory = {'0x0': placeholder, '0x4': 23}
+    expected_memory = {"0x0": placeholder, "0x4": 23}
     assert vm.get_memory() == expected_memory
 
 
@@ -46,7 +47,7 @@ def test_else() -> None:
     vm = instance.get_vm()
     vm.run()
 
-    expected_memory = {'0x0': placeholder, '0x4': 35}
+    expected_memory = {"0x0": placeholder, "0x4": 35}
     assert vm.get_memory() == expected_memory
 
 

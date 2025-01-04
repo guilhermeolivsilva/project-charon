@@ -22,16 +22,13 @@ class IF(Conditional):
     """
 
     @override
-    def __init__(
-        self, parenthesis_expression: Node, statement_if_true: Node
-    ) -> None:
+    def __init__(self, parenthesis_expression: Node, statement_if_true: Node) -> None:
         super().__init__(parenthesis_expression, statement_if_true)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `IF`.
 
@@ -56,9 +53,10 @@ class IF(Conditional):
             `instruction`and `value`.
         """
 
-        register, parenthesis_expression_code = self.parenthesis_expression.generate_code(
-            register=register
-        )
+        (
+            register,
+            parenthesis_expression_code,
+        ) = self.parenthesis_expression.generate_code(register=register)
         conditional_register: int = register - 1
 
         register, statement_if_true_code = self.statement_if_true.generate_code(
@@ -73,8 +71,8 @@ class IF(Conditional):
             "instruction": "JZ",
             "metadata": {
                 "conditional_register": conditional_register,
-                "jump_size": instructions_to_jump
-            }
+                "jump_size": instructions_to_jump,
+            },
         }
 
         # If `parenthesis_expression` evals to `False`, jump a number of

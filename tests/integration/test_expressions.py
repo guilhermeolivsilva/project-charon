@@ -27,7 +27,7 @@ def test_expression():
     vm = instance.get_vm()
     vm.run()
 
-    expected_memory = {'0x0': 23, '0x4': 46, '0x8': 0}
+    expected_memory = {"0x0": 23, "0x4": 46, "0x8": 0}
     assert vm.get_memory() == expected_memory
 
 

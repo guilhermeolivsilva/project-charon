@@ -16,16 +16,13 @@ class VirtualMachine:
     """
 
     def __init__(
-        self,
-        program: dict[str, Union[list, dict]],
-        memory_size: int = 1024
+        self, program: dict[str, Union[list, dict]], memory_size: int = 1024
     ) -> None:
         self.program: dict[str, Union[list, dict]] = program
 
         # Memory (i.e., storage for variables)
         self.memory: dict[str, Union[int, float, str, None]] = {
-            hex(_byte): None
-            for _byte in range(memory_size)
+            hex(_byte): None for _byte in range(memory_size)
         }
         self.memory_size: int = memory_size
         self.memory_pointer: int = 0x0
@@ -36,7 +33,7 @@ class VirtualMachine:
             "arg": [],
             "ret_address": [],
             "ret_value": [],
-            "zero": 0
+            "zero": 0,
         }
         self.variables: dict[int, str] = {}
 
@@ -87,12 +84,8 @@ class VirtualMachine:
 
         # Program variables: values and addresses
         variables_info = {
-            variable_id: {
-                "address": variable_value
-            }
-
-            for variable_id, variable_value
-            in self.variables.items()
+            variable_id: {"address": variable_value}
+            for variable_id, variable_value in self.variables.items()
         }
 
         for key, value in variables_info.items():
@@ -101,8 +94,7 @@ class VirtualMachine:
 
         _str += "Variables:\n  "
         _str += "\n  ".join(
-            f"ID: {id}\n  Data: {data}\n"
-            for id, data in variables_info.items()
+            f"ID: {id}\n  Data: {data}\n" for id, data in variables_info.items()
         )
 
         return _str
@@ -171,10 +163,7 @@ class VirtualMachine:
                 print("Bad instruction:", instruction, instruction_params)
                 raise e
 
-    def ADD(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def ADD(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `ADD` bytecode.
 
@@ -193,10 +182,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs + rhs
 
-    def ADDRESS(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def ADDRESS(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `ADDRESS` bytecode.
 
@@ -227,10 +213,7 @@ class VirtualMachine:
         value: int = instruction_params["register"]
         self.registers[value] = hex(variable_address)
 
-    def ALLOC(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def ALLOC(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `ALLOC` bytecode.
 
@@ -252,7 +235,7 @@ class VirtualMachine:
             err_msg: str = "Cannot allocate memory: memory is full"
             err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
-        
+
         variable_address: str = hex(self.memory_pointer)
 
         variable_id: int = instruction_params["id"]
@@ -272,10 +255,7 @@ class VirtualMachine:
         self.variables[variable_id] = variable_address
         self.memory_pointer = updated_memory_pointer
 
-    def AND(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def AND(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `AND` bytecode.
 
@@ -299,14 +279,9 @@ class VirtualMachine:
         lhs = self.registers[instruction_params["lhs_register"]]
         rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params["register"]] = (
-            1 if (lhs and rhs) > 0 else 0
-        )
+        self.registers[instruction_params["register"]] = 1 if (lhs and rhs) > 0 else 0
 
-    def BITAND(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def BITAND(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `BITAND` bytecode.
 
@@ -325,10 +300,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs & rhs
 
-    def BITOR(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def BITOR(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `BITOR` bytecode.
 
@@ -347,10 +319,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs | rhs
 
-    def CONSTANT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def CONSTANT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `CONSTANT` bytecode.
 
@@ -367,10 +336,7 @@ class VirtualMachine:
 
         self.registers[value] = constant_value
 
-    def DIV(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def DIV(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `DIV` bytecode.
 
@@ -389,10 +355,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs / rhs)
 
-    def EQ(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def EQ(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `EQ` bytecode.
 
@@ -417,10 +380,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs == rhs)
 
-    def FADD(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FADD(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FADD` bytecode.
 
@@ -437,10 +397,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs + rhs
 
-    def FAND(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FAND(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FAND` bytecode.
 
@@ -463,14 +420,9 @@ class VirtualMachine:
         lhs = self.registers[instruction_params["lhs_register"]]
         rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params["register"]] = (
-            1 if (lhs and rhs) > 0 else 0
-        )
+        self.registers[instruction_params["register"]] = 1 if (lhs and rhs) > 0 else 0
 
-    def FDIV(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FDIV(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FDIV` bytecode.
 
@@ -487,10 +439,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs / rhs
 
-    def FEQ(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FEQ(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FEQ` bytecode.
 
@@ -514,10 +463,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs == rhs)
 
-    def FGT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FGT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FGT` bytecode.
 
@@ -541,10 +487,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs > rhs)
 
-    def FLT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FLT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FLT` bytecode.
 
@@ -568,10 +511,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs < rhs)
 
-    def FMULT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FMULT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FMULT` bytecode.
 
@@ -589,10 +529,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs * rhs
 
-    def FNEQ(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FNEQ(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FNEQ` bytecode.
 
@@ -616,10 +553,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs != rhs)
 
-    def FOR(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FOR(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FOR` bytecode.
 
@@ -642,14 +576,9 @@ class VirtualMachine:
         lhs = self.registers[instruction_params["lhs_register"]]
         rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params["register"]] = (
-            1 if (lhs or rhs) > 0 else 0
-        )
+        self.registers[instruction_params["register"]] = 1 if (lhs or rhs) > 0 else 0
 
-    def FPTOSI(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FPTOSI(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FPTOSI` bytecode.
 
@@ -667,10 +596,7 @@ class VirtualMachine:
 
         self.registers[register] = int(self.registers[value])
 
-    def FSUB(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def FSUB(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `FSUB` bytecode.
 
@@ -687,10 +613,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs - rhs
 
-    def GT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def GT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `GT` bytecode.
 
@@ -715,10 +638,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs > rhs)
 
-    def HALT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def HALT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `HALT` bytecode.
 
@@ -728,10 +648,7 @@ class VirtualMachine:
 
         return
 
-    def JAL(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def JAL(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `JAL` bytecode.
 
@@ -745,21 +662,18 @@ class VirtualMachine:
 
         # Handle the `program_counter` for it to point to the function code
         called_function_id: int = instruction_params["value"]
-        called_function_name: str = (
-            list(self.program["functions"].keys())[called_function_id - 1]
-        )
-        called_function_start: int = (
-            self.program["functions"][called_function_name]["start"]
-        )
+        called_function_name: str = list(self.program["functions"].keys())[
+            called_function_id - 1
+        ]
+        called_function_start: int = self.program["functions"][called_function_name][
+            "start"
+        ]
 
         # Set the return address
         self.registers["ret_address"].append(self.program_counter)
         self.program_counter = called_function_start
 
-    def JR(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def JR(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `JR` bytecode.
 
@@ -776,7 +690,6 @@ class VirtualMachine:
 
         # Handle lists
         if isinstance(address_to_jump_to, list):
-
             # Handle the `return` statement from the end of the program: when
             # reaching the final `return`, there won't be an address to jump
             # to at `registers["ret_address"]`. Thus, jump to the last
@@ -788,10 +701,7 @@ class VirtualMachine:
 
         self.program_counter = address_to_jump_to
 
-    def JZ(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def JZ(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `JZ` bytecode.
 
@@ -811,10 +721,7 @@ class VirtualMachine:
             jump_size: int = instruction_params["jump_size"]
             self.program_counter += jump_size - 1
 
-    def LOAD(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def LOAD(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `LOAD` bytecode.
 
@@ -848,10 +755,7 @@ class VirtualMachine:
         value: int = instruction_params["register"]
         self.registers[value] = variable_value
 
-    def LSHIFT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def LSHIFT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `LSHIFT` bytecode.
 
@@ -870,10 +774,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs << rhs
 
-    def LT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def LT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `LT` bytecode.
 
@@ -898,10 +799,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs < rhs)
 
-    def MOD(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def MOD(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `MOD` bytecode.
 
@@ -920,10 +818,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs % rhs
 
-    def MOV(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def MOV(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `MOV` bytecode.
 
@@ -948,10 +843,7 @@ class VirtualMachine:
         else:
             self.registers[lhs_register] = self.registers["ret_value"].pop()
 
-    def MULT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def MULT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `MULT` bytecode.
 
@@ -970,10 +862,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs * rhs
 
-    def NEQ(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def NEQ(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `NEQ` bytecode.
 
@@ -998,10 +887,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(lhs != rhs)
 
-    def NOT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def NOT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `NOT` bytecode.
 
@@ -1025,10 +911,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = int(not expression)
 
-    def OR(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def OR(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `OR` bytecode.
 
@@ -1052,14 +935,9 @@ class VirtualMachine:
         lhs = self.registers[instruction_params["lhs_register"]]
         rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params["register"]] = (
-            1 if (lhs or rhs) > 0 else 0
-        )
+        self.registers[instruction_params["register"]] = 1 if (lhs or rhs) > 0 else 0
 
-    def RSHIFT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def RSHIFT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `RSHIFT` bytecode.
 
@@ -1078,10 +956,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs >> rhs
 
-    def SIGNEXT(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def SIGNEXT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `SIGNEXT` bytecode.
 
@@ -1100,10 +975,7 @@ class VirtualMachine:
 
         self.registers[register] = self.registers[value]
 
-    def SITOFP(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def SITOFP(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `SITOFP` bytecode.
 
@@ -1121,10 +993,7 @@ class VirtualMachine:
 
         self.registers[register] = float(self.registers[value])
 
-    def STORE(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def STORE(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `STORE` bytecode.
 
@@ -1147,10 +1016,7 @@ class VirtualMachine:
 
         self.memory[variable_address] = value_to_store
 
-    def SUB(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def SUB(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `SUB` bytecode.
 
@@ -1169,10 +1035,7 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = lhs - rhs
 
-    def TRUNC(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
-    ) -> None:
+    def TRUNC(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `TRUNC` bytecode.
 
@@ -1196,8 +1059,7 @@ class VirtualMachine:
         self.registers[register] = truncated_value
 
     def _get_variable_address(
-        self,
-        instruction_params: dict[str, Union[int, float, str]]
+        self, instruction_params: dict[str, Union[int, float, str]]
     ) -> str:
         """
         Get the address of some variable from the instruction_params.

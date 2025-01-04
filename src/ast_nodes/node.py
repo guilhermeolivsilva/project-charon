@@ -24,7 +24,7 @@ class Node:
         self,
         value: Union[int, str, float, None] = None,
         type: Union[str, None] = None,
-        uses_register: bool = True
+        uses_register: bool = True,
     ) -> None:
         self.value: Union[int, str, float, None] = value
         self.type: Union[str, None] = type
@@ -51,10 +51,7 @@ class Node:
             `True` if all the attributes are equal, `False` otherwise.
         """
 
-        is_equal = (
-            self.value == other.value
-            and type(self) is type(other)
-        )
+        is_equal = self.value == other.value and type(self) is type(other)
 
         return is_equal
 
@@ -84,7 +81,7 @@ class Node:
             _str += f", Certificate Label: {self.certificate_label}"
 
         return _str
-    
+
     def get_value(self) -> Union[int, str, float, None]:
         """
         Get the value of this Node.
@@ -96,7 +93,7 @@ class Node:
         """
 
         return self.value
-    
+
     def get_type(self) -> Union[str, None]:
         """
         Get the type of this Node.
@@ -142,10 +139,9 @@ class Node:
 
         print("  " * indent + str(self))
 
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `Node`.
 
@@ -182,10 +178,7 @@ class Node:
         generate code using not only the node itself, but its children, too.
         """
 
-        code_metadata = {
-            "instruction": self.instruction,
-            "metadata": {}
-        }
+        code_metadata = {"instruction": self.instruction, "metadata": {}}
 
         if self.uses_register:
             code_metadata["metadata"]["register"] = register

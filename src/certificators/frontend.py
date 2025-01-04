@@ -29,7 +29,7 @@ class FrontendCertificator(AbstractCertificator):
     def certificate(self, **kwargs) -> list[str]:
         """
         Certificate the frontend code.
-        
+
         This method traverses the AST and annotate each node with its relative
         position and contents.
 

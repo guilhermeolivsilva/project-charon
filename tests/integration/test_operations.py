@@ -54,120 +54,61 @@ int main() {{
 }}
 """
 
+
 @pytest.mark.parametrize(
     "test_suite",
     [
         {
             "function_name": "addition",
             "operator": "+",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 14,
-                '0xc': 12
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 14, "0xc": 12},
         },
         {
             "function_name": "subtraction",
             "operator": "-",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 6,
-                '0xc': 7
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 6, "0xc": 7},
         },
         {
             "function_name": "multiplication",
             "operator": "*",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 40,
-                '0xc': 23
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 40, "0xc": 23},
         },
         {
             "function_name": "division",
             "operator": "/",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 2,
-                '0xc': 4
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 2, "0xc": 4},
         },
         {
             "function_name": "greater_than",
             "operator": ">",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 1,
-                '0xc': 1
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
         },
         {
             "function_name": "less_than",
             "operator": "<",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 0,
-                '0xc': 0
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 0, "0xc": 0},
         },
         {
             "function_name": "equal",
             "operator": "==",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 0,
-                '0xc': 0
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 0, "0xc": 0},
         },
         {
             "function_name": "not_equal",
             "operator": "!=",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 1,
-                '0xc': 1
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
         },
         {
             "function_name": "logical_and",
             "operator": "&&",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 1,
-                '0xc': 1
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
         },
         {
             "function_name": "logical_or",
             "operator": "||",
-            "expected_memory": {
-                '0x0': 10,
-                '0x2': 4,
-                '0x6': 2.3,
-                '0xa': 1,
-                '0xc': 1
-            }
+            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
         },
-    ]
+    ],
 )
 def test_operation(test_suite: dict) -> None:
     """Test an operation."""
@@ -191,49 +132,29 @@ def test_operation(test_suite: dict) -> None:
         {
             "function_name": "left_shift",
             "operator": "<<",
-            "expected_memory": {
-                '0x0': 11,
-                '0x2': 3,
-                '0x6': 88
-            }
+            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 88},
         },
         {
             "function_name": "right_shift",
             "operator": ">>",
-            "expected_memory": {
-                '0x0': 11,
-                '0x2': 3,
-                '0x6': 1
-            }
+            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 1},
         },
         {
             "function_name": "bitwise_and",
             "operator": "&",
-            "expected_memory": {
-                '0x0': 11,
-                '0x2': 3,
-                '0x6': 3
-            }
+            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 3},
         },
         {
             "function_name": "bitwise_or",
             "operator": "|",
-            "expected_memory": {
-                '0x0': 11,
-                '0x2': 3,
-                '0x6': 11
-            }
+            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 11},
         },
         {
             "function_name": "module",
             "operator": "%",
-            "expected_memory": {
-                '0x0': 11,
-                '0x2': 3,
-                '0x6': 2
-            }
+            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 2},
         },
-    ]
+    ],
 )
 def test_bitwise_operation(test_suite: dict) -> None:
     """Test a bit-wise operation."""
@@ -256,47 +177,17 @@ def test_bitwise_operation(test_suite: dict) -> None:
 @pytest.mark.parametrize(
     "test_suite",
     [
-        {
-            "function_name": "addition",
-            "operator": "+"
-        },
-        {
-            "function_name": "subtraction",
-            "operator": "-"
-        },
-        {
-            "function_name": "multiplication",
-            "operator": "*"
-        },
-        {
-            "function_name": "division",
-            "operator": "/"
-        },
-        {
-            "function_name": "greater_than",
-            "operator": ">"
-        },
-        {
-            "function_name": "less_than",
-            "operator": "<"
-        },
-        {
-            "function_name": "equal",
-            "operator": "=="
-        },
-        {
-            "function_name": "not_equal",
-            "operator": "!="
-        },
-        {
-            "function_name": "logical_and",
-            "operator": "&&"
-        },
-        {
-            "function_name": "logical_or",
-            "operator": "||"
-        },
-    ]
+        {"function_name": "addition", "operator": "+"},
+        {"function_name": "subtraction", "operator": "-"},
+        {"function_name": "multiplication", "operator": "*"},
+        {"function_name": "division", "operator": "/"},
+        {"function_name": "greater_than", "operator": ">"},
+        {"function_name": "less_than", "operator": "<"},
+        {"function_name": "equal", "operator": "=="},
+        {"function_name": "not_equal", "operator": "!="},
+        {"function_name": "logical_and", "operator": "&&"},
+        {"function_name": "logical_or", "operator": "||"},
+    ],
 )
 def test_operation_certification(test_suite: dict) -> None:
     """Test the front and backend certification."""
@@ -308,7 +199,7 @@ def test_operation_certification(test_suite: dict) -> None:
     }
 
     instance = create_instance(source_code=SOURCE_CODE.format(**test_parameters))
-    
+
     ast = instance.get_ast()
     frontend_certificate = FrontendCertificator(ast=ast).certificate()
 
@@ -321,27 +212,12 @@ def test_operation_certification(test_suite: dict) -> None:
 @pytest.mark.parametrize(
     "test_suite",
     [
-        {
-            "function_name": "left_shift",
-            "operator": "<<"
-        },
-        {
-            "function_name": "right_shift",
-            "operator": ">>"
-        },
-        {
-            "function_name": "bitwise_and",
-            "operator": "&"
-        },
-        {
-            "function_name": "bitwise_or",
-            "operator": "|"
-        },
-        {
-            "function_name": "module",
-            "operator": "%"
-        },
-    ]
+        {"function_name": "left_shift", "operator": "<<"},
+        {"function_name": "right_shift", "operator": ">>"},
+        {"function_name": "bitwise_and", "operator": "&"},
+        {"function_name": "bitwise_or", "operator": "|"},
+        {"function_name": "module", "operator": "%"},
+    ],
 )
 def test_bitwise_operation(test_suite: dict) -> None:
     """Test the front and backend certification."""

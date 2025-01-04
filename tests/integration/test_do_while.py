@@ -18,6 +18,7 @@ int main() {
 }
 """
 
+
 def test_do_while() -> None:
     """Test the `do/while` statement."""
 
@@ -25,7 +26,7 @@ def test_do_while() -> None:
     vm = instance.get_vm()
     vm.run()
 
-    expected_memory = {'0x0': 51}
+    expected_memory = {"0x0": 51}
     assert vm.get_memory() == expected_memory
 
 

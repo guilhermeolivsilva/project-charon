@@ -20,7 +20,6 @@ class VAR_DEF(Node):
 
     @override
     def __init__(self, variable_metadata: dict) -> None:
-
         id: int = variable_metadata.get("id")
         type: str = variable_metadata.get("type")
 
@@ -31,11 +30,7 @@ class VAR_DEF(Node):
 
         prime: int = variable_metadata["prime"]
         self.size: int = get_variable_size(variable_metadata)
-        self.symbol: str = (
-            f"({self.symbol})"
-            + f"^({prime})"
-            + f"^({self.size})"
-        )
+        self.symbol: str = f"({self.symbol})" + f"^({prime})" + f"^({self.size})"
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -57,15 +52,16 @@ class VAR_DEF(Node):
         var_def_metadata += f"Type: {self.variable_metadata.get('type')}"
 
         if self.variable_metadata.get("length"):
-            var_def_metadata += f" (array), Length: {self.variable_metadata.get('length')}"
+            var_def_metadata += (
+                f" (array), Length: {self.variable_metadata.get('length')}"
+            )
 
         print(f"{'  ' * (indent + 1)}{var_def_metadata}")
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `VAR_DEF`.
 
@@ -92,11 +88,7 @@ class VAR_DEF(Node):
 
         var_def_code = {
             "instruction": self.instruction,
-            "metadata": {
-                "id": self.value,
-                "size": self.size,
-                "register": register
-            }
+            "metadata": {"id": self.value, "size": self.size, "register": register},
         }
         register += 1
 

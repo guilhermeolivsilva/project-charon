@@ -26,10 +26,9 @@ class PARAM(VAR_DEF):
         super().__init__(variable_metadata)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `PARAM`.
 
@@ -63,12 +62,8 @@ class PARAM(VAR_DEF):
         parameter_address_register = register - 1
         parameter_store_code = {
             "instruction": "STORE",
-            "metadata": {
-                "register": parameter_address_register,
-                "value": "arg"
-            }
+            "metadata": {"register": parameter_address_register, "value": "arg"},
         }
         code_metadata.append(parameter_store_code)
 
         return register, code_metadata
-

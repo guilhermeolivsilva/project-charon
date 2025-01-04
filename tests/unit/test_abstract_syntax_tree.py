@@ -144,6 +144,7 @@ Kind: PROG
           Value: 1, Kind: CST, Type: int
 """
 
+
 def test_init() -> None:
     """Test the instantiation of AbstractSyntaxTree objects."""
 

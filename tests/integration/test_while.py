@@ -4,7 +4,6 @@ from src.certificators import BackendCertificator, FrontendCertificator
 from src.runner import create_instance
 
 
-
 SOURCE_CODE = """
 int main() {
     int i;
@@ -18,6 +17,7 @@ int main() {
 }
 """
 
+
 def test_simple_while() -> None:
     """Test the `while` statement."""
 
@@ -25,7 +25,7 @@ def test_simple_while() -> None:
     vm = instance.get_vm()
     vm.run()
 
-    expected_memory = {'0x0': 128}
+    expected_memory = {"0x0": 128}
     assert vm.get_memory() == expected_memory
 
 

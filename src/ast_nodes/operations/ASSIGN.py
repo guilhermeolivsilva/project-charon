@@ -30,19 +30,16 @@ class ASSIGN(Operation):
     @override
     def __init__(self, lhs: Node, rhs: Node) -> None:
         if not isinstance(lhs, (VAR, ELEMENT_ACCESS)):
-            raise TypeError(
-                "Left-hand side of ASSIGN operation is not a Variable."
-            )
+            raise TypeError("Left-hand side of ASSIGN operation is not a Variable.")
 
         super().__init__(lhs=lhs, rhs=rhs, type=lhs.type)
 
         self.instruction: str = "STORE"
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str, None]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str, None]]]]:
         """
         Generate the code associated with this `ASSIGN` operation.
 

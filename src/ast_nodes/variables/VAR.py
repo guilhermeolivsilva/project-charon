@@ -41,19 +41,18 @@ class VAR(Node):
             new_str += f" (array), Length: {array_length}"
 
         return new_str
-    
+
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code associated with this `VAR`.
 
         For this node specialization, the code metadata contains the instruction
         (i.e., whether the context requires the variable's value or address),
         together with the variable identifier (`self.value`).
-        
+
         It also contains `offset_size` and `offset_register` fields: this is due
         to the design of the `ADDRESS` and `LOAD` instructions in the virtual
         machine.
@@ -75,10 +74,7 @@ class VAR(Node):
 
         code_metadata = {
             "instruction": self.instruction,
-            "metadata": {
-                "register": register,
-                "id": self.value
-            }
+            "metadata": {"register": register, "id": self.value},
         }
 
         return register + 1, [code_metadata]
@@ -94,7 +90,7 @@ class VAR(Node):
         """
 
         return self.variable_metadata
-    
+
     def add_context(self, context: dict[str, str]) -> None:
         """
         Add context to this `VAR` node.
@@ -125,8 +121,5 @@ class VAR(Node):
         # Add ^1 because it means memory offset + 1. As this is a regular
         # variable – and not an array nor struct –, the offset is always 0.
         self.symbol: str = (
-            f"({symbol})"
-            + f"^({self.variable_metadata['prime']})"
-            + "^(2)"
-            + "^(1)"
+            f"({symbol})" + f"^({self.variable_metadata['prime']})" + "^(2)" + "^(1)"
         )

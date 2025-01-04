@@ -23,6 +23,7 @@ int main() {
 }
 """
 
+
 def test_array():
     """Test a simple array."""
 
@@ -31,13 +32,13 @@ def test_array():
     vm.run()
 
     expected_memory = {
-        '0x0': 0,
-        '0x4': 2,
-        '0x8': 8,
-        '0xc': 24,
-        '0x10': 64,
-        '0x14': 5,
-        '0x18': 11
+        "0x0": 0,
+        "0x4": 2,
+        "0x8": 8,
+        "0xc": 24,
+        "0x10": 64,
+        "0x14": 5,
+        "0x18": 11,
     }
 
     assert vm.get_memory() == expected_memory

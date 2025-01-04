@@ -15,7 +15,7 @@ class FUNC_DEF(Node):
 
     A `FUNC_DEF` is an abstraction of a function definition: it tracks its
     return type, parameters (and its types), and statements.
-    
+
     The node itself only has children to help structuring the function
     definition, but doesn't have any semantics itself, `instruction`, or has a
     certificate.
@@ -30,11 +30,8 @@ class FUNC_DEF(Node):
 
     @override
     def __init__(
-        self,
-        function_name: str,
-        function_metadata: dict[str, Union[str, dict]]
+        self, function_name: str, function_metadata: dict[str, Union[str, dict]]
     ) -> None:
-        
         type: str = function_metadata.get("type")
         super().__init__(function_name, type)
 
@@ -97,15 +94,14 @@ class FUNC_DEF(Node):
         super().print(indent)
 
         for parameter in self.parameters:
-            parameter.print(indent+1)
+            parameter.print(indent + 1)
 
-        self.statements.print(indent+1)
+        self.statements.print(indent + 1)
 
     @override
-    def generate_code(self, register: int) -> tuple[
-        int,
-        list[dict[str, Union[int, str]]]
-    ]:
+    def generate_code(
+        self, register: int
+    ) -> tuple[int, list[dict[str, Union[int, str]]]]:
         """
         Generate the code for this `FUNC_DEF`.
 
@@ -131,14 +127,10 @@ class FUNC_DEF(Node):
         code_metadata: list[dict[str, Union[int, str]]] = []
 
         for parameter in self.parameters:
-            register, var_def_code = parameter.generate_code(
-                register=register
-            )
+            register, var_def_code = parameter.generate_code(register=register)
             code_metadata.extend(var_def_code)
 
-        register, statements_code = self.statements.generate_code(
-            register=register
-        )
+        register, statements_code = self.statements.generate_code(register=register)
 
         code_metadata.extend(statements_code)
 
@@ -169,7 +161,7 @@ class FUNC_DEF(Node):
             positional_prime = parameter.certificate(positional_prime)
 
         return self.statements.certificate(positional_prime)
-    
+
     def _define_vars_from_args(self, parameters: dict[str, dict]) -> list[PARAM]:
         """
         Create `PARAM` nodes to be contain the received parameters.
@@ -189,15 +181,12 @@ class FUNC_DEF(Node):
         variables: list[PARAM] = []
 
         for parameter_name, parameter_metadata in parameters.items():
-            variable_metadata = {
-                "name": parameter_name,
-                **parameter_metadata
-            }
+            variable_metadata = {"name": parameter_name, **parameter_metadata}
 
             variables.append(PARAM(variable_metadata=variable_metadata))
 
         return variables
-    
+
     def get_function_name(self) -> str:
         """
         Get the name of this function.
