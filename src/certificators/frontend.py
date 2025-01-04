@@ -1,4 +1,4 @@
-"""Certificator for the frontend representation of Tiny C programs."""
+"""Certificator for the frontend representation of [C]haron programs."""
 
 import re
 

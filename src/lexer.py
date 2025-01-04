@@ -1,4 +1,4 @@
-"""Implement a lexer for the Tiny C compiler."""
+"""Implement a lexer for the [C]haron compiler."""
 
 from copy import deepcopy
 from typing import Union
