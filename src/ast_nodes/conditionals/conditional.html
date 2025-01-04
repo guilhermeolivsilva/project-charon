@@ -98,78 +98,76 @@
 </span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="nd">@override</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">parenthesis_expression</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_true</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="nd">@override</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">        `parenthesis_expression` subtree first, then from the `Conditional`</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">        node itself, and, finally, from the `statement_if_true` subtree.</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">        Returns</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        -------</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        : list of str</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>        <span class="p">]</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>    <span class="nd">@override</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>
-</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="sd">        Parameters</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a><span class="sd">        ----------</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">parenthesis_expression</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_true</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="nd">@override</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">        `parenthesis_expression` subtree first, then from the `Conditional`</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">        node itself, and, finally, from the `statement_if_true` subtree.</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">        Returns</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        -------</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">        : list of str</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>        <span class="p">]</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>    <span class="nd">@override</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a><span class="sd">        with an additional left space.</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a><span class="sd">        Parameters</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a><span class="sd">        ----------</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>
-</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>
-</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>
-</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>    <span class="nd">@override</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>
-</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a><span class="sd">        recursively, and the `Conditional` itself, and then the children</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a><span class="sd">        `statement` nodes -- also recursively.</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>
-</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a><span class="sd">        Parameters</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a><span class="sd">        ----------</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a><span class="sd">            the source code.</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a>
-</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a><span class="sd">        Returns</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a><span class="sd">        -------</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a><span class="sd">        : int</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos">88</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos">89</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos">90</span></a>
-</span><span id="L-91"><a href="#L-91"><span class="linenos">91</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos">92</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos">93</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>    <span class="nd">@override</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>
+</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a><span class="sd">        recursively, and the `Conditional` itself, and then the children</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a><span class="sd">        `statement` nodes -- also recursively.</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a><span class="sd">        Parameters</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a><span class="sd">        ----------</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a><span class="sd">            the source code.</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>
+</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a><span class="sd">        Returns</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a><span class="sd">        -------</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a><span class="sd">        : int</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos">88</span></a>
+</span><span id="L-89"><a href="#L-89"><span class="linenos">89</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos">90</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos">91</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -199,78 +197,76 @@
 </span><span id="Conditional-20"><a href="#Conditional-20"><span class="linenos">20</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="Conditional-21"><a href="#Conditional-21"><span class="linenos">21</span></a>
 </span><span id="Conditional-22"><a href="#Conditional-22"><span class="linenos">22</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional-23"><a href="#Conditional-23"><span class="linenos">23</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="Conditional-24"><a href="#Conditional-24"><span class="linenos">24</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span>
-</span><span id="Conditional-25"><a href="#Conditional-25"><span class="linenos">25</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Conditional-26"><a href="#Conditional-26"><span class="linenos">26</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="Conditional-27"><a href="#Conditional-27"><span class="linenos">27</span></a>
-</span><span id="Conditional-28"><a href="#Conditional-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">parenthesis_expression</span>
-</span><span id="Conditional-29"><a href="#Conditional-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_true</span>
-</span><span id="Conditional-30"><a href="#Conditional-30"><span class="linenos">30</span></a>
-</span><span id="Conditional-31"><a href="#Conditional-31"><span class="linenos">31</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional-32"><a href="#Conditional-32"><span class="linenos">32</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="Conditional-33"><a href="#Conditional-33"><span class="linenos">33</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Conditional-34"><a href="#Conditional-34"><span class="linenos">34</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="Conditional-35"><a href="#Conditional-35"><span class="linenos">35</span></a>
-</span><span id="Conditional-36"><a href="#Conditional-36"><span class="linenos">36</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
-</span><span id="Conditional-37"><a href="#Conditional-37"><span class="linenos">37</span></a><span class="sd">        `parenthesis_expression` subtree first, then from the `Conditional`</span>
-</span><span id="Conditional-38"><a href="#Conditional-38"><span class="linenos">38</span></a><span class="sd">        node itself, and, finally, from the `statement_if_true` subtree.</span>
-</span><span id="Conditional-39"><a href="#Conditional-39"><span class="linenos">39</span></a>
-</span><span id="Conditional-40"><a href="#Conditional-40"><span class="linenos">40</span></a><span class="sd">        Returns</span>
-</span><span id="Conditional-41"><a href="#Conditional-41"><span class="linenos">41</span></a><span class="sd">        -------</span>
-</span><span id="Conditional-42"><a href="#Conditional-42"><span class="linenos">42</span></a><span class="sd">        : list of str</span>
-</span><span id="Conditional-43"><a href="#Conditional-43"><span class="linenos">43</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="Conditional-44"><a href="#Conditional-44"><span class="linenos">44</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Conditional-45"><a href="#Conditional-45"><span class="linenos">45</span></a>
-</span><span id="Conditional-46"><a href="#Conditional-46"><span class="linenos">46</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="Conditional-47"><a href="#Conditional-47"><span class="linenos">47</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="Conditional-48"><a href="#Conditional-48"><span class="linenos">48</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="Conditional-49"><a href="#Conditional-49"><span class="linenos">49</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="Conditional-50"><a href="#Conditional-50"><span class="linenos">50</span></a>        <span class="p">]</span>
-</span><span id="Conditional-51"><a href="#Conditional-51"><span class="linenos">51</span></a>
-</span><span id="Conditional-52"><a href="#Conditional-52"><span class="linenos">52</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional-53"><a href="#Conditional-53"><span class="linenos">53</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Conditional-54"><a href="#Conditional-54"><span class="linenos">54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Conditional-55"><a href="#Conditional-55"><span class="linenos">55</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
-</span><span id="Conditional-56"><a href="#Conditional-56"><span class="linenos">56</span></a>
-</span><span id="Conditional-57"><a href="#Conditional-57"><span class="linenos">57</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="Conditional-58"><a href="#Conditional-58"><span class="linenos">58</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="Conditional-59"><a href="#Conditional-59"><span class="linenos">59</span></a>
-</span><span id="Conditional-60"><a href="#Conditional-60"><span class="linenos">60</span></a><span class="sd">        Parameters</span>
-</span><span id="Conditional-61"><a href="#Conditional-61"><span class="linenos">61</span></a><span class="sd">        ----------</span>
-</span><span id="Conditional-62"><a href="#Conditional-62"><span class="linenos">62</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="Conditional-63"><a href="#Conditional-63"><span class="linenos">63</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="Conditional-64"><a href="#Conditional-64"><span class="linenos">64</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional-23"><a href="#Conditional-23"><span class="linenos">23</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Conditional-24"><a href="#Conditional-24"><span class="linenos">24</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="Conditional-25"><a href="#Conditional-25"><span class="linenos">25</span></a>
+</span><span id="Conditional-26"><a href="#Conditional-26"><span class="linenos">26</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">parenthesis_expression</span>
+</span><span id="Conditional-27"><a href="#Conditional-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_true</span>
+</span><span id="Conditional-28"><a href="#Conditional-28"><span class="linenos">28</span></a>
+</span><span id="Conditional-29"><a href="#Conditional-29"><span class="linenos">29</span></a>    <span class="nd">@override</span>
+</span><span id="Conditional-30"><a href="#Conditional-30"><span class="linenos">30</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="Conditional-31"><a href="#Conditional-31"><span class="linenos">31</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional-32"><a href="#Conditional-32"><span class="linenos">32</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="Conditional-33"><a href="#Conditional-33"><span class="linenos">33</span></a>
+</span><span id="Conditional-34"><a href="#Conditional-34"><span class="linenos">34</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
+</span><span id="Conditional-35"><a href="#Conditional-35"><span class="linenos">35</span></a><span class="sd">        `parenthesis_expression` subtree first, then from the `Conditional`</span>
+</span><span id="Conditional-36"><a href="#Conditional-36"><span class="linenos">36</span></a><span class="sd">        node itself, and, finally, from the `statement_if_true` subtree.</span>
+</span><span id="Conditional-37"><a href="#Conditional-37"><span class="linenos">37</span></a>
+</span><span id="Conditional-38"><a href="#Conditional-38"><span class="linenos">38</span></a><span class="sd">        Returns</span>
+</span><span id="Conditional-39"><a href="#Conditional-39"><span class="linenos">39</span></a><span class="sd">        -------</span>
+</span><span id="Conditional-40"><a href="#Conditional-40"><span class="linenos">40</span></a><span class="sd">        : list of str</span>
+</span><span id="Conditional-41"><a href="#Conditional-41"><span class="linenos">41</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="Conditional-42"><a href="#Conditional-42"><span class="linenos">42</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional-43"><a href="#Conditional-43"><span class="linenos">43</span></a>
+</span><span id="Conditional-44"><a href="#Conditional-44"><span class="linenos">44</span></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="Conditional-45"><a href="#Conditional-45"><span class="linenos">45</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="Conditional-46"><a href="#Conditional-46"><span class="linenos">46</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="Conditional-47"><a href="#Conditional-47"><span class="linenos">47</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="Conditional-48"><a href="#Conditional-48"><span class="linenos">48</span></a>        <span class="p">]</span>
+</span><span id="Conditional-49"><a href="#Conditional-49"><span class="linenos">49</span></a>
+</span><span id="Conditional-50"><a href="#Conditional-50"><span class="linenos">50</span></a>    <span class="nd">@override</span>
+</span><span id="Conditional-51"><a href="#Conditional-51"><span class="linenos">51</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Conditional-52"><a href="#Conditional-52"><span class="linenos">52</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional-53"><a href="#Conditional-53"><span class="linenos">53</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="Conditional-54"><a href="#Conditional-54"><span class="linenos">54</span></a>
+</span><span id="Conditional-55"><a href="#Conditional-55"><span class="linenos">55</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="Conditional-56"><a href="#Conditional-56"><span class="linenos">56</span></a><span class="sd">        with an additional left space.</span>
+</span><span id="Conditional-57"><a href="#Conditional-57"><span class="linenos">57</span></a>
+</span><span id="Conditional-58"><a href="#Conditional-58"><span class="linenos">58</span></a><span class="sd">        Parameters</span>
+</span><span id="Conditional-59"><a href="#Conditional-59"><span class="linenos">59</span></a><span class="sd">        ----------</span>
+</span><span id="Conditional-60"><a href="#Conditional-60"><span class="linenos">60</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="Conditional-61"><a href="#Conditional-61"><span class="linenos">61</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="Conditional-62"><a href="#Conditional-62"><span class="linenos">62</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional-63"><a href="#Conditional-63"><span class="linenos">63</span></a>
+</span><span id="Conditional-64"><a href="#Conditional-64"><span class="linenos">64</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="Conditional-65"><a href="#Conditional-65"><span class="linenos">65</span></a>
-</span><span id="Conditional-66"><a href="#Conditional-66"><span class="linenos">66</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="Conditional-67"><a href="#Conditional-67"><span class="linenos">67</span></a>
-</span><span id="Conditional-68"><a href="#Conditional-68"><span class="linenos">68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="Conditional-69"><a href="#Conditional-69"><span class="linenos">69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="Conditional-70"><a href="#Conditional-70"><span class="linenos">70</span></a>
-</span><span id="Conditional-71"><a href="#Conditional-71"><span class="linenos">71</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional-72"><a href="#Conditional-72"><span class="linenos">72</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="Conditional-73"><a href="#Conditional-73"><span class="linenos">73</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Conditional-74"><a href="#Conditional-74"><span class="linenos">74</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
-</span><span id="Conditional-75"><a href="#Conditional-75"><span class="linenos">75</span></a>
-</span><span id="Conditional-76"><a href="#Conditional-76"><span class="linenos">76</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="Conditional-77"><a href="#Conditional-77"><span class="linenos">77</span></a><span class="sd">        recursively, and the `Conditional` itself, and then the children</span>
-</span><span id="Conditional-78"><a href="#Conditional-78"><span class="linenos">78</span></a><span class="sd">        `statement` nodes -- also recursively.</span>
-</span><span id="Conditional-79"><a href="#Conditional-79"><span class="linenos">79</span></a>
-</span><span id="Conditional-80"><a href="#Conditional-80"><span class="linenos">80</span></a><span class="sd">        Parameters</span>
-</span><span id="Conditional-81"><a href="#Conditional-81"><span class="linenos">81</span></a><span class="sd">        ----------</span>
-</span><span id="Conditional-82"><a href="#Conditional-82"><span class="linenos">82</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="Conditional-83"><a href="#Conditional-83"><span class="linenos">83</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="Conditional-84"><a href="#Conditional-84"><span class="linenos">84</span></a><span class="sd">            the source code.</span>
-</span><span id="Conditional-85"><a href="#Conditional-85"><span class="linenos">85</span></a>
-</span><span id="Conditional-86"><a href="#Conditional-86"><span class="linenos">86</span></a><span class="sd">        Returns</span>
-</span><span id="Conditional-87"><a href="#Conditional-87"><span class="linenos">87</span></a><span class="sd">        -------</span>
-</span><span id="Conditional-88"><a href="#Conditional-88"><span class="linenos">88</span></a><span class="sd">        : int</span>
-</span><span id="Conditional-89"><a href="#Conditional-89"><span class="linenos">89</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="Conditional-90"><a href="#Conditional-90"><span class="linenos">90</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Conditional-91"><a href="#Conditional-91"><span class="linenos">91</span></a>
-</span><span id="Conditional-92"><a href="#Conditional-92"><span class="linenos">92</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="Conditional-93"><a href="#Conditional-93"><span class="linenos">93</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="Conditional-94"><a href="#Conditional-94"><span class="linenos">94</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="Conditional-66"><a href="#Conditional-66"><span class="linenos">66</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="Conditional-67"><a href="#Conditional-67"><span class="linenos">67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="Conditional-68"><a href="#Conditional-68"><span class="linenos">68</span></a>
+</span><span id="Conditional-69"><a href="#Conditional-69"><span class="linenos">69</span></a>    <span class="nd">@override</span>
+</span><span id="Conditional-70"><a href="#Conditional-70"><span class="linenos">70</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="Conditional-71"><a href="#Conditional-71"><span class="linenos">71</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional-72"><a href="#Conditional-72"><span class="linenos">72</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
+</span><span id="Conditional-73"><a href="#Conditional-73"><span class="linenos">73</span></a>
+</span><span id="Conditional-74"><a href="#Conditional-74"><span class="linenos">74</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="Conditional-75"><a href="#Conditional-75"><span class="linenos">75</span></a><span class="sd">        recursively, and the `Conditional` itself, and then the children</span>
+</span><span id="Conditional-76"><a href="#Conditional-76"><span class="linenos">76</span></a><span class="sd">        `statement` nodes -- also recursively.</span>
+</span><span id="Conditional-77"><a href="#Conditional-77"><span class="linenos">77</span></a>
+</span><span id="Conditional-78"><a href="#Conditional-78"><span class="linenos">78</span></a><span class="sd">        Parameters</span>
+</span><span id="Conditional-79"><a href="#Conditional-79"><span class="linenos">79</span></a><span class="sd">        ----------</span>
+</span><span id="Conditional-80"><a href="#Conditional-80"><span class="linenos">80</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="Conditional-81"><a href="#Conditional-81"><span class="linenos">81</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="Conditional-82"><a href="#Conditional-82"><span class="linenos">82</span></a><span class="sd">            the source code.</span>
+</span><span id="Conditional-83"><a href="#Conditional-83"><span class="linenos">83</span></a>
+</span><span id="Conditional-84"><a href="#Conditional-84"><span class="linenos">84</span></a><span class="sd">        Returns</span>
+</span><span id="Conditional-85"><a href="#Conditional-85"><span class="linenos">85</span></a><span class="sd">        -------</span>
+</span><span id="Conditional-86"><a href="#Conditional-86"><span class="linenos">86</span></a><span class="sd">        : int</span>
+</span><span id="Conditional-87"><a href="#Conditional-87"><span class="linenos">87</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="Conditional-88"><a href="#Conditional-88"><span class="linenos">88</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional-89"><a href="#Conditional-89"><span class="linenos">89</span></a>
+</span><span id="Conditional-90"><a href="#Conditional-90"><span class="linenos">90</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="Conditional-91"><a href="#Conditional-91"><span class="linenos">91</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="Conditional-92"><a href="#Conditional-92"><span class="linenos">92</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -298,13 +294,11 @@ statement_if_true : Node
     </div>
     <a class="headerlink" href="#Conditional.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.__init__-22"><a href="#Conditional.__init__-22"><span class="linenos">22</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional.__init__-23"><a href="#Conditional.__init__-23"><span class="linenos">23</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="Conditional.__init__-24"><a href="#Conditional.__init__-24"><span class="linenos">24</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span>
-</span><span id="Conditional.__init__-25"><a href="#Conditional.__init__-25"><span class="linenos">25</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Conditional.__init__-26"><a href="#Conditional.__init__-26"><span class="linenos">26</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="Conditional.__init__-27"><a href="#Conditional.__init__-27"><span class="linenos">27</span></a>
-</span><span id="Conditional.__init__-28"><a href="#Conditional.__init__-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">parenthesis_expression</span>
-</span><span id="Conditional.__init__-29"><a href="#Conditional.__init__-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_true</span>
+</span><span id="Conditional.__init__-23"><a href="#Conditional.__init__-23"><span class="linenos">23</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Conditional.__init__-24"><a href="#Conditional.__init__-24"><span class="linenos">24</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="Conditional.__init__-25"><a href="#Conditional.__init__-25"><span class="linenos">25</span></a>
+</span><span id="Conditional.__init__-26"><a href="#Conditional.__init__-26"><span class="linenos">26</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">parenthesis_expression</span>
+</span><span id="Conditional.__init__-27"><a href="#Conditional.__init__-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_true</span>
 </span></pre></div>
 
 
@@ -345,26 +339,26 @@ statement_if_true : Node
 
     </div>
     <a class="headerlink" href="#Conditional.get_certificate_label"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.get_certificate_label-31"><a href="#Conditional.get_certificate_label-31"><span class="linenos">31</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional.get_certificate_label-32"><a href="#Conditional.get_certificate_label-32"><span class="linenos">32</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="Conditional.get_certificate_label-33"><a href="#Conditional.get_certificate_label-33"><span class="linenos">33</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Conditional.get_certificate_label-34"><a href="#Conditional.get_certificate_label-34"><span class="linenos">34</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
-</span><span id="Conditional.get_certificate_label-35"><a href="#Conditional.get_certificate_label-35"><span class="linenos">35</span></a>
-</span><span id="Conditional.get_certificate_label-36"><a href="#Conditional.get_certificate_label-36"><span class="linenos">36</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
-</span><span id="Conditional.get_certificate_label-37"><a href="#Conditional.get_certificate_label-37"><span class="linenos">37</span></a><span class="sd">        `parenthesis_expression` subtree first, then from the `Conditional`</span>
-</span><span id="Conditional.get_certificate_label-38"><a href="#Conditional.get_certificate_label-38"><span class="linenos">38</span></a><span class="sd">        node itself, and, finally, from the `statement_if_true` subtree.</span>
-</span><span id="Conditional.get_certificate_label-39"><a href="#Conditional.get_certificate_label-39"><span class="linenos">39</span></a>
-</span><span id="Conditional.get_certificate_label-40"><a href="#Conditional.get_certificate_label-40"><span class="linenos">40</span></a><span class="sd">        Returns</span>
-</span><span id="Conditional.get_certificate_label-41"><a href="#Conditional.get_certificate_label-41"><span class="linenos">41</span></a><span class="sd">        -------</span>
-</span><span id="Conditional.get_certificate_label-42"><a href="#Conditional.get_certificate_label-42"><span class="linenos">42</span></a><span class="sd">        : list of str</span>
-</span><span id="Conditional.get_certificate_label-43"><a href="#Conditional.get_certificate_label-43"><span class="linenos">43</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="Conditional.get_certificate_label-44"><a href="#Conditional.get_certificate_label-44"><span class="linenos">44</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Conditional.get_certificate_label-45"><a href="#Conditional.get_certificate_label-45"><span class="linenos">45</span></a>
-</span><span id="Conditional.get_certificate_label-46"><a href="#Conditional.get_certificate_label-46"><span class="linenos">46</span></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="Conditional.get_certificate_label-47"><a href="#Conditional.get_certificate_label-47"><span class="linenos">47</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="Conditional.get_certificate_label-48"><a href="#Conditional.get_certificate_label-48"><span class="linenos">48</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="Conditional.get_certificate_label-49"><a href="#Conditional.get_certificate_label-49"><span class="linenos">49</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
-</span><span id="Conditional.get_certificate_label-50"><a href="#Conditional.get_certificate_label-50"><span class="linenos">50</span></a>        <span class="p">]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.get_certificate_label-29"><a href="#Conditional.get_certificate_label-29"><span class="linenos">29</span></a>    <span class="nd">@override</span>
+</span><span id="Conditional.get_certificate_label-30"><a href="#Conditional.get_certificate_label-30"><span class="linenos">30</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="Conditional.get_certificate_label-31"><a href="#Conditional.get_certificate_label-31"><span class="linenos">31</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional.get_certificate_label-32"><a href="#Conditional.get_certificate_label-32"><span class="linenos">32</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
+</span><span id="Conditional.get_certificate_label-33"><a href="#Conditional.get_certificate_label-33"><span class="linenos">33</span></a>
+</span><span id="Conditional.get_certificate_label-34"><a href="#Conditional.get_certificate_label-34"><span class="linenos">34</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
+</span><span id="Conditional.get_certificate_label-35"><a href="#Conditional.get_certificate_label-35"><span class="linenos">35</span></a><span class="sd">        `parenthesis_expression` subtree first, then from the `Conditional`</span>
+</span><span id="Conditional.get_certificate_label-36"><a href="#Conditional.get_certificate_label-36"><span class="linenos">36</span></a><span class="sd">        node itself, and, finally, from the `statement_if_true` subtree.</span>
+</span><span id="Conditional.get_certificate_label-37"><a href="#Conditional.get_certificate_label-37"><span class="linenos">37</span></a>
+</span><span id="Conditional.get_certificate_label-38"><a href="#Conditional.get_certificate_label-38"><span class="linenos">38</span></a><span class="sd">        Returns</span>
+</span><span id="Conditional.get_certificate_label-39"><a href="#Conditional.get_certificate_label-39"><span class="linenos">39</span></a><span class="sd">        -------</span>
+</span><span id="Conditional.get_certificate_label-40"><a href="#Conditional.get_certificate_label-40"><span class="linenos">40</span></a><span class="sd">        : list of str</span>
+</span><span id="Conditional.get_certificate_label-41"><a href="#Conditional.get_certificate_label-41"><span class="linenos">41</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
+</span><span id="Conditional.get_certificate_label-42"><a href="#Conditional.get_certificate_label-42"><span class="linenos">42</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional.get_certificate_label-43"><a href="#Conditional.get_certificate_label-43"><span class="linenos">43</span></a>
+</span><span id="Conditional.get_certificate_label-44"><a href="#Conditional.get_certificate_label-44"><span class="linenos">44</span></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="Conditional.get_certificate_label-45"><a href="#Conditional.get_certificate_label-45"><span class="linenos">45</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="Conditional.get_certificate_label-46"><a href="#Conditional.get_certificate_label-46"><span class="linenos">46</span></a>            <span class="o">*</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="Conditional.get_certificate_label-47"><a href="#Conditional.get_certificate_label-47"><span class="linenos">47</span></a>            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">(),</span>
+</span><span id="Conditional.get_certificate_label-48"><a href="#Conditional.get_certificate_label-48"><span class="linenos">48</span></a>        <span class="p">]</span>
 </span></pre></div>
 
 
@@ -394,24 +388,24 @@ node itself, and, finally, from the <code><a href="#Conditional.statement_if_tru
 
     </div>
     <a class="headerlink" href="#Conditional.print"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.print-52"><a href="#Conditional.print-52"><span class="linenos">52</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional.print-53"><a href="#Conditional.print-53"><span class="linenos">53</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Conditional.print-54"><a href="#Conditional.print-54"><span class="linenos">54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Conditional.print-55"><a href="#Conditional.print-55"><span class="linenos">55</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
-</span><span id="Conditional.print-56"><a href="#Conditional.print-56"><span class="linenos">56</span></a>
-</span><span id="Conditional.print-57"><a href="#Conditional.print-57"><span class="linenos">57</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
-</span><span id="Conditional.print-58"><a href="#Conditional.print-58"><span class="linenos">58</span></a><span class="sd">        with an additional left space.</span>
-</span><span id="Conditional.print-59"><a href="#Conditional.print-59"><span class="linenos">59</span></a>
-</span><span id="Conditional.print-60"><a href="#Conditional.print-60"><span class="linenos">60</span></a><span class="sd">        Parameters</span>
-</span><span id="Conditional.print-61"><a href="#Conditional.print-61"><span class="linenos">61</span></a><span class="sd">        ----------</span>
-</span><span id="Conditional.print-62"><a href="#Conditional.print-62"><span class="linenos">62</span></a><span class="sd">        indent : int (optional, default = 0)</span>
-</span><span id="Conditional.print-63"><a href="#Conditional.print-63"><span class="linenos">63</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="Conditional.print-64"><a href="#Conditional.print-64"><span class="linenos">64</span></a><span class="sd">        &quot;&quot;&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.print-50"><a href="#Conditional.print-50"><span class="linenos">50</span></a>    <span class="nd">@override</span>
+</span><span id="Conditional.print-51"><a href="#Conditional.print-51"><span class="linenos">51</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Conditional.print-52"><a href="#Conditional.print-52"><span class="linenos">52</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional.print-53"><a href="#Conditional.print-53"><span class="linenos">53</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
+</span><span id="Conditional.print-54"><a href="#Conditional.print-54"><span class="linenos">54</span></a>
+</span><span id="Conditional.print-55"><a href="#Conditional.print-55"><span class="linenos">55</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
+</span><span id="Conditional.print-56"><a href="#Conditional.print-56"><span class="linenos">56</span></a><span class="sd">        with an additional left space.</span>
+</span><span id="Conditional.print-57"><a href="#Conditional.print-57"><span class="linenos">57</span></a>
+</span><span id="Conditional.print-58"><a href="#Conditional.print-58"><span class="linenos">58</span></a><span class="sd">        Parameters</span>
+</span><span id="Conditional.print-59"><a href="#Conditional.print-59"><span class="linenos">59</span></a><span class="sd">        ----------</span>
+</span><span id="Conditional.print-60"><a href="#Conditional.print-60"><span class="linenos">60</span></a><span class="sd">        indent : int (optional, default = 0)</span>
+</span><span id="Conditional.print-61"><a href="#Conditional.print-61"><span class="linenos">61</span></a><span class="sd">            The number of left padding spaces to indent.</span>
+</span><span id="Conditional.print-62"><a href="#Conditional.print-62"><span class="linenos">62</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional.print-63"><a href="#Conditional.print-63"><span class="linenos">63</span></a>
+</span><span id="Conditional.print-64"><a href="#Conditional.print-64"><span class="linenos">64</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="Conditional.print-65"><a href="#Conditional.print-65"><span class="linenos">65</span></a>
-</span><span id="Conditional.print-66"><a href="#Conditional.print-66"><span class="linenos">66</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
-</span><span id="Conditional.print-67"><a href="#Conditional.print-67"><span class="linenos">67</span></a>
-</span><span id="Conditional.print-68"><a href="#Conditional.print-68"><span class="linenos">68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="Conditional.print-69"><a href="#Conditional.print-69"><span class="linenos">69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="Conditional.print-66"><a href="#Conditional.print-66"><span class="linenos">66</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="Conditional.print-67"><a href="#Conditional.print-67"><span class="linenos">67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -440,30 +434,30 @@ with an additional left space.</p>
 
     </div>
     <a class="headerlink" href="#Conditional.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.certificate-71"><a href="#Conditional.certificate-71"><span class="linenos">71</span></a>    <span class="nd">@override</span>
-</span><span id="Conditional.certificate-72"><a href="#Conditional.certificate-72"><span class="linenos">72</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="Conditional.certificate-73"><a href="#Conditional.certificate-73"><span class="linenos">73</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Conditional.certificate-74"><a href="#Conditional.certificate-74"><span class="linenos">74</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
-</span><span id="Conditional.certificate-75"><a href="#Conditional.certificate-75"><span class="linenos">75</span></a>
-</span><span id="Conditional.certificate-76"><a href="#Conditional.certificate-76"><span class="linenos">76</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="Conditional.certificate-77"><a href="#Conditional.certificate-77"><span class="linenos">77</span></a><span class="sd">        recursively, and the `Conditional` itself, and then the children</span>
-</span><span id="Conditional.certificate-78"><a href="#Conditional.certificate-78"><span class="linenos">78</span></a><span class="sd">        `statement` nodes -- also recursively.</span>
-</span><span id="Conditional.certificate-79"><a href="#Conditional.certificate-79"><span class="linenos">79</span></a>
-</span><span id="Conditional.certificate-80"><a href="#Conditional.certificate-80"><span class="linenos">80</span></a><span class="sd">        Parameters</span>
-</span><span id="Conditional.certificate-81"><a href="#Conditional.certificate-81"><span class="linenos">81</span></a><span class="sd">        ----------</span>
-</span><span id="Conditional.certificate-82"><a href="#Conditional.certificate-82"><span class="linenos">82</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="Conditional.certificate-83"><a href="#Conditional.certificate-83"><span class="linenos">83</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="Conditional.certificate-84"><a href="#Conditional.certificate-84"><span class="linenos">84</span></a><span class="sd">            the source code.</span>
-</span><span id="Conditional.certificate-85"><a href="#Conditional.certificate-85"><span class="linenos">85</span></a>
-</span><span id="Conditional.certificate-86"><a href="#Conditional.certificate-86"><span class="linenos">86</span></a><span class="sd">        Returns</span>
-</span><span id="Conditional.certificate-87"><a href="#Conditional.certificate-87"><span class="linenos">87</span></a><span class="sd">        -------</span>
-</span><span id="Conditional.certificate-88"><a href="#Conditional.certificate-88"><span class="linenos">88</span></a><span class="sd">        : int</span>
-</span><span id="Conditional.certificate-89"><a href="#Conditional.certificate-89"><span class="linenos">89</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="Conditional.certificate-90"><a href="#Conditional.certificate-90"><span class="linenos">90</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Conditional.certificate-91"><a href="#Conditional.certificate-91"><span class="linenos">91</span></a>
-</span><span id="Conditional.certificate-92"><a href="#Conditional.certificate-92"><span class="linenos">92</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="Conditional.certificate-93"><a href="#Conditional.certificate-93"><span class="linenos">93</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="Conditional.certificate-94"><a href="#Conditional.certificate-94"><span class="linenos">94</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.certificate-69"><a href="#Conditional.certificate-69"><span class="linenos">69</span></a>    <span class="nd">@override</span>
+</span><span id="Conditional.certificate-70"><a href="#Conditional.certificate-70"><span class="linenos">70</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="Conditional.certificate-71"><a href="#Conditional.certificate-71"><span class="linenos">71</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional.certificate-72"><a href="#Conditional.certificate-72"><span class="linenos">72</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
+</span><span id="Conditional.certificate-73"><a href="#Conditional.certificate-73"><span class="linenos">73</span></a>
+</span><span id="Conditional.certificate-74"><a href="#Conditional.certificate-74"><span class="linenos">74</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="Conditional.certificate-75"><a href="#Conditional.certificate-75"><span class="linenos">75</span></a><span class="sd">        recursively, and the `Conditional` itself, and then the children</span>
+</span><span id="Conditional.certificate-76"><a href="#Conditional.certificate-76"><span class="linenos">76</span></a><span class="sd">        `statement` nodes -- also recursively.</span>
+</span><span id="Conditional.certificate-77"><a href="#Conditional.certificate-77"><span class="linenos">77</span></a>
+</span><span id="Conditional.certificate-78"><a href="#Conditional.certificate-78"><span class="linenos">78</span></a><span class="sd">        Parameters</span>
+</span><span id="Conditional.certificate-79"><a href="#Conditional.certificate-79"><span class="linenos">79</span></a><span class="sd">        ----------</span>
+</span><span id="Conditional.certificate-80"><a href="#Conditional.certificate-80"><span class="linenos">80</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="Conditional.certificate-81"><a href="#Conditional.certificate-81"><span class="linenos">81</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="Conditional.certificate-82"><a href="#Conditional.certificate-82"><span class="linenos">82</span></a><span class="sd">            the source code.</span>
+</span><span id="Conditional.certificate-83"><a href="#Conditional.certificate-83"><span class="linenos">83</span></a>
+</span><span id="Conditional.certificate-84"><a href="#Conditional.certificate-84"><span class="linenos">84</span></a><span class="sd">        Returns</span>
+</span><span id="Conditional.certificate-85"><a href="#Conditional.certificate-85"><span class="linenos">85</span></a><span class="sd">        -------</span>
+</span><span id="Conditional.certificate-86"><a href="#Conditional.certificate-86"><span class="linenos">86</span></a><span class="sd">        : int</span>
+</span><span id="Conditional.certificate-87"><a href="#Conditional.certificate-87"><span class="linenos">87</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="Conditional.certificate-88"><a href="#Conditional.certificate-88"><span class="linenos">88</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional.certificate-89"><a href="#Conditional.certificate-89"><span class="linenos">89</span></a>
+</span><span id="Conditional.certificate-90"><a href="#Conditional.certificate-90"><span class="linenos">90</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="Conditional.certificate-91"><a href="#Conditional.certificate-91"><span class="linenos">91</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="Conditional.certificate-92"><a href="#Conditional.certificate-92"><span class="linenos">92</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
