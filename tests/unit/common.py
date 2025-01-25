@@ -759,7 +759,6 @@ ABSTRACT_SYNTAX_TREE = AbstractSyntaxTree(source_code=_source)
 ABSTRACT_SYNTAX_TREE_ROOT = ABSTRACT_SYNTAX_TREE.build()
 
 MACHINE_CODE = {
-    "structs": {"my_struct": ["int", "float"]},
     "functions": {
         "function_that_returns_struct": {"start": 0, "end": 16},
         "some_simple_function": {"start": 16, "end": 27},

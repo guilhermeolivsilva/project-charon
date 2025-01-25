@@ -13,10 +13,6 @@ class CodeGenerator:
     Code Generator that generates instructions for the virtual machine from
     Abstract Syntax Tree (AST) Nodes.
 
-    This class also keeps track of the structs defined in the source code that
-    have been instantiated -- structs that have been defined, but not
-    instantiated, are ignored.
-
     Parameters
     ----------
     root : PROG
@@ -27,7 +23,6 @@ class CodeGenerator:
     def __init__(self, root: PROG) -> None:
         self.root: PROG = root
         self.program: dict[str, Union[list, dict]] = {
-            "structs": {},
             "functions": {},
             "global_vars": [],
             "code": [],
@@ -48,21 +43,6 @@ class CodeGenerator:
 
         _str: str = ""
         indent: int = 1
-
-        structs = self.program["structs"]
-        if structs:
-            structs_str = "Structs:"
-
-            for struct_name, struct_attributes in structs.items():
-                structs_str += "\n"
-                structs_str += "  " * indent
-                structs_str += f"{struct_name}: {', '.join(struct_attributes)}"
-
-            _str += structs_str
-
-        # Add some line breaks if there were structs added to `_str`
-        if _str:
-            _str += "\n\n"
 
         _str += "Code:"
 
@@ -112,7 +92,6 @@ class CodeGenerator:
             Abstract Syntax Tree representation of a program.
         """
 
-        self.parse_struct_definitions()
         self.parse_global_variables()
         self.parse_functions()
 
@@ -122,26 +101,6 @@ class CodeGenerator:
         self._add_ids_to_source()
 
         return self.program
-
-    def parse_struct_definitions(self) -> None:
-        """
-        Parse struct definitions and add it to the generated program.
-
-        For structs, we only keep track of the types used by the struct, and
-        the the order they appear in.
-        """
-
-        struct_def_nodes: list[STRUCT_DEF] = [
-            node
-            for node in self.root.children
-            if isinstance(node, STRUCT_DEF) and node.is_active()
-        ]
-
-        for struct_def in struct_def_nodes:
-            struct_type = struct_def.get_type()
-            struct_attributes = struct_def.get_attribute_types()
-
-            self.program["structs"][struct_type] = struct_attributes
 
     def parse_global_variables(self) -> None:
         """

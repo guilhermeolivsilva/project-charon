@@ -13,7 +13,7 @@ def test_init() -> None:
     cg = CodeGenerator(root=_ast_root)
 
     assert cg.root == ABSTRACT_SYNTAX_TREE_ROOT
-    assert cg.program == {"structs": {}, "functions": {}, "global_vars": [], "code": []}
+    assert cg.program == {"functions": {}, "global_vars": [], "code": []}
     assert cg.register == 0
 
 
@@ -26,17 +26,6 @@ def test_generate_code() -> None:
 
     expected_generated_code = MACHINE_CODE
     assert generated_code == expected_generated_code
-
-
-def test_parse_struct_definitions() -> None:
-    """Test the `CodeGenerator.parse_struct_definitions` method."""
-
-    _ast_root = deepcopy(ABSTRACT_SYNTAX_TREE_ROOT)
-    cg = CodeGenerator(root=_ast_root)
-    cg.parse_struct_definitions()
-
-    expected_parsed_structs = MACHINE_CODE["structs"]
-    assert cg.program["structs"] == expected_parsed_structs
 
 
 def test_parse_global_variables() -> None:
