@@ -69,10 +69,10 @@ class Node:
 
         _str = ""
 
-        if self.value is not None:
-            _str += f"Value: {self.value}, "
-
         _str += f"Kind: {type(self).__name__}"
+
+        if self.value is not None:
+            _str += f", Value: {self.value}"
 
         if self.type is not None:
             _str += f", Type: {self.type}"

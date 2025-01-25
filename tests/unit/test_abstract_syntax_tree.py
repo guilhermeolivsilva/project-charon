@@ -12,136 +12,136 @@ from tests.unit.common import TOKENIZED_SOURCE_CODE
 # Defined here just because of identation
 EXPECTED_PRINT_TREE = """
 Kind: PROG
-  Value: 1, Kind: STRUCT_DEF, Type: my_struct
+  Kind: STRUCT_DEF, Value: 1, Type: my_struct
    Attributes: int, float
-  Value: 2, Kind: STRUCT_DEF, Type: test_struct
+  Kind: STRUCT_DEF, Value: 2, Type: test_struct
    Attributes: int, int
-  Value: 1, Kind: VAR_DEF, Type: int
+  Kind: VAR_DEF, Value: 1, Type: int
     Name: a, Type: int (array), Length: 10
-  Value: 2, Kind: VAR_DEF, Type: my_struct
+  Kind: VAR_DEF, Value: 2, Type: my_struct
     Name: global_var, Type: my_struct
-  Value: function_that_returns_struct, Kind: FUNC_DEF, Type: my_struct
-    Value: 3, Kind: PARAM, Type: int
+  Kind: FUNC_DEF, Value: function_that_returns_struct, Type: my_struct
+    Kind: PARAM, Value: 3, Type: int
       Name: xyz, Type: int
-    Value: 4, Kind: PARAM, Type: int
+    Kind: PARAM, Value: 4, Type: int
       Name: aaa, Type: int
     Kind: SEQ
-      Value: 5, Kind: VAR_DEF, Type: int
+      Kind: VAR_DEF, Value: 5, Type: int
         Name: internal_guy, Type: int
       Kind: ASSIGN, Type: int
-        Value: 5, Kind: VAR, Type: int
+        Kind: VAR, Value: 5, Type: int
         Kind: ADD, Type: int
-          Value: 3, Kind: VAR, Type: int
-          Value: 4, Kind: VAR, Type: int
+          Kind: VAR, Value: 3, Type: int
+          Kind: VAR, Value: 4, Type: int
       Kind: ASSIGN, Type: int
         Kind: ELEMENT_ACCESS, Type: int
-          Value: 2, Kind: VAR, Type: my_struct
-          Value: 0, Kind: CST, Type: int
-        Value: 5, Kind: VAR, Type: int
+          Kind: VAR, Value: 2, Type: my_struct
+          Kind: CST, Value: 0, Type: int
+        Kind: VAR, Value: 5, Type: int
       Kind: RET_SYM, Type: my_struct
-        Value: 2, Kind: VAR, Type: my_struct
-  Value: some_simple_function, Kind: FUNC_DEF, Type: int
-    Value: 6, Kind: PARAM, Type: float
+        Kind: VAR, Value: 2, Type: my_struct
+  Kind: FUNC_DEF, Value: some_simple_function, Type: int
+    Kind: PARAM, Value: 6, Type: float
       Name: param_1, Type: float
-    Value: 7, Kind: PARAM, Type: int
+    Kind: PARAM, Value: 7, Type: int
       Name: param_2, Type: int
     Kind: SEQ
       Kind: RET_SYM, Type: int
         Kind: DIV, Type: float
-          Value: 6, Kind: VAR, Type: float
-          Value: 7, Kind: VAR, Type: int
-  Value: abc, Kind: FUNC_DEF, Type: int
-    Value: 8, Kind: PARAM, Type: int
+          Kind: VAR, Value: 6, Type: float
+          Kind: VAR, Value: 7, Type: int
+  Kind: FUNC_DEF, Value: abc, Type: int
+    Kind: PARAM, Value: 8, Type: int
       Name: asda, Type: int
-    Value: 9, Kind: PARAM, Type: int
+    Kind: PARAM, Value: 9, Type: int
       Name: abcdef, Type: int
     Kind: SEQ
-      Value: 10, Kind: VAR_DEF, Type: int
+      Kind: VAR_DEF, Value: 10, Type: int
         Name: bla, Type: int
       Kind: ASSIGN, Type: int
-        Value: 10, Kind: VAR, Type: int
-        Value: 1, Kind: CST, Type: int
-      Value: 11, Kind: VAR_DEF, Type: float
+        Kind: VAR, Value: 10, Type: int
+        Kind: CST, Value: 1, Type: int
+      Kind: VAR_DEF, Value: 11, Type: float
         Name: blabla, Type: float
       Kind: ASSIGN, Type: float
-        Value: 11, Kind: VAR, Type: float
-        Value: 2.0, Kind: CST, Type: float
-      Value: 12, Kind: VAR_DEF, Type: short
+        Kind: VAR, Value: 11, Type: float
+        Kind: CST, Value: 2.0, Type: float
+      Kind: VAR_DEF, Value: 12, Type: short
         Name: xaxaxa, Type: short
-      Value: 13, Kind: VAR_DEF, Type: my_struct
+      Kind: VAR_DEF, Value: 13, Type: my_struct
         Name: internal_struct_var, Type: my_struct
       Kind: ASSIGN, Type: int
         Kind: ELEMENT_ACCESS, Type: int
-          Value: 13, Kind: VAR, Type: my_struct
-          Value: 0, Kind: CST, Type: int
-        Value: 1, Kind: CST, Type: int
+          Kind: VAR, Value: 13, Type: my_struct
+          Kind: CST, Value: 0, Type: int
+        Kind: CST, Value: 1, Type: int
       Kind: ASSIGN, Type: int
-        Value: 10, Kind: VAR, Type: int
+        Kind: VAR, Value: 10, Type: int
         Kind: ADD, Type: int
-          Value: 10, Kind: VAR, Type: int
-          Value: 2, Kind: FUNC_CALL, Type: int
+          Kind: VAR, Value: 10, Type: int
+          Kind: FUNC_CALL, Value: 2, Type: int
             Kind: ARG
-              Value: 11, Kind: VAR, Type: float
+              Kind: VAR, Value: 11, Type: float
             Kind: ARG
-              Value: 123, Kind: CST, Type: int
+              Kind: CST, Value: 123, Type: int
       Kind: RET_SYM, Type: int
         Kind: ADD, Type: float
-          Value: 11, Kind: VAR, Type: float
-          Value: 10, Kind: VAR, Type: int
-  Value: main, Kind: FUNC_DEF, Type: int
+          Kind: VAR, Value: 11, Type: float
+          Kind: VAR, Value: 10, Type: int
+  Kind: FUNC_DEF, Value: main, Type: int
     Kind: SEQ
-      Value: 14, Kind: VAR_DEF, Type: int
+      Kind: VAR_DEF, Value: 14, Type: int
         Name: x, Type: int
       Kind: ASSIGN, Type: int
-        Value: 14, Kind: VAR, Type: int
-        Value: 3, Kind: FUNC_CALL, Type: int
+        Kind: VAR, Value: 14, Type: int
+        Kind: FUNC_CALL, Value: 3, Type: int
           Kind: ARG
-            Value: 1, Kind: CST, Type: int
+            Kind: CST, Value: 1, Type: int
           Kind: ARG
-            Value: 2, Kind: CST, Type: int
-      Value: 15, Kind: VAR_DEF, Type: int
+            Kind: CST, Value: 2, Type: int
+      Kind: VAR_DEF, Value: 15, Type: int
         Name: array, Type: int (array), Length: 10
       Kind: ASSIGN, Type: int
         Kind: ELEMENT_ACCESS, Type: int
-          Value: 15, Kind: VAR, Type: int (array), Length: 10
-          Value: 5, Kind: CST, Type: int
-        Value: 1, Kind: CST, Type: int
-      Value: 16, Kind: VAR_DEF, Type: int
+          Kind: VAR, Value: 15, Type: int (array), Length: 10
+          Kind: CST, Value: 5, Type: int
+        Kind: CST, Value: 1, Type: int
+      Kind: VAR_DEF, Value: 16, Type: int
         Name: y, Type: int
       Kind: IFELSE
         Kind: AND, Type: int
           Kind: OR, Type: int
             Kind: EQUAL, Type: int
               Kind: LSHIFT, Type: int
-                Value: 14, Kind: VAR, Type: int
-                Value: 4, Kind: CST, Type: int
-              Value: 1, Kind: CST, Type: int
+                Kind: VAR, Value: 14, Type: int
+                Kind: CST, Value: 4, Type: int
+              Kind: CST, Value: 1, Type: int
             Kind: GREATER, Type: int
-              Value: 14, Kind: VAR, Type: int
-              Value: 1, Kind: CST, Type: int
+              Kind: VAR, Value: 14, Type: int
+              Kind: CST, Value: 1, Type: int
           Kind: LESS, Type: int
-            Value: 14, Kind: VAR, Type: int
-            Value: 10, Kind: CST, Type: int
+            Kind: VAR, Value: 14, Type: int
+            Kind: CST, Value: 10, Type: int
         Kind: SEQ
           Kind: ASSIGN, Type: int
-            Value: 16, Kind: VAR, Type: int
+            Kind: VAR, Value: 16, Type: int
             Kind: BITAND, Type: int
-              Value: 14, Kind: VAR, Type: int
-              Value: 1, Kind: CST, Type: int
+              Kind: VAR, Value: 14, Type: int
+              Kind: CST, Value: 1, Type: int
         Kind: SEQ
           Kind: ASSIGN, Type: int
-            Value: 16, Kind: VAR, Type: int
+            Kind: VAR, Value: 16, Type: int
             Kind: BITOR, Type: int
-              Value: 14, Kind: VAR, Type: int
-              Value: 1, Kind: CST, Type: int
+              Kind: VAR, Value: 14, Type: int
+              Kind: CST, Value: 1, Type: int
       Kind: RET_SYM, Type: int
         Kind: RSHIFT, Type: int
           Kind: DIV, Type: int
             Kind: MULT, Type: int
-              Value: 14, Kind: VAR, Type: int
-              Value: 16, Kind: VAR, Type: int
-            Value: 2, Kind: CST, Type: int
-          Value: 1, Kind: CST, Type: int
+              Kind: VAR, Value: 14, Type: int
+              Kind: VAR, Value: 16, Type: int
+            Kind: CST, Value: 2, Type: int
+          Kind: CST, Value: 1, Type: int
 """
 
 
