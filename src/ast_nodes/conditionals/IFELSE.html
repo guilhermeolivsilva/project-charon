@@ -79,15 +79,15 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Representation of IFELSE nodes for the Abstract Syntax Tree.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">override</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.node</span> <span class="kn">import</span> <span class="n">Node</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.conditionals.conditional</span> <span class="kn">import</span> <span class="n">Conditional</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.conditionals.conditional</span><span class="w"> </span><span class="kn">import</span> <span class="n">Conditional</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span> <span class="nc">IFELSE</span><span class="p">(</span><span class="n">Conditional</span><span class="p">):</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">IFELSE</span><span class="p">(</span><span class="n">Conditional</span><span class="p">):</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">    Implement the representation of a conditional for the AST.</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
@@ -104,7 +104,7 @@
 </span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>
 </span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>    <span class="nd">@override</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
 </span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
@@ -115,7 +115,7 @@
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>    <span class="nd">@override</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
@@ -135,7 +135,7 @@
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="p">]</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>
 </span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="nd">@override</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>
@@ -153,7 +153,7 @@
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="nd">@override</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -231,7 +231,7 @@
 </span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
 </span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>
 </span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>    <span class="nd">@override</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
 </span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>
@@ -270,7 +270,7 @@
 
     </div>
     <a class="headerlink" href="#IFELSE"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE-12"><a href="#IFELSE-12"><span class="linenos"> 12</span></a><span class="k">class</span> <span class="nc">IFELSE</span><span class="p">(</span><span class="n">Conditional</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE-12"><a href="#IFELSE-12"><span class="linenos"> 12</span></a><span class="k">class</span><span class="w"> </span><span class="nc">IFELSE</span><span class="p">(</span><span class="n">Conditional</span><span class="p">):</span>
 </span><span id="IFELSE-13"><a href="#IFELSE-13"><span class="linenos"> 13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE-14"><a href="#IFELSE-14"><span class="linenos"> 14</span></a><span class="sd">    Implement the representation of a conditional for the AST.</span>
 </span><span id="IFELSE-15"><a href="#IFELSE-15"><span class="linenos"> 15</span></a>
@@ -287,7 +287,7 @@
 </span><span id="IFELSE-26"><a href="#IFELSE-26"><span class="linenos"> 26</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="IFELSE-27"><a href="#IFELSE-27"><span class="linenos"> 27</span></a>
 </span><span id="IFELSE-28"><a href="#IFELSE-28"><span class="linenos"> 28</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-29"><a href="#IFELSE-29"><span class="linenos"> 29</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="IFELSE-29"><a href="#IFELSE-29"><span class="linenos"> 29</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="IFELSE-30"><a href="#IFELSE-30"><span class="linenos"> 30</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="IFELSE-31"><a href="#IFELSE-31"><span class="linenos"> 31</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
 </span><span id="IFELSE-32"><a href="#IFELSE-32"><span class="linenos"> 32</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
@@ -298,7 +298,7 @@
 </span><span id="IFELSE-37"><a href="#IFELSE-37"><span class="linenos"> 37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">statement_if_false</span>
 </span><span id="IFELSE-38"><a href="#IFELSE-38"><span class="linenos"> 38</span></a>
 </span><span id="IFELSE-39"><a href="#IFELSE-39"><span class="linenos"> 39</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-40"><a href="#IFELSE-40"><span class="linenos"> 40</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="IFELSE-40"><a href="#IFELSE-40"><span class="linenos"> 40</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="IFELSE-41"><a href="#IFELSE-41"><span class="linenos"> 41</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE-42"><a href="#IFELSE-42"><span class="linenos"> 42</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="IFELSE-43"><a href="#IFELSE-43"><span class="linenos"> 43</span></a>
@@ -318,7 +318,7 @@
 </span><span id="IFELSE-57"><a href="#IFELSE-57"><span class="linenos"> 57</span></a>        <span class="p">]</span>
 </span><span id="IFELSE-58"><a href="#IFELSE-58"><span class="linenos"> 58</span></a>
 </span><span id="IFELSE-59"><a href="#IFELSE-59"><span class="linenos"> 59</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-60"><a href="#IFELSE-60"><span class="linenos"> 60</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="IFELSE-60"><a href="#IFELSE-60"><span class="linenos"> 60</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="IFELSE-61"><a href="#IFELSE-61"><span class="linenos"> 61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE-62"><a href="#IFELSE-62"><span class="linenos"> 62</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="IFELSE-63"><a href="#IFELSE-63"><span class="linenos"> 63</span></a>
@@ -336,7 +336,7 @@
 </span><span id="IFELSE-75"><a href="#IFELSE-75"><span class="linenos"> 75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span><span id="IFELSE-76"><a href="#IFELSE-76"><span class="linenos"> 76</span></a>
 </span><span id="IFELSE-77"><a href="#IFELSE-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-78"><a href="#IFELSE-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE-78"><a href="#IFELSE-78"><span class="linenos"> 78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="IFELSE-79"><a href="#IFELSE-79"><span class="linenos"> 79</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="IFELSE-80"><a href="#IFELSE-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
 </span><span id="IFELSE-81"><a href="#IFELSE-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -414,7 +414,7 @@
 </span><span id="IFELSE-153"><a href="#IFELSE-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">ifelse_code</span>
 </span><span id="IFELSE-154"><a href="#IFELSE-154"><span class="linenos">154</span></a>
 </span><span id="IFELSE-155"><a href="#IFELSE-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-156"><a href="#IFELSE-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="IFELSE-156"><a href="#IFELSE-156"><span class="linenos">156</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="IFELSE-157"><a href="#IFELSE-157"><span class="linenos">157</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE-158"><a href="#IFELSE-158"><span class="linenos">158</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
 </span><span id="IFELSE-159"><a href="#IFELSE-159"><span class="linenos">159</span></a>
@@ -468,7 +468,7 @@ statement_if_false : Node
     </div>
     <a class="headerlink" href="#IFELSE.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.__init__-28"><a href="#IFELSE.__init__-28"><span class="linenos">28</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.__init__-29"><a href="#IFELSE.__init__-29"><span class="linenos">29</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="IFELSE.__init__-29"><a href="#IFELSE.__init__-29"><span class="linenos">29</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="IFELSE.__init__-30"><a href="#IFELSE.__init__-30"><span class="linenos">30</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="IFELSE.__init__-31"><a href="#IFELSE.__init__-31"><span class="linenos">31</span></a>        <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
 </span><span id="IFELSE.__init__-32"><a href="#IFELSE.__init__-32"><span class="linenos">32</span></a>        <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
@@ -507,7 +507,7 @@ statement_if_false : Node
     </div>
     <a class="headerlink" href="#IFELSE.get_certificate_label"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.get_certificate_label-39"><a href="#IFELSE.get_certificate_label-39"><span class="linenos">39</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.get_certificate_label-40"><a href="#IFELSE.get_certificate_label-40"><span class="linenos">40</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="IFELSE.get_certificate_label-40"><a href="#IFELSE.get_certificate_label-40"><span class="linenos">40</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="IFELSE.get_certificate_label-41"><a href="#IFELSE.get_certificate_label-41"><span class="linenos">41</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE.get_certificate_label-42"><a href="#IFELSE.get_certificate_label-42"><span class="linenos">42</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="IFELSE.get_certificate_label-43"><a href="#IFELSE.get_certificate_label-43"><span class="linenos">43</span></a>
@@ -555,7 +555,7 @@ from the <code><a href="#IFELSE.statement_if_false">statement_if_false</a></code
     </div>
     <a class="headerlink" href="#IFELSE.print"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.print-59"><a href="#IFELSE.print-59"><span class="linenos">59</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.print-60"><a href="#IFELSE.print-60"><span class="linenos">60</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="IFELSE.print-60"><a href="#IFELSE.print-60"><span class="linenos">60</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="IFELSE.print-61"><a href="#IFELSE.print-61"><span class="linenos">61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE.print-62"><a href="#IFELSE.print-62"><span class="linenos">62</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="IFELSE.print-63"><a href="#IFELSE.print-63"><span class="linenos">63</span></a>
@@ -600,7 +600,7 @@ with an additional left space.</p>
     </div>
     <a class="headerlink" href="#IFELSE.generate_code"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.generate_code-77"><a href="#IFELSE.generate_code-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.generate_code-78"><a href="#IFELSE.generate_code-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="IFELSE.generate_code-78"><a href="#IFELSE.generate_code-78"><span class="linenos"> 78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="IFELSE.generate_code-79"><a href="#IFELSE.generate_code-79"><span class="linenos"> 79</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="IFELSE.generate_code-80"><a href="#IFELSE.generate_code-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
 </span><span id="IFELSE.generate_code-81"><a href="#IFELSE.generate_code-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -719,7 +719,7 @@ ifelse_code : list of dict
     </div>
     <a class="headerlink" href="#IFELSE.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.certificate-155"><a href="#IFELSE.certificate-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.certificate-156"><a href="#IFELSE.certificate-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="IFELSE.certificate-156"><a href="#IFELSE.certificate-156"><span class="linenos">156</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="IFELSE.certificate-157"><a href="#IFELSE.certificate-157"><span class="linenos">157</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="IFELSE.certificate-158"><a href="#IFELSE.certificate-158"><span class="linenos">158</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
 </span><span id="IFELSE.certificate-159"><a href="#IFELSE.certificate-159"><span class="linenos">159</span></a>

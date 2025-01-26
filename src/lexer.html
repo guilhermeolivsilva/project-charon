@@ -103,13 +103,13 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Implement a lexer for the [C]haron compiler.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">from</span> <span class="nn">src.utils</span> <span class="kn">import</span> <span class="n">next_prime</span><span class="p">,</span> <span class="n">primes_list</span><span class="p">,</span> <span class="n">TYPE_SYMBOLS_MAP</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">next_prime</span><span class="p">,</span> <span class="n">primes_list</span><span class="p">,</span> <span class="n">TYPE_SYMBOLS_MAP</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">class</span> <span class="nc">Lexer</span><span class="p">:</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Lexer</span><span class="p">:</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>    <span class="n">conditionals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>        <span class="s2">&quot;do&quot;</span><span class="p">:</span> <span class="s2">&quot;DO_SYM&quot;</span><span class="p">,</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>        <span class="s2">&quot;while&quot;</span><span class="p">:</span> <span class="s2">&quot;WHILE_SYM&quot;</span><span class="p">,</span>
@@ -164,7 +164,7 @@
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>        <span class="o">**</span><span class="n">types</span><span class="p">,</span>
 </span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="p">}</span>
 </span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        Initialize the Lexer object.</span>
 </span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>
@@ -184,7 +184,7 @@
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">struct_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">variable_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="k">def</span> <span class="nf">parse_source_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_source_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        Parse the scopes and functions from the given source code.</span>
 </span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>
@@ -264,7 +264,7 @@
 </span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
 </span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;globals&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">globals</span><span class="p">,</span> <span class="s2">&quot;functions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">}</span>
 </span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="k">def</span> <span class="nf">split_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">split_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        Split the source code in individual words and symbols.</span>
 </span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
@@ -303,7 +303,7 @@
 </span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>
 </span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>        <span class="k">return</span> <span class="n">tokenized_source</span>
 </span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>    <span class="k">def</span> <span class="nf">_annotate_constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_annotate_constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">        Annotate constants with types.</span>
 </span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>
@@ -337,7 +337,7 @@
 </span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>
 </span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>        <span class="k">return</span> <span class="n">symbol_collection</span>
 </span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>
-</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>    <span class="k">def</span> <span class="nf">_parse_globals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_globals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a><span class="sd">        Parse the struct types and variables to be available globally.</span>
 </span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>
@@ -406,7 +406,7 @@
 </span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">variable_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_prime</span><span class="p">)</span>
 </span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">variable_count</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="L-305"><a href="#L-305"><span class="linenos">305</span></a>
-</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>    <span class="k">def</span> <span class="nf">_parse_function</span><span class="p">(</span>
+</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_function</span><span class="p">(</span>
 </span><span id="L-307"><a href="#L-307"><span class="linenos">307</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-308"><a href="#L-308"><span class="linenos">308</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-309"><a href="#L-309"><span class="linenos">309</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -557,7 +557,7 @@
 </span><span id="L-454"><a href="#L-454"><span class="linenos">454</span></a>
 </span><span id="L-455"><a href="#L-455"><span class="linenos">455</span></a>        <span class="k">return</span> <span class="n">function_metadata</span>
 </span><span id="L-456"><a href="#L-456"><span class="linenos">456</span></a>
-</span><span id="L-457"><a href="#L-457"><span class="linenos">457</span></a>    <span class="k">def</span> <span class="nf">_handle_struct_definition</span><span class="p">(</span>
+</span><span id="L-457"><a href="#L-457"><span class="linenos">457</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_struct_definition</span><span class="p">(</span>
 </span><span id="L-458"><a href="#L-458"><span class="linenos">458</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">struct_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-459"><a href="#L-459"><span class="linenos">459</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
 </span><span id="L-460"><a href="#L-460"><span class="linenos">460</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -659,7 +659,7 @@
 </span><span id="L-556"><a href="#L-556"><span class="linenos">556</span></a>
 </span><span id="L-557"><a href="#L-557"><span class="linenos">557</span></a>        <span class="k">return</span> <span class="n">struct_metadata</span>
 </span><span id="L-558"><a href="#L-558"><span class="linenos">558</span></a>
-</span><span id="L-559"><a href="#L-559"><span class="linenos">559</span></a>    <span class="k">def</span> <span class="nf">_handle_variable_definition</span><span class="p">(</span>
+</span><span id="L-559"><a href="#L-559"><span class="linenos">559</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_variable_definition</span><span class="p">(</span>
 </span><span id="L-560"><a href="#L-560"><span class="linenos">560</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-561"><a href="#L-561"><span class="linenos">561</span></a>        <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 </span><span id="L-562"><a href="#L-562"><span class="linenos">562</span></a>        <span class="n">token_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -791,7 +791,7 @@
 </span><span id="L-688"><a href="#L-688"><span class="linenos">688</span></a>        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 </span><span id="L-689"><a href="#L-689"><span class="linenos">689</span></a>            <span class="k">return</span> <span class="nb">tuple</span><span class="p">()</span>
 </span><span id="L-690"><a href="#L-690"><span class="linenos">690</span></a>
-</span><span id="L-691"><a href="#L-691"><span class="linenos">691</span></a>    <span class="k">def</span> <span class="nf">_handle_struct_attribute</span><span class="p">(</span>
+</span><span id="L-691"><a href="#L-691"><span class="linenos">691</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_struct_attribute</span><span class="p">(</span>
 </span><span id="L-692"><a href="#L-692"><span class="linenos">692</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">available_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 </span><span id="L-693"><a href="#L-693"><span class="linenos">693</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
 </span><span id="L-694"><a href="#L-694"><span class="linenos">694</span></a>        <span class="n">struct_var</span><span class="p">,</span> <span class="n">struct_attr</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
@@ -824,7 +824,7 @@
 </span><span id="L-721"><a href="#L-721"><span class="linenos">721</span></a>            <span class="p">(</span><span class="s2">&quot;CST&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">attr_pointer</span><span class="p">}),</span>
 </span><span id="L-722"><a href="#L-722"><span class="linenos">722</span></a>        <span class="p">]</span>
 </span><span id="L-723"><a href="#L-723"><span class="linenos">723</span></a>
-</span><span id="L-724"><a href="#L-724"><span class="linenos">724</span></a>    <span class="k">def</span> <span class="nf">_handle_function_call</span><span class="p">(</span>
+</span><span id="L-724"><a href="#L-724"><span class="linenos">724</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_function_call</span><span class="p">(</span>
 </span><span id="L-725"><a href="#L-725"><span class="linenos">725</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-726"><a href="#L-726"><span class="linenos">726</span></a>        <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 </span><span id="L-727"><a href="#L-727"><span class="linenos">727</span></a>        <span class="n">available_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
@@ -883,7 +883,7 @@
 </span><span id="L-780"><a href="#L-780"><span class="linenos">780</span></a>
 </span><span id="L-781"><a href="#L-781"><span class="linenos">781</span></a>        <span class="k">return</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">arguments</span>
 </span><span id="L-782"><a href="#L-782"><span class="linenos">782</span></a>
-</span><span id="L-783"><a href="#L-783"><span class="linenos">783</span></a>    <span class="k">def</span> <span class="nf">_compute_functions_scopes_limits</span><span class="p">(</span>
+</span><span id="L-783"><a href="#L-783"><span class="linenos">783</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_functions_scopes_limits</span><span class="p">(</span>
 </span><span id="L-784"><a href="#L-784"><span class="linenos">784</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </span><span id="L-785"><a href="#L-785"><span class="linenos">785</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
 </span><span id="L-786"><a href="#L-786"><span class="linenos">786</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -922,7 +922,7 @@
 </span><span id="L-819"><a href="#L-819"><span class="linenos">819</span></a>
 </span><span id="L-820"><a href="#L-820"><span class="linenos">820</span></a>        <span class="k">return</span> <span class="n">scopes_limits</span>
 </span><span id="L-821"><a href="#L-821"><span class="linenos">821</span></a>
-</span><span id="L-822"><a href="#L-822"><span class="linenos">822</span></a>    <span class="k">def</span> <span class="nf">_is_function_definition</span><span class="p">(</span>
+</span><span id="L-822"><a href="#L-822"><span class="linenos">822</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_is_function_definition</span><span class="p">(</span>
 </span><span id="L-823"><a href="#L-823"><span class="linenos">823</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">token_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-824"><a href="#L-824"><span class="linenos">824</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span id="L-825"><a href="#L-825"><span class="linenos">825</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -950,7 +950,7 @@
 </span><span id="L-847"><a href="#L-847"><span class="linenos">847</span></a>
 </span><span id="L-848"><a href="#L-848"><span class="linenos">848</span></a>        <span class="k">return</span> <span class="n">previous_token_is_type</span> <span class="ow">and</span> <span class="n">next_token_is_left_parenthesis</span>
 </span><span id="L-849"><a href="#L-849"><span class="linenos">849</span></a>
-</span><span id="L-850"><a href="#L-850"><span class="linenos">850</span></a>    <span class="k">def</span> <span class="nf">_extract_parameters</span><span class="p">(</span>
+</span><span id="L-850"><a href="#L-850"><span class="linenos">850</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_parameters</span><span class="p">(</span>
 </span><span id="L-851"><a href="#L-851"><span class="linenos">851</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">function_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-852"><a href="#L-852"><span class="linenos">852</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-853"><a href="#L-853"><span class="linenos">853</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1028,7 +1028,7 @@
 </span><span id="L-925"><a href="#L-925"><span class="linenos">925</span></a>        <span class="k">return</span> <span class="n">parameters</span>
 </span><span id="L-926"><a href="#L-926"><span class="linenos">926</span></a>
 </span><span id="L-927"><a href="#L-927"><span class="linenos">927</span></a>
-</span><span id="L-928"><a href="#L-928"><span class="linenos">928</span></a><span class="k">def</span> <span class="nf">_find_function_bounds</span><span class="p">(</span><span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">token_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-928"><a href="#L-928"><span class="linenos">928</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_find_function_bounds</span><span class="p">(</span><span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">token_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-929"><a href="#L-929"><span class="linenos">929</span></a>    <span class="n">curly_brackets_stack</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-930"><a href="#L-930"><span class="linenos">930</span></a>    <span class="n">parsing_started</span> <span class="o">=</span> <span class="kc">False</span>
 </span><span id="L-931"><a href="#L-931"><span class="linenos">931</span></a>    <span class="n">parsing_ended</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1053,7 +1053,7 @@
 </span><span id="L-950"><a href="#L-950"><span class="linenos">950</span></a>    <span class="k">return</span> <span class="n">scope_end</span>
 </span><span id="L-951"><a href="#L-951"><span class="linenos">951</span></a>
 </span><span id="L-952"><a href="#L-952"><span class="linenos">952</span></a>
-</span><span id="L-953"><a href="#L-953"><span class="linenos">953</span></a><span class="k">def</span> <span class="nf">_handle_constant</span><span class="p">(</span>
+</span><span id="L-953"><a href="#L-953"><span class="linenos">953</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_handle_constant</span><span class="p">(</span>
 </span><span id="L-954"><a href="#L-954"><span class="linenos">954</span></a>    <span class="n">annotated_constant</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">number_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 </span><span id="L-955"><a href="#L-955"><span class="linenos">955</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 </span><span id="L-956"><a href="#L-956"><span class="linenos">956</span></a>    <span class="k">if</span> <span class="s2">&quot;int&quot;</span> <span class="ow">in</span> <span class="n">annotated_constant</span><span class="p">:</span>
@@ -1087,7 +1087,7 @@
 
     </div>
     <a class="headerlink" href="#Lexer"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer-10"><a href="#Lexer-10"><span class="linenos"> 10</span></a><span class="k">class</span> <span class="nc">Lexer</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer-10"><a href="#Lexer-10"><span class="linenos"> 10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Lexer</span><span class="p">:</span>
 </span><span id="Lexer-11"><a href="#Lexer-11"><span class="linenos"> 11</span></a>    <span class="n">conditionals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
 </span><span id="Lexer-12"><a href="#Lexer-12"><span class="linenos"> 12</span></a>        <span class="s2">&quot;do&quot;</span><span class="p">:</span> <span class="s2">&quot;DO_SYM&quot;</span><span class="p">,</span>
 </span><span id="Lexer-13"><a href="#Lexer-13"><span class="linenos"> 13</span></a>        <span class="s2">&quot;while&quot;</span><span class="p">:</span> <span class="s2">&quot;WHILE_SYM&quot;</span><span class="p">,</span>
@@ -1142,7 +1142,7 @@
 </span><span id="Lexer-62"><a href="#Lexer-62"><span class="linenos"> 62</span></a>        <span class="o">**</span><span class="n">types</span><span class="p">,</span>
 </span><span id="Lexer-63"><a href="#Lexer-63"><span class="linenos"> 63</span></a>    <span class="p">}</span>
 </span><span id="Lexer-64"><a href="#Lexer-64"><span class="linenos"> 64</span></a>
-</span><span id="Lexer-65"><a href="#Lexer-65"><span class="linenos"> 65</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Lexer-65"><a href="#Lexer-65"><span class="linenos"> 65</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="Lexer-66"><a href="#Lexer-66"><span class="linenos"> 66</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer-67"><a href="#Lexer-67"><span class="linenos"> 67</span></a><span class="sd">        Initialize the Lexer object.</span>
 </span><span id="Lexer-68"><a href="#Lexer-68"><span class="linenos"> 68</span></a>
@@ -1162,7 +1162,7 @@
 </span><span id="Lexer-82"><a href="#Lexer-82"><span class="linenos"> 82</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">struct_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span><span id="Lexer-83"><a href="#Lexer-83"><span class="linenos"> 83</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">variable_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span><span id="Lexer-84"><a href="#Lexer-84"><span class="linenos"> 84</span></a>
-</span><span id="Lexer-85"><a href="#Lexer-85"><span class="linenos"> 85</span></a>    <span class="k">def</span> <span class="nf">parse_source_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+</span><span id="Lexer-85"><a href="#Lexer-85"><span class="linenos"> 85</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_source_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 </span><span id="Lexer-86"><a href="#Lexer-86"><span class="linenos"> 86</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer-87"><a href="#Lexer-87"><span class="linenos"> 87</span></a><span class="sd">        Parse the scopes and functions from the given source code.</span>
 </span><span id="Lexer-88"><a href="#Lexer-88"><span class="linenos"> 88</span></a>
@@ -1242,7 +1242,7 @@
 </span><span id="Lexer-162"><a href="#Lexer-162"><span class="linenos">162</span></a>
 </span><span id="Lexer-163"><a href="#Lexer-163"><span class="linenos">163</span></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;globals&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">globals</span><span class="p">,</span> <span class="s2">&quot;functions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">}</span>
 </span><span id="Lexer-164"><a href="#Lexer-164"><span class="linenos">164</span></a>
-</span><span id="Lexer-165"><a href="#Lexer-165"><span class="linenos">165</span></a>    <span class="k">def</span> <span class="nf">split_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="Lexer-165"><a href="#Lexer-165"><span class="linenos">165</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">split_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="Lexer-166"><a href="#Lexer-166"><span class="linenos">166</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer-167"><a href="#Lexer-167"><span class="linenos">167</span></a><span class="sd">        Split the source code in individual words and symbols.</span>
 </span><span id="Lexer-168"><a href="#Lexer-168"><span class="linenos">168</span></a>
@@ -1281,7 +1281,7 @@
 </span><span id="Lexer-201"><a href="#Lexer-201"><span class="linenos">201</span></a>
 </span><span id="Lexer-202"><a href="#Lexer-202"><span class="linenos">202</span></a>        <span class="k">return</span> <span class="n">tokenized_source</span>
 </span><span id="Lexer-203"><a href="#Lexer-203"><span class="linenos">203</span></a>
-</span><span id="Lexer-204"><a href="#Lexer-204"><span class="linenos">204</span></a>    <span class="k">def</span> <span class="nf">_annotate_constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="Lexer-204"><a href="#Lexer-204"><span class="linenos">204</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_annotate_constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="Lexer-205"><a href="#Lexer-205"><span class="linenos">205</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer-206"><a href="#Lexer-206"><span class="linenos">206</span></a><span class="sd">        Annotate constants with types.</span>
 </span><span id="Lexer-207"><a href="#Lexer-207"><span class="linenos">207</span></a>
@@ -1315,7 +1315,7 @@
 </span><span id="Lexer-235"><a href="#Lexer-235"><span class="linenos">235</span></a>
 </span><span id="Lexer-236"><a href="#Lexer-236"><span class="linenos">236</span></a>        <span class="k">return</span> <span class="n">symbol_collection</span>
 </span><span id="Lexer-237"><a href="#Lexer-237"><span class="linenos">237</span></a>
-</span><span id="Lexer-238"><a href="#Lexer-238"><span class="linenos">238</span></a>    <span class="k">def</span> <span class="nf">_parse_globals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Lexer-238"><a href="#Lexer-238"><span class="linenos">238</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_globals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="Lexer-239"><a href="#Lexer-239"><span class="linenos">239</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer-240"><a href="#Lexer-240"><span class="linenos">240</span></a><span class="sd">        Parse the struct types and variables to be available globally.</span>
 </span><span id="Lexer-241"><a href="#Lexer-241"><span class="linenos">241</span></a>
@@ -1384,7 +1384,7 @@
 </span><span id="Lexer-304"><a href="#Lexer-304"><span class="linenos">304</span></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">variable_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_prime</span><span class="p">)</span>
 </span><span id="Lexer-305"><a href="#Lexer-305"><span class="linenos">305</span></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">variable_count</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="Lexer-306"><a href="#Lexer-306"><span class="linenos">306</span></a>
-</span><span id="Lexer-307"><a href="#Lexer-307"><span class="linenos">307</span></a>    <span class="k">def</span> <span class="nf">_parse_function</span><span class="p">(</span>
+</span><span id="Lexer-307"><a href="#Lexer-307"><span class="linenos">307</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_function</span><span class="p">(</span>
 </span><span id="Lexer-308"><a href="#Lexer-308"><span class="linenos">308</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="Lexer-309"><a href="#Lexer-309"><span class="linenos">309</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 </span><span id="Lexer-310"><a href="#Lexer-310"><span class="linenos">310</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1535,7 +1535,7 @@
 </span><span id="Lexer-455"><a href="#Lexer-455"><span class="linenos">455</span></a>
 </span><span id="Lexer-456"><a href="#Lexer-456"><span class="linenos">456</span></a>        <span class="k">return</span> <span class="n">function_metadata</span>
 </span><span id="Lexer-457"><a href="#Lexer-457"><span class="linenos">457</span></a>
-</span><span id="Lexer-458"><a href="#Lexer-458"><span class="linenos">458</span></a>    <span class="k">def</span> <span class="nf">_handle_struct_definition</span><span class="p">(</span>
+</span><span id="Lexer-458"><a href="#Lexer-458"><span class="linenos">458</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_struct_definition</span><span class="p">(</span>
 </span><span id="Lexer-459"><a href="#Lexer-459"><span class="linenos">459</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">struct_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="Lexer-460"><a href="#Lexer-460"><span class="linenos">460</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
 </span><span id="Lexer-461"><a href="#Lexer-461"><span class="linenos">461</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1637,7 +1637,7 @@
 </span><span id="Lexer-557"><a href="#Lexer-557"><span class="linenos">557</span></a>
 </span><span id="Lexer-558"><a href="#Lexer-558"><span class="linenos">558</span></a>        <span class="k">return</span> <span class="n">struct_metadata</span>
 </span><span id="Lexer-559"><a href="#Lexer-559"><span class="linenos">559</span></a>
-</span><span id="Lexer-560"><a href="#Lexer-560"><span class="linenos">560</span></a>    <span class="k">def</span> <span class="nf">_handle_variable_definition</span><span class="p">(</span>
+</span><span id="Lexer-560"><a href="#Lexer-560"><span class="linenos">560</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_variable_definition</span><span class="p">(</span>
 </span><span id="Lexer-561"><a href="#Lexer-561"><span class="linenos">561</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="Lexer-562"><a href="#Lexer-562"><span class="linenos">562</span></a>        <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 </span><span id="Lexer-563"><a href="#Lexer-563"><span class="linenos">563</span></a>        <span class="n">token_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1769,7 +1769,7 @@
 </span><span id="Lexer-689"><a href="#Lexer-689"><span class="linenos">689</span></a>        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
 </span><span id="Lexer-690"><a href="#Lexer-690"><span class="linenos">690</span></a>            <span class="k">return</span> <span class="nb">tuple</span><span class="p">()</span>
 </span><span id="Lexer-691"><a href="#Lexer-691"><span class="linenos">691</span></a>
-</span><span id="Lexer-692"><a href="#Lexer-692"><span class="linenos">692</span></a>    <span class="k">def</span> <span class="nf">_handle_struct_attribute</span><span class="p">(</span>
+</span><span id="Lexer-692"><a href="#Lexer-692"><span class="linenos">692</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_struct_attribute</span><span class="p">(</span>
 </span><span id="Lexer-693"><a href="#Lexer-693"><span class="linenos">693</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">available_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 </span><span id="Lexer-694"><a href="#Lexer-694"><span class="linenos">694</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
 </span><span id="Lexer-695"><a href="#Lexer-695"><span class="linenos">695</span></a>        <span class="n">struct_var</span><span class="p">,</span> <span class="n">struct_attr</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
@@ -1802,7 +1802,7 @@
 </span><span id="Lexer-722"><a href="#Lexer-722"><span class="linenos">722</span></a>            <span class="p">(</span><span class="s2">&quot;CST&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">attr_pointer</span><span class="p">}),</span>
 </span><span id="Lexer-723"><a href="#Lexer-723"><span class="linenos">723</span></a>        <span class="p">]</span>
 </span><span id="Lexer-724"><a href="#Lexer-724"><span class="linenos">724</span></a>
-</span><span id="Lexer-725"><a href="#Lexer-725"><span class="linenos">725</span></a>    <span class="k">def</span> <span class="nf">_handle_function_call</span><span class="p">(</span>
+</span><span id="Lexer-725"><a href="#Lexer-725"><span class="linenos">725</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_function_call</span><span class="p">(</span>
 </span><span id="Lexer-726"><a href="#Lexer-726"><span class="linenos">726</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="Lexer-727"><a href="#Lexer-727"><span class="linenos">727</span></a>        <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 </span><span id="Lexer-728"><a href="#Lexer-728"><span class="linenos">728</span></a>        <span class="n">available_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
@@ -1861,7 +1861,7 @@
 </span><span id="Lexer-781"><a href="#Lexer-781"><span class="linenos">781</span></a>
 </span><span id="Lexer-782"><a href="#Lexer-782"><span class="linenos">782</span></a>        <span class="k">return</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">arguments</span>
 </span><span id="Lexer-783"><a href="#Lexer-783"><span class="linenos">783</span></a>
-</span><span id="Lexer-784"><a href="#Lexer-784"><span class="linenos">784</span></a>    <span class="k">def</span> <span class="nf">_compute_functions_scopes_limits</span><span class="p">(</span>
+</span><span id="Lexer-784"><a href="#Lexer-784"><span class="linenos">784</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_functions_scopes_limits</span><span class="p">(</span>
 </span><span id="Lexer-785"><a href="#Lexer-785"><span class="linenos">785</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </span><span id="Lexer-786"><a href="#Lexer-786"><span class="linenos">786</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
 </span><span id="Lexer-787"><a href="#Lexer-787"><span class="linenos">787</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1900,7 +1900,7 @@
 </span><span id="Lexer-820"><a href="#Lexer-820"><span class="linenos">820</span></a>
 </span><span id="Lexer-821"><a href="#Lexer-821"><span class="linenos">821</span></a>        <span class="k">return</span> <span class="n">scopes_limits</span>
 </span><span id="Lexer-822"><a href="#Lexer-822"><span class="linenos">822</span></a>
-</span><span id="Lexer-823"><a href="#Lexer-823"><span class="linenos">823</span></a>    <span class="k">def</span> <span class="nf">_is_function_definition</span><span class="p">(</span>
+</span><span id="Lexer-823"><a href="#Lexer-823"><span class="linenos">823</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_is_function_definition</span><span class="p">(</span>
 </span><span id="Lexer-824"><a href="#Lexer-824"><span class="linenos">824</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">token_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="Lexer-825"><a href="#Lexer-825"><span class="linenos">825</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span id="Lexer-826"><a href="#Lexer-826"><span class="linenos">826</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1928,7 +1928,7 @@
 </span><span id="Lexer-848"><a href="#Lexer-848"><span class="linenos">848</span></a>
 </span><span id="Lexer-849"><a href="#Lexer-849"><span class="linenos">849</span></a>        <span class="k">return</span> <span class="n">previous_token_is_type</span> <span class="ow">and</span> <span class="n">next_token_is_left_parenthesis</span>
 </span><span id="Lexer-850"><a href="#Lexer-850"><span class="linenos">850</span></a>
-</span><span id="Lexer-851"><a href="#Lexer-851"><span class="linenos">851</span></a>    <span class="k">def</span> <span class="nf">_extract_parameters</span><span class="p">(</span>
+</span><span id="Lexer-851"><a href="#Lexer-851"><span class="linenos">851</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_parameters</span><span class="p">(</span>
 </span><span id="Lexer-852"><a href="#Lexer-852"><span class="linenos">852</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">symbol_collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">function_idx</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="Lexer-853"><a href="#Lexer-853"><span class="linenos">853</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 </span><span id="Lexer-854"><a href="#Lexer-854"><span class="linenos">854</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2019,7 +2019,7 @@
 
     </div>
     <a class="headerlink" href="#Lexer.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer.__init__-65"><a href="#Lexer.__init__-65"><span class="linenos">65</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer.__init__-65"><a href="#Lexer.__init__-65"><span class="linenos">65</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="Lexer.__init__-66"><a href="#Lexer.__init__-66"><span class="linenos">66</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer.__init__-67"><a href="#Lexer.__init__-67"><span class="linenos">67</span></a><span class="sd">        Initialize the Lexer object.</span>
 </span><span id="Lexer.__init__-68"><a href="#Lexer.__init__-68"><span class="linenos">68</span></a>
@@ -2191,7 +2191,7 @@
 
     </div>
     <a class="headerlink" href="#Lexer.parse_source_code"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer.parse_source_code-85"><a href="#Lexer.parse_source_code-85"><span class="linenos"> 85</span></a>    <span class="k">def</span> <span class="nf">parse_source_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer.parse_source_code-85"><a href="#Lexer.parse_source_code-85"><span class="linenos"> 85</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_source_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 </span><span id="Lexer.parse_source_code-86"><a href="#Lexer.parse_source_code-86"><span class="linenos"> 86</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer.parse_source_code-87"><a href="#Lexer.parse_source_code-87"><span class="linenos"> 87</span></a><span class="sd">        Parse the scopes and functions from the given source code.</span>
 </span><span id="Lexer.parse_source_code-88"><a href="#Lexer.parse_source_code-88"><span class="linenos"> 88</span></a>
@@ -2329,7 +2329,7 @@ The `functions` key, on the other hand, contains
 
     </div>
     <a class="headerlink" href="#Lexer.split_source"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer.split_source-165"><a href="#Lexer.split_source-165"><span class="linenos">165</span></a>    <span class="k">def</span> <span class="nf">split_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Lexer.split_source-165"><a href="#Lexer.split_source-165"><span class="linenos">165</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">split_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="Lexer.split_source-166"><a href="#Lexer.split_source-166"><span class="linenos">166</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Lexer.split_source-167"><a href="#Lexer.split_source-167"><span class="linenos">167</span></a><span class="sd">        Split the source code in individual words and symbols.</span>
 </span><span id="Lexer.split_source-168"><a href="#Lexer.split_source-168"><span class="linenos">168</span></a>

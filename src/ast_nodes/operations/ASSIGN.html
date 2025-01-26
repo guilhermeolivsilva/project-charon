@@ -70,17 +70,17 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;Representation of ASSIGN nodes for the Abstract Syntax Tree.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">override</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.node</span> <span class="kn">import</span> <span class="n">Node</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.variables.VAR</span> <span class="kn">import</span> <span class="n">VAR</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.variables.ELEMENT_ACCESS</span> <span class="kn">import</span> <span class="n">ELEMENT_ACCESS</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.operations.operation</span> <span class="kn">import</span> <span class="n">Operation</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.variables.VAR</span><span class="w"> </span><span class="kn">import</span> <span class="n">VAR</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.variables.ELEMENT_ACCESS</span><span class="w"> </span><span class="kn">import</span> <span class="n">ELEMENT_ACCESS</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.operations.operation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operation</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="k">class</span> <span class="nc">ASSIGN</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ASSIGN</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    Implement the representation of a attribution operation for the AST.</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
@@ -98,7 +98,7 @@
 </span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>
 </span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="nd">@override</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="p">(</span><span class="n">VAR</span><span class="p">,</span> <span class="n">ELEMENT_ACCESS</span><span class="p">)):</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Left-hand side of ASSIGN operation is not a Variable.&quot;</span><span class="p">)</span>
 </span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>
@@ -107,7 +107,7 @@
 </span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;STORE&quot;</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>
 </span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="nd">@override</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -169,7 +169,7 @@
 
     </div>
     <a class="headerlink" href="#ASSIGN"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ASSIGN-14"><a href="#ASSIGN-14"><span class="linenos">14</span></a><span class="k">class</span> <span class="nc">ASSIGN</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ASSIGN-14"><a href="#ASSIGN-14"><span class="linenos">14</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ASSIGN</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
 </span><span id="ASSIGN-15"><a href="#ASSIGN-15"><span class="linenos">15</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="ASSIGN-16"><a href="#ASSIGN-16"><span class="linenos">16</span></a><span class="sd">    Implement the representation of a attribution operation for the AST.</span>
 </span><span id="ASSIGN-17"><a href="#ASSIGN-17"><span class="linenos">17</span></a>
@@ -187,7 +187,7 @@
 </span><span id="ASSIGN-29"><a href="#ASSIGN-29"><span class="linenos">29</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="ASSIGN-30"><a href="#ASSIGN-30"><span class="linenos">30</span></a>
 </span><span id="ASSIGN-31"><a href="#ASSIGN-31"><span class="linenos">31</span></a>    <span class="nd">@override</span>
-</span><span id="ASSIGN-32"><a href="#ASSIGN-32"><span class="linenos">32</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ASSIGN-32"><a href="#ASSIGN-32"><span class="linenos">32</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="ASSIGN-33"><a href="#ASSIGN-33"><span class="linenos">33</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="p">(</span><span class="n">VAR</span><span class="p">,</span> <span class="n">ELEMENT_ACCESS</span><span class="p">)):</span>
 </span><span id="ASSIGN-34"><a href="#ASSIGN-34"><span class="linenos">34</span></a>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Left-hand side of ASSIGN operation is not a Variable.&quot;</span><span class="p">)</span>
 </span><span id="ASSIGN-35"><a href="#ASSIGN-35"><span class="linenos">35</span></a>
@@ -196,7 +196,7 @@
 </span><span id="ASSIGN-38"><a href="#ASSIGN-38"><span class="linenos">38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;STORE&quot;</span>
 </span><span id="ASSIGN-39"><a href="#ASSIGN-39"><span class="linenos">39</span></a>
 </span><span id="ASSIGN-40"><a href="#ASSIGN-40"><span class="linenos">40</span></a>    <span class="nd">@override</span>
-</span><span id="ASSIGN-41"><a href="#ASSIGN-41"><span class="linenos">41</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="ASSIGN-41"><a href="#ASSIGN-41"><span class="linenos">41</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="ASSIGN-42"><a href="#ASSIGN-42"><span class="linenos">42</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="ASSIGN-43"><a href="#ASSIGN-43"><span class="linenos">43</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="ASSIGN-44"><a href="#ASSIGN-44"><span class="linenos">44</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -274,7 +274,7 @@ rhs : Node
     </div>
     <a class="headerlink" href="#ASSIGN.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="ASSIGN.__init__-31"><a href="#ASSIGN.__init__-31"><span class="linenos">31</span></a>    <span class="nd">@override</span>
-</span><span id="ASSIGN.__init__-32"><a href="#ASSIGN.__init__-32"><span class="linenos">32</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ASSIGN.__init__-32"><a href="#ASSIGN.__init__-32"><span class="linenos">32</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="ASSIGN.__init__-33"><a href="#ASSIGN.__init__-33"><span class="linenos">33</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="p">(</span><span class="n">VAR</span><span class="p">,</span> <span class="n">ELEMENT_ACCESS</span><span class="p">)):</span>
 </span><span id="ASSIGN.__init__-34"><a href="#ASSIGN.__init__-34"><span class="linenos">34</span></a>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Left-hand side of ASSIGN operation is not a Variable.&quot;</span><span class="p">)</span>
 </span><span id="ASSIGN.__init__-35"><a href="#ASSIGN.__init__-35"><span class="linenos">35</span></a>
@@ -311,7 +311,7 @@ rhs : Node
     </div>
     <a class="headerlink" href="#ASSIGN.generate_code"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="ASSIGN.generate_code-40"><a href="#ASSIGN.generate_code-40"><span class="linenos">40</span></a>    <span class="nd">@override</span>
-</span><span id="ASSIGN.generate_code-41"><a href="#ASSIGN.generate_code-41"><span class="linenos">41</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="ASSIGN.generate_code-41"><a href="#ASSIGN.generate_code-41"><span class="linenos">41</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="ASSIGN.generate_code-42"><a href="#ASSIGN.generate_code-42"><span class="linenos">42</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="ASSIGN.generate_code-43"><a href="#ASSIGN.generate_code-43"><span class="linenos">43</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="ASSIGN.generate_code-44"><a href="#ASSIGN.generate_code-44"><span class="linenos">44</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

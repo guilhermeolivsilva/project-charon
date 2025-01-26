@@ -82,14 +82,14 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Representation of SEQ nodes for the Abstract Syntax Tree.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">override</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.node</span> <span class="kn">import</span> <span class="n">Node</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
-</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="k">class</span> <span class="nc">SEQ</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">SEQ</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">    Implement the representation of a sequence of statements for the AST.</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>
@@ -98,12 +98,12 @@
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
 </span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>    <span class="nd">@override</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>
@@ -116,7 +116,7 @@
 </span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>    <span class="nd">@override</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>
@@ -137,7 +137,7 @@
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="nd">@override</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
@@ -156,7 +156,7 @@
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>            <span class="n">child</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="nd">@override</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -183,7 +183,7 @@
 </span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>    <span class="nd">@override</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
@@ -221,7 +221,7 @@
 
     </div>
     <a class="headerlink" href="#SEQ"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ-11"><a href="#SEQ-11"><span class="linenos"> 11</span></a><span class="k">class</span> <span class="nc">SEQ</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ-11"><a href="#SEQ-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">SEQ</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 </span><span id="SEQ-12"><a href="#SEQ-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ-13"><a href="#SEQ-13"><span class="linenos"> 13</span></a><span class="sd">    Implement the representation of a sequence of statements for the AST.</span>
 </span><span id="SEQ-14"><a href="#SEQ-14"><span class="linenos"> 14</span></a>
@@ -230,12 +230,12 @@
 </span><span id="SEQ-17"><a href="#SEQ-17"><span class="linenos"> 17</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="SEQ-18"><a href="#SEQ-18"><span class="linenos"> 18</span></a>
 </span><span id="SEQ-19"><a href="#SEQ-19"><span class="linenos"> 19</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ-20"><a href="#SEQ-20"><span class="linenos"> 20</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="SEQ-20"><a href="#SEQ-20"><span class="linenos"> 20</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ-21"><a href="#SEQ-21"><span class="linenos"> 21</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="SEQ-22"><a href="#SEQ-22"><span class="linenos"> 22</span></a>
 </span><span id="SEQ-23"><a href="#SEQ-23"><span class="linenos"> 23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="SEQ-24"><a href="#SEQ-24"><span class="linenos"> 24</span></a>
-</span><span id="SEQ-25"><a href="#SEQ-25"><span class="linenos"> 25</span></a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="SEQ-25"><a href="#SEQ-25"><span class="linenos"> 25</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ-26"><a href="#SEQ-26"><span class="linenos"> 26</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ-27"><a href="#SEQ-27"><span class="linenos"> 27</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="SEQ-28"><a href="#SEQ-28"><span class="linenos"> 28</span></a>
@@ -248,7 +248,7 @@
 </span><span id="SEQ-35"><a href="#SEQ-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </span><span id="SEQ-36"><a href="#SEQ-36"><span class="linenos"> 36</span></a>
 </span><span id="SEQ-37"><a href="#SEQ-37"><span class="linenos"> 37</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ-38"><a href="#SEQ-38"><span class="linenos"> 38</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="SEQ-38"><a href="#SEQ-38"><span class="linenos"> 38</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="SEQ-39"><a href="#SEQ-39"><span class="linenos"> 39</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ-40"><a href="#SEQ-40"><span class="linenos"> 40</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="SEQ-41"><a href="#SEQ-41"><span class="linenos"> 41</span></a>
@@ -269,7 +269,7 @@
 </span><span id="SEQ-56"><a href="#SEQ-56"><span class="linenos"> 56</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
 </span><span id="SEQ-57"><a href="#SEQ-57"><span class="linenos"> 57</span></a>
 </span><span id="SEQ-58"><a href="#SEQ-58"><span class="linenos"> 58</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ-59"><a href="#SEQ-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="SEQ-59"><a href="#SEQ-59"><span class="linenos"> 59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ-60"><a href="#SEQ-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ-61"><a href="#SEQ-61"><span class="linenos"> 61</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="SEQ-62"><a href="#SEQ-62"><span class="linenos"> 62</span></a>
@@ -288,7 +288,7 @@
 </span><span id="SEQ-75"><a href="#SEQ-75"><span class="linenos"> 75</span></a>            <span class="n">child</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span><span id="SEQ-76"><a href="#SEQ-76"><span class="linenos"> 76</span></a>
 </span><span id="SEQ-77"><a href="#SEQ-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ-78"><a href="#SEQ-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="SEQ-78"><a href="#SEQ-78"><span class="linenos"> 78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="SEQ-79"><a href="#SEQ-79"><span class="linenos"> 79</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="SEQ-80"><a href="#SEQ-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="SEQ-81"><a href="#SEQ-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -315,7 +315,7 @@
 </span><span id="SEQ-102"><a href="#SEQ-102"><span class="linenos">102</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="SEQ-103"><a href="#SEQ-103"><span class="linenos">103</span></a>
 </span><span id="SEQ-104"><a href="#SEQ-104"><span class="linenos">104</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ-105"><a href="#SEQ-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="SEQ-105"><a href="#SEQ-105"><span class="linenos">105</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="SEQ-106"><a href="#SEQ-106"><span class="linenos">106</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ-107"><a href="#SEQ-107"><span class="linenos">107</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="SEQ-108"><a href="#SEQ-108"><span class="linenos">108</span></a>
@@ -360,7 +360,7 @@ certificate. Its only purpose is to help structuring the AST.</p>
     </div>
     <a class="headerlink" href="#SEQ.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.__init__-19"><a href="#SEQ.__init__-19"><span class="linenos">19</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ.__init__-20"><a href="#SEQ.__init__-20"><span class="linenos">20</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="SEQ.__init__-20"><a href="#SEQ.__init__-20"><span class="linenos">20</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ.__init__-21"><a href="#SEQ.__init__-21"><span class="linenos">21</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="SEQ.__init__-22"><a href="#SEQ.__init__-22"><span class="linenos">22</span></a>
 </span><span id="SEQ.__init__-23"><a href="#SEQ.__init__-23"><span class="linenos">23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -392,7 +392,7 @@ certificate. Its only purpose is to help structuring the AST.</p>
 
     </div>
     <a class="headerlink" href="#SEQ.add_child"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.add_child-25"><a href="#SEQ.add_child-25"><span class="linenos">25</span></a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.add_child-25"><a href="#SEQ.add_child-25"><span class="linenos">25</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ.add_child-26"><a href="#SEQ.add_child-26"><span class="linenos">26</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ.add_child-27"><a href="#SEQ.add_child-27"><span class="linenos">27</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="SEQ.add_child-28"><a href="#SEQ.add_child-28"><span class="linenos">28</span></a>
@@ -429,7 +429,7 @@ certificate. Its only purpose is to help structuring the AST.</p>
     </div>
     <a class="headerlink" href="#SEQ.get_certificate_label"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.get_certificate_label-37"><a href="#SEQ.get_certificate_label-37"><span class="linenos">37</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ.get_certificate_label-38"><a href="#SEQ.get_certificate_label-38"><span class="linenos">38</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="SEQ.get_certificate_label-38"><a href="#SEQ.get_certificate_label-38"><span class="linenos">38</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="SEQ.get_certificate_label-39"><a href="#SEQ.get_certificate_label-39"><span class="linenos">39</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ.get_certificate_label-40"><a href="#SEQ.get_certificate_label-40"><span class="linenos">40</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="SEQ.get_certificate_label-41"><a href="#SEQ.get_certificate_label-41"><span class="linenos">41</span></a>
@@ -477,7 +477,7 @@ recursively. The <code><a href="#SEQ">SEQ</a></code> node itself does not have a
     </div>
     <a class="headerlink" href="#SEQ.print"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.print-58"><a href="#SEQ.print-58"><span class="linenos">58</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ.print-59"><a href="#SEQ.print-59"><span class="linenos">59</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="SEQ.print-59"><a href="#SEQ.print-59"><span class="linenos">59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="SEQ.print-60"><a href="#SEQ.print-60"><span class="linenos">60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ.print-61"><a href="#SEQ.print-61"><span class="linenos">61</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="SEQ.print-62"><a href="#SEQ.print-62"><span class="linenos">62</span></a>
@@ -523,7 +523,7 @@ with an additional left space.</p>
     </div>
     <a class="headerlink" href="#SEQ.generate_code"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.generate_code-77"><a href="#SEQ.generate_code-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ.generate_code-78"><a href="#SEQ.generate_code-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="SEQ.generate_code-78"><a href="#SEQ.generate_code-78"><span class="linenos"> 78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="SEQ.generate_code-79"><a href="#SEQ.generate_code-79"><span class="linenos"> 79</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="SEQ.generate_code-80"><a href="#SEQ.generate_code-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="SEQ.generate_code-81"><a href="#SEQ.generate_code-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -580,7 +580,7 @@ The <code><a href="#SEQ">SEQ</a></code> node itself does not generate code, for 
     </div>
     <a class="headerlink" href="#SEQ.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.certificate-104"><a href="#SEQ.certificate-104"><span class="linenos">104</span></a>    <span class="nd">@override</span>
-</span><span id="SEQ.certificate-105"><a href="#SEQ.certificate-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="SEQ.certificate-105"><a href="#SEQ.certificate-105"><span class="linenos">105</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="SEQ.certificate-106"><a href="#SEQ.certificate-106"><span class="linenos">106</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="SEQ.certificate-107"><a href="#SEQ.certificate-107"><span class="linenos">107</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="SEQ.certificate-108"><a href="#SEQ.certificate-108"><span class="linenos">108</span></a>

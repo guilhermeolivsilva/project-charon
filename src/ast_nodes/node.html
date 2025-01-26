@@ -100,12 +100,12 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Base class for AST Nodes classes (e.g., VAR, CST etc.).&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span> <span class="nn">src.utils</span> <span class="kn">import</span> <span class="n">get_certificate_symbol</span><span class="p">,</span> <span class="n">next_prime</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_certificate_symbol</span><span class="p">,</span> <span class="n">next_prime</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="p">:</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="sd">    Implement a Node for the AST.</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>
@@ -120,7 +120,7 @@
 </span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">        whether the exported code should have the `register` field).</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>        <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>        <span class="nb">type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -136,7 +136,7 @@
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        Implement the equality comparison between Nodes.</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
@@ -155,7 +155,7 @@
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="k">return</span> <span class="n">is_equal</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Implement a string representation of a Node object.</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
@@ -169,10 +169,10 @@
 </span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="n">_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>            <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">, &quot;</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>        <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Kind: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Kind: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>            <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, Value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>
 </span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>            <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, Type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -182,7 +182,7 @@
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        <span class="k">return</span> <span class="n">_str</span>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 </span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        Get the value of this Node.</span>
 </span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
@@ -194,7 +194,7 @@
 </span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        Get the type of this Node.</span>
 </span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
@@ -206,7 +206,7 @@
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>
@@ -224,7 +224,7 @@
 </span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span><span class="p">]</span>
 </span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">        Print the string representation of `self`.</span>
 </span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>
@@ -239,7 +239,7 @@
 </span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>
 </span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">*</span> <span class="n">indent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 </span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
 </span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -289,7 +289,7 @@
 </span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>
 </span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="p">[</span><span class="n">code_metadata</span><span class="p">]</span>
 </span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
 </span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>
@@ -323,7 +323,7 @@
 
     </div>
     <a class="headerlink" href="#Node"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node-9"><a href="#Node-9"><span class="linenos">  9</span></a><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node-9"><a href="#Node-9"><span class="linenos">  9</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="p">:</span>
 </span><span id="Node-10"><a href="#Node-10"><span class="linenos"> 10</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-11"><a href="#Node-11"><span class="linenos"> 11</span></a><span class="sd">    Implement a Node for the AST.</span>
 </span><span id="Node-12"><a href="#Node-12"><span class="linenos"> 12</span></a>
@@ -338,7 +338,7 @@
 </span><span id="Node-21"><a href="#Node-21"><span class="linenos"> 21</span></a><span class="sd">        whether the exported code should have the `register` field).</span>
 </span><span id="Node-22"><a href="#Node-22"><span class="linenos"> 22</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="Node-23"><a href="#Node-23"><span class="linenos"> 23</span></a>
-</span><span id="Node-24"><a href="#Node-24"><span class="linenos"> 24</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="Node-24"><a href="#Node-24"><span class="linenos"> 24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="Node-25"><a href="#Node-25"><span class="linenos"> 25</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="Node-26"><a href="#Node-26"><span class="linenos"> 26</span></a>        <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="Node-27"><a href="#Node-27"><span class="linenos"> 27</span></a>        <span class="nb">type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -354,7 +354,7 @@
 </span><span id="Node-37"><a href="#Node-37"><span class="linenos"> 37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="Node-38"><a href="#Node-38"><span class="linenos"> 38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </span><span id="Node-39"><a href="#Node-39"><span class="linenos"> 39</span></a>
-</span><span id="Node-40"><a href="#Node-40"><span class="linenos"> 40</span></a>    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="Node-40"><a href="#Node-40"><span class="linenos"> 40</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span id="Node-41"><a href="#Node-41"><span class="linenos"> 41</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-42"><a href="#Node-42"><span class="linenos"> 42</span></a><span class="sd">        Implement the equality comparison between Nodes.</span>
 </span><span id="Node-43"><a href="#Node-43"><span class="linenos"> 43</span></a>
@@ -373,7 +373,7 @@
 </span><span id="Node-56"><a href="#Node-56"><span class="linenos"> 56</span></a>
 </span><span id="Node-57"><a href="#Node-57"><span class="linenos"> 57</span></a>        <span class="k">return</span> <span class="n">is_equal</span>
 </span><span id="Node-58"><a href="#Node-58"><span class="linenos"> 58</span></a>
-</span><span id="Node-59"><a href="#Node-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="Node-59"><a href="#Node-59"><span class="linenos"> 59</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="Node-60"><a href="#Node-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-61"><a href="#Node-61"><span class="linenos"> 61</span></a><span class="sd">        Implement a string representation of a Node object.</span>
 </span><span id="Node-62"><a href="#Node-62"><span class="linenos"> 62</span></a>
@@ -387,10 +387,10 @@
 </span><span id="Node-70"><a href="#Node-70"><span class="linenos"> 70</span></a>
 </span><span id="Node-71"><a href="#Node-71"><span class="linenos"> 71</span></a>        <span class="n">_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 </span><span id="Node-72"><a href="#Node-72"><span class="linenos"> 72</span></a>
-</span><span id="Node-73"><a href="#Node-73"><span class="linenos"> 73</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Node-74"><a href="#Node-74"><span class="linenos"> 74</span></a>            <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">, &quot;</span>
-</span><span id="Node-75"><a href="#Node-75"><span class="linenos"> 75</span></a>
-</span><span id="Node-76"><a href="#Node-76"><span class="linenos"> 76</span></a>        <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Kind: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Node-73"><a href="#Node-73"><span class="linenos"> 73</span></a>        <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Kind: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Node-74"><a href="#Node-74"><span class="linenos"> 74</span></a>
+</span><span id="Node-75"><a href="#Node-75"><span class="linenos"> 75</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Node-76"><a href="#Node-76"><span class="linenos"> 76</span></a>            <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, Value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
 </span><span id="Node-77"><a href="#Node-77"><span class="linenos"> 77</span></a>
 </span><span id="Node-78"><a href="#Node-78"><span class="linenos"> 78</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="Node-79"><a href="#Node-79"><span class="linenos"> 79</span></a>            <span class="n">_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, Type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -400,7 +400,7 @@
 </span><span id="Node-83"><a href="#Node-83"><span class="linenos"> 83</span></a>
 </span><span id="Node-84"><a href="#Node-84"><span class="linenos"> 84</span></a>        <span class="k">return</span> <span class="n">_str</span>
 </span><span id="Node-85"><a href="#Node-85"><span class="linenos"> 85</span></a>
-</span><span id="Node-86"><a href="#Node-86"><span class="linenos"> 86</span></a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+</span><span id="Node-86"><a href="#Node-86"><span class="linenos"> 86</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 </span><span id="Node-87"><a href="#Node-87"><span class="linenos"> 87</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-88"><a href="#Node-88"><span class="linenos"> 88</span></a><span class="sd">        Get the value of this Node.</span>
 </span><span id="Node-89"><a href="#Node-89"><span class="linenos"> 89</span></a>
@@ -412,7 +412,7 @@
 </span><span id="Node-95"><a href="#Node-95"><span class="linenos"> 95</span></a>
 </span><span id="Node-96"><a href="#Node-96"><span class="linenos"> 96</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
 </span><span id="Node-97"><a href="#Node-97"><span class="linenos"> 97</span></a>
-</span><span id="Node-98"><a href="#Node-98"><span class="linenos"> 98</span></a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+</span><span id="Node-98"><a href="#Node-98"><span class="linenos"> 98</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 </span><span id="Node-99"><a href="#Node-99"><span class="linenos"> 99</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-100"><a href="#Node-100"><span class="linenos">100</span></a><span class="sd">        Get the type of this Node.</span>
 </span><span id="Node-101"><a href="#Node-101"><span class="linenos">101</span></a>
@@ -424,7 +424,7 @@
 </span><span id="Node-107"><a href="#Node-107"><span class="linenos">107</span></a>
 </span><span id="Node-108"><a href="#Node-108"><span class="linenos">108</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
 </span><span id="Node-109"><a href="#Node-109"><span class="linenos">109</span></a>
-</span><span id="Node-110"><a href="#Node-110"><span class="linenos">110</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="Node-110"><a href="#Node-110"><span class="linenos">110</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="Node-111"><a href="#Node-111"><span class="linenos">111</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-112"><a href="#Node-112"><span class="linenos">112</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="Node-113"><a href="#Node-113"><span class="linenos">113</span></a>
@@ -442,7 +442,7 @@
 </span><span id="Node-125"><a href="#Node-125"><span class="linenos">125</span></a>
 </span><span id="Node-126"><a href="#Node-126"><span class="linenos">126</span></a>        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span><span class="p">]</span>
 </span><span id="Node-127"><a href="#Node-127"><span class="linenos">127</span></a>
-</span><span id="Node-128"><a href="#Node-128"><span class="linenos">128</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Node-128"><a href="#Node-128"><span class="linenos">128</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="Node-129"><a href="#Node-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-130"><a href="#Node-130"><span class="linenos">130</span></a><span class="sd">        Print the string representation of `self`.</span>
 </span><span id="Node-131"><a href="#Node-131"><span class="linenos">131</span></a>
@@ -457,7 +457,7 @@
 </span><span id="Node-140"><a href="#Node-140"><span class="linenos">140</span></a>
 </span><span id="Node-141"><a href="#Node-141"><span class="linenos">141</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">*</span> <span class="n">indent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 </span><span id="Node-142"><a href="#Node-142"><span class="linenos">142</span></a>
-</span><span id="Node-143"><a href="#Node-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="Node-143"><a href="#Node-143"><span class="linenos">143</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="Node-144"><a href="#Node-144"><span class="linenos">144</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="Node-145"><a href="#Node-145"><span class="linenos">145</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
 </span><span id="Node-146"><a href="#Node-146"><span class="linenos">146</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -507,7 +507,7 @@
 </span><span id="Node-190"><a href="#Node-190"><span class="linenos">190</span></a>
 </span><span id="Node-191"><a href="#Node-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="p">[</span><span class="n">code_metadata</span><span class="p">]</span>
 </span><span id="Node-192"><a href="#Node-192"><span class="linenos">192</span></a>
-</span><span id="Node-193"><a href="#Node-193"><span class="linenos">193</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="Node-193"><a href="#Node-193"><span class="linenos">193</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="Node-194"><a href="#Node-194"><span class="linenos">194</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node-195"><a href="#Node-195"><span class="linenos">195</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
 </span><span id="Node-196"><a href="#Node-196"><span class="linenos">196</span></a>
@@ -553,7 +553,7 @@ uses_register : bool (optional, default = False)
 
     </div>
     <a class="headerlink" href="#Node.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.__init__-24"><a href="#Node.__init__-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.__init__-24"><a href="#Node.__init__-24"><span class="linenos">24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="Node.__init__-25"><a href="#Node.__init__-25"><span class="linenos">25</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="Node.__init__-26"><a href="#Node.__init__-26"><span class="linenos">26</span></a>        <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="Node.__init__-27"><a href="#Node.__init__-27"><span class="linenos">27</span></a>        <span class="nb">type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -651,7 +651,7 @@ uses_register : bool (optional, default = False)
 
     </div>
     <a class="headerlink" href="#Node.get_value"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.get_value-86"><a href="#Node.get_value-86"><span class="linenos">86</span></a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.get_value-86"><a href="#Node.get_value-86"><span class="linenos">86</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 </span><span id="Node.get_value-87"><a href="#Node.get_value-87"><span class="linenos">87</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node.get_value-88"><a href="#Node.get_value-88"><span class="linenos">88</span></a><span class="sd">        Get the value of this Node.</span>
 </span><span id="Node.get_value-89"><a href="#Node.get_value-89"><span class="linenos">89</span></a>
@@ -686,7 +686,7 @@ uses_register : bool (optional, default = False)
 
     </div>
     <a class="headerlink" href="#Node.get_type"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.get_type-98"><a href="#Node.get_type-98"><span class="linenos"> 98</span></a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.get_type-98"><a href="#Node.get_type-98"><span class="linenos"> 98</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 </span><span id="Node.get_type-99"><a href="#Node.get_type-99"><span class="linenos"> 99</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node.get_type-100"><a href="#Node.get_type-100"><span class="linenos">100</span></a><span class="sd">        Get the type of this Node.</span>
 </span><span id="Node.get_type-101"><a href="#Node.get_type-101"><span class="linenos">101</span></a>
@@ -721,7 +721,7 @@ uses_register : bool (optional, default = False)
 
     </div>
     <a class="headerlink" href="#Node.get_certificate_label"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.get_certificate_label-110"><a href="#Node.get_certificate_label-110"><span class="linenos">110</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.get_certificate_label-110"><a href="#Node.get_certificate_label-110"><span class="linenos">110</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="Node.get_certificate_label-111"><a href="#Node.get_certificate_label-111"><span class="linenos">111</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node.get_certificate_label-112"><a href="#Node.get_certificate_label-112"><span class="linenos">112</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="Node.get_certificate_label-113"><a href="#Node.get_certificate_label-113"><span class="linenos">113</span></a>
@@ -768,7 +768,7 @@ subclasses should return a composition of lists.</p>
 
     </div>
     <a class="headerlink" href="#Node.print"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.print-128"><a href="#Node.print-128"><span class="linenos">128</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.print-128"><a href="#Node.print-128"><span class="linenos">128</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="Node.print-129"><a href="#Node.print-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node.print-130"><a href="#Node.print-130"><span class="linenos">130</span></a><span class="sd">        Print the string representation of `self`.</span>
 </span><span id="Node.print-131"><a href="#Node.print-131"><span class="linenos">131</span></a>
@@ -809,7 +809,7 @@ paremeter.</p>
 
     </div>
     <a class="headerlink" href="#Node.generate_code"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.generate_code-143"><a href="#Node.generate_code-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.generate_code-143"><a href="#Node.generate_code-143"><span class="linenos">143</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="Node.generate_code-144"><a href="#Node.generate_code-144"><span class="linenos">144</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="Node.generate_code-145"><a href="#Node.generate_code-145"><span class="linenos">145</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
 </span><span id="Node.generate_code-146"><a href="#Node.generate_code-146"><span class="linenos">146</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -909,7 +909,7 @@ generate code using not only the node itself, but its children, too.</p>
 
     </div>
     <a class="headerlink" href="#Node.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.certificate-193"><a href="#Node.certificate-193"><span class="linenos">193</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.certificate-193"><a href="#Node.certificate-193"><span class="linenos">193</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="Node.certificate-194"><a href="#Node.certificate-194"><span class="linenos">194</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Node.certificate-195"><a href="#Node.certificate-195"><span class="linenos">195</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
 </span><span id="Node.certificate-196"><a href="#Node.certificate-196"><span class="linenos">196</span></a>

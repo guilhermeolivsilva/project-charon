@@ -82,24 +82,24 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Representation of PROG nodes for the Abstract Syntax Tree.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">override</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.node</span> <span class="kn">import</span> <span class="n">Node</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
-</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="k">class</span> <span class="nc">PROG</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PROG</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the representation of the beginning of a program for the AST.&quot;&quot;&quot;</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>    <span class="nd">@override</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HALT&quot;</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>
@@ -112,7 +112,7 @@
 </span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
 </span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="nd">@override</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>
@@ -137,7 +137,7 @@
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="nd">@override</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Print the string representation of this `PROG`.</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
@@ -156,7 +156,7 @@
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>            <span class="n">child</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="nd">@override</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -197,7 +197,7 @@
 </span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="nd">@override</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
 </span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>
@@ -235,17 +235,17 @@
 
     </div>
     <a class="headerlink" href="#PROG"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="PROG-11"><a href="#PROG-11"><span class="linenos"> 11</span></a><span class="k">class</span> <span class="nc">PROG</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="PROG-11"><a href="#PROG-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PROG</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 </span><span id="PROG-12"><a href="#PROG-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Implement the representation of the beginning of a program for the AST.&quot;&quot;&quot;</span>
 </span><span id="PROG-13"><a href="#PROG-13"><span class="linenos"> 13</span></a>
 </span><span id="PROG-14"><a href="#PROG-14"><span class="linenos"> 14</span></a>    <span class="nd">@override</span>
-</span><span id="PROG-15"><a href="#PROG-15"><span class="linenos"> 15</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="PROG-15"><a href="#PROG-15"><span class="linenos"> 15</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="PROG-16"><a href="#PROG-16"><span class="linenos"> 16</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">uses_register</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span><span id="PROG-17"><a href="#PROG-17"><span class="linenos"> 17</span></a>
 </span><span id="PROG-18"><a href="#PROG-18"><span class="linenos"> 18</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HALT&quot;</span>
 </span><span id="PROG-19"><a href="#PROG-19"><span class="linenos"> 19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="PROG-20"><a href="#PROG-20"><span class="linenos"> 20</span></a>
-</span><span id="PROG-21"><a href="#PROG-21"><span class="linenos"> 21</span></a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="PROG-21"><a href="#PROG-21"><span class="linenos"> 21</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="PROG-22"><a href="#PROG-22"><span class="linenos"> 22</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG-23"><a href="#PROG-23"><span class="linenos"> 23</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="PROG-24"><a href="#PROG-24"><span class="linenos"> 24</span></a>
@@ -258,7 +258,7 @@
 </span><span id="PROG-31"><a href="#PROG-31"><span class="linenos"> 31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </span><span id="PROG-32"><a href="#PROG-32"><span class="linenos"> 32</span></a>
 </span><span id="PROG-33"><a href="#PROG-33"><span class="linenos"> 33</span></a>    <span class="nd">@override</span>
-</span><span id="PROG-34"><a href="#PROG-34"><span class="linenos"> 34</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="PROG-34"><a href="#PROG-34"><span class="linenos"> 34</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="PROG-35"><a href="#PROG-35"><span class="linenos"> 35</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG-36"><a href="#PROG-36"><span class="linenos"> 36</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="PROG-37"><a href="#PROG-37"><span class="linenos"> 37</span></a>
@@ -283,7 +283,7 @@
 </span><span id="PROG-56"><a href="#PROG-56"><span class="linenos"> 56</span></a>        <span class="k">return</span> <span class="n">certificate_label</span>
 </span><span id="PROG-57"><a href="#PROG-57"><span class="linenos"> 57</span></a>
 </span><span id="PROG-58"><a href="#PROG-58"><span class="linenos"> 58</span></a>    <span class="nd">@override</span>
-</span><span id="PROG-59"><a href="#PROG-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="PROG-59"><a href="#PROG-59"><span class="linenos"> 59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="PROG-60"><a href="#PROG-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG-61"><a href="#PROG-61"><span class="linenos"> 61</span></a><span class="sd">        Print the string representation of this `PROG`.</span>
 </span><span id="PROG-62"><a href="#PROG-62"><span class="linenos"> 62</span></a>
@@ -302,7 +302,7 @@
 </span><span id="PROG-75"><a href="#PROG-75"><span class="linenos"> 75</span></a>            <span class="n">child</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span><span id="PROG-76"><a href="#PROG-76"><span class="linenos"> 76</span></a>
 </span><span id="PROG-77"><a href="#PROG-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
-</span><span id="PROG-78"><a href="#PROG-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="PROG-78"><a href="#PROG-78"><span class="linenos"> 78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="PROG-79"><a href="#PROG-79"><span class="linenos"> 79</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="PROG-80"><a href="#PROG-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="PROG-81"><a href="#PROG-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -343,7 +343,7 @@
 </span><span id="PROG-116"><a href="#PROG-116"><span class="linenos">116</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code_metadata</span>
 </span><span id="PROG-117"><a href="#PROG-117"><span class="linenos">117</span></a>
 </span><span id="PROG-118"><a href="#PROG-118"><span class="linenos">118</span></a>    <span class="nd">@override</span>
-</span><span id="PROG-119"><a href="#PROG-119"><span class="linenos">119</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="PROG-119"><a href="#PROG-119"><span class="linenos">119</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="PROG-120"><a href="#PROG-120"><span class="linenos">120</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG-121"><a href="#PROG-121"><span class="linenos">121</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
 </span><span id="PROG-122"><a href="#PROG-122"><span class="linenos">122</span></a>
@@ -406,7 +406,7 @@
 
     </div>
     <a class="headerlink" href="#PROG.add_child"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="PROG.add_child-21"><a href="#PROG.add_child-21"><span class="linenos">21</span></a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="PROG.add_child-21"><a href="#PROG.add_child-21"><span class="linenos">21</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="PROG.add_child-22"><a href="#PROG.add_child-22"><span class="linenos">22</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG.add_child-23"><a href="#PROG.add_child-23"><span class="linenos">23</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="PROG.add_child-24"><a href="#PROG.add_child-24"><span class="linenos">24</span></a>
@@ -443,7 +443,7 @@
     </div>
     <a class="headerlink" href="#PROG.get_certificate_label"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="PROG.get_certificate_label-33"><a href="#PROG.get_certificate_label-33"><span class="linenos">33</span></a>    <span class="nd">@override</span>
-</span><span id="PROG.get_certificate_label-34"><a href="#PROG.get_certificate_label-34"><span class="linenos">34</span></a>    <span class="k">def</span> <span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="PROG.get_certificate_label-34"><a href="#PROG.get_certificate_label-34"><span class="linenos">34</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="PROG.get_certificate_label-35"><a href="#PROG.get_certificate_label-35"><span class="linenos">35</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG.get_certificate_label-36"><a href="#PROG.get_certificate_label-36"><span class="linenos">36</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="PROG.get_certificate_label-37"><a href="#PROG.get_certificate_label-37"><span class="linenos">37</span></a>
@@ -495,7 +495,7 @@ subtree, recursively, and then from the <code><a href="#PROG">PROG</a></code> no
     </div>
     <a class="headerlink" href="#PROG.print"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="PROG.print-58"><a href="#PROG.print-58"><span class="linenos">58</span></a>    <span class="nd">@override</span>
-</span><span id="PROG.print-59"><a href="#PROG.print-59"><span class="linenos">59</span></a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="PROG.print-59"><a href="#PROG.print-59"><span class="linenos">59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="PROG.print-60"><a href="#PROG.print-60"><span class="linenos">60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG.print-61"><a href="#PROG.print-61"><span class="linenos">61</span></a><span class="sd">        Print the string representation of this `PROG`.</span>
 </span><span id="PROG.print-62"><a href="#PROG.print-62"><span class="linenos">62</span></a>
@@ -541,7 +541,7 @@ with an additional left space.</p>
     </div>
     <a class="headerlink" href="#PROG.generate_code"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="PROG.generate_code-77"><a href="#PROG.generate_code-77"><span class="linenos"> 77</span></a>    <span class="nd">@override</span>
-</span><span id="PROG.generate_code-78"><a href="#PROG.generate_code-78"><span class="linenos"> 78</span></a>    <span class="k">def</span> <span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="PROG.generate_code-78"><a href="#PROG.generate_code-78"><span class="linenos"> 78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
 </span><span id="PROG.generate_code-79"><a href="#PROG.generate_code-79"><span class="linenos"> 79</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="PROG.generate_code-80"><a href="#PROG.generate_code-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]:</span>
 </span><span id="PROG.generate_code-81"><a href="#PROG.generate_code-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -623,7 +623,7 @@ code_metadata : list of dict
     </div>
     <a class="headerlink" href="#PROG.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="PROG.certificate-118"><a href="#PROG.certificate-118"><span class="linenos">118</span></a>    <span class="nd">@override</span>
-</span><span id="PROG.certificate-119"><a href="#PROG.certificate-119"><span class="linenos">119</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="PROG.certificate-119"><a href="#PROG.certificate-119"><span class="linenos">119</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="PROG.certificate-120"><a href="#PROG.certificate-120"><span class="linenos">120</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PROG.certificate-121"><a href="#PROG.certificate-121"><span class="linenos">121</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
 </span><span id="PROG.certificate-122"><a href="#PROG.certificate-122"><span class="linenos">122</span></a>

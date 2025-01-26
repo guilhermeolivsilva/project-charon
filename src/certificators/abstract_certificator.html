@@ -76,21 +76,21 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;Base class for Certificator classes (i.e., back and frontends).&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
 </span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="k">class</span> <span class="nc">AbstractCertificator</span><span class="p">:</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="k">class</span><span class="w"> </span><span class="nc">AbstractCertificator</span><span class="p">:</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for certificator classes.&quot;&quot;&quot;</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">initial_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="nd">@abstractmethod</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>        <span class="k">pass</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="k">def</span> <span class="nf">get_certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span>
 </span></pre></div>
 
@@ -107,18 +107,18 @@
 
     </div>
     <a class="headerlink" href="#AbstractCertificator"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AbstractCertificator-7"><a href="#AbstractCertificator-7"><span class="linenos"> 7</span></a><span class="k">class</span> <span class="nc">AbstractCertificator</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AbstractCertificator-7"><a href="#AbstractCertificator-7"><span class="linenos"> 7</span></a><span class="k">class</span><span class="w"> </span><span class="nc">AbstractCertificator</span><span class="p">:</span>
 </span><span id="AbstractCertificator-8"><a href="#AbstractCertificator-8"><span class="linenos"> 8</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for certificator classes.&quot;&quot;&quot;</span>
 </span><span id="AbstractCertificator-9"><a href="#AbstractCertificator-9"><span class="linenos"> 9</span></a>
-</span><span id="AbstractCertificator-10"><a href="#AbstractCertificator-10"><span class="linenos">10</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AbstractCertificator-10"><a href="#AbstractCertificator-10"><span class="linenos">10</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="AbstractCertificator-11"><a href="#AbstractCertificator-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="AbstractCertificator-12"><a href="#AbstractCertificator-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">initial_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span><span id="AbstractCertificator-13"><a href="#AbstractCertificator-13"><span class="linenos">13</span></a>
 </span><span id="AbstractCertificator-14"><a href="#AbstractCertificator-14"><span class="linenos">14</span></a>    <span class="nd">@abstractmethod</span>
-</span><span id="AbstractCertificator-15"><a href="#AbstractCertificator-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="AbstractCertificator-15"><a href="#AbstractCertificator-15"><span class="linenos">15</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="AbstractCertificator-16"><a href="#AbstractCertificator-16"><span class="linenos">16</span></a>        <span class="k">pass</span>
 </span><span id="AbstractCertificator-17"><a href="#AbstractCertificator-17"><span class="linenos">17</span></a>
-</span><span id="AbstractCertificator-18"><a href="#AbstractCertificator-18"><span class="linenos">18</span></a>    <span class="k">def</span> <span class="nf">get_certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="AbstractCertificator-18"><a href="#AbstractCertificator-18"><span class="linenos">18</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="AbstractCertificator-19"><a href="#AbstractCertificator-19"><span class="linenos">19</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span>
 </span></pre></div>
 
@@ -137,7 +137,7 @@
 
     </div>
     <a class="headerlink" href="#AbstractCertificator.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AbstractCertificator.__init__-10"><a href="#AbstractCertificator.__init__-10"><span class="linenos">10</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AbstractCertificator.__init__-10"><a href="#AbstractCertificator.__init__-10"><span class="linenos">10</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="AbstractCertificator.__init__-11"><a href="#AbstractCertificator.__init__-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="AbstractCertificator.__init__-12"><a href="#AbstractCertificator.__init__-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">initial_prime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
 </span></pre></div>
@@ -181,7 +181,7 @@
     </div>
     <a class="headerlink" href="#AbstractCertificator.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="AbstractCertificator.certificate-14"><a href="#AbstractCertificator.certificate-14"><span class="linenos">14</span></a>    <span class="nd">@abstractmethod</span>
-</span><span id="AbstractCertificator.certificate-15"><a href="#AbstractCertificator.certificate-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="AbstractCertificator.certificate-15"><a href="#AbstractCertificator.certificate-15"><span class="linenos">15</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="AbstractCertificator.certificate-16"><a href="#AbstractCertificator.certificate-16"><span class="linenos">16</span></a>        <span class="k">pass</span>
 </span></pre></div>
 
@@ -200,7 +200,7 @@
 
     </div>
     <a class="headerlink" href="#AbstractCertificator.get_certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AbstractCertificator.get_certificate-18"><a href="#AbstractCertificator.get_certificate-18"><span class="linenos">18</span></a>    <span class="k">def</span> <span class="nf">get_certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AbstractCertificator.get_certificate-18"><a href="#AbstractCertificator.get_certificate-18"><span class="linenos">18</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="AbstractCertificator.get_certificate-19"><a href="#AbstractCertificator.get_certificate-19"><span class="linenos">19</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span>
 </span></pre></div>
 

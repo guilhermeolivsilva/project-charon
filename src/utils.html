@@ -97,13 +97,13 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;General purpose utilities.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="n">builtin_types</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;short&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">    Check whether the given `number` is a prime.</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
@@ -128,7 +128,7 @@
 </span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>    <span class="k">return</span> <span class="kc">True</span>
 </span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>
 </span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="k">def</span> <span class="nf">next_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="k">def</span><span class="w"> </span><span class="nf">next_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">    Compute the next prime immediately after `number`.</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>
@@ -152,7 +152,7 @@
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="n">next_number</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="k">def</span> <span class="nf">previous_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="k">def</span><span class="w"> </span><span class="nf">previous_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">    Compute the prime immediately before `number`.</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
@@ -176,7 +176,7 @@
 </span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>        <span class="n">previous_number</span> <span class="o">-=</span> <span class="mi">1</span>
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="k">def</span> <span class="nf">primes_list</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="k">def</span><span class="w"> </span><span class="nf">primes_list</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">    Compute a list of prime numbers with a given `length`.</span>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>
@@ -205,7 +205,7 @@
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>    <span class="k">return</span> <span class="n">primes</span>
 </span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
 </span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="k">def</span> <span class="nf">type_cast</span><span class="p">(</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="k">def</span><span class="w"> </span><span class="nf">type_cast</span><span class="p">(</span>
 </span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>    <span class="n">original_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
 </span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -278,7 +278,7 @@
 </span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>    <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">code</span>
 </span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>
 </span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="k">def</span> <span class="nf">get_variable_size</span><span class="p">(</span><span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_variable_size</span><span class="p">(</span><span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">    Get the size of a variable, in bytes, from its type.</span>
 </span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>
@@ -314,7 +314,7 @@
 </span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>    <span class="k">return</span> <span class="n">var_size</span> <span class="o">*</span> <span class="n">var_length</span>
 </span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>
 </span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>
-</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a><span class="k">def</span> <span class="nf">flatten_list</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">drop_duplicates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a><span class="k">def</span><span class="w"> </span><span class="nf">flatten_list</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">drop_duplicates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 </span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a><span class="sd">    Flatten a list of lists into a single list.</span>
 </span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>
@@ -433,7 +433,7 @@
 </span><span id="L-336"><a href="#L-336"><span class="linenos">336</span></a><span class="p">}</span>
 </span><span id="L-337"><a href="#L-337"><span class="linenos">337</span></a>
 </span><span id="L-338"><a href="#L-338"><span class="linenos">338</span></a>
-</span><span id="L-339"><a href="#L-339"><span class="linenos">339</span></a><span class="k">def</span> <span class="nf">get_certificate_symbol</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-339"><a href="#L-339"><span class="linenos">339</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_symbol</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="L-340"><a href="#L-340"><span class="linenos">340</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-341"><a href="#L-341"><span class="linenos">341</span></a><span class="sd">    Get the certificate symbol associated with the given operation.</span>
 </span><span id="L-342"><a href="#L-342"><span class="linenos">342</span></a>
@@ -484,7 +484,7 @@
 
     </div>
     <a class="headerlink" href="#is_prime"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="is_prime-10"><a href="#is_prime-10"><span class="linenos">10</span></a><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="is_prime-10"><a href="#is_prime-10"><span class="linenos">10</span></a><span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span id="is_prime-11"><a href="#is_prime-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="is_prime-12"><a href="#is_prime-12"><span class="linenos">12</span></a><span class="sd">    Check whether the given `number` is a prime.</span>
 </span><span id="is_prime-13"><a href="#is_prime-13"><span class="linenos">13</span></a>
@@ -536,7 +536,7 @@
 
     </div>
     <a class="headerlink" href="#next_prime"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="next_prime-35"><a href="#next_prime-35"><span class="linenos">35</span></a><span class="k">def</span> <span class="nf">next_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="next_prime-35"><a href="#next_prime-35"><span class="linenos">35</span></a><span class="k">def</span><span class="w"> </span><span class="nf">next_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="next_prime-36"><a href="#next_prime-36"><span class="linenos">36</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="next_prime-37"><a href="#next_prime-37"><span class="linenos">37</span></a><span class="sd">    Compute the next prime immediately after `number`.</span>
 </span><span id="next_prime-38"><a href="#next_prime-38"><span class="linenos">38</span></a>
@@ -587,7 +587,7 @@
 
     </div>
     <a class="headerlink" href="#previous_prime"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="previous_prime-59"><a href="#previous_prime-59"><span class="linenos">59</span></a><span class="k">def</span> <span class="nf">previous_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="previous_prime-59"><a href="#previous_prime-59"><span class="linenos">59</span></a><span class="k">def</span><span class="w"> </span><span class="nf">previous_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="previous_prime-60"><a href="#previous_prime-60"><span class="linenos">60</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="previous_prime-61"><a href="#previous_prime-61"><span class="linenos">61</span></a><span class="sd">    Compute the prime immediately before `number`.</span>
 </span><span id="previous_prime-62"><a href="#previous_prime-62"><span class="linenos">62</span></a>
@@ -638,7 +638,7 @@
 
     </div>
     <a class="headerlink" href="#primes_list"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="primes_list-83"><a href="#primes_list-83"><span class="linenos"> 83</span></a><span class="k">def</span> <span class="nf">primes_list</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="primes_list-83"><a href="#primes_list-83"><span class="linenos"> 83</span></a><span class="k">def</span><span class="w"> </span><span class="nf">primes_list</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 </span><span id="primes_list-84"><a href="#primes_list-84"><span class="linenos"> 84</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="primes_list-85"><a href="#primes_list-85"><span class="linenos"> 85</span></a><span class="sd">    Compute a list of prime numbers with a given `length`.</span>
 </span><span id="primes_list-86"><a href="#primes_list-86"><span class="linenos"> 86</span></a>
@@ -696,7 +696,7 @@
 
     </div>
     <a class="headerlink" href="#type_cast"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="type_cast-112"><a href="#type_cast-112"><span class="linenos">112</span></a><span class="k">def</span> <span class="nf">type_cast</span><span class="p">(</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="type_cast-112"><a href="#type_cast-112"><span class="linenos">112</span></a><span class="k">def</span><span class="w"> </span><span class="nf">type_cast</span><span class="p">(</span>
 </span><span id="type_cast-113"><a href="#type_cast-113"><span class="linenos">113</span></a>    <span class="n">original_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="type_cast-114"><a href="#type_cast-114"><span class="linenos">114</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
 </span><span id="type_cast-115"><a href="#type_cast-115"><span class="linenos">115</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -810,7 +810,7 @@ code : list[dict]
 
     </div>
     <a class="headerlink" href="#get_variable_size"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_variable_size-185"><a href="#get_variable_size-185"><span class="linenos">185</span></a><span class="k">def</span> <span class="nf">get_variable_size</span><span class="p">(</span><span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_variable_size-185"><a href="#get_variable_size-185"><span class="linenos">185</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_variable_size</span><span class="p">(</span><span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="get_variable_size-186"><a href="#get_variable_size-186"><span class="linenos">186</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="get_variable_size-187"><a href="#get_variable_size-187"><span class="linenos">187</span></a><span class="sd">    Get the size of a variable, in bytes, from its type.</span>
 </span><span id="get_variable_size-188"><a href="#get_variable_size-188"><span class="linenos">188</span></a>
@@ -873,7 +873,7 @@ code : list[dict]
 
     </div>
     <a class="headerlink" href="#flatten_list"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="flatten_list-221"><a href="#flatten_list-221"><span class="linenos">221</span></a><span class="k">def</span> <span class="nf">flatten_list</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">drop_duplicates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="flatten_list-221"><a href="#flatten_list-221"><span class="linenos">221</span></a><span class="k">def</span><span class="w"> </span><span class="nf">flatten_list</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">drop_duplicates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 </span><span id="flatten_list-222"><a href="#flatten_list-222"><span class="linenos">222</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="flatten_list-223"><a href="#flatten_list-223"><span class="linenos">223</span></a><span class="sd">    Flatten a list of lists into a single list.</span>
 </span><span id="flatten_list-224"><a href="#flatten_list-224"><span class="linenos">224</span></a>
@@ -946,7 +946,7 @@ drop_duplicates : bool (optional, default = True)
                     <div class="attr variable">
             <span class="name">INSTRUCTIONS_CATEGORIES</span>        =
 <input id="INSTRUCTIONS_CATEGORIES-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;variables&#39;: [&#39;ALLOC&#39;, &#39;ADDRESS&#39;, &#39;LOAD&#39;], &#39;functions&#39;: [&#39;ALLOC&#39;, &#39;STORE&#39;, &#39;MOV&#39;], &#39;jumps&#39;: [&#39;NOT&#39;, &#39;MOV&#39;, &#39;JZ&#39;, &#39;JR&#39;, &#39;JAL&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STORE&#39;], &#39;binops&#39;: [&#39;OR&#39;, &#39;SUB&#39;, &#39;LSHIFT&#39;, &#39;NEQ&#39;, &#39;AND&#39;, &#39;FSUB&#39;, &#39;FEQ&#39;, &#39;FADD&#39;, &#39;FDIV&#39;, &#39;FAND&#39;, &#39;EQ&#39;, &#39;GT&#39;, &#39;FGT&#39;, &#39;ADD&#39;, &#39;RSHIFT&#39;, &#39;FLT&#39;, &#39;BITOR&#39;, &#39;FMULT&#39;, &#39;BITAND&#39;, &#39;MULT&#39;, &#39;FNEQ&#39;, &#39;MOD&#39;, &#39;DIV&#39;, &#39;LT&#39;, &#39;FOR&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
+            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;variables&#39;: [&#39;ALLOC&#39;, &#39;ADDRESS&#39;, &#39;LOAD&#39;], &#39;functions&#39;: [&#39;MOV&#39;, &#39;STORE&#39;, &#39;ALLOC&#39;], &#39;jumps&#39;: [&#39;JR&#39;, &#39;NOT&#39;, &#39;JAL&#39;, &#39;MOV&#39;, &#39;JZ&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STORE&#39;], &#39;binops&#39;: [&#39;OR&#39;, &#39;ADD&#39;, &#39;LSHIFT&#39;, &#39;BITAND&#39;, &#39;FDIV&#39;, &#39;RSHIFT&#39;, &#39;FMULT&#39;, &#39;MULT&#39;, &#39;FOR&#39;, &#39;FGT&#39;, &#39;FADD&#39;, &#39;GT&#39;, &#39;SUB&#39;, &#39;FAND&#39;, &#39;NEQ&#39;, &#39;FLT&#39;, &#39;EQ&#39;, &#39;FEQ&#39;, &#39;FNEQ&#39;, &#39;BITOR&#39;, &#39;MOD&#39;, &#39;DIV&#39;, &#39;AND&#39;, &#39;LT&#39;, &#39;FSUB&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
 
         
     </div>
@@ -992,7 +992,7 @@ drop_duplicates : bool (optional, default = True)
 
     </div>
     <a class="headerlink" href="#get_certificate_symbol"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_certificate_symbol-340"><a href="#get_certificate_symbol-340"><span class="linenos">340</span></a><span class="k">def</span> <span class="nf">get_certificate_symbol</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_certificate_symbol-340"><a href="#get_certificate_symbol-340"><span class="linenos">340</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_symbol</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="get_certificate_symbol-341"><a href="#get_certificate_symbol-341"><span class="linenos">341</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="get_certificate_symbol-342"><a href="#get_certificate_symbol-342"><span class="linenos">342</span></a><span class="sd">    Get the certificate symbol associated with the given operation.</span>
 </span><span id="get_certificate_symbol-343"><a href="#get_certificate_symbol-343"><span class="linenos">343</span></a>

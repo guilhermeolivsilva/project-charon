@@ -70,17 +70,17 @@
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;Certificator for the frontend representation of [C]haron programs.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">import</span> <span class="nn">re</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">override</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span> <span class="nn">src.abstract_syntax_tree</span> <span class="kn">import</span> <span class="n">AbstractSyntaxTree</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span> <span class="nn">src.ast_nodes.variables.STRUCT_DEF</span> <span class="kn">import</span> <span class="n">STRUCT_DEF</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span> <span class="nn">src.certificators.abstract_certificator</span> <span class="kn">import</span> <span class="n">AbstractCertificator</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span> <span class="nn">src.utils</span> <span class="kn">import</span> <span class="n">next_prime</span><span class="p">,</span> <span class="n">TYPE_SYMBOLS_MAP</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.abstract_syntax_tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractSyntaxTree</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.variables.STRUCT_DEF</span><span class="w"> </span><span class="kn">import</span> <span class="n">STRUCT_DEF</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.certificators.abstract_certificator</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractCertificator</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">next_prime</span><span class="p">,</span> <span class="n">TYPE_SYMBOLS_MAP</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="k">class</span> <span class="nc">FrontendCertificator</span><span class="p">(</span><span class="n">AbstractCertificator</span><span class="p">):</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="k">class</span><span class="w"> </span><span class="nc">FrontendCertificator</span><span class="p">(</span><span class="n">AbstractCertificator</span><span class="p">):</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    Certificate the frontend representation of some program.</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
@@ -90,13 +90,13 @@
 </span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">        The AST of the program to certificate.</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 </span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>
 </span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span> <span class="o">=</span> <span class="n">ast</span>
 </span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
 </span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="nd">@override</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">        Certificate the frontend code.</span>
 </span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>
@@ -113,7 +113,7 @@
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>
 </span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    <span class="k">def</span> <span class="nf">_certificate_ast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_certificate_ast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a><span class="sd">        Certificate the Abstract Syntax Tree.</span>
 </span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>
@@ -145,7 +145,7 @@
 
     </div>
     <a class="headerlink" href="#FrontendCertificator"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="FrontendCertificator-14"><a href="#FrontendCertificator-14"><span class="linenos">14</span></a><span class="k">class</span> <span class="nc">FrontendCertificator</span><span class="p">(</span><span class="n">AbstractCertificator</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="FrontendCertificator-14"><a href="#FrontendCertificator-14"><span class="linenos">14</span></a><span class="k">class</span><span class="w"> </span><span class="nc">FrontendCertificator</span><span class="p">(</span><span class="n">AbstractCertificator</span><span class="p">):</span>
 </span><span id="FrontendCertificator-15"><a href="#FrontendCertificator-15"><span class="linenos">15</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="FrontendCertificator-16"><a href="#FrontendCertificator-16"><span class="linenos">16</span></a><span class="sd">    Certificate the frontend representation of some program.</span>
 </span><span id="FrontendCertificator-17"><a href="#FrontendCertificator-17"><span class="linenos">17</span></a>
@@ -155,13 +155,13 @@
 </span><span id="FrontendCertificator-21"><a href="#FrontendCertificator-21"><span class="linenos">21</span></a><span class="sd">        The AST of the program to certificate.</span>
 </span><span id="FrontendCertificator-22"><a href="#FrontendCertificator-22"><span class="linenos">22</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="FrontendCertificator-23"><a href="#FrontendCertificator-23"><span class="linenos">23</span></a>
-</span><span id="FrontendCertificator-24"><a href="#FrontendCertificator-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="FrontendCertificator-24"><a href="#FrontendCertificator-24"><span class="linenos">24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="FrontendCertificator-25"><a href="#FrontendCertificator-25"><span class="linenos">25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 </span><span id="FrontendCertificator-26"><a href="#FrontendCertificator-26"><span class="linenos">26</span></a>
 </span><span id="FrontendCertificator-27"><a href="#FrontendCertificator-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span> <span class="o">=</span> <span class="n">ast</span>
 </span><span id="FrontendCertificator-28"><a href="#FrontendCertificator-28"><span class="linenos">28</span></a>
 </span><span id="FrontendCertificator-29"><a href="#FrontendCertificator-29"><span class="linenos">29</span></a>    <span class="nd">@override</span>
-</span><span id="FrontendCertificator-30"><a href="#FrontendCertificator-30"><span class="linenos">30</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="FrontendCertificator-30"><a href="#FrontendCertificator-30"><span class="linenos">30</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="FrontendCertificator-31"><a href="#FrontendCertificator-31"><span class="linenos">31</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="FrontendCertificator-32"><a href="#FrontendCertificator-32"><span class="linenos">32</span></a><span class="sd">        Certificate the frontend code.</span>
 </span><span id="FrontendCertificator-33"><a href="#FrontendCertificator-33"><span class="linenos">33</span></a>
@@ -178,7 +178,7 @@
 </span><span id="FrontendCertificator-44"><a href="#FrontendCertificator-44"><span class="linenos">44</span></a>
 </span><span id="FrontendCertificator-45"><a href="#FrontendCertificator-45"><span class="linenos">45</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed_certificate</span>
 </span><span id="FrontendCertificator-46"><a href="#FrontendCertificator-46"><span class="linenos">46</span></a>
-</span><span id="FrontendCertificator-47"><a href="#FrontendCertificator-47"><span class="linenos">47</span></a>    <span class="k">def</span> <span class="nf">_certificate_ast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="FrontendCertificator-47"><a href="#FrontendCertificator-47"><span class="linenos">47</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_certificate_ast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="FrontendCertificator-48"><a href="#FrontendCertificator-48"><span class="linenos">48</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="FrontendCertificator-49"><a href="#FrontendCertificator-49"><span class="linenos">49</span></a><span class="sd">        Certificate the Abstract Syntax Tree.</span>
 </span><span id="FrontendCertificator-50"><a href="#FrontendCertificator-50"><span class="linenos">50</span></a>
@@ -217,7 +217,7 @@
 
     </div>
     <a class="headerlink" href="#FrontendCertificator.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="FrontendCertificator.__init__-24"><a href="#FrontendCertificator.__init__-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="FrontendCertificator.__init__-24"><a href="#FrontendCertificator.__init__-24"><span class="linenos">24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="FrontendCertificator.__init__-25"><a href="#FrontendCertificator.__init__-25"><span class="linenos">25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 </span><span id="FrontendCertificator.__init__-26"><a href="#FrontendCertificator.__init__-26"><span class="linenos">26</span></a>
 </span><span id="FrontendCertificator.__init__-27"><a href="#FrontendCertificator.__init__-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="p">:</span> <span class="n">AbstractSyntaxTree</span> <span class="o">=</span> <span class="n">ast</span>
@@ -251,7 +251,7 @@
     </div>
     <a class="headerlink" href="#FrontendCertificator.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="FrontendCertificator.certificate-29"><a href="#FrontendCertificator.certificate-29"><span class="linenos">29</span></a>    <span class="nd">@override</span>
-</span><span id="FrontendCertificator.certificate-30"><a href="#FrontendCertificator.certificate-30"><span class="linenos">30</span></a>    <span class="k">def</span> <span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="FrontendCertificator.certificate-30"><a href="#FrontendCertificator.certificate-30"><span class="linenos">30</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="FrontendCertificator.certificate-31"><a href="#FrontendCertificator.certificate-31"><span class="linenos">31</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="FrontendCertificator.certificate-32"><a href="#FrontendCertificator.certificate-32"><span class="linenos">32</span></a><span class="sd">        Certificate the frontend code.</span>
 </span><span id="FrontendCertificator.certificate-33"><a href="#FrontendCertificator.certificate-33"><span class="linenos">33</span></a>
