@@ -503,7 +503,7 @@ class BackendCertificator(AbstractCertificator):
             The jump certificate.
         """
 
-        # Identify the jump: `IF`, `IFELSE`, `WHILE`, `DO`
+        # Identify the jump: `IF`, `IFELSE`, `WHILE`
         jump_kind = self.__identify_jz(bytecode)
 
         # Build the certificate
@@ -685,24 +685,6 @@ class BackendCertificator(AbstractCertificator):
         metadata = bytecode["metadata"]
         register = metadata["register"]
 
-        # Handle a corner case: `NOT` followed by `JZ`, where `JZ` is identified
-        # to be a `DO` operation (DO/WHILE operations are built with a `NOT` +
-        # `JZ` instructions pair)
-        current_instruction_index = bytecode["instruction_id"] - 1
-        next_instruction_index = current_instruction_index + 1
-
-        next_bytecode = self.bytecode_list[next_instruction_index]
-        next_instruction = next_bytecode["instruction"]
-
-        if instruction == "NOT" and next_instruction == "JZ":
-            _jump_kind = self.__identify_jz(next_bytecode)
-
-            if _jump_kind == "DO":
-                # If it indeed is a `DO` operation, tag the current bytecode
-                # as certificated and handle the following jump
-                self.instruction_status[bytecode["instruction_id"]] = True
-                return self._handle_jump(next_bytecode)
-
         if instruction in INSTRUCTIONS_CATEGORIES["unops"]:
             keys = ["operand"]
             metadata_keys = ["value"]
@@ -869,8 +851,8 @@ class BackendCertificator(AbstractCertificator):
         """
         Tell the semantics of a conditional jump.
 
-        Conditional jumps are used to implement four control flow constructs:
-        `if`, `if/else`, `while`, and `do/while`. As the certification considers
+        Conditional jumps are used to implement three control flow constructs:
+        `if`, `if/else`, and `while`. As the certification considers
         what kind of control flow is being used, this method aims to identify
         the construct based on the pattern of its context.
 
@@ -881,7 +863,7 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        : str (values="IF", "IFELSE", "WHILE", "DO")
+        : str (values="IF", "IFELSE", "WHILE")
             The semantics of the conditional jump.
         """
 
@@ -916,8 +898,6 @@ class BackendCertificator(AbstractCertificator):
                     return "WHILE"
             else:
                 return "IF"
-        else:
-            return "DO"
 
     def __is_jump_forward(self, bytecode: dict[str, dict]) -> bool:
         """

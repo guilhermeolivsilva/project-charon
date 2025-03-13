@@ -24,7 +24,6 @@ from src.ast_nodes.functions.PARAM import PARAM
 from src.ast_nodes.functions.RET_SYM import RET_SYM
 
 # Conditional nodes (control flow, loops etc.)
-from src.ast_nodes.conditionals.DO import DO
 from src.ast_nodes.conditionals.IF import IF
 from src.ast_nodes.conditionals.IFELSE import IFELSE
 from src.ast_nodes.conditionals.WHILE import WHILE

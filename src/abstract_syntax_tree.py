@@ -164,7 +164,6 @@ class AbstractSyntaxTree:
             "VAR_DEF": self._var_def,
             "IF_SYM": self._if_sym,
             "WHILE_SYM": self._while_sym,
-            "DO_SYM": self._do_sym,
             "LCBRA": self._brackets,
         }
 
@@ -274,37 +273,6 @@ class AbstractSyntaxTree:
         loop = self._statement()
 
         return WHILE(parenthesis_expression=parenthesis_expression, loop=loop)
-
-    def _do_sym(self) -> Conditional:
-        """
-        Parse a `do/while` statement: `do <statement> while <parenthesis_expression> ;`
-
-        Returns
-        -------
-        : Conditional
-            A `Conditional` node that is parent of the expression to evaluate,
-            and the code to run while it is `True`. Note that the code to loop
-            is executed at least once, even if the `parenthesis_expression`
-            always evaluates to `False`.
-        """
-
-        self._next_symbol()
-
-        loop = self._statement()
-
-        if self.current_symbol == "WHILE_SYM":
-            self._next_symbol()
-        else:
-            raise SyntaxError("Malformed `do` statement: missing `while`.")
-
-        parenthesis_expression = self._parenthesis_expression()
-
-        if self.current_symbol == "SEMI":
-            self._next_symbol()
-        else:
-            raise SyntaxError("Missing semicolon at the end of statement.")
-
-        return DO(parenthesis_expression=parenthesis_expression, loop=loop)
 
     def _brackets(self) -> SEQ:
         """

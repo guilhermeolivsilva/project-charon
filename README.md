@@ -161,8 +161,7 @@ The EBNF expression of the language grammar is shown below:
 <selection-statement> ::= if ( <expression> ) <statement>
                         | if ( <expression> ) <statement> else <statement>
 
-<iteration-statement> ::= while ( <expression> ) <statement>
-                        | do <statement> while ( <expression> ) ;
+<iteration-statement> ::= while ( <expression> ) <statement>;
 ```
 
 ## Lexer

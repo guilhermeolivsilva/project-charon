@@ -8,7 +8,6 @@ from src.utils import next_prime, primes_list, TYPE_SYMBOLS_MAP
 
 class Lexer:
     conditionals: dict[str, str] = {
-        "do": "DO_SYM",
         "while": "WHILE_SYM",
         "if": "IF_SYM",
         "else": "ELSE_SYM",
@@ -186,8 +185,6 @@ class Lexer:
         tokens_to_tweak = ["(", ")", "{", "}", ";", "[", "]"]
         for token in tokens_to_tweak:
             source_code = source_code.replace(token, f" {token} ")
-
-        # TODO: tweak dot operator
 
         # Split the code word by word (or character by character)
         source_code = source_code.split(" ")

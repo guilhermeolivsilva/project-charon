@@ -281,7 +281,6 @@ __JUMPS = {
     "IF": ["JZ"],
     "IFELSE": ["JZ"],
     "WHILE": ["JZ"],
-    "DO": ["NOT", "JZ"],
 }
 
 
