@@ -27,6 +27,7 @@ class CodeGenerator:
             "global_vars": [],
             "code": [],
         }
+        self.environment: dict[int, str] = {}
         self.register: int = 0
 
     def __str__(self) -> str:
@@ -112,7 +113,10 @@ class CodeGenerator:
         ]
 
         for global_var_def in global_var_def_nodes:
-            self.register, code = global_var_def.generate_code(register=self.register)
+            self.register, code = global_var_def.generate_code(
+                register=self.register,
+                environment=self.environment
+            )
             self.program["global_vars"].extend(code)
 
     def parse_functions(self) -> None:

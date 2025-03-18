@@ -110,7 +110,7 @@ def primes_list(length: int) -> list[int]:
 
 def type_cast(
     original_type: str, target_type: str, register: int
-) -> tuple[int, list[dict[str, str]]]:
+) -> tuple[list[dict[str, str]], int]:
     """
     Compute a type cast instruction from `original_type` to `target_type`.
 
@@ -178,7 +178,7 @@ def type_cast(
         code.append(direct_cast)
         register += 1
 
-    return register, code
+    return code, register
 
 
 def get_variable_size(variable_metadata: dict) -> int:
