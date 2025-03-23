@@ -108,6 +108,42 @@ def primes_list(length: int) -> list[int]:
     return primes
 
 
+def add_variable_to_environment(
+    environment: dict[str, dict[int, str]], size: int
+) -> dict[str, dict[int, str]]:
+    """
+    Add a new variable to the environment.
+
+    Parameters
+    ----------
+    environment : dict[int, str]
+        The compiler's environment, that maps variables IDs to memory
+        addresses and function IDs to instructions indices.
+    size : int
+        The variable size, in bytes.
+
+    Returns
+    -------
+    environment : dict[str, dict[int, str]]
+        The updated environment.
+    """
+
+    # If no variables are defined in the environment, the dict will be empty
+    # and we manually set the ID and address.
+    variable_count = len(environment["variables"])
+
+    if not variable_count:
+        var_id = 1
+        address = 0
+    else:
+        var_id = variable_count + 1
+        address = int(environment["variables"][variable_count], 16) + size
+
+    environment["variables"][var_id] = hex(address)
+
+    return environment
+
+
 def type_cast(
     original_type: str, target_type: str, register: int
 ) -> tuple[list[dict[str, str]], int]:

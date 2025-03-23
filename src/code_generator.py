@@ -27,7 +27,10 @@ class CodeGenerator:
             "global_vars": [],
             "code": [],
         }
-        self.environment: dict[int, str] = {}
+        self.environment: dict[str, dict[int, str]] = {
+            "variables": {},
+            "functions": {},
+        }
         self.register: int = 0
 
     def __str__(self) -> str:
@@ -113,7 +116,7 @@ class CodeGenerator:
         ]
 
         for global_var_def in global_var_def_nodes:
-            self.register, code = global_var_def.generate_code(
+            code, self.register, self.environment = global_var_def.generate_code(
                 register=self.register,
                 environment=self.environment
             )
@@ -134,12 +137,13 @@ class CodeGenerator:
             function_name = function_def.get_function_name()
             function_indices = {"start": index}
 
-            self.register, function_code = function_def.generate_code(
-                register=self.register
+            code, self.register, self.environment = function_def.generate_code(
+                register=self.register,
+                environment=self.environment
             )
-            self.program["code"].extend(function_code)
+            self.program["code"].extend(code)
 
-            index += len(function_code)
+            index += len(code)
 
             function_indices["end"] = index
             self.program["functions"][function_name] = function_indices
