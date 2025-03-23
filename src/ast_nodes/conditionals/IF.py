@@ -27,7 +27,7 @@ class IF(Conditional):
 
     @override
     def generate_code(
-        self, register: int, environment: dict[int, str]
+        self, register: int, environment: dict[str, dict[int, str]]
     ) -> tuple[
         list[dict[str, Union[int, str, float]]],
         int,
@@ -49,7 +49,7 @@ class IF(Conditional):
             Node.
         environment : dict[int, str]
             The compiler's environment, that maps variables IDs to memory
-            addresses.
+            addresses and function IDs to instructions indices.
 
         Returns
         -------
