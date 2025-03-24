@@ -44,7 +44,7 @@ class VAR(Node):
 
     @override
     def generate_code(
-        self, register: int, environment: dict[int, str]
+        self, register: int, environment: dict[str, dict[int, str]]
     ) -> tuple[
         list[dict[str, Union[int, str, float]]],
         int,
@@ -64,7 +64,7 @@ class VAR(Node):
             Node.
         environment : dict[int, str]
             The compiler's environment, that maps variables IDs to memory
-            addresses.
+            addresses and function IDs to instructions indices.
 
         Returns
         -------
@@ -77,22 +77,35 @@ class VAR(Node):
             The updated {var_id: address} environment mapping.
         """
 
-        # TODO: rewrite this based on the environment
-        raise
-
         operation: str = self.context.get("context", "read")
+        var_address = environment["variables"][self.id]["address"]
+
+        code = [
+            {
+                "instruction": "CONSTANT",
+                "metadata": {"register": register, "value": var_address}
+            },
+            {
+                "instruction": "ADD",
+                "metadata": {
+                    "register": register + 1,
+                    "lhs_register": register,
+                    "rhs_register": "zero"
+                },
+            }
+        ]
+
+        register += 2
 
         if operation == "read":
-            code = {
+            code.append({
                 "instruction": "LOAD",
-                "metadata": {"register": register, "id": self.value},
-            }
+                "metadata": {"register": register, "value": register - 1}
+            })
 
-        # Manually compute the variable address
-        else:
-            ...
+            register += 1
 
-        return register + 1, [code]
+        return code, register, environment
 
     def get_metadata(self) -> dict[str, str]:
         """
@@ -130,9 +143,11 @@ class VAR(Node):
 
         if operation == "read":
             symbol: str = get_certificate_symbol("VAR_VALUE")
+            self.instruction = "LOAD"
 
         else:
             symbol: str = get_certificate_symbol("VAR_ADDRESS")
+            self.instruction = "CONSTANT"
 
         # Add ^1 because it means memory offset + 1. As this is a regular
         # variable – and not an array nor struct –, the offset is always 0.
