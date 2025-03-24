@@ -93,14 +93,22 @@ class VAR_DEF(Node):
             The updated {var_id: address} environment mapping.
         """
 
+        environment = add_variable_to_environment(environment, self.size)
+        allocated_address = environment["variables"][self.value]["address"]
+
         code: list[dict[str, Union[int, str]]] = []
 
         var_def_code = {
             "instruction": self.instruction,
-            "metadata": {"id": self.value, "size": self.size, "register": register},
+            "metadata": {
+                "id": self.value,
+                "size": self.size,
+                "register": register,
+                "address": allocated_address
+            },
         }
         register += 1
 
         code.append(var_def_code)
 
-        return code, register, add_variable_to_environment(environment, self.size)
+        return code, register, environment

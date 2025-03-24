@@ -221,10 +221,9 @@ class VirtualMachine:
             err_msg += f"\nInstruction: {instruction_params}"
             raise MemoryError(err_msg)
 
-        variable_address: str = hex(self.memory_pointer)
-
         variable_id: int = instruction_params["id"]
         variable_size: int = instruction_params["size"]
+        variable_address: str = instruction_params["address"]
         variable_address_register: int = instruction_params["register"]
 
         updated_memory_pointer: int = self.memory_pointer + variable_size
