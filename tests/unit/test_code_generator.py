@@ -54,6 +54,16 @@ def test_parse_functions() -> None:
 
     # Mock the `register` to offset the global variables
     cg.register = len(MACHINE_CODE["global_vars"])
+
+    # Mock the `environment` to account for global variables
+    cg.environment = {
+        'variables': {
+            1: {'address': '0x0', 'size': 40},
+            2: {'address': '0x28', 'size': 8}
+        },
+        'functions': {}
+    }
+
     cg.parse_functions()
 
     expected_functions_indices = MACHINE_CODE["functions"]
