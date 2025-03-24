@@ -50,17 +50,18 @@ class ELEMENT_ACCESS(Node):
                 "Trying to access an element from variable that is not an array"
                 " nor struct."
             )
+        
+        if self.is_array and self.is_struct:
+            raise TypeError(
+                "Malformed `ELEMENT_ACCESS` node: can't tell if it is an array"
+                " or struct."
+            )
 
         super().__init__()
 
         self.variable: VAR = variable
         self.element: Union[CST, VAR] = element
         self.type: str = self._compute_element_type()
-
-        # The access type defaults to `static`, but can be changed to `dynamic`
-        # by the `_compute_element_offset` method.
-        self.access_type: str = "static"
-        self.element_offset: dict = self._compute_element_offset()
 
         # Handle the `instruction` and `symbol`. This defaults to the `read`
         # case, but can be changed by the AST as it is built
@@ -120,39 +121,102 @@ class ELEMENT_ACCESS(Node):
             The updated {var_id: address} environment mapping.
         """
 
-        # TODO: rewrite this based on the environment
-        raise
-
         code: list[dict[str, Union[int, str]]] = []
 
-        # Only generate `element` code if it is an dynamically accessed array.
-        # Statically accessed arrays and structs only need the offset, and this
-        # is calculated `_compute_element_offset`.
-        if self.access_type == "dynamic":
-            register, element_code = self.element.generate_code(register=register)
-            code.extend(element_code)
+        (
+            variable_code,
+            register,
+            environment
+        ) = self.variable.generate_code(
+            register=register,
+            environment=environment
+        )
+        variable_address_register = register - 1
 
-            element_register = register - 1
-            self.element_offset["offset_register"] = element_register
+        # Eliminate the `LOAD` from the variable code generation, as it won't
+        # be needed.
+        if self.context.get("context") == "read":
+            variable_address_register -= 1
+            variable_code.pop()
 
-        element_access_code = {
-            "instruction": self.instruction,
-            "metadata": {
-                "register": register,
-                "id": self.variable.get_value(),
-            },
-        }
+        code.extend(variable_code)
 
-        element_access_code["metadata"] = {
-            **element_access_code["metadata"],
-            **self.element_offset,
-        }
+        (
+            element_code,
+            register,
+            environment
+        ) = self.element.generate_code(
+            register=register,
+            environment=environment
+        )
+        element_value_register = register - 1
+        code.extend(element_code)
 
-        code.append(element_access_code)
+        # The offset computation depends on it being an array or a struct
+
+        # Case 1: array
+        # In this case, we simply multiply the value of the expression by the
+        # array type size and add it to the variable base address.
+        if self.is_array:
+            code.extend([
+                # Load the variable size into a register
+                {
+                    "instruction": "CONSTANT",
+                    "metadata": {
+                        "register": register,
+                        "value": builtin_types.get(self.variable.get_type()),
+                    }
+                },
+
+                # Compute the offset
+                {
+                    "instruction": "MULT",
+                    "metadata": {
+                        "register": register + 1,
+                        "lhs_register": element_value_register,
+                        "rhs_register": register
+                    }
+                }
+            ])
+
+            register += 2
+
+        # Case 2: struct
+        # In this case, the compiler already knows the offset. As such, 
+        else:
+            code.append({
+                "instruction": "CONSTANT",
+                "metadata": {
+                    "register": register,
+                    "value": self._compute_element_offset(),
+                }
+            })
+
+            register += 1
+
+        code.append(
+            {
+                "instruction": "ADD",
+                "metadata": {
+                    "register": register,
+                    "lhs_register": variable_address_register,
+                    "rhs_register": register - 1
+                }
+            }
+        )
 
         register += 1
 
-        return register, code
+        if self.context.get("context") == "read":
+            code.append({
+                "instruction": "LOAD",
+                "metadata": {"register": register, "value": register - 1}
+            })
+
+            register += 1
+
+        return code, register, environment
+
 
     @override
     def certificate(self, positional_prime: int) -> int:
@@ -216,18 +280,23 @@ class ELEMENT_ACCESS(Node):
             The context of this variable use.
         """
 
+        self.context = context
+
         _context: str = context.get("context", "read")
         symbol: str = ""
 
         if _context == "read":
-            self.instruction: str = "LOAD"
             symbol = get_certificate_symbol("VAR_VALUE")
+            self.instruction: str = "LOAD"
 
         else:
-            self.instruction: str = "ADDRESS"
             symbol = get_certificate_symbol("VAR_ADDRESS")
+            self.instruction: str = "CONSTANT"
 
-        self.symbol = f"{symbol}"
+        self.symbol = symbol
+
+        # Propagate context to the variable
+        self.variable.add_context(context)
 
     def _compute_element_type(self) -> str:
         """
@@ -261,67 +330,34 @@ class ELEMENT_ACCESS(Node):
 
         return accessed_attribute_type
 
-    def _compute_element_offset(self) -> dict:
+    def _compute_element_offset(self) -> int:
         """
-        Compute the number of bytes to offset in order to reach the accessed element.
+        Compute the number of bytes to offset to reach the accessed element.
 
-        This method handles 3 possible cases:
-
-        - A: the `variable` is an array, and the `element` is a constant (i.e.,
-        statically indexed).
-        - B: the `variable` is an array, but the `element` is a variable (i.e.,
-        dinamically indexed).
-        - C: the `variable` is a struct, and the `element` is, necessarily, a
-        constant.
+        This method only handles structs.
 
         Returns
         -------
-        element_offset : dict
-            A dictionary containing further metadata about how to access the
-            intended `element` from `variable`.
+        offset_size : int
+            The size, in bytes, of the element offset.
         """
 
-        element_offset: dict = {}
+        variable_metadata: dict = self.variable.get_metadata()
+        variable_attributes: dict = variable_metadata.get("attributes")
 
-        if self.is_array:
-            variable_type_size: int = builtin_types.get(self.variable.get_type())
+        offset_size: int = 0
 
-            # Case A
-            if isinstance(self.element, CST):
-                index: int = self.element.get_value()
+        # Iterate over the attributes and sum the offset, in bytes, until
+        # the `element` is found
+        for attribute_metadata in variable_attributes.values():
+            attribute_position: int = attribute_metadata.get("attr_pointer")
 
-                offset_size: int = variable_type_size * index
-                element_offset["offset_size"] = offset_size
+            if attribute_position == self.element.get_value():
+                break
 
-            # Case B
-            else:
-                # Fill the `offset_register` when generating code
-                element_offset["offset_register"] = None
-                element_offset["offset_size"] = variable_type_size
+            attribute_type: str = attribute_metadata.get("type")
+            attribute_size: int = builtin_types.get(attribute_type)
 
-                self.access_type = "dynamic"
+            offset_size += attribute_size
 
-        # Case C
-        else:
-            variable_metadata: dict = self.variable.get_metadata()
-            variable_attributes: dict = variable_metadata.get("attributes")
-
-            offset_size: int = 0
-
-            # Iterate over the attributes and sum the offset, in bytes, until
-            # the `element` is found
-
-            for attribute_metadata in variable_attributes.values():
-                attribute_position: int = attribute_metadata.get("attr_pointer")
-
-                if attribute_position == self.element.get_value():
-                    break
-
-                attribute_type: str = attribute_metadata.get("type")
-                attribute_size: int = builtin_types.get(attribute_type)
-
-                offset_size += attribute_size
-
-            element_offset["offset_size"] = offset_size
-
-        return element_offset
+        return offset_size
