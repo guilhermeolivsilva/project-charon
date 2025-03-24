@@ -84,19 +84,5 @@ class ASSIGN(Operation):
             register=register,
             environment=environment
         )
-        assign_code = operation_code.pop()
-
-        # Simply "undo" the `register` and `type` fields of the `assign` instruction :)
-        del assign_code["metadata"]["register"]
-        register -= 1
-
-        # Rerrange the binary operation metadata to unary operation
-        assign_code = assign_code.pop("metadata")
-        assign_code["register"] = assign_code.pop("lhs_register")
-        assign_code["value"] = assign_code.pop("rhs_register")
-
-        assign_code["metadata"] = assign_code
-
-        operation_code.append(assign_code)
 
         return operation_code, register, environment
