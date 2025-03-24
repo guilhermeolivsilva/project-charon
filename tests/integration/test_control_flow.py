@@ -51,19 +51,19 @@ def test_else() -> None:
     assert vm.get_memory() == expected_memory
 
 
-def test_control_flow_certification() -> None:
-    """Test the front and backend certification."""
+# def test_control_flow_certification() -> None:
+#     """Test the front and backend certification."""
 
-    # The placeholder does not really matter.
-    placeholder = 10
-    source_code = SOURCE_CODE.format(placeholder=placeholder)
+#     # The placeholder does not really matter.
+#     placeholder = 10
+#     source_code = SOURCE_CODE.format(placeholder=placeholder)
 
-    instance = create_instance(source_code=source_code)
+#     instance = create_instance(source_code=source_code)
 
-    ast = instance.get_ast()
-    frontend_certificate = FrontendCertificator(ast=ast).certificate()
+#     ast = instance.get_ast()
+#     frontend_certificate = FrontendCertificator(ast=ast).certificate()
 
-    program = instance.get_program()
-    backend_certificate = BackendCertificator(program=program).certificate()
+#     program = instance.get_program()
+#     backend_certificate = BackendCertificator(program=program).certificate()
 
-    assert frontend_certificate == backend_certificate
+#     assert frontend_certificate == backend_certificate

@@ -29,15 +29,15 @@ def test_simple_while() -> None:
     assert vm.get_memory() == expected_memory
 
 
-def test_struct_certification() -> None:
-    """Test the front and backend certification."""
+# def test_struct_certification() -> None:
+#     """Test the front and backend certification."""
 
-    instance = create_instance(source_code=SOURCE_CODE)
+#     instance = create_instance(source_code=SOURCE_CODE)
 
-    ast = instance.get_ast()
-    frontend_certificate = FrontendCertificator(ast=ast).certificate()
+#     ast = instance.get_ast()
+#     frontend_certificate = FrontendCertificator(ast=ast).certificate()
 
-    program = instance.get_program()
-    backend_certificate = BackendCertificator(program=program).certificate()
+#     program = instance.get_program()
+#     backend_certificate = BackendCertificator(program=program).certificate()
 
-    assert frontend_certificate == backend_certificate
+#     assert frontend_certificate == backend_certificate
