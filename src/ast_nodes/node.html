@@ -240,74 +240,83 @@
 </span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">*</span> <span class="n">indent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 </span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>
 </span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        Generate the code associated with this `Node`.</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">        The generated code consists of a dictionary containing the relevant</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        `Node` data for the code to run -- namely, the `instruction`, and the</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        `value`.</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>    <span class="p">]:</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        Generate the code associated with this `Node`.</span>
 </span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        Notice that some `Nodes` may rewrite this method in order to deal</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">        with special attributes -- such as the `Operation` nodes, that must</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">        handle its children nodes.</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        The generated code consists of a dictionary containing the relevant</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">        `Node` data for the code to run -- namely, the `instruction`, and the</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">        `value`.</span>
 </span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">        This method takes an integer as its parameter in order to allocate a</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        register to support the generated code. It also returns an integer --</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">        usually `register + 1` -- for it to be passed to the next Node.</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">        Notice that some `Nodes` may rewrite this method in order to deal</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        with special attributes -- such as the `Operation` nodes, that must</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">        handle its children nodes.</span>
 </span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        Parameters</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        ----------</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        register : int</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">            Node.</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        Returns</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">        -------</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">        register : int</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">        Notes</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">        -----</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">        This method returns a `list` rather than only the `code_metadata` in</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">        order to standardize the return type as some subclasses might have to</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">        generate code using not only the node itself, but its children, too.</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>        <span class="n">code_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        This method takes an integer as its parameter in order to allocate a</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        register to support the generated code. It also returns an integer --</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        usually `register + 1` -- for it to be passed to the next Node.</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        Parameters</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        ----------</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        register : int</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">            Node.</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">        Returns</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">        -------</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">        code : list of dict</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">        register : int</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
 </span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uses_register</span><span class="p">:</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>            <span class="n">code_metadata</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">register</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>            <span class="n">code_metadata</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">        Notes</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">        -----</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">        This method returns a `list` rather than only the `code` in</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">        order to standardize the return type as some subclasses might have to</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">        generate code using not only the node itself, but its children, too.</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="p">[</span><span class="n">code_metadata</span><span class="p">]</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}}</span>
 </span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uses_register</span><span class="p">:</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>            <span class="n">code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">register</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">        Parameters</span>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">        ----------</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">            the source code.</span>
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">        Returns</span>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">        -------</span>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a><span class="sd">        : int</span>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>            <span class="n">code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>        <span class="k">return</span> <span class="p">[</span><span class="n">code</span><span class="p">],</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">        Parameters</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">        ----------</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="sd">            the source code.</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="sd">        Returns</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="sd">        -------</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a><span class="sd">        : int</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -458,74 +467,83 @@
 </span><span id="Node-141"><a href="#Node-141"><span class="linenos">141</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">*</span> <span class="n">indent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 </span><span id="Node-142"><a href="#Node-142"><span class="linenos">142</span></a>
 </span><span id="Node-143"><a href="#Node-143"><span class="linenos">143</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
-</span><span id="Node-144"><a href="#Node-144"><span class="linenos">144</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="Node-145"><a href="#Node-145"><span class="linenos">145</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
-</span><span id="Node-146"><a href="#Node-146"><span class="linenos">146</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Node-147"><a href="#Node-147"><span class="linenos">147</span></a><span class="sd">        Generate the code associated with this `Node`.</span>
-</span><span id="Node-148"><a href="#Node-148"><span class="linenos">148</span></a>
-</span><span id="Node-149"><a href="#Node-149"><span class="linenos">149</span></a><span class="sd">        The generated code consists of a dictionary containing the relevant</span>
-</span><span id="Node-150"><a href="#Node-150"><span class="linenos">150</span></a><span class="sd">        `Node` data for the code to run -- namely, the `instruction`, and the</span>
-</span><span id="Node-151"><a href="#Node-151"><span class="linenos">151</span></a><span class="sd">        `value`.</span>
+</span><span id="Node-144"><a href="#Node-144"><span class="linenos">144</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+</span><span id="Node-145"><a href="#Node-145"><span class="linenos">145</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="Node-146"><a href="#Node-146"><span class="linenos">146</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
+</span><span id="Node-147"><a href="#Node-147"><span class="linenos">147</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="Node-148"><a href="#Node-148"><span class="linenos">148</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+</span><span id="Node-149"><a href="#Node-149"><span class="linenos">149</span></a>    <span class="p">]:</span>
+</span><span id="Node-150"><a href="#Node-150"><span class="linenos">150</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Node-151"><a href="#Node-151"><span class="linenos">151</span></a><span class="sd">        Generate the code associated with this `Node`.</span>
 </span><span id="Node-152"><a href="#Node-152"><span class="linenos">152</span></a>
-</span><span id="Node-153"><a href="#Node-153"><span class="linenos">153</span></a><span class="sd">        Notice that some `Nodes` may rewrite this method in order to deal</span>
-</span><span id="Node-154"><a href="#Node-154"><span class="linenos">154</span></a><span class="sd">        with special attributes -- such as the `Operation` nodes, that must</span>
-</span><span id="Node-155"><a href="#Node-155"><span class="linenos">155</span></a><span class="sd">        handle its children nodes.</span>
+</span><span id="Node-153"><a href="#Node-153"><span class="linenos">153</span></a><span class="sd">        The generated code consists of a dictionary containing the relevant</span>
+</span><span id="Node-154"><a href="#Node-154"><span class="linenos">154</span></a><span class="sd">        `Node` data for the code to run -- namely, the `instruction`, and the</span>
+</span><span id="Node-155"><a href="#Node-155"><span class="linenos">155</span></a><span class="sd">        `value`.</span>
 </span><span id="Node-156"><a href="#Node-156"><span class="linenos">156</span></a>
-</span><span id="Node-157"><a href="#Node-157"><span class="linenos">157</span></a><span class="sd">        This method takes an integer as its parameter in order to allocate a</span>
-</span><span id="Node-158"><a href="#Node-158"><span class="linenos">158</span></a><span class="sd">        register to support the generated code. It also returns an integer --</span>
-</span><span id="Node-159"><a href="#Node-159"><span class="linenos">159</span></a><span class="sd">        usually `register + 1` -- for it to be passed to the next Node.</span>
+</span><span id="Node-157"><a href="#Node-157"><span class="linenos">157</span></a><span class="sd">        Notice that some `Nodes` may rewrite this method in order to deal</span>
+</span><span id="Node-158"><a href="#Node-158"><span class="linenos">158</span></a><span class="sd">        with special attributes -- such as the `Operation` nodes, that must</span>
+</span><span id="Node-159"><a href="#Node-159"><span class="linenos">159</span></a><span class="sd">        handle its children nodes.</span>
 </span><span id="Node-160"><a href="#Node-160"><span class="linenos">160</span></a>
-</span><span id="Node-161"><a href="#Node-161"><span class="linenos">161</span></a><span class="sd">        Parameters</span>
-</span><span id="Node-162"><a href="#Node-162"><span class="linenos">162</span></a><span class="sd">        ----------</span>
-</span><span id="Node-163"><a href="#Node-163"><span class="linenos">163</span></a><span class="sd">        register : int</span>
-</span><span id="Node-164"><a href="#Node-164"><span class="linenos">164</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="Node-165"><a href="#Node-165"><span class="linenos">165</span></a><span class="sd">            Node.</span>
-</span><span id="Node-166"><a href="#Node-166"><span class="linenos">166</span></a>
-</span><span id="Node-167"><a href="#Node-167"><span class="linenos">167</span></a><span class="sd">        Returns</span>
-</span><span id="Node-168"><a href="#Node-168"><span class="linenos">168</span></a><span class="sd">        -------</span>
-</span><span id="Node-169"><a href="#Node-169"><span class="linenos">169</span></a><span class="sd">        register : int</span>
-</span><span id="Node-170"><a href="#Node-170"><span class="linenos">170</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="Node-171"><a href="#Node-171"><span class="linenos">171</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="Node-172"><a href="#Node-172"><span class="linenos">172</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
-</span><span id="Node-173"><a href="#Node-173"><span class="linenos">173</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
-</span><span id="Node-174"><a href="#Node-174"><span class="linenos">174</span></a>
-</span><span id="Node-175"><a href="#Node-175"><span class="linenos">175</span></a><span class="sd">        Notes</span>
-</span><span id="Node-176"><a href="#Node-176"><span class="linenos">176</span></a><span class="sd">        -----</span>
-</span><span id="Node-177"><a href="#Node-177"><span class="linenos">177</span></a><span class="sd">        This method returns a `list` rather than only the `code_metadata` in</span>
-</span><span id="Node-178"><a href="#Node-178"><span class="linenos">178</span></a><span class="sd">        order to standardize the return type as some subclasses might have to</span>
-</span><span id="Node-179"><a href="#Node-179"><span class="linenos">179</span></a><span class="sd">        generate code using not only the node itself, but its children, too.</span>
-</span><span id="Node-180"><a href="#Node-180"><span class="linenos">180</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Node-181"><a href="#Node-181"><span class="linenos">181</span></a>
-</span><span id="Node-182"><a href="#Node-182"><span class="linenos">182</span></a>        <span class="n">code_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+</span><span id="Node-161"><a href="#Node-161"><span class="linenos">161</span></a><span class="sd">        This method takes an integer as its parameter in order to allocate a</span>
+</span><span id="Node-162"><a href="#Node-162"><span class="linenos">162</span></a><span class="sd">        register to support the generated code. It also returns an integer --</span>
+</span><span id="Node-163"><a href="#Node-163"><span class="linenos">163</span></a><span class="sd">        usually `register + 1` -- for it to be passed to the next Node.</span>
+</span><span id="Node-164"><a href="#Node-164"><span class="linenos">164</span></a>
+</span><span id="Node-165"><a href="#Node-165"><span class="linenos">165</span></a><span class="sd">        Parameters</span>
+</span><span id="Node-166"><a href="#Node-166"><span class="linenos">166</span></a><span class="sd">        ----------</span>
+</span><span id="Node-167"><a href="#Node-167"><span class="linenos">167</span></a><span class="sd">        register : int</span>
+</span><span id="Node-168"><a href="#Node-168"><span class="linenos">168</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="Node-169"><a href="#Node-169"><span class="linenos">169</span></a><span class="sd">            Node.</span>
+</span><span id="Node-170"><a href="#Node-170"><span class="linenos">170</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="Node-171"><a href="#Node-171"><span class="linenos">171</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="Node-172"><a href="#Node-172"><span class="linenos">172</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
+</span><span id="Node-173"><a href="#Node-173"><span class="linenos">173</span></a>
+</span><span id="Node-174"><a href="#Node-174"><span class="linenos">174</span></a><span class="sd">        Returns</span>
+</span><span id="Node-175"><a href="#Node-175"><span class="linenos">175</span></a><span class="sd">        -------</span>
+</span><span id="Node-176"><a href="#Node-176"><span class="linenos">176</span></a><span class="sd">        code : list of dict</span>
+</span><span id="Node-177"><a href="#Node-177"><span class="linenos">177</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
+</span><span id="Node-178"><a href="#Node-178"><span class="linenos">178</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
+</span><span id="Node-179"><a href="#Node-179"><span class="linenos">179</span></a><span class="sd">        register : int</span>
+</span><span id="Node-180"><a href="#Node-180"><span class="linenos">180</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="Node-181"><a href="#Node-181"><span class="linenos">181</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="Node-182"><a href="#Node-182"><span class="linenos">182</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
 </span><span id="Node-183"><a href="#Node-183"><span class="linenos">183</span></a>
-</span><span id="Node-184"><a href="#Node-184"><span class="linenos">184</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uses_register</span><span class="p">:</span>
-</span><span id="Node-185"><a href="#Node-185"><span class="linenos">185</span></a>            <span class="n">code_metadata</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">register</span>
-</span><span id="Node-186"><a href="#Node-186"><span class="linenos">186</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="Node-187"><a href="#Node-187"><span class="linenos">187</span></a>
-</span><span id="Node-188"><a href="#Node-188"><span class="linenos">188</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Node-189"><a href="#Node-189"><span class="linenos">189</span></a>            <span class="n">code_metadata</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="Node-184"><a href="#Node-184"><span class="linenos">184</span></a><span class="sd">        Notes</span>
+</span><span id="Node-185"><a href="#Node-185"><span class="linenos">185</span></a><span class="sd">        -----</span>
+</span><span id="Node-186"><a href="#Node-186"><span class="linenos">186</span></a><span class="sd">        This method returns a `list` rather than only the `code` in</span>
+</span><span id="Node-187"><a href="#Node-187"><span class="linenos">187</span></a><span class="sd">        order to standardize the return type as some subclasses might have to</span>
+</span><span id="Node-188"><a href="#Node-188"><span class="linenos">188</span></a><span class="sd">        generate code using not only the node itself, but its children, too.</span>
+</span><span id="Node-189"><a href="#Node-189"><span class="linenos">189</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Node-190"><a href="#Node-190"><span class="linenos">190</span></a>
-</span><span id="Node-191"><a href="#Node-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="p">[</span><span class="n">code_metadata</span><span class="p">]</span>
+</span><span id="Node-191"><a href="#Node-191"><span class="linenos">191</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}}</span>
 </span><span id="Node-192"><a href="#Node-192"><span class="linenos">192</span></a>
-</span><span id="Node-193"><a href="#Node-193"><span class="linenos">193</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="Node-194"><a href="#Node-194"><span class="linenos">194</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Node-195"><a href="#Node-195"><span class="linenos">195</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
+</span><span id="Node-193"><a href="#Node-193"><span class="linenos">193</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uses_register</span><span class="p">:</span>
+</span><span id="Node-194"><a href="#Node-194"><span class="linenos">194</span></a>            <span class="n">code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">register</span>
+</span><span id="Node-195"><a href="#Node-195"><span class="linenos">195</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="Node-196"><a href="#Node-196"><span class="linenos">196</span></a>
-</span><span id="Node-197"><a href="#Node-197"><span class="linenos">197</span></a><span class="sd">        Parameters</span>
-</span><span id="Node-198"><a href="#Node-198"><span class="linenos">198</span></a><span class="sd">        ----------</span>
-</span><span id="Node-199"><a href="#Node-199"><span class="linenos">199</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="Node-200"><a href="#Node-200"><span class="linenos">200</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="Node-201"><a href="#Node-201"><span class="linenos">201</span></a><span class="sd">            the source code.</span>
-</span><span id="Node-202"><a href="#Node-202"><span class="linenos">202</span></a>
-</span><span id="Node-203"><a href="#Node-203"><span class="linenos">203</span></a><span class="sd">        Returns</span>
-</span><span id="Node-204"><a href="#Node-204"><span class="linenos">204</span></a><span class="sd">        -------</span>
-</span><span id="Node-205"><a href="#Node-205"><span class="linenos">205</span></a><span class="sd">        : int</span>
-</span><span id="Node-206"><a href="#Node-206"><span class="linenos">206</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="Node-207"><a href="#Node-207"><span class="linenos">207</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Node-208"><a href="#Node-208"><span class="linenos">208</span></a>
-</span><span id="Node-209"><a href="#Node-209"><span class="linenos">209</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="Node-210"><a href="#Node-210"><span class="linenos">210</span></a>
-</span><span id="Node-211"><a href="#Node-211"><span class="linenos">211</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="Node-197"><a href="#Node-197"><span class="linenos">197</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Node-198"><a href="#Node-198"><span class="linenos">198</span></a>            <span class="n">code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="Node-199"><a href="#Node-199"><span class="linenos">199</span></a>
+</span><span id="Node-200"><a href="#Node-200"><span class="linenos">200</span></a>        <span class="k">return</span> <span class="p">[</span><span class="n">code</span><span class="p">],</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
+</span><span id="Node-201"><a href="#Node-201"><span class="linenos">201</span></a>
+</span><span id="Node-202"><a href="#Node-202"><span class="linenos">202</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="Node-203"><a href="#Node-203"><span class="linenos">203</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Node-204"><a href="#Node-204"><span class="linenos">204</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
+</span><span id="Node-205"><a href="#Node-205"><span class="linenos">205</span></a>
+</span><span id="Node-206"><a href="#Node-206"><span class="linenos">206</span></a><span class="sd">        Parameters</span>
+</span><span id="Node-207"><a href="#Node-207"><span class="linenos">207</span></a><span class="sd">        ----------</span>
+</span><span id="Node-208"><a href="#Node-208"><span class="linenos">208</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="Node-209"><a href="#Node-209"><span class="linenos">209</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="Node-210"><a href="#Node-210"><span class="linenos">210</span></a><span class="sd">            the source code.</span>
+</span><span id="Node-211"><a href="#Node-211"><span class="linenos">211</span></a>
+</span><span id="Node-212"><a href="#Node-212"><span class="linenos">212</span></a><span class="sd">        Returns</span>
+</span><span id="Node-213"><a href="#Node-213"><span class="linenos">213</span></a><span class="sd">        -------</span>
+</span><span id="Node-214"><a href="#Node-214"><span class="linenos">214</span></a><span class="sd">        : int</span>
+</span><span id="Node-215"><a href="#Node-215"><span class="linenos">215</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="Node-216"><a href="#Node-216"><span class="linenos">216</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Node-217"><a href="#Node-217"><span class="linenos">217</span></a>
+</span><span id="Node-218"><a href="#Node-218"><span class="linenos">218</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="Node-219"><a href="#Node-219"><span class="linenos">219</span></a>
+</span><span id="Node-220"><a href="#Node-220"><span class="linenos">220</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -803,61 +821,70 @@ paremeter.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">generate_code</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">register</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]</span>:</span></span>
+        <span class="name">generate_code</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">register</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>:</span></span>
 
                 <label class="view-source-button" for="Node.generate_code-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#Node.generate_code"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Node.generate_code-143"><a href="#Node.generate_code-143"><span class="linenos">143</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
-</span><span id="Node.generate_code-144"><a href="#Node.generate_code-144"><span class="linenos">144</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="Node.generate_code-145"><a href="#Node.generate_code-145"><span class="linenos">145</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]:</span>
-</span><span id="Node.generate_code-146"><a href="#Node.generate_code-146"><span class="linenos">146</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Node.generate_code-147"><a href="#Node.generate_code-147"><span class="linenos">147</span></a><span class="sd">        Generate the code associated with this `Node`.</span>
-</span><span id="Node.generate_code-148"><a href="#Node.generate_code-148"><span class="linenos">148</span></a>
-</span><span id="Node.generate_code-149"><a href="#Node.generate_code-149"><span class="linenos">149</span></a><span class="sd">        The generated code consists of a dictionary containing the relevant</span>
-</span><span id="Node.generate_code-150"><a href="#Node.generate_code-150"><span class="linenos">150</span></a><span class="sd">        `Node` data for the code to run -- namely, the `instruction`, and the</span>
-</span><span id="Node.generate_code-151"><a href="#Node.generate_code-151"><span class="linenos">151</span></a><span class="sd">        `value`.</span>
+</span><span id="Node.generate_code-144"><a href="#Node.generate_code-144"><span class="linenos">144</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+</span><span id="Node.generate_code-145"><a href="#Node.generate_code-145"><span class="linenos">145</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="Node.generate_code-146"><a href="#Node.generate_code-146"><span class="linenos">146</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
+</span><span id="Node.generate_code-147"><a href="#Node.generate_code-147"><span class="linenos">147</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="Node.generate_code-148"><a href="#Node.generate_code-148"><span class="linenos">148</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+</span><span id="Node.generate_code-149"><a href="#Node.generate_code-149"><span class="linenos">149</span></a>    <span class="p">]:</span>
+</span><span id="Node.generate_code-150"><a href="#Node.generate_code-150"><span class="linenos">150</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Node.generate_code-151"><a href="#Node.generate_code-151"><span class="linenos">151</span></a><span class="sd">        Generate the code associated with this `Node`.</span>
 </span><span id="Node.generate_code-152"><a href="#Node.generate_code-152"><span class="linenos">152</span></a>
-</span><span id="Node.generate_code-153"><a href="#Node.generate_code-153"><span class="linenos">153</span></a><span class="sd">        Notice that some `Nodes` may rewrite this method in order to deal</span>
-</span><span id="Node.generate_code-154"><a href="#Node.generate_code-154"><span class="linenos">154</span></a><span class="sd">        with special attributes -- such as the `Operation` nodes, that must</span>
-</span><span id="Node.generate_code-155"><a href="#Node.generate_code-155"><span class="linenos">155</span></a><span class="sd">        handle its children nodes.</span>
+</span><span id="Node.generate_code-153"><a href="#Node.generate_code-153"><span class="linenos">153</span></a><span class="sd">        The generated code consists of a dictionary containing the relevant</span>
+</span><span id="Node.generate_code-154"><a href="#Node.generate_code-154"><span class="linenos">154</span></a><span class="sd">        `Node` data for the code to run -- namely, the `instruction`, and the</span>
+</span><span id="Node.generate_code-155"><a href="#Node.generate_code-155"><span class="linenos">155</span></a><span class="sd">        `value`.</span>
 </span><span id="Node.generate_code-156"><a href="#Node.generate_code-156"><span class="linenos">156</span></a>
-</span><span id="Node.generate_code-157"><a href="#Node.generate_code-157"><span class="linenos">157</span></a><span class="sd">        This method takes an integer as its parameter in order to allocate a</span>
-</span><span id="Node.generate_code-158"><a href="#Node.generate_code-158"><span class="linenos">158</span></a><span class="sd">        register to support the generated code. It also returns an integer --</span>
-</span><span id="Node.generate_code-159"><a href="#Node.generate_code-159"><span class="linenos">159</span></a><span class="sd">        usually `register + 1` -- for it to be passed to the next Node.</span>
+</span><span id="Node.generate_code-157"><a href="#Node.generate_code-157"><span class="linenos">157</span></a><span class="sd">        Notice that some `Nodes` may rewrite this method in order to deal</span>
+</span><span id="Node.generate_code-158"><a href="#Node.generate_code-158"><span class="linenos">158</span></a><span class="sd">        with special attributes -- such as the `Operation` nodes, that must</span>
+</span><span id="Node.generate_code-159"><a href="#Node.generate_code-159"><span class="linenos">159</span></a><span class="sd">        handle its children nodes.</span>
 </span><span id="Node.generate_code-160"><a href="#Node.generate_code-160"><span class="linenos">160</span></a>
-</span><span id="Node.generate_code-161"><a href="#Node.generate_code-161"><span class="linenos">161</span></a><span class="sd">        Parameters</span>
-</span><span id="Node.generate_code-162"><a href="#Node.generate_code-162"><span class="linenos">162</span></a><span class="sd">        ----------</span>
-</span><span id="Node.generate_code-163"><a href="#Node.generate_code-163"><span class="linenos">163</span></a><span class="sd">        register : int</span>
-</span><span id="Node.generate_code-164"><a href="#Node.generate_code-164"><span class="linenos">164</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="Node.generate_code-165"><a href="#Node.generate_code-165"><span class="linenos">165</span></a><span class="sd">            Node.</span>
-</span><span id="Node.generate_code-166"><a href="#Node.generate_code-166"><span class="linenos">166</span></a>
-</span><span id="Node.generate_code-167"><a href="#Node.generate_code-167"><span class="linenos">167</span></a><span class="sd">        Returns</span>
-</span><span id="Node.generate_code-168"><a href="#Node.generate_code-168"><span class="linenos">168</span></a><span class="sd">        -------</span>
-</span><span id="Node.generate_code-169"><a href="#Node.generate_code-169"><span class="linenos">169</span></a><span class="sd">        register : int</span>
-</span><span id="Node.generate_code-170"><a href="#Node.generate_code-170"><span class="linenos">170</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="Node.generate_code-171"><a href="#Node.generate_code-171"><span class="linenos">171</span></a><span class="sd">        code_metadata : list of dict</span>
-</span><span id="Node.generate_code-172"><a href="#Node.generate_code-172"><span class="linenos">172</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
-</span><span id="Node.generate_code-173"><a href="#Node.generate_code-173"><span class="linenos">173</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
-</span><span id="Node.generate_code-174"><a href="#Node.generate_code-174"><span class="linenos">174</span></a>
-</span><span id="Node.generate_code-175"><a href="#Node.generate_code-175"><span class="linenos">175</span></a><span class="sd">        Notes</span>
-</span><span id="Node.generate_code-176"><a href="#Node.generate_code-176"><span class="linenos">176</span></a><span class="sd">        -----</span>
-</span><span id="Node.generate_code-177"><a href="#Node.generate_code-177"><span class="linenos">177</span></a><span class="sd">        This method returns a `list` rather than only the `code_metadata` in</span>
-</span><span id="Node.generate_code-178"><a href="#Node.generate_code-178"><span class="linenos">178</span></a><span class="sd">        order to standardize the return type as some subclasses might have to</span>
-</span><span id="Node.generate_code-179"><a href="#Node.generate_code-179"><span class="linenos">179</span></a><span class="sd">        generate code using not only the node itself, but its children, too.</span>
-</span><span id="Node.generate_code-180"><a href="#Node.generate_code-180"><span class="linenos">180</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Node.generate_code-181"><a href="#Node.generate_code-181"><span class="linenos">181</span></a>
-</span><span id="Node.generate_code-182"><a href="#Node.generate_code-182"><span class="linenos">182</span></a>        <span class="n">code_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+</span><span id="Node.generate_code-161"><a href="#Node.generate_code-161"><span class="linenos">161</span></a><span class="sd">        This method takes an integer as its parameter in order to allocate a</span>
+</span><span id="Node.generate_code-162"><a href="#Node.generate_code-162"><span class="linenos">162</span></a><span class="sd">        register to support the generated code. It also returns an integer --</span>
+</span><span id="Node.generate_code-163"><a href="#Node.generate_code-163"><span class="linenos">163</span></a><span class="sd">        usually `register + 1` -- for it to be passed to the next Node.</span>
+</span><span id="Node.generate_code-164"><a href="#Node.generate_code-164"><span class="linenos">164</span></a>
+</span><span id="Node.generate_code-165"><a href="#Node.generate_code-165"><span class="linenos">165</span></a><span class="sd">        Parameters</span>
+</span><span id="Node.generate_code-166"><a href="#Node.generate_code-166"><span class="linenos">166</span></a><span class="sd">        ----------</span>
+</span><span id="Node.generate_code-167"><a href="#Node.generate_code-167"><span class="linenos">167</span></a><span class="sd">        register : int</span>
+</span><span id="Node.generate_code-168"><a href="#Node.generate_code-168"><span class="linenos">168</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="Node.generate_code-169"><a href="#Node.generate_code-169"><span class="linenos">169</span></a><span class="sd">            Node.</span>
+</span><span id="Node.generate_code-170"><a href="#Node.generate_code-170"><span class="linenos">170</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="Node.generate_code-171"><a href="#Node.generate_code-171"><span class="linenos">171</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="Node.generate_code-172"><a href="#Node.generate_code-172"><span class="linenos">172</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
+</span><span id="Node.generate_code-173"><a href="#Node.generate_code-173"><span class="linenos">173</span></a>
+</span><span id="Node.generate_code-174"><a href="#Node.generate_code-174"><span class="linenos">174</span></a><span class="sd">        Returns</span>
+</span><span id="Node.generate_code-175"><a href="#Node.generate_code-175"><span class="linenos">175</span></a><span class="sd">        -------</span>
+</span><span id="Node.generate_code-176"><a href="#Node.generate_code-176"><span class="linenos">176</span></a><span class="sd">        code : list of dict</span>
+</span><span id="Node.generate_code-177"><a href="#Node.generate_code-177"><span class="linenos">177</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
+</span><span id="Node.generate_code-178"><a href="#Node.generate_code-178"><span class="linenos">178</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
+</span><span id="Node.generate_code-179"><a href="#Node.generate_code-179"><span class="linenos">179</span></a><span class="sd">        register : int</span>
+</span><span id="Node.generate_code-180"><a href="#Node.generate_code-180"><span class="linenos">180</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="Node.generate_code-181"><a href="#Node.generate_code-181"><span class="linenos">181</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="Node.generate_code-182"><a href="#Node.generate_code-182"><span class="linenos">182</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
 </span><span id="Node.generate_code-183"><a href="#Node.generate_code-183"><span class="linenos">183</span></a>
-</span><span id="Node.generate_code-184"><a href="#Node.generate_code-184"><span class="linenos">184</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uses_register</span><span class="p">:</span>
-</span><span id="Node.generate_code-185"><a href="#Node.generate_code-185"><span class="linenos">185</span></a>            <span class="n">code_metadata</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">register</span>
-</span><span id="Node.generate_code-186"><a href="#Node.generate_code-186"><span class="linenos">186</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="Node.generate_code-187"><a href="#Node.generate_code-187"><span class="linenos">187</span></a>
-</span><span id="Node.generate_code-188"><a href="#Node.generate_code-188"><span class="linenos">188</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Node.generate_code-189"><a href="#Node.generate_code-189"><span class="linenos">189</span></a>            <span class="n">code_metadata</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="Node.generate_code-184"><a href="#Node.generate_code-184"><span class="linenos">184</span></a><span class="sd">        Notes</span>
+</span><span id="Node.generate_code-185"><a href="#Node.generate_code-185"><span class="linenos">185</span></a><span class="sd">        -----</span>
+</span><span id="Node.generate_code-186"><a href="#Node.generate_code-186"><span class="linenos">186</span></a><span class="sd">        This method returns a `list` rather than only the `code` in</span>
+</span><span id="Node.generate_code-187"><a href="#Node.generate_code-187"><span class="linenos">187</span></a><span class="sd">        order to standardize the return type as some subclasses might have to</span>
+</span><span id="Node.generate_code-188"><a href="#Node.generate_code-188"><span class="linenos">188</span></a><span class="sd">        generate code using not only the node itself, but its children, too.</span>
+</span><span id="Node.generate_code-189"><a href="#Node.generate_code-189"><span class="linenos">189</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Node.generate_code-190"><a href="#Node.generate_code-190"><span class="linenos">190</span></a>
-</span><span id="Node.generate_code-191"><a href="#Node.generate_code-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="p">[</span><span class="n">code_metadata</span><span class="p">]</span>
+</span><span id="Node.generate_code-191"><a href="#Node.generate_code-191"><span class="linenos">191</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+</span><span id="Node.generate_code-192"><a href="#Node.generate_code-192"><span class="linenos">192</span></a>
+</span><span id="Node.generate_code-193"><a href="#Node.generate_code-193"><span class="linenos">193</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uses_register</span><span class="p">:</span>
+</span><span id="Node.generate_code-194"><a href="#Node.generate_code-194"><span class="linenos">194</span></a>            <span class="n">code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;register&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">register</span>
+</span><span id="Node.generate_code-195"><a href="#Node.generate_code-195"><span class="linenos">195</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="Node.generate_code-196"><a href="#Node.generate_code-196"><span class="linenos">196</span></a>
+</span><span id="Node.generate_code-197"><a href="#Node.generate_code-197"><span class="linenos">197</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Node.generate_code-198"><a href="#Node.generate_code-198"><span class="linenos">198</span></a>            <span class="n">code</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</span><span id="Node.generate_code-199"><a href="#Node.generate_code-199"><span class="linenos">199</span></a>
+</span><span id="Node.generate_code-200"><a href="#Node.generate_code-200"><span class="linenos">200</span></a>        <span class="k">return</span> <span class="p">[</span><span class="n">code</span><span class="p">],</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
 </span></pre></div>
 
 
@@ -879,19 +906,24 @@ usually <code>register + 1</code> -- for it to be passed to the next Node.</p>
 
 <p>register : int
     The number of the register to be used by the code generated by this
-    Node.</p>
+    Node.
+environment : dict[int, str]
+    The compiler's environment, that maps variables IDs to memory
+    addresses and function IDs to instructions indices.</p>
 
 <h2 id="returns">Returns</h2>
 
-<p>register : int
-    The number of the next register available.
-code_metadata : list of dict
+<p>code : list of dict
     Return a list of dictionaries containing code metadata: the register
-    to be used, the related <code><a href="#Node.instruction">instruction</a></code> and its metadata.</p>
+    to be used, the related <code><a href="#Node.instruction">instruction</a></code> and its metadata.
+register : int
+    The number of the next register available.
+environment : dict[int, str]
+    The updated {var_id: address} environment mapping.</p>
 
 <h2 id="notes">Notes</h2>
 
-<p>This method returns a <code>list</code> rather than only the <code>code_metadata</code> in
+<p>This method returns a <code>list</code> rather than only the <code>code</code> in
 order to standardize the return type as some subclasses might have to
 generate code using not only the node itself, but its children, too.</p>
 </div>
@@ -909,25 +941,25 @@ generate code using not only the node itself, but its children, too.</p>
 
     </div>
     <a class="headerlink" href="#Node.certificate"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.certificate-193"><a href="#Node.certificate-193"><span class="linenos">193</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="Node.certificate-194"><a href="#Node.certificate-194"><span class="linenos">194</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Node.certificate-195"><a href="#Node.certificate-195"><span class="linenos">195</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
-</span><span id="Node.certificate-196"><a href="#Node.certificate-196"><span class="linenos">196</span></a>
-</span><span id="Node.certificate-197"><a href="#Node.certificate-197"><span class="linenos">197</span></a><span class="sd">        Parameters</span>
-</span><span id="Node.certificate-198"><a href="#Node.certificate-198"><span class="linenos">198</span></a><span class="sd">        ----------</span>
-</span><span id="Node.certificate-199"><a href="#Node.certificate-199"><span class="linenos">199</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="Node.certificate-200"><a href="#Node.certificate-200"><span class="linenos">200</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="Node.certificate-201"><a href="#Node.certificate-201"><span class="linenos">201</span></a><span class="sd">            the source code.</span>
-</span><span id="Node.certificate-202"><a href="#Node.certificate-202"><span class="linenos">202</span></a>
-</span><span id="Node.certificate-203"><a href="#Node.certificate-203"><span class="linenos">203</span></a><span class="sd">        Returns</span>
-</span><span id="Node.certificate-204"><a href="#Node.certificate-204"><span class="linenos">204</span></a><span class="sd">        -------</span>
-</span><span id="Node.certificate-205"><a href="#Node.certificate-205"><span class="linenos">205</span></a><span class="sd">        : int</span>
-</span><span id="Node.certificate-206"><a href="#Node.certificate-206"><span class="linenos">206</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="Node.certificate-207"><a href="#Node.certificate-207"><span class="linenos">207</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Node.certificate-208"><a href="#Node.certificate-208"><span class="linenos">208</span></a>
-</span><span id="Node.certificate-209"><a href="#Node.certificate-209"><span class="linenos">209</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="Node.certificate-210"><a href="#Node.certificate-210"><span class="linenos">210</span></a>
-</span><span id="Node.certificate-211"><a href="#Node.certificate-211"><span class="linenos">211</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Node.certificate-202"><a href="#Node.certificate-202"><span class="linenos">202</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="Node.certificate-203"><a href="#Node.certificate-203"><span class="linenos">203</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Node.certificate-204"><a href="#Node.certificate-204"><span class="linenos">204</span></a><span class="sd">        Compute the certificate of the current `Node`, and set this attribute.</span>
+</span><span id="Node.certificate-205"><a href="#Node.certificate-205"><span class="linenos">205</span></a>
+</span><span id="Node.certificate-206"><a href="#Node.certificate-206"><span class="linenos">206</span></a><span class="sd">        Parameters</span>
+</span><span id="Node.certificate-207"><a href="#Node.certificate-207"><span class="linenos">207</span></a><span class="sd">        ----------</span>
+</span><span id="Node.certificate-208"><a href="#Node.certificate-208"><span class="linenos">208</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="Node.certificate-209"><a href="#Node.certificate-209"><span class="linenos">209</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="Node.certificate-210"><a href="#Node.certificate-210"><span class="linenos">210</span></a><span class="sd">            the source code.</span>
+</span><span id="Node.certificate-211"><a href="#Node.certificate-211"><span class="linenos">211</span></a>
+</span><span id="Node.certificate-212"><a href="#Node.certificate-212"><span class="linenos">212</span></a><span class="sd">        Returns</span>
+</span><span id="Node.certificate-213"><a href="#Node.certificate-213"><span class="linenos">213</span></a><span class="sd">        -------</span>
+</span><span id="Node.certificate-214"><a href="#Node.certificate-214"><span class="linenos">214</span></a><span class="sd">        : int</span>
+</span><span id="Node.certificate-215"><a href="#Node.certificate-215"><span class="linenos">215</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="Node.certificate-216"><a href="#Node.certificate-216"><span class="linenos">216</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Node.certificate-217"><a href="#Node.certificate-217"><span class="linenos">217</span></a>
+</span><span id="Node.certificate-218"><a href="#Node.certificate-218"><span class="linenos">218</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="Node.certificate-219"><a href="#Node.certificate-219"><span class="linenos">219</span></a>
+</span><span id="Node.certificate-220"><a href="#Node.certificate-220"><span class="linenos">220</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
 </span></pre></div>
 
 
