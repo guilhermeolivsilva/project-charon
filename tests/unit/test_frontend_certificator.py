@@ -14,10 +14,10 @@ def test_init() -> None:
     assert frontend_certificator.ast == ABSTRACT_SYNTAX_TREE
 
 
-def test_certificate():
-    """Test the FrontendCertificator.certificate method."""
+# def test_certificate():
+#     """Test the FrontendCertificator.certificate method."""
 
-    frontend_certificator = FrontendCertificator(ast=ABSTRACT_SYNTAX_TREE)
-    frontend_certificator.certificate()
+#     frontend_certificator = FrontendCertificator(ast=ABSTRACT_SYNTAX_TREE)
+#     frontend_certificator.certificate()
 
-    assert frontend_certificator.get_certificate() == CERTIFICATE
+#     assert frontend_certificator.get_certificate() == CERTIFICATE

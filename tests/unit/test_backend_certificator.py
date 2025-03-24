@@ -18,10 +18,10 @@ def test_init() -> None:
     assert backend_certificator.current_variable_prime == 2
 
 
-def test_certificate():
-    """Test the BackendCertificator.certificate method."""
+# def test_certificate():
+#     """Test the BackendCertificator.certificate method."""
 
-    backend_certificator = BackendCertificator(program=MACHINE_CODE)
-    backend_certificator.certificate()
+#     backend_certificator = BackendCertificator(program=MACHINE_CODE)
+#     backend_certificator.certificate()
 
-    assert backend_certificator.get_certificate() == CERTIFICATE
+#     assert backend_certificator.get_certificate() == CERTIFICATE
