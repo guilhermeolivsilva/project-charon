@@ -40,6 +40,7 @@ class Charon:
         self,
         parsed_source: dict[str, dict],
         ast: AbstractSyntaxTree,
+        code_generator: CodeGenerator,
         program: dict[str, dict],
         vm: VirtualMachine,
         frontend_certificator: FrontendCertificator,
@@ -47,6 +48,7 @@ class Charon:
     ) -> None:
         self.parsed_source = parsed_source
         self.ast = ast
+        self.code_generator = code_generator
         self.program = program
         self.vm = vm
         self.frontend_certificator = frontend_certificator
@@ -61,6 +63,11 @@ class Charon:
         """Get the `ast` attribute."""
 
         return self.ast
+    
+    def get_code_generator(self) -> CodeGenerator:
+        """Get the `code_generator` attribute."""
+
+        return self.code_generator
 
     def get_program(self) -> dict[str, dict]:
         """Get the `program` attribute."""
@@ -111,12 +118,16 @@ def create_instance(source_code: str) -> Charon:
     vm = VirtualMachine(program=program)
 
     frontend_certificator = FrontendCertificator(ast=ast)
+
+    # TODO: uncomment this
+    # backend_certificator = BackendCertificator(program=program)
     backend_certificator = ...
 
     _instance = {
         "parsed_source": parsed_source,
-        "program": program,
         "ast": ast,
+        "code_generator": generator,
+        "program": program,
         "vm": vm,
         "frontend_certificator": frontend_certificator,
         "backend_certificator": backend_certificator,
