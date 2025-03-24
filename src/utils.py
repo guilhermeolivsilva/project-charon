@@ -109,7 +109,7 @@ def primes_list(length: int) -> list[int]:
 
 
 def add_variable_to_environment(
-    environment: dict[str, dict[int, str]], size: int
+    environment: dict[str, dict[int, str]], var_id: int, size: int
 ) -> dict[str, dict[int, str]]:
     """
     Add a new variable to the environment.
@@ -119,6 +119,8 @@ def add_variable_to_environment(
     environment : dict[int, str]
         The compiler's environment, that maps variables IDs to memory
         addresses and function IDs to instructions indices.
+    var_id : int
+        The unique identifier of this variable.
     size : int
         The variable size, in bytes.
 
@@ -133,12 +135,11 @@ def add_variable_to_environment(
     variable_count = len(environment["variables"])
 
     if not variable_count:
-        var_id = 1
         new_var_address = hex(0)
     else:
-        var_id = variable_count + 1
-        last_var_address = environment["variables"][variable_count]["address"]
-        last_var_size = environment["variables"][variable_count]["size"]
+        last_var_id = list(environment["variables"]).pop()
+        last_var_address = environment["variables"][last_var_id]["address"]
+        last_var_size = environment["variables"][last_var_id]["size"]
         new_var_address = hex(int(last_var_address, 16) + last_var_size)
 
     environment["variables"][var_id] = {

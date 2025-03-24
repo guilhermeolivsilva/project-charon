@@ -93,7 +93,11 @@ class VAR_DEF(Node):
             The updated {var_id: address} environment mapping.
         """
 
-        environment = add_variable_to_environment(environment, self.size)
+        environment = add_variable_to_environment(
+            environment=environment,
+            var_id=self.value,
+            size=self.size
+        )
         allocated_address = environment["variables"][self.value]["address"]
 
         code: list[dict[str, Union[int, str]]] = []
