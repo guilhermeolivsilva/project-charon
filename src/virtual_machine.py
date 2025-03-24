@@ -177,41 +177,26 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
+        store_as_str: bool = False
+
         lhs = self.registers[instruction_params["lhs_register"]]
         rhs = self.registers[instruction_params["rhs_register"]]
 
-        self.registers[instruction_params["register"]] = lhs + rhs
+        # Handle address operations
+        if isinstance(lhs, str):
+            lhs = int(lhs, 16)
+            store_as_str = True
 
-    def ADDRESS(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
-        """
-        Handle a `ADDRESS` bytecode.
+        if isinstance(rhs, str):
+            rhs = int(rhs, 16)
+            store_as_str = True
 
-        This method loads the address of a variable into a register.
+        result = lhs + rhs
 
-        If an array or struct, it will load the address of the first element/
-        attribute to the register.
+        if store_as_str:
+            result = hex(result)
 
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-        """
-
-        # Value represents the variable to load's ID in the
-        # source code.
-        variable_to_load: int = instruction_params["id"]
-        variable_address: int = int(self.variables[variable_to_load], 16)
-
-        offset_size: int = instruction_params.get("offset_size", 0)
-        offset_register: Union[int, None] = instruction_params.get("offset_register")
-
-        offset = offset_size
-        if offset_register:
-            offset *= self.registers[offset_register]
-
-        variable_address += offset
-        value: int = instruction_params["register"]
-        self.registers[value] = hex(variable_address)
+        self.registers[instruction_params["register"]] = result
 
     def ALLOC(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
@@ -725,7 +710,7 @@ class VirtualMachine:
         """
         Handle a `LOAD` bytecode.
 
-        This method loads the value of a variable into a register.
+        This method loads the value of a registers into another register.
 
         If an array or struct, it will load the value of the first element/
         attribute to the register -- which is not a problem at all, as
@@ -737,23 +722,13 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        # Value represents the variable to load's ID in the
-        # source code.
-        variable_to_load: int = instruction_params["id"]
-        variable_address: int = int(self.variables[variable_to_load], 16)
+        register_with_source_address: str = instruction_params["value"]
+        value_to_load_address = self.registers[register_with_source_address]
+        value_to_load = self.memory[value_to_load_address]
 
-        offset_size: int = instruction_params.get("offset_size", 0)
-        offset_register: Union[int, None] = instruction_params.get("offset_register")
+        dest_register: int = instruction_params["register"]
 
-        offset = offset_size
-        if offset_register:
-            offset *= self.registers[offset_register]
-
-        variable_address += offset
-        variable_value: Union[int, float] = self.memory[hex(variable_address)]
-
-        value: int = instruction_params["register"]
-        self.registers[value] = variable_value
+        self.registers[dest_register] = value_to_load
 
     def LSHIFT(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
@@ -1005,16 +980,17 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        variable_address: str = self._get_variable_address(instruction_params)
+        register_with_dest_address: str = instruction_params["lhs_register"]
+        dest_address: str = self.registers[register_with_dest_address]
 
-        value_to_store_register: Union[int, str] = instruction_params["value"]
+        value_to_store_register = instruction_params["rhs_register"]
 
         if value_to_store_register == "arg":
             value_to_store: Union[int, float] = self.registers["arg"].pop()
         else:
             value_to_store: Union[int, float] = self.registers[value_to_store_register]
 
-        self.memory[variable_address] = value_to_store
+        self.memory[dest_address] = value_to_store
 
     def SUB(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
@@ -1057,37 +1033,3 @@ class VirtualMachine:
             truncated_value -= 0x100000
 
         self.registers[register] = truncated_value
-
-    def _get_variable_address(
-        self, instruction_params: dict[str, Union[int, float, str]]
-    ) -> str:
-        """
-        Get the address of some variable from the instruction_params.
-
-        This method is intended to be used by the `STORE` instruction handler.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-
-        Returns
-        -------
-        variable_address : str
-            The address of the variable in the `self.memory` dictionary.
-        """
-
-        lhs_register: int = instruction_params["register"]
-        lhs_register_contents: Union[int, str] = self.registers[lhs_register]
-
-        # Case 1: writing to some simple variable (i.e., the `lhs_register`
-        # contains its `id`)
-        if isinstance(lhs_register_contents, int):
-            variable_address: str = self.variables[lhs_register_contents]
-
-        # Case 2: writing to an element of an array or struct (i.e., the
-        # `lhs_register` contains the address of the element to write to)
-        else:
-            variable_address: str = lhs_register_contents
-
-        return variable_address
