@@ -200,7 +200,7 @@ def type_cast(
         short_to_int = cast_instruction_map["short"]["int"]
         code.append(short_to_int)
 
-        register, int_to_float = type_cast(
+        int_to_float, register = type_cast(
             original_type="int", target_type="float", register=register + 1
         )
         code.extend(int_to_float)
@@ -209,7 +209,7 @@ def type_cast(
         float_to_int = cast_instruction_map["float"]["int"]
         code.append(float_to_int)
 
-        register, int_to_short = type_cast(
+        int_to_short, register = type_cast(
             original_type="int", target_type="short", register=register + 1
         )
         code.extend(int_to_short)
