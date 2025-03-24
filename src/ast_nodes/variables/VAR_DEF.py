@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import get_variable_size
+from src.utils import add_variable_to_environment, get_variable_size
 
 
 class VAR_DEF(Node):
@@ -60,7 +60,7 @@ class VAR_DEF(Node):
 
     @override
     def generate_code(
-        self, register: int, environment: dict[int, str]
+        self, register: int, environment: dict[str, dict[int, str]]
     ) -> tuple[
         list[dict[str, Union[int, str, float]]],
         int,
@@ -80,7 +80,7 @@ class VAR_DEF(Node):
             Node.
         environment : dict[int, str]
             The compiler's environment, that maps variables IDs to memory
-            addresses.
+            addresses and function IDs to instructions indices.
 
         Returns
         -------
@@ -103,4 +103,4 @@ class VAR_DEF(Node):
 
         code.append(var_def_code)
 
-        return code, register, environment
+        return code, register, add_variable_to_environment(environment, self.size)
