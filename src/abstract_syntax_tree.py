@@ -366,22 +366,7 @@ class AbstractSyntaxTree:
 
             # Handle access to elements of a struct or an array
             elif self.current_symbol in ["LBRA", "DOT"]:
-                variable = expression_node
-
-                self._next_symbol()
-
-                element = self._term()
-
-                expression_node = ELEMENT_ACCESS(variable=variable, element=element)
-
-                if self.current_symbol == "RBRA":
-                    self._next_symbol()
-
-                # Finally, handle the `ASSIGN` case (i.e., setting the value of
-                # an element in a struct or an array)
-                # I'm not proud of this :( but it works :)
-                if self.current_symbol == "ASSIGN":
-                    expression_node = self.__handle_assign(expression_node)
+               expression_node = self.__handle_data_structure(expression_node)
 
         return expression_node
 
@@ -677,6 +662,9 @@ class AbstractSyntaxTree:
 
         self._next_symbol()
 
+        if isinstance(term_node, VAR) and self.current_symbol in ["LBRA", "DOT"]:
+            term_node = self.__handle_data_structure(term_node)
+
         return term_node
 
     def _next_symbol(self) -> None:
@@ -686,3 +674,23 @@ class AbstractSyntaxTree:
             self.current_symbol, self.current_value = self.current_statement_list.pop(0)
         else:
             self.current_symbol, self.current_value = ("EOI", {})
+
+    def __handle_data_structure(self, node) -> Node:
+        variable = node
+
+        self._next_symbol()
+
+        element = self._term()
+
+        node = ELEMENT_ACCESS(variable=variable, element=element)
+
+        if self.current_symbol == "RBRA":
+            self._next_symbol()
+
+        # Finally, handle the `ASSIGN` case (i.e., setting the value of
+        # an element in a struct or an array)
+        # I'm not proud of this :( but it works :)
+        if self.current_symbol == "ASSIGN":
+            node = self.__handle_assign(node)
+
+        return node
