@@ -134,12 +134,17 @@ def add_variable_to_environment(
 
     if not variable_count:
         var_id = 1
-        address = 0
+        new_var_address = hex(0)
     else:
         var_id = variable_count + 1
-        address = int(environment["variables"][variable_count], 16) + size
+        last_var_address = environment["variables"][variable_count]["address"]
+        last_var_size = environment["variables"][variable_count]["size"]
+        new_var_address = hex(int(last_var_address, 16) + last_var_size)
 
-    environment["variables"][var_id] = hex(address)
+    environment["variables"][var_id] = {
+        "address": new_var_address,
+        "size": size
+    }
 
     return environment
 
