@@ -979,10 +979,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        register_with_dest_address: str = instruction_params["lhs_register"]
+        register_with_dest_address: str = instruction_params["register"]
         dest_address: str = self.registers[register_with_dest_address]
 
-        value_to_store_register = instruction_params["rhs_register"]
+        value_to_store_register = instruction_params["value"]
 
         if value_to_store_register == "arg":
             value_to_store: Union[int, float] = self.registers["arg"].pop()

@@ -785,7 +785,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"lhs_register": 2, "rhs_register": "arg"},
+            "metadata": {"register": 2, "value": "arg"},
             "instruction_id": 4,
         },
         {
@@ -795,7 +795,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"lhs_register": 3, "rhs_register": "arg"},
+            "metadata": {"register": 3, "value": "arg"},
             "instruction_id": 6,
         },
         {
@@ -850,7 +850,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 14, "lhs_register": 6, "rhs_register": 13},
+            "metadata": {"register": 6, "value": 13},
             "instruction_id": 17,
         },
         {
@@ -895,7 +895,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 23, "lhs_register": 19, "rhs_register": 22},
+            "metadata": {"register": 19, "value": 22},
             "instruction_id": 26,
         },
         {
@@ -930,7 +930,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"lhs_register": 27, "rhs_register": "arg"},
+            "metadata": {"register": 27, "value": "arg"},
             "instruction_id": 33,
         },
         {
@@ -940,7 +940,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"lhs_register": 28, "rhs_register": "arg"},
+            "metadata": {"register": 28, "value": "arg"},
             "instruction_id": 35,
         },
         {
@@ -1005,7 +1005,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"lhs_register": 38, "rhs_register": "arg"},
+            "metadata": {"register": 38, "value": "arg"},
             "instruction_id": 48,
         },
         {
@@ -1015,7 +1015,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"lhs_register": 39, "rhs_register": "arg"},
+            "metadata": {"register": 39, "value": "arg"},
             "instruction_id": 50,
         },
         {
@@ -1040,7 +1040,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 44, "lhs_register": 42, "rhs_register": 43},
+            "metadata": {"register": 42, "value": 43},
             "instruction_id": 55,
         },
         {
@@ -1065,7 +1065,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 49, "lhs_register": 47, "rhs_register": 48},
+            "metadata": {"register": 47, "value": 48},
             "instruction_id": 60,
         },
         {
@@ -1110,7 +1110,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 58, "lhs_register": 56, "rhs_register": 57},
+            "metadata": {"register": 56, "value": 57},
             "instruction_id": 69,
         },
         {
@@ -1181,7 +1181,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 70, "lhs_register": 60, "rhs_register": 69},
+            "metadata": {"register": 60, "value": 69},
             "instruction_id": 84,
         },
         {
@@ -1282,7 +1282,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 86, "lhs_register": 82, "rhs_register": 85},
+            "metadata": {"register": 82, "value": 85},
             "instruction_id": 105,
         },
         {
@@ -1327,7 +1327,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 95, "lhs_register": 93, "rhs_register": 94},
+            "metadata": {"register": 93, "value": 94},
             "instruction_id": 114,
         },
         {
@@ -1472,7 +1472,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 123, "lhs_register": 117, "rhs_register": 122},
+            "metadata": {"register": 117, "value": 122},
             "instruction_id": 143,
         },
         {
@@ -1517,7 +1517,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "STORE",
-            "metadata": {"register": 131, "lhs_register": 125, "rhs_register": 130},
+            "metadata": {"register": 125, "value": 130},
             "instruction_id": 152,
         },
         {

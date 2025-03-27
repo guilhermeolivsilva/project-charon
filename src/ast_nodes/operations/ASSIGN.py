@@ -85,4 +85,17 @@ class ASSIGN(Operation):
             environment=environment
         )
 
+        # Adjust the field names of the `STORE` instruction
+        operation_code[-1]["metadata"]["register"] = operation_code[-1]["metadata"][
+            "lhs_register"
+        ]
+        operation_code[-1]["metadata"]["value"] = operation_code[-1]["metadata"][
+            "rhs_register"
+        ]
+
+        del operation_code[-1]["metadata"]["lhs_register"]
+        del operation_code[-1]["metadata"]["rhs_register"]
+
+        print(operation_code)
+
         return operation_code, register, environment

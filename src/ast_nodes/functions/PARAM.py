@@ -78,7 +78,7 @@ class PARAM(VAR_DEF):
         parameter_address_register = register - 1
         parameter_store_code = {
             "instruction": "STORE",
-            "metadata": {"lhs_register": parameter_address_register, "rhs_register": "arg"},
+            "metadata": {"register": parameter_address_register, "value": "arg"},
         }
         code.append(parameter_store_code)
 
