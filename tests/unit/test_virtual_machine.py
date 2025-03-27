@@ -52,16 +52,16 @@ def test_run() -> None:
     vm.run()
 
     expected_memory = {
-        "0x30": 3,
-        "0x34": 1,
-        "0x38": 2,
-        "0x3c": 1,
-        "0x40": 2.0,
-        "0x46": 1,
-        "0x4e": 2.0,
-        "0x52": 123,
-        "0x6a": 1,
-        "0x7e": 1,
+        '0x3c': 2.0,
+        '0x40': 123,
+        '0x44': 1,
+        '0x48': 2,
+        '0x4c': 1,
+        '0x50': 2.0,
+        '0x56': 1,
+        '0x5e': 3,
+        '0x76': 1,
+        '0x8a': 1
     }
 
     assert vm.get_memory() == expected_memory
@@ -93,45 +93,25 @@ def test_ADD() -> None:
     assert vm.registers[result_register] == expected_result
 
 
-def test_ADDRESS() -> None:
-    """Test the `VirtualMachine.ADDRESS` method."""
-
-    vm = VirtualMachine(program=MACHINE_CODE, memory_size=10)
-
-    variable_id = 2
-    expected_value_register = 3
-    expected_address = "0x8"
-
-    # I.e., save the contents of the variable of ID `2` to
-    # register `3`
-    instruction_params = {
-        "register": expected_value_register,
-        "id": variable_id,
-    }
-
-    vm.variables = {0: "0x0", 1: "0x4", variable_id: expected_address}
-
-    vm.ADDRESS(instruction_params=instruction_params)
-
-    assert vm.registers[expected_value_register] == expected_address
-
-
 @pytest.mark.parametrize(
     "test_suite",
     [
         # Simple variable
         {
-            "instruction_params": {"id": 0, "size": 4, "id": 0, "register": 0},
+            "instruction_params": {
+                "id": 0, "size": 4, "id": 0, "register": 0, "address": "0x0"},
             "expected_result": {"memory_pointer": 4, "variables": {0: "0x0"}},
         },
         # Struct
         {
-            "instruction_params": {"id": 0, "size": 8, "id": 0, "register": 0},
+            "instruction_params": {
+                "id": 0, "size": 8, "id": 0, "register": 0, "address": "0x0"},
             "expected_result": {"memory_pointer": 8, "variables": {0: "0x0"}},
         },
         # Array
         {
-            "instruction_params": {"id": 0, "size": 12, "id": 0, "register": 0},
+            "instruction_params": {
+                "id": 0, "size": 12, "id": 0, "register": 0, "address": "0x0"},
             "expected_result": {"memory_pointer": 12, "variables": {0: "0x0"}},
         },
     ],
@@ -155,12 +135,16 @@ def test_ALLOC_success(test_suite) -> None:
     [
         # Upfront full memory
         {
-            "instruction_params": {"id": 0, "size": 4, "id": 0, "register": 0},
+            "instruction_params": {
+                "id": 0, "size": 4, "id": 0, "register": 0, "address": "0x0"
+            },
             "vm_settings": {"memory_size": 0},
         },
         # Memory does not have enough space for the new variable
         {
-            "instruction_params": {"id": 0, "size": 8, "id": 0, "register": 0},
+            "instruction_params": {
+                "id": 0, "size": 8, "id": 0, "register": 0, "address": "0x0"
+            },
             "vm_settings": {"memory_size": 4},
         },
     ],
@@ -693,14 +677,12 @@ def test_LOAD() -> None:
     expected_value = 77
     expected_value_register = 3
 
-    # I.e., save the contents of the variable of ID `2` to
-    # register `3`
+    vm.registers = {0: "0x0", 1: "0x4", 2: "0x8"}
     instruction_params = {
         "register": expected_value_register,
-        "id": 2,
+        "value": 2,
     }
 
-    vm.variables = {0: "0x0", 1: "0x4", 2: "0x8"}
 
     vm.memory = {
         "0x0": 123,
@@ -914,11 +896,10 @@ def test_STORE_simple() -> None:
 
     instruction_params = {"register": 0, "value": 1}
 
-    value_to_store = 23
-    vm.registers = {0: 0, 1: value_to_store}
-
     store_address = "0x0"
-    vm.variables = {0: store_address}
+    value_to_store = 23
+
+    vm.registers = {0: store_address, 1: value_to_store}
 
     vm.STORE(instruction_params)
 
