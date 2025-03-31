@@ -96,6 +96,4 @@ class ASSIGN(Operation):
         del operation_code[-1]["metadata"]["lhs_register"]
         del operation_code[-1]["metadata"]["rhs_register"]
 
-        print(operation_code)
-
         return operation_code, register, environment
