@@ -100,19 +100,19 @@ def test_ADD() -> None:
         {
             "instruction_params": {
                 "id": 0, "size": 4, "id": 0, "register": 0, "address": "0x0"},
-            "expected_result": {"memory_pointer": 4, "variables": {0: "0x0"}},
+            "expected_result": {"memory_pointer": 0, "variables": {0: "0x0"}},
         },
         # Struct
         {
             "instruction_params": {
                 "id": 0, "size": 8, "id": 0, "register": 0, "address": "0x0"},
-            "expected_result": {"memory_pointer": 8, "variables": {0: "0x0"}},
+            "expected_result": {"memory_pointer": 0, "variables": {0: "0x0"}},
         },
         # Array
         {
             "instruction_params": {
                 "id": 0, "size": 12, "id": 0, "register": 0, "address": "0x0"},
-            "expected_result": {"memory_pointer": 12, "variables": {0: "0x0"}},
+            "expected_result": {"memory_pointer": 0, "variables": {0: "0x0"}},
         },
     ],
 )
@@ -143,7 +143,7 @@ def test_ALLOC_success(test_suite) -> None:
         # Memory does not have enough space for the new variable
         {
             "instruction_params": {
-                "id": 0, "size": 8, "id": 0, "register": 0, "address": "0x0"
+                "id": 0, "size": 8, "id": 0, "register": 0, "address": "0x4"
             },
             "vm_settings": {"memory_size": 4},
         },

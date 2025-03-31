@@ -55,7 +55,6 @@ class VirtualMachine:
         is_equal: bool = (
             self.program == other.program
             and self.memory == other.memory
-            and self.memory_pointer == other.memory_pointer
             and self.program_counter == other.program_counter
             and self.registers == other.registers
             and self.variables == other.variables
@@ -78,7 +77,6 @@ class VirtualMachine:
         # Internal variables
         _str += "Internal Variables:"
         _str += f"\n  Program Counter: {self.program_counter}"
-        _str += f"\n  Memory Pointer: {self.memory_pointer}"
 
         _str += "\n\n"
 
@@ -222,14 +220,17 @@ class VirtualMachine:
             raise MemoryError(err_msg)
 
         variable_id: int = instruction_params["id"]
-        variable_size: int = instruction_params["size"]
         variable_address: str = instruction_params["address"]
         variable_address_register: int = instruction_params["register"]
 
-        updated_memory_pointer: int = self.memory_pointer + variable_size
+        # Check if the scheduled address is valid
+        updated_memory_pointer: int = max(
+            self.memory_pointer,
+            int(variable_address, 16)
+        )
 
         if updated_memory_pointer >= self.memory_size:
-            err_msg: str = "Not enough memory to allocate a new variable."
+            err_msg: str = "Not enough memory to allocate variable."
             err_msg += f"\nInstruction: {instruction_params}"
             err_msg += f"\nMemory dump:\n{str(self)}"
 
@@ -237,7 +238,6 @@ class VirtualMachine:
 
         self.registers[variable_address_register] = variable_address
         self.variables[variable_id] = variable_address
-        self.memory_pointer = updated_memory_pointer
 
     def AND(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
