@@ -6,6 +6,7 @@ from typing_extensions import override
 
 from src.ast_nodes.node import Node
 from src.ast_nodes.conditionals.conditional import Conditional
+from src.utils import SYMBOLS_MAP
 
 
 class WHILE(Conditional):
@@ -28,26 +29,7 @@ class WHILE(Conditional):
     def __init__(self, parenthesis_expression: Node, loop: Node) -> None:
         super().__init__(parenthesis_expression, loop)
 
-    @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `WHILE` nodes, first obtain the `certificate_label` from the
-        `parenthesis_expression` and loop (`statement_if_true`) subtrees,
-        recursively, and then from the `WHILE` node itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `Node`.
-        """
-
-        return [
-            *self.parenthesis_expression.get_certificate_label(),
-            self.certificate_label,
-            *self.statement_if_true.get_certificate_label(),
-        ]
+        self.boundary_symbol = SYMBOLS_MAP["WHILE_END"]
 
     @override
     def generate_code(

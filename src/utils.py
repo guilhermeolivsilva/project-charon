@@ -320,9 +320,12 @@ __OPERATIONS = {**__UNOPS, **__BINOPS}
 __JUMPS = {
     "FUNC_CALL": ["JAL", "MOV"],
     "RET_SYM": ["MOV", "JR"],
+    "COND": [],
     "IF": ["JZ"],
-    "IFELSE": ["JZ"],
+    "IF_END": [],
+    "ELSE_END": [],
     "WHILE": ["JZ"],
+    "WHILE_END": [],
 }
 
 

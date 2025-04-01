@@ -3,6 +3,7 @@
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
+from src.utils import next_prime, SYMBOLS_MAP
 
 
 class Conditional(Node):
@@ -25,6 +26,10 @@ class Conditional(Node):
         self.parenthesis_expression: Node = parenthesis_expression
         self.statement_if_true: Node = statement_if_true
 
+        # This will be set by the `certificate` method
+        self.conditional_expression_boundary = None
+        self.boundary_certificate = None
+
     @override
     def get_certificate_label(self) -> list[str]:
         """
@@ -41,9 +46,11 @@ class Conditional(Node):
         """
 
         return [
+            self.conditional_expression_boundary,
             *self.parenthesis_expression.get_certificate_label(),
             *super().get_certificate_label(),
             *self.statement_if_true.get_certificate_label(),
+            self.boundary_certificate
         ]
 
     @override
@@ -86,6 +93,18 @@ class Conditional(Node):
             The prime that comes immediately after `positional_prime`.
         """
 
+        # Add the symbol to delimit the condition expression
+        _conditional_expression_boundary_symbol = SYMBOLS_MAP["COND"]
+        self.conditional_expression_boundary = (
+            f"{positional_prime}^({_conditional_expression_boundary_symbol})"
+        )
+
+        positional_prime = next_prime(positional_prime)
+
         positional_prime = self.parenthesis_expression.certificate(positional_prime)
         positional_prime = super().certificate(positional_prime)
-        return self.statement_if_true.certificate(positional_prime)
+        positional_prime = self.statement_if_true.certificate(positional_prime)
+
+        self.boundary_certificate = f"{positional_prime}^({self.boundary_symbol})"
+
+        return next_prime(positional_prime)

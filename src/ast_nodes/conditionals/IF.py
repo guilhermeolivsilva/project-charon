@@ -6,6 +6,7 @@ from typing_extensions import override
 
 from src.ast_nodes.node import Node
 from src.ast_nodes.conditionals.conditional import Conditional
+from src.utils import SYMBOLS_MAP
 
 
 class IF(Conditional):
@@ -24,6 +25,8 @@ class IF(Conditional):
     @override
     def __init__(self, parenthesis_expression: Node, statement_if_true: Node) -> None:
         super().__init__(parenthesis_expression, statement_if_true)
+
+        self.boundary_symbol = SYMBOLS_MAP["IF_END"]
 
     @override
     def generate_code(

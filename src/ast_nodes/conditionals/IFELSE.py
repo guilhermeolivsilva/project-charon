@@ -5,10 +5,11 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.ast_nodes.conditionals.conditional import Conditional
+from src.ast_nodes.conditionals.IF import IF
+from src.utils import next_prime, SYMBOLS_MAP
 
 
-class IFELSE(Conditional):
+class IFELSE(IF):
     """
     Implement the representation of a conditional for the AST.
 
@@ -35,6 +36,9 @@ class IFELSE(Conditional):
 
         self.statement_if_false: Node = statement_if_false
 
+        # This will be set by the `certificate` method
+        self.else_boundary_certificate = None
+
     @override
     def get_certificate_label(self) -> list[str]:
         """
@@ -53,6 +57,7 @@ class IFELSE(Conditional):
         return [
             *super().get_certificate_label(),
             *self.statement_if_false.get_certificate_label(),
+            self.else_boundary_certificate,
         ]
 
     @override
@@ -197,5 +202,12 @@ class IFELSE(Conditional):
         """
 
         positional_prime = super().certificate(positional_prime)
+        positional_prime = self.statement_if_false.certificate(positional_prime)
+        
+        _else_boundary_symbol = SYMBOLS_MAP["ELSE_END"]
 
-        return self.statement_if_false.certificate(positional_prime)
+        self.else_boundary_certificate = (
+            f"{positional_prime}^({_else_boundary_symbol})"
+        )
+
+        return next_prime(positional_prime)
