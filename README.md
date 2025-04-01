@@ -44,8 +44,7 @@ The [C]haron language is implemented in Python, and consists of a large subset
 of the C programming language. It is statically typed and supports integers
 (`int`/`short`), floating point numbers (`float`), and user defined structures
 (`struct`). It also supports most of C's binary operations, as well as
-functions, arrays, control flow (`if`, `if/else`), and loops (`while`,
-`do/while`).
+functions, arrays, control flow (`if`, `if/else`), and loops (`while`).
 
 The programs shown in the [Examples](#examples) section explore the
 capabilities of the language.
@@ -209,7 +208,6 @@ These tests cover all of the language's functionality:
 
 - arrays;
 - control flow: `if`, `if/else`;
-- `do/while` loops;
 - expressions;
 - functions;
 - operations (mathematical and logical);
