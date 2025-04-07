@@ -103,9 +103,9 @@
 </span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">        Generate the code associated with this `PARAM`.</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">        For this node specialization, generate an instruction to allocate memory</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        (`ALLOC`) for this parameter, and an instruction `STORE` to save the</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        received argument value into the parameter.</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">        For this node specialization, update the environment to create a new</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        variable, push its address to a `CONSTANT`, and add a `STORE`</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        instruction to save the received argument value into the parameter.</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="sd">        Parameters</span>
 </span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">        ----------</span>
@@ -129,27 +129,29 @@
 </span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>
 </span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>
-</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>        <span class="c1"># First instruction: memory allocation</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>        <span class="p">(</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>            <span class="n">parameter_allocation_code</span><span class="p">,</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>            <span class="n">register</span><span class="p">,</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>            <span class="n">environment</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>            <span class="n">environment</span><span class="o">=</span><span class="n">environment</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a>        <span class="p">)</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">parameter_allocation_code</span><span class="p">)</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>
-</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>        <span class="c1"># Second instruction: store the argument into the parameter&#39;s allocated</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>        <span class="c1"># memory.</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>        <span class="n">parameter_address_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>        <span class="n">parameter_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;STORE&quot;</span><span class="p">,</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">parameter_address_register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">},</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>        <span class="p">}</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter_store_code</span><span class="p">)</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a>
-</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>        <span class="c1"># Update the environment with the variable address</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">environment</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>            <span class="n">environment</span><span class="o">=</span><span class="n">environment</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>        <span class="p">)</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>
+</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>        <span class="n">allocated_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>
+</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a>        <span class="c1"># Emit a `CONSTANT` instruction with the address of the variable</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>        <span class="n">var_address_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">allocated_address</span><span class="p">}</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>        <span class="p">}</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_address_code</span><span class="p">)</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>
+</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>        <span class="c1"># Store the argument into the parameter&#39;s allocated memory.</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>        <span class="n">parameter_store_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;STORE&quot;</span><span class="p">,</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">},</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a>        <span class="p">}</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter_store_code</span><span class="p">)</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a>
+</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">environment</span>
 </span></pre></div>
 
 
@@ -194,9 +196,9 @@
 </span><span id="PARAM-37"><a href="#PARAM-37"><span class="linenos">37</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PARAM-38"><a href="#PARAM-38"><span class="linenos">38</span></a><span class="sd">        Generate the code associated with this `PARAM`.</span>
 </span><span id="PARAM-39"><a href="#PARAM-39"><span class="linenos">39</span></a>
-</span><span id="PARAM-40"><a href="#PARAM-40"><span class="linenos">40</span></a><span class="sd">        For this node specialization, generate an instruction to allocate memory</span>
-</span><span id="PARAM-41"><a href="#PARAM-41"><span class="linenos">41</span></a><span class="sd">        (`ALLOC`) for this parameter, and an instruction `STORE` to save the</span>
-</span><span id="PARAM-42"><a href="#PARAM-42"><span class="linenos">42</span></a><span class="sd">        received argument value into the parameter.</span>
+</span><span id="PARAM-40"><a href="#PARAM-40"><span class="linenos">40</span></a><span class="sd">        For this node specialization, update the environment to create a new</span>
+</span><span id="PARAM-41"><a href="#PARAM-41"><span class="linenos">41</span></a><span class="sd">        variable, push its address to a `CONSTANT`, and add a `STORE`</span>
+</span><span id="PARAM-42"><a href="#PARAM-42"><span class="linenos">42</span></a><span class="sd">        instruction to save the received argument value into the parameter.</span>
 </span><span id="PARAM-43"><a href="#PARAM-43"><span class="linenos">43</span></a>
 </span><span id="PARAM-44"><a href="#PARAM-44"><span class="linenos">44</span></a><span class="sd">        Parameters</span>
 </span><span id="PARAM-45"><a href="#PARAM-45"><span class="linenos">45</span></a><span class="sd">        ----------</span>
@@ -220,27 +222,29 @@
 </span><span id="PARAM-63"><a href="#PARAM-63"><span class="linenos">63</span></a>
 </span><span id="PARAM-64"><a href="#PARAM-64"><span class="linenos">64</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="PARAM-65"><a href="#PARAM-65"><span class="linenos">65</span></a>
-</span><span id="PARAM-66"><a href="#PARAM-66"><span class="linenos">66</span></a>        <span class="c1"># First instruction: memory allocation</span>
-</span><span id="PARAM-67"><a href="#PARAM-67"><span class="linenos">67</span></a>        <span class="p">(</span>
-</span><span id="PARAM-68"><a href="#PARAM-68"><span class="linenos">68</span></a>            <span class="n">parameter_allocation_code</span><span class="p">,</span>
-</span><span id="PARAM-69"><a href="#PARAM-69"><span class="linenos">69</span></a>            <span class="n">register</span><span class="p">,</span>
-</span><span id="PARAM-70"><a href="#PARAM-70"><span class="linenos">70</span></a>            <span class="n">environment</span>
-</span><span id="PARAM-71"><a href="#PARAM-71"><span class="linenos">71</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="PARAM-72"><a href="#PARAM-72"><span class="linenos">72</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
-</span><span id="PARAM-73"><a href="#PARAM-73"><span class="linenos">73</span></a>            <span class="n">environment</span><span class="o">=</span><span class="n">environment</span>
-</span><span id="PARAM-74"><a href="#PARAM-74"><span class="linenos">74</span></a>        <span class="p">)</span>
-</span><span id="PARAM-75"><a href="#PARAM-75"><span class="linenos">75</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">parameter_allocation_code</span><span class="p">)</span>
-</span><span id="PARAM-76"><a href="#PARAM-76"><span class="linenos">76</span></a>
-</span><span id="PARAM-77"><a href="#PARAM-77"><span class="linenos">77</span></a>        <span class="c1"># Second instruction: store the argument into the parameter&#39;s allocated</span>
-</span><span id="PARAM-78"><a href="#PARAM-78"><span class="linenos">78</span></a>        <span class="c1"># memory.</span>
-</span><span id="PARAM-79"><a href="#PARAM-79"><span class="linenos">79</span></a>        <span class="n">parameter_address_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="PARAM-80"><a href="#PARAM-80"><span class="linenos">80</span></a>        <span class="n">parameter_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="PARAM-81"><a href="#PARAM-81"><span class="linenos">81</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;STORE&quot;</span><span class="p">,</span>
-</span><span id="PARAM-82"><a href="#PARAM-82"><span class="linenos">82</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">parameter_address_register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">},</span>
-</span><span id="PARAM-83"><a href="#PARAM-83"><span class="linenos">83</span></a>        <span class="p">}</span>
-</span><span id="PARAM-84"><a href="#PARAM-84"><span class="linenos">84</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter_store_code</span><span class="p">)</span>
-</span><span id="PARAM-85"><a href="#PARAM-85"><span class="linenos">85</span></a>
-</span><span id="PARAM-86"><a href="#PARAM-86"><span class="linenos">86</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
+</span><span id="PARAM-66"><a href="#PARAM-66"><span class="linenos">66</span></a>        <span class="c1"># Update the environment with the variable address</span>
+</span><span id="PARAM-67"><a href="#PARAM-67"><span class="linenos">67</span></a>        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">environment</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="PARAM-68"><a href="#PARAM-68"><span class="linenos">68</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
+</span><span id="PARAM-69"><a href="#PARAM-69"><span class="linenos">69</span></a>            <span class="n">environment</span><span class="o">=</span><span class="n">environment</span>
+</span><span id="PARAM-70"><a href="#PARAM-70"><span class="linenos">70</span></a>        <span class="p">)</span>
+</span><span id="PARAM-71"><a href="#PARAM-71"><span class="linenos">71</span></a>
+</span><span id="PARAM-72"><a href="#PARAM-72"><span class="linenos">72</span></a>        <span class="n">allocated_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
+</span><span id="PARAM-73"><a href="#PARAM-73"><span class="linenos">73</span></a>
+</span><span id="PARAM-74"><a href="#PARAM-74"><span class="linenos">74</span></a>        <span class="c1"># Emit a `CONSTANT` instruction with the address of the variable</span>
+</span><span id="PARAM-75"><a href="#PARAM-75"><span class="linenos">75</span></a>        <span class="n">var_address_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="PARAM-76"><a href="#PARAM-76"><span class="linenos">76</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
+</span><span id="PARAM-77"><a href="#PARAM-77"><span class="linenos">77</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">allocated_address</span><span class="p">}</span>
+</span><span id="PARAM-78"><a href="#PARAM-78"><span class="linenos">78</span></a>        <span class="p">}</span>
+</span><span id="PARAM-79"><a href="#PARAM-79"><span class="linenos">79</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_address_code</span><span class="p">)</span>
+</span><span id="PARAM-80"><a href="#PARAM-80"><span class="linenos">80</span></a>
+</span><span id="PARAM-81"><a href="#PARAM-81"><span class="linenos">81</span></a>        <span class="c1"># Store the argument into the parameter&#39;s allocated memory.</span>
+</span><span id="PARAM-82"><a href="#PARAM-82"><span class="linenos">82</span></a>        <span class="n">parameter_store_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="PARAM-83"><a href="#PARAM-83"><span class="linenos">83</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;STORE&quot;</span><span class="p">,</span>
+</span><span id="PARAM-84"><a href="#PARAM-84"><span class="linenos">84</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">},</span>
+</span><span id="PARAM-85"><a href="#PARAM-85"><span class="linenos">85</span></a>        <span class="p">}</span>
+</span><span id="PARAM-86"><a href="#PARAM-86"><span class="linenos">86</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter_store_code</span><span class="p">)</span>
+</span><span id="PARAM-87"><a href="#PARAM-87"><span class="linenos">87</span></a>
+</span><span id="PARAM-88"><a href="#PARAM-88"><span class="linenos">88</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">environment</span>
 </span></pre></div>
 
 
@@ -300,9 +304,9 @@ save received argument into the parameter's memory location.</p>
 </span><span id="PARAM.generate_code-37"><a href="#PARAM.generate_code-37"><span class="linenos">37</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="PARAM.generate_code-38"><a href="#PARAM.generate_code-38"><span class="linenos">38</span></a><span class="sd">        Generate the code associated with this `PARAM`.</span>
 </span><span id="PARAM.generate_code-39"><a href="#PARAM.generate_code-39"><span class="linenos">39</span></a>
-</span><span id="PARAM.generate_code-40"><a href="#PARAM.generate_code-40"><span class="linenos">40</span></a><span class="sd">        For this node specialization, generate an instruction to allocate memory</span>
-</span><span id="PARAM.generate_code-41"><a href="#PARAM.generate_code-41"><span class="linenos">41</span></a><span class="sd">        (`ALLOC`) for this parameter, and an instruction `STORE` to save the</span>
-</span><span id="PARAM.generate_code-42"><a href="#PARAM.generate_code-42"><span class="linenos">42</span></a><span class="sd">        received argument value into the parameter.</span>
+</span><span id="PARAM.generate_code-40"><a href="#PARAM.generate_code-40"><span class="linenos">40</span></a><span class="sd">        For this node specialization, update the environment to create a new</span>
+</span><span id="PARAM.generate_code-41"><a href="#PARAM.generate_code-41"><span class="linenos">41</span></a><span class="sd">        variable, push its address to a `CONSTANT`, and add a `STORE`</span>
+</span><span id="PARAM.generate_code-42"><a href="#PARAM.generate_code-42"><span class="linenos">42</span></a><span class="sd">        instruction to save the received argument value into the parameter.</span>
 </span><span id="PARAM.generate_code-43"><a href="#PARAM.generate_code-43"><span class="linenos">43</span></a>
 </span><span id="PARAM.generate_code-44"><a href="#PARAM.generate_code-44"><span class="linenos">44</span></a><span class="sd">        Parameters</span>
 </span><span id="PARAM.generate_code-45"><a href="#PARAM.generate_code-45"><span class="linenos">45</span></a><span class="sd">        ----------</span>
@@ -326,35 +330,37 @@ save received argument into the parameter's memory location.</p>
 </span><span id="PARAM.generate_code-63"><a href="#PARAM.generate_code-63"><span class="linenos">63</span></a>
 </span><span id="PARAM.generate_code-64"><a href="#PARAM.generate_code-64"><span class="linenos">64</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="PARAM.generate_code-65"><a href="#PARAM.generate_code-65"><span class="linenos">65</span></a>
-</span><span id="PARAM.generate_code-66"><a href="#PARAM.generate_code-66"><span class="linenos">66</span></a>        <span class="c1"># First instruction: memory allocation</span>
-</span><span id="PARAM.generate_code-67"><a href="#PARAM.generate_code-67"><span class="linenos">67</span></a>        <span class="p">(</span>
-</span><span id="PARAM.generate_code-68"><a href="#PARAM.generate_code-68"><span class="linenos">68</span></a>            <span class="n">parameter_allocation_code</span><span class="p">,</span>
-</span><span id="PARAM.generate_code-69"><a href="#PARAM.generate_code-69"><span class="linenos">69</span></a>            <span class="n">register</span><span class="p">,</span>
-</span><span id="PARAM.generate_code-70"><a href="#PARAM.generate_code-70"><span class="linenos">70</span></a>            <span class="n">environment</span>
-</span><span id="PARAM.generate_code-71"><a href="#PARAM.generate_code-71"><span class="linenos">71</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
-</span><span id="PARAM.generate_code-72"><a href="#PARAM.generate_code-72"><span class="linenos">72</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
-</span><span id="PARAM.generate_code-73"><a href="#PARAM.generate_code-73"><span class="linenos">73</span></a>            <span class="n">environment</span><span class="o">=</span><span class="n">environment</span>
-</span><span id="PARAM.generate_code-74"><a href="#PARAM.generate_code-74"><span class="linenos">74</span></a>        <span class="p">)</span>
-</span><span id="PARAM.generate_code-75"><a href="#PARAM.generate_code-75"><span class="linenos">75</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">parameter_allocation_code</span><span class="p">)</span>
-</span><span id="PARAM.generate_code-76"><a href="#PARAM.generate_code-76"><span class="linenos">76</span></a>
-</span><span id="PARAM.generate_code-77"><a href="#PARAM.generate_code-77"><span class="linenos">77</span></a>        <span class="c1"># Second instruction: store the argument into the parameter&#39;s allocated</span>
-</span><span id="PARAM.generate_code-78"><a href="#PARAM.generate_code-78"><span class="linenos">78</span></a>        <span class="c1"># memory.</span>
-</span><span id="PARAM.generate_code-79"><a href="#PARAM.generate_code-79"><span class="linenos">79</span></a>        <span class="n">parameter_address_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="PARAM.generate_code-80"><a href="#PARAM.generate_code-80"><span class="linenos">80</span></a>        <span class="n">parameter_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="PARAM.generate_code-81"><a href="#PARAM.generate_code-81"><span class="linenos">81</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;STORE&quot;</span><span class="p">,</span>
-</span><span id="PARAM.generate_code-82"><a href="#PARAM.generate_code-82"><span class="linenos">82</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">parameter_address_register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">},</span>
-</span><span id="PARAM.generate_code-83"><a href="#PARAM.generate_code-83"><span class="linenos">83</span></a>        <span class="p">}</span>
-</span><span id="PARAM.generate_code-84"><a href="#PARAM.generate_code-84"><span class="linenos">84</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter_store_code</span><span class="p">)</span>
-</span><span id="PARAM.generate_code-85"><a href="#PARAM.generate_code-85"><span class="linenos">85</span></a>
-</span><span id="PARAM.generate_code-86"><a href="#PARAM.generate_code-86"><span class="linenos">86</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
+</span><span id="PARAM.generate_code-66"><a href="#PARAM.generate_code-66"><span class="linenos">66</span></a>        <span class="c1"># Update the environment with the variable address</span>
+</span><span id="PARAM.generate_code-67"><a href="#PARAM.generate_code-67"><span class="linenos">67</span></a>        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">environment</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span>
+</span><span id="PARAM.generate_code-68"><a href="#PARAM.generate_code-68"><span class="linenos">68</span></a>            <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
+</span><span id="PARAM.generate_code-69"><a href="#PARAM.generate_code-69"><span class="linenos">69</span></a>            <span class="n">environment</span><span class="o">=</span><span class="n">environment</span>
+</span><span id="PARAM.generate_code-70"><a href="#PARAM.generate_code-70"><span class="linenos">70</span></a>        <span class="p">)</span>
+</span><span id="PARAM.generate_code-71"><a href="#PARAM.generate_code-71"><span class="linenos">71</span></a>
+</span><span id="PARAM.generate_code-72"><a href="#PARAM.generate_code-72"><span class="linenos">72</span></a>        <span class="n">allocated_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
+</span><span id="PARAM.generate_code-73"><a href="#PARAM.generate_code-73"><span class="linenos">73</span></a>
+</span><span id="PARAM.generate_code-74"><a href="#PARAM.generate_code-74"><span class="linenos">74</span></a>        <span class="c1"># Emit a `CONSTANT` instruction with the address of the variable</span>
+</span><span id="PARAM.generate_code-75"><a href="#PARAM.generate_code-75"><span class="linenos">75</span></a>        <span class="n">var_address_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="PARAM.generate_code-76"><a href="#PARAM.generate_code-76"><span class="linenos">76</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
+</span><span id="PARAM.generate_code-77"><a href="#PARAM.generate_code-77"><span class="linenos">77</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">allocated_address</span><span class="p">}</span>
+</span><span id="PARAM.generate_code-78"><a href="#PARAM.generate_code-78"><span class="linenos">78</span></a>        <span class="p">}</span>
+</span><span id="PARAM.generate_code-79"><a href="#PARAM.generate_code-79"><span class="linenos">79</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_address_code</span><span class="p">)</span>
+</span><span id="PARAM.generate_code-80"><a href="#PARAM.generate_code-80"><span class="linenos">80</span></a>
+</span><span id="PARAM.generate_code-81"><a href="#PARAM.generate_code-81"><span class="linenos">81</span></a>        <span class="c1"># Store the argument into the parameter&#39;s allocated memory.</span>
+</span><span id="PARAM.generate_code-82"><a href="#PARAM.generate_code-82"><span class="linenos">82</span></a>        <span class="n">parameter_store_code</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="PARAM.generate_code-83"><a href="#PARAM.generate_code-83"><span class="linenos">83</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;STORE&quot;</span><span class="p">,</span>
+</span><span id="PARAM.generate_code-84"><a href="#PARAM.generate_code-84"><span class="linenos">84</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">},</span>
+</span><span id="PARAM.generate_code-85"><a href="#PARAM.generate_code-85"><span class="linenos">85</span></a>        <span class="p">}</span>
+</span><span id="PARAM.generate_code-86"><a href="#PARAM.generate_code-86"><span class="linenos">86</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter_store_code</span><span class="p">)</span>
+</span><span id="PARAM.generate_code-87"><a href="#PARAM.generate_code-87"><span class="linenos">87</span></a>
+</span><span id="PARAM.generate_code-88"><a href="#PARAM.generate_code-88"><span class="linenos">88</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">environment</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Generate the code associated with this <code><a href="#PARAM">PARAM</a></code>.</p>
 
-<p>For this node specialization, generate an instruction to allocate memory
-(<code>ALLOC</code>) for this parameter, and an instruction <code>STORE</code> to save the
-received argument value into the parameter.</p>
+<p>For this node specialization, update the environment to create a new
+variable, push its address to a <code>CONSTANT</code>, and add a <code>STORE</code>
+instruction to save the received argument value into the parameter.</p>
 
 <h2 id="parameters">Parameters</h2>
 
@@ -383,7 +389,6 @@ environment : dict[int, str]
                                 <dl>
                                     <div><dt><a href="../variables/VAR_DEF.html#VAR_DEF">src.ast_nodes.variables.VAR_DEF.VAR_DEF</a></dt>
                                 <dd id="PARAM.variable_metadata" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.variable_metadata">variable_metadata</a></dd>
-                <dd id="PARAM.instruction" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.instruction">instruction</a></dd>
                 <dd id="PARAM.size" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.size">size</a></dd>
                 <dd id="PARAM.symbol" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.symbol">symbol</a></dd>
                 <dd id="PARAM.print" class="function"><a href="../variables/VAR_DEF.html#VAR_DEF.print">print</a></dd>
@@ -394,6 +399,7 @@ environment : dict[int, str]
                 <dd id="PARAM.type" class="variable"><a href="../node.html#Node.type">type</a></dd>
                 <dd id="PARAM.certificate_label" class="variable"><a href="../node.html#Node.certificate_label">certificate_label</a></dd>
                 <dd id="PARAM.uses_register" class="variable"><a href="../node.html#Node.uses_register">uses_register</a></dd>
+                <dd id="PARAM.instruction" class="variable"><a href="../node.html#Node.instruction">instruction</a></dd>
                 <dd id="PARAM.get_value" class="function"><a href="../node.html#Node.get_value">get_value</a></dd>
                 <dd id="PARAM.get_type" class="function"><a href="../node.html#Node.get_type">get_type</a></dd>
                 <dd id="PARAM.get_certificate_label" class="function"><a href="../node.html#Node.get_certificate_label">get_certificate_label</a></dd>
