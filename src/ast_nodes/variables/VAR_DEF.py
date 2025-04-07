@@ -26,7 +26,6 @@ class VAR_DEF(Node):
         super().__init__(id, type)
 
         self.variable_metadata: dict = variable_metadata
-        self.instruction: str = "ALLOC"
 
         prime: int = variable_metadata["prime"]
         self.size: int = get_variable_size(variable_metadata)
@@ -69,9 +68,8 @@ class VAR_DEF(Node):
         """
         Generate the code associated with this `VAR_DEF`.
 
-        For this node specialization, the generated code is an `ALLOC`
-        instruction. The bytecode contains information about the type, and
-        length, if it is an array.
+        There is no code associated with this operation: it will simply update
+        the environment.
 
         Parameters
         ----------
@@ -98,21 +96,5 @@ class VAR_DEF(Node):
             var_id=self.value,
             size=self.size
         )
-        allocated_address = environment["variables"][self.value]["address"]
 
-        code: list[dict[str, Union[int, str]]] = []
-
-        var_def_code = {
-            "instruction": self.instruction,
-            "metadata": {
-                "id": self.value,
-                "size": self.size,
-                "register": register,
-                "address": allocated_address
-            },
-        }
-        register += 1
-
-        code.append(var_def_code)
-
-        return code, register, environment
+        return [], register, environment

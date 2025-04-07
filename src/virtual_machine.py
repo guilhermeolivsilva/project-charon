@@ -196,49 +196,6 @@ class VirtualMachine:
 
         self.registers[instruction_params["register"]] = result
 
-    def ALLOC(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
-        """
-        Handle a `ALLOC` bytecode.
-
-        This method allocates memory for a variable.
-
-        Parameters
-        ----------
-        instruction_params : dict[str, Union[int, float, str]]
-            The bytecode metadata.
-
-        Raises
-        ------
-        MemoryError
-            Raised if the memory is full when this method is called, or if the
-            available memory is not enough for the variable being allocated.
-        """
-
-        if self.memory_pointer >= self.memory_size:
-            err_msg: str = "Cannot allocate memory: memory is full"
-            err_msg += f"\nInstruction: {instruction_params}"
-            raise MemoryError(err_msg)
-
-        variable_id: int = instruction_params["id"]
-        variable_address: str = instruction_params["address"]
-        variable_address_register: int = instruction_params["register"]
-
-        # Check if the scheduled address is valid
-        updated_memory_pointer: int = max(
-            self.memory_pointer,
-            int(variable_address, 16)
-        )
-
-        if updated_memory_pointer >= self.memory_size:
-            err_msg: str = "Not enough memory to allocate variable."
-            err_msg += f"\nInstruction: {instruction_params}"
-            err_msg += f"\nMemory dump:\n{str(self)}"
-
-            raise MemoryError(err_msg)
-
-        self.registers[variable_address_register] = variable_address
-        self.variables[variable_id] = variable_address
-
     def AND(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """
         Handle a `AND` bytecode.
@@ -315,10 +272,10 @@ class VirtualMachine:
             The bytecode metadata.
         """
 
-        value: int = instruction_params["register"]
+        register: int = instruction_params["register"]
         constant_value: int = instruction_params["value"]
 
-        self.registers[value] = constant_value
+        self.registers[register] = constant_value
 
     def DIV(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
         """

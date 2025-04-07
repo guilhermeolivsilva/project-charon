@@ -36,9 +36,9 @@ class PARAM(VAR_DEF):
         """
         Generate the code associated with this `PARAM`.
 
-        For this node specialization, generate an instruction to allocate memory
-        (`ALLOC`) for this parameter, and an instruction `STORE` to save the
-        received argument value into the parameter.
+        For this node specialization, update the environment to create a new
+        variable, push its address to a `CONSTANT`, and add a `STORE`
+        instruction to save the received argument value into the parameter.
 
         Parameters
         ----------
@@ -62,24 +62,26 @@ class PARAM(VAR_DEF):
 
         code: list[dict[str, Union[int, str]]] = []
 
-        # First instruction: memory allocation
-        (
-            parameter_allocation_code,
-            register,
-            environment
-        ) = super().generate_code(
+        # Update the environment with the variable address
+        _, _, environment = super().generate_code(
             register=register,
             environment=environment
         )
-        code.extend(parameter_allocation_code)
 
-        # Second instruction: store the argument into the parameter's allocated
-        # memory.
-        parameter_address_register = register - 1
+        allocated_address = environment["variables"][self.value]["address"]
+
+        # Emit a `CONSTANT` instruction with the address of the variable
+        var_address_code = {
+            "instruction": "CONSTANT",
+            "metadata": {"register": register, "value": allocated_address}
+        }
+        code.append(var_address_code)
+
+        # Store the argument into the parameter's allocated memory.
         parameter_store_code = {
             "instruction": "STORE",
-            "metadata": {"register": parameter_address_register, "value": "arg"},
+            "metadata": {"register": register, "value": "arg"},
         }
         code.append(parameter_store_code)
 
-        return code, register, environment
+        return code, register + 1, environment

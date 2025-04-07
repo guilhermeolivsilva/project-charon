@@ -287,7 +287,7 @@ def flatten_list(list_of_lists: list[list], drop_duplicates: bool = True) -> lis
 __TYPE_CASTS = ["FPTOSI", "SIGNEXT", "SITOFP", "TRUNC"]
 
 
-__VARIABLES = {"VAR_DEF": ["ALLOC"], "VAR_VALUE": ["LOAD"], "VAR_ADDRESS": ["ADDRESS"]}
+__VARIABLES = {"VAR_DEF": [], "VAR_VALUE": ["LOAD"], "VAR_ADDRESS": ["ADDRESS"]}
 
 
 __CONSTANTS = {"CST": ["CONSTANT"]}
@@ -329,7 +329,7 @@ __JUMPS = {
 }
 
 
-__FUNCTIONS = {"PARAM": ["ALLOC", "STORE"], "ARG": ["MOV"]}
+__FUNCTIONS = {"PARAM": ["CONSTANT", "STORE"], "ARG": ["MOV"]}
 
 
 __MISC = {"PROG": ["HALT"]}

@@ -3,7 +3,7 @@
 from copy import deepcopy
 
 from src.code_generator import CodeGenerator
-from tests.unit.common import ABSTRACT_SYNTAX_TREE_ROOT, MACHINE_CODE
+from tests.unit.common import ABSTRACT_SYNTAX_TREE_ROOT, ENVIRONMENT, MACHINE_CODE
 
 
 def test_init() -> None:
@@ -35,7 +35,7 @@ def test_parse_global_variables() -> None:
     cg = CodeGenerator(root=_ast_root)
     cg.parse_global_variables()
 
-    expected_parsed_global_vars = MACHINE_CODE["global_vars"]
+    expected_environment = ENVIRONMENT
 
     # Manually add the IDs
     current_id = 1
@@ -43,7 +43,7 @@ def test_parse_global_variables() -> None:
         element["instruction_id"] = current_id
         current_id += 1
 
-    assert cg.program["global_vars"] == expected_parsed_global_vars
+    assert cg.environment == expected_environment
 
 
 def test_parse_functions() -> None:
@@ -56,13 +56,7 @@ def test_parse_functions() -> None:
     cg.register = len(MACHINE_CODE["global_vars"])
 
     # Mock the `environment` to account for global variables
-    cg.environment = {
-        'variables': {
-            1: {'address': '0x0', 'size': 40},
-            2: {'address': '0x28', 'size': 8}
-        },
-        'functions': {}
-    }
+    cg.environment = ENVIRONMENT
 
     cg.parse_functions()
 
