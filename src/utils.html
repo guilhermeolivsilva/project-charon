@@ -103,7 +103,7 @@
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="n">builtin_types</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;short&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="n">builtin_types</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;short&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -278,7 +278,7 @@
 </span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">    register : int</span>
 </span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">        The number of the next register available.</span>
 </span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">    code : list[dict]</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="sd">        The code metadata of the `TYPECAST` instruction.</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="sd">        The code metadata of the type cast instruction.</span>
 </span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>
 </span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>    <span class="c1"># Direct casts</span>
@@ -387,13 +387,13 @@
 </span><span id="L-287"><a href="#L-287"><span class="linenos">287</span></a><span class="n">__TYPE_CASTS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FPTOSI&quot;</span><span class="p">,</span> <span class="s2">&quot;SIGNEXT&quot;</span><span class="p">,</span> <span class="s2">&quot;SITOFP&quot;</span><span class="p">,</span> <span class="s2">&quot;TRUNC&quot;</span><span class="p">]</span>
 </span><span id="L-288"><a href="#L-288"><span class="linenos">288</span></a>
 </span><span id="L-289"><a href="#L-289"><span class="linenos">289</span></a>
-</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a><span class="n">__VARIABLES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;VAR_DEF&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;LOAD&quot;</span><span class="p">],</span> <span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ADDRESS&quot;</span><span class="p">]}</span>
+</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a><span class="n">__VARIABLES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;VAR_DEF&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;LOAD&quot;</span><span class="p">,</span> <span class="s2">&quot;LOADF&quot;</span><span class="p">],</span> <span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ADDRESS&quot;</span><span class="p">]}</span>
 </span><span id="L-291"><a href="#L-291"><span class="linenos">291</span></a>
 </span><span id="L-292"><a href="#L-292"><span class="linenos">292</span></a>
 </span><span id="L-293"><a href="#L-293"><span class="linenos">293</span></a><span class="n">__CONSTANTS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;CST&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;CONSTANT&quot;</span><span class="p">]}</span>
 </span><span id="L-294"><a href="#L-294"><span class="linenos">294</span></a>
 </span><span id="L-295"><a href="#L-295"><span class="linenos">295</span></a>
-</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a><span class="n">__UNOPS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ASSIGN&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;STORE&quot;</span><span class="p">],</span> <span class="s2">&quot;NOT&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;NOT&quot;</span><span class="p">]}</span>
+</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a><span class="n">__UNOPS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ASSIGN&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;STORE&quot;</span><span class="p">,</span> <span class="s2">&quot;STOREF&quot;</span><span class="p">],</span> <span class="s2">&quot;NOT&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;NOT&quot;</span><span class="p">]}</span>
 </span><span id="L-297"><a href="#L-297"><span class="linenos">297</span></a>
 </span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a>
 </span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a><span class="n">__BINOPS</span> <span class="o">=</span> <span class="p">{</span>
@@ -429,7 +429,7 @@
 </span><span id="L-329"><a href="#L-329"><span class="linenos">329</span></a><span class="p">}</span>
 </span><span id="L-330"><a href="#L-330"><span class="linenos">330</span></a>
 </span><span id="L-331"><a href="#L-331"><span class="linenos">331</span></a>
-</span><span id="L-332"><a href="#L-332"><span class="linenos">332</span></a><span class="n">__FUNCTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;PARAM&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span> <span class="s2">&quot;STORE&quot;</span><span class="p">],</span> <span class="s2">&quot;ARG&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MOV&quot;</span><span class="p">]}</span>
+</span><span id="L-332"><a href="#L-332"><span class="linenos">332</span></a><span class="n">__FUNCTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;PARAM&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span> <span class="s2">&quot;STORE&quot;</span><span class="p">,</span> <span class="s2">&quot;STOREF&quot;</span><span class="p">],</span> <span class="s2">&quot;ARG&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MOV&quot;</span><span class="p">]}</span>
 </span><span id="L-333"><a href="#L-333"><span class="linenos">333</span></a>
 </span><span id="L-334"><a href="#L-334"><span class="linenos">334</span></a>
 </span><span id="L-335"><a href="#L-335"><span class="linenos">335</span></a><span class="n">__MISC</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;PROG&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;HALT&quot;</span><span class="p">]}</span>
@@ -511,7 +511,7 @@
                 <section id="builtin_types">
                     <div class="attr variable">
             <span class="name">builtin_types</span><span class="annotation">: dict[str, int]</span>        =
-<span class="default_value">{&#39;short&#39;: 2, &#39;int&#39;: 4, &#39;float&#39;: 4}</span>
+<span class="default_value">{&#39;short&#39;: 4, &#39;int&#39;: 4, &#39;float&#39;: 4}</span>
 
         
     </div>
@@ -845,7 +845,7 @@ size : int
 </span><span id="type_cast-179"><a href="#type_cast-179"><span class="linenos">179</span></a><span class="sd">    register : int</span>
 </span><span id="type_cast-180"><a href="#type_cast-180"><span class="linenos">180</span></a><span class="sd">        The number of the next register available.</span>
 </span><span id="type_cast-181"><a href="#type_cast-181"><span class="linenos">181</span></a><span class="sd">    code : list[dict]</span>
-</span><span id="type_cast-182"><a href="#type_cast-182"><span class="linenos">182</span></a><span class="sd">        The code metadata of the `TYPECAST` instruction.</span>
+</span><span id="type_cast-182"><a href="#type_cast-182"><span class="linenos">182</span></a><span class="sd">        The code metadata of the type cast instruction.</span>
 </span><span id="type_cast-183"><a href="#type_cast-183"><span class="linenos">183</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="type_cast-184"><a href="#type_cast-184"><span class="linenos">184</span></a>
 </span><span id="type_cast-185"><a href="#type_cast-185"><span class="linenos">185</span></a>    <span class="c1"># Direct casts</span>
@@ -915,7 +915,7 @@ register : int
 <p>register : int
     The number of the next register available.
 code : list[dict]
-    The code metadata of the <code>TYPECAST</code> instruction.</p>
+    The code metadata of the type cast instruction.</p>
 </div>
 
 
@@ -1041,7 +1041,7 @@ drop_duplicates : bool (optional, default = True)
                     <div class="attr variable">
             <span class="name">NODE_TO_INSTRUCTION_MAPPING</span>        =
 <input id="NODE_TO_INSTRUCTION_MAPPING-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-            <label class="view-value-button pdoc-button" for="NODE_TO_INSTRUCTION_MAPPING-view-value"></label><span class="default_value">{&#39;CST&#39;: [&#39;CONSTANT&#39;], &#39;VAR_DEF&#39;: [], &#39;VAR_VALUE&#39;: [&#39;LOAD&#39;], &#39;VAR_ADDRESS&#39;: [&#39;ADDRESS&#39;], &#39;PARAM&#39;: [&#39;CONSTANT&#39;, &#39;STORE&#39;], &#39;ARG&#39;: [&#39;MOV&#39;], &#39;FUNC_CALL&#39;: [&#39;JAL&#39;, &#39;MOV&#39;], &#39;RET_SYM&#39;: [&#39;MOV&#39;, &#39;JR&#39;], &#39;COND&#39;: [], &#39;IF&#39;: [&#39;JZ&#39;], &#39;IF_END&#39;: [], &#39;ELSE_END&#39;: [], &#39;WHILE&#39;: [&#39;JZ&#39;], &#39;WHILE_END&#39;: [], &#39;ASSIGN&#39;: [&#39;STORE&#39;], &#39;NOT&#39;: [&#39;NOT&#39;], &#39;ADD&#39;: [&#39;ADD&#39;, &#39;FADD&#39;], &#39;SUB&#39;: [&#39;SUB&#39;, &#39;FSUB&#39;], &#39;MULT&#39;: [&#39;MULT&#39;, &#39;FMULT&#39;], &#39;DIV&#39;: [&#39;DIV&#39;, &#39;FDIV&#39;], &#39;MOD&#39;: [&#39;MOD&#39;], &#39;LESS&#39;: [&#39;LT&#39;, &#39;FLT&#39;], &#39;GREATER&#39;: [&#39;GT&#39;, &#39;FGT&#39;], &#39;EQUAL&#39;: [&#39;EQ&#39;, &#39;FEQ&#39;], &#39;DIFF&#39;: [&#39;NEQ&#39;, &#39;FNEQ&#39;], &#39;AND&#39;: [&#39;AND&#39;, &#39;FAND&#39;], &#39;OR&#39;: [&#39;OR&#39;, &#39;FOR&#39;], &#39;LSHIFT&#39;: [&#39;LSHIFT&#39;], &#39;RSHIFT&#39;: [&#39;RSHIFT&#39;], &#39;BITAND&#39;: [&#39;BITAND&#39;], &#39;BITOR&#39;: [&#39;BITOR&#39;], &#39;PROG&#39;: [&#39;HALT&#39;]}</span>
+            <label class="view-value-button pdoc-button" for="NODE_TO_INSTRUCTION_MAPPING-view-value"></label><span class="default_value">{&#39;CST&#39;: [&#39;CONSTANT&#39;], &#39;VAR_DEF&#39;: [], &#39;VAR_VALUE&#39;: [&#39;LOAD&#39;, &#39;LOADF&#39;], &#39;VAR_ADDRESS&#39;: [&#39;ADDRESS&#39;], &#39;PARAM&#39;: [&#39;CONSTANT&#39;, &#39;STORE&#39;, &#39;STOREF&#39;], &#39;ARG&#39;: [&#39;MOV&#39;], &#39;FUNC_CALL&#39;: [&#39;JAL&#39;, &#39;MOV&#39;], &#39;RET_SYM&#39;: [&#39;MOV&#39;, &#39;JR&#39;], &#39;COND&#39;: [], &#39;IF&#39;: [&#39;JZ&#39;], &#39;IF_END&#39;: [], &#39;ELSE_END&#39;: [], &#39;WHILE&#39;: [&#39;JZ&#39;], &#39;WHILE_END&#39;: [], &#39;ASSIGN&#39;: [&#39;STORE&#39;, &#39;STOREF&#39;], &#39;NOT&#39;: [&#39;NOT&#39;], &#39;ADD&#39;: [&#39;ADD&#39;, &#39;FADD&#39;], &#39;SUB&#39;: [&#39;SUB&#39;, &#39;FSUB&#39;], &#39;MULT&#39;: [&#39;MULT&#39;, &#39;FMULT&#39;], &#39;DIV&#39;: [&#39;DIV&#39;, &#39;FDIV&#39;], &#39;MOD&#39;: [&#39;MOD&#39;], &#39;LESS&#39;: [&#39;LT&#39;, &#39;FLT&#39;], &#39;GREATER&#39;: [&#39;GT&#39;, &#39;FGT&#39;], &#39;EQUAL&#39;: [&#39;EQ&#39;, &#39;FEQ&#39;], &#39;DIFF&#39;: [&#39;NEQ&#39;, &#39;FNEQ&#39;], &#39;AND&#39;: [&#39;AND&#39;, &#39;FAND&#39;], &#39;OR&#39;: [&#39;OR&#39;, &#39;FOR&#39;], &#39;LSHIFT&#39;: [&#39;LSHIFT&#39;], &#39;RSHIFT&#39;: [&#39;RSHIFT&#39;], &#39;BITAND&#39;: [&#39;BITAND&#39;], &#39;BITOR&#39;: [&#39;BITOR&#39;], &#39;PROG&#39;: [&#39;HALT&#39;]}</span>
 
         
     </div>
@@ -1054,7 +1054,7 @@ drop_duplicates : bool (optional, default = True)
                     <div class="attr variable">
             <span class="name">INSTRUCTION_OPERATION_TO_NODE_MAPPING</span>        =
 <input id="INSTRUCTION_OPERATION_TO_NODE_MAPPING-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-            <label class="view-value-button pdoc-button" for="INSTRUCTION_OPERATION_TO_NODE_MAPPING-view-value"></label><span class="default_value">{&#39;STORE&#39;: &#39;ASSIGN&#39;, &#39;NOT&#39;: &#39;NOT&#39;, &#39;ADD&#39;: &#39;ADD&#39;, &#39;FADD&#39;: &#39;ADD&#39;, &#39;SUB&#39;: &#39;SUB&#39;, &#39;FSUB&#39;: &#39;SUB&#39;, &#39;MULT&#39;: &#39;MULT&#39;, &#39;FMULT&#39;: &#39;MULT&#39;, &#39;DIV&#39;: &#39;DIV&#39;, &#39;FDIV&#39;: &#39;DIV&#39;, &#39;MOD&#39;: &#39;MOD&#39;, &#39;LT&#39;: &#39;LESS&#39;, &#39;FLT&#39;: &#39;LESS&#39;, &#39;GT&#39;: &#39;GREATER&#39;, &#39;FGT&#39;: &#39;GREATER&#39;, &#39;EQ&#39;: &#39;EQUAL&#39;, &#39;FEQ&#39;: &#39;EQUAL&#39;, &#39;NEQ&#39;: &#39;DIFF&#39;, &#39;FNEQ&#39;: &#39;DIFF&#39;, &#39;AND&#39;: &#39;AND&#39;, &#39;FAND&#39;: &#39;AND&#39;, &#39;OR&#39;: &#39;OR&#39;, &#39;FOR&#39;: &#39;OR&#39;, &#39;LSHIFT&#39;: &#39;LSHIFT&#39;, &#39;RSHIFT&#39;: &#39;RSHIFT&#39;, &#39;BITAND&#39;: &#39;BITAND&#39;, &#39;BITOR&#39;: &#39;BITOR&#39;}</span>
+            <label class="view-value-button pdoc-button" for="INSTRUCTION_OPERATION_TO_NODE_MAPPING-view-value"></label><span class="default_value">{&#39;STORE&#39;: &#39;ASSIGN&#39;, &#39;STOREF&#39;: &#39;ASSIGN&#39;, &#39;NOT&#39;: &#39;NOT&#39;, &#39;ADD&#39;: &#39;ADD&#39;, &#39;FADD&#39;: &#39;ADD&#39;, &#39;SUB&#39;: &#39;SUB&#39;, &#39;FSUB&#39;: &#39;SUB&#39;, &#39;MULT&#39;: &#39;MULT&#39;, &#39;FMULT&#39;: &#39;MULT&#39;, &#39;DIV&#39;: &#39;DIV&#39;, &#39;FDIV&#39;: &#39;DIV&#39;, &#39;MOD&#39;: &#39;MOD&#39;, &#39;LT&#39;: &#39;LESS&#39;, &#39;FLT&#39;: &#39;LESS&#39;, &#39;GT&#39;: &#39;GREATER&#39;, &#39;FGT&#39;: &#39;GREATER&#39;, &#39;EQ&#39;: &#39;EQUAL&#39;, &#39;FEQ&#39;: &#39;EQUAL&#39;, &#39;NEQ&#39;: &#39;DIFF&#39;, &#39;FNEQ&#39;: &#39;DIFF&#39;, &#39;AND&#39;: &#39;AND&#39;, &#39;FAND&#39;: &#39;AND&#39;, &#39;OR&#39;: &#39;OR&#39;, &#39;FOR&#39;: &#39;OR&#39;, &#39;LSHIFT&#39;: &#39;LSHIFT&#39;, &#39;RSHIFT&#39;: &#39;RSHIFT&#39;, &#39;BITAND&#39;: &#39;BITAND&#39;, &#39;BITOR&#39;: &#39;BITOR&#39;}</span>
 
         
     </div>
@@ -1067,7 +1067,7 @@ drop_duplicates : bool (optional, default = True)
                     <div class="attr variable">
             <span class="name">INSTRUCTIONS_CATEGORIES</span>        =
 <input id="INSTRUCTIONS_CATEGORIES-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;variables&#39;: [&#39;LOAD&#39;, &#39;ADDRESS&#39;], &#39;functions&#39;: [&#39;STORE&#39;, &#39;CONSTANT&#39;, &#39;MOV&#39;], &#39;jumps&#39;: [&#39;JZ&#39;, &#39;JAL&#39;, &#39;JR&#39;, &#39;MOV&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STORE&#39;], &#39;binops&#39;: [&#39;FDIV&#39;, &#39;NEQ&#39;, &#39;OR&#39;, &#39;FOR&#39;, &#39;FEQ&#39;, &#39;AND&#39;, &#39;DIV&#39;, &#39;FSUB&#39;, &#39;GT&#39;, &#39;RSHIFT&#39;, &#39;FGT&#39;, &#39;FLT&#39;, &#39;FAND&#39;, &#39;SUB&#39;, &#39;FMULT&#39;, &#39;BITOR&#39;, &#39;MOD&#39;, &#39;EQ&#39;, &#39;ADD&#39;, &#39;BITAND&#39;, &#39;LT&#39;, &#39;FNEQ&#39;, &#39;MULT&#39;, &#39;FADD&#39;, &#39;LSHIFT&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
+            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;variables&#39;: [&#39;LOADF&#39;, &#39;ADDRESS&#39;, &#39;LOAD&#39;], &#39;functions&#39;: [&#39;STORE&#39;, &#39;MOV&#39;, &#39;CONSTANT&#39;, &#39;STOREF&#39;], &#39;jumps&#39;: [&#39;JAL&#39;, &#39;JR&#39;, &#39;MOV&#39;, &#39;JZ&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STORE&#39;, &#39;STOREF&#39;], &#39;binops&#39;: [&#39;MOD&#39;, &#39;BITAND&#39;, &#39;BITOR&#39;, &#39;MULT&#39;, &#39;ADD&#39;, &#39;FLT&#39;, &#39;RSHIFT&#39;, &#39;FGT&#39;, &#39;FDIV&#39;, &#39;LSHIFT&#39;, &#39;FNEQ&#39;, &#39;FEQ&#39;, &#39;AND&#39;, &#39;FSUB&#39;, &#39;NEQ&#39;, &#39;SUB&#39;, &#39;FADD&#39;, &#39;EQ&#39;, &#39;OR&#39;, &#39;DIV&#39;, &#39;FOR&#39;, &#39;FAND&#39;, &#39;GT&#39;, &#39;LT&#39;, &#39;FMULT&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
 
         
     </div>

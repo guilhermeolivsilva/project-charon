@@ -46,6 +46,9 @@
                                 <a class="variable" href="#VAR.type">type</a>
                         </li>
                         <li>
+                                <a class="variable" href="#VAR.instruction">instruction</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#VAR.generate_code">generate_code</a>
                         </li>
                         <li>
@@ -87,7 +90,7 @@
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_certificate_symbol</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_certificate_symbol</span><span class="p">,</span> <span class="n">type_cast</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">VAR</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
@@ -109,131 +112,141 @@
 </span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_metadata</span>
 </span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">id</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>        <span class="c1"># Handle the `instruction` and `symbol`. This defaults to the `read`</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>        <span class="c1"># case, but can be changed by the AST as it is built</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_context</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">})</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>    <span class="nd">@override</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="n">new_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>        <span class="n">array_length</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">)</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="k">if</span> <span class="n">array_length</span><span class="p">:</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>            <span class="n">new_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (array), Length: </span><span class="si">{</span><span class="n">array_length</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>        <span class="k">return</span> <span class="n">new_str</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>    <span class="nd">@override</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>    <span class="p">]:</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        Generate the code associated with this `VAR`.</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">        For this node specialization, the code metadata contains the instruction</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">        (i.e., whether the context requires the variable&#39;s value or address),</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        together with the variable identifier (`self.value`).</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Parameters</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        ----------</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        register : int</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">            Node.</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        Returns</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        -------</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        code : list of dict</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        register : int</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="n">var_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>            <span class="p">{</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">var_address</span><span class="p">}</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>            <span class="p">},</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>            <span class="p">{</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;ADD&quot;</span><span class="p">,</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>                    <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>                <span class="p">},</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>            <span class="p">}</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>        <span class="p">]</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">2</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>            <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;LOAD&quot;</span><span class="p">,</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>            <span class="p">})</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="s2">&quot;LOADF&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span> <span class="k">else</span> <span class="s2">&quot;LOAD&quot;</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>        <span class="c1"># Handle the `instruction` and `symbol`. This defaults to the `read`</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="c1"># case, but can be changed by the AST as it is built</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_context</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">})</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>    <span class="nd">@override</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>        <span class="n">new_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="n">array_length</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">)</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>        <span class="k">if</span> <span class="n">array_length</span><span class="p">:</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>            <span class="n">new_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (array), Length: </span><span class="si">{</span><span class="n">array_length</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>        <span class="k">return</span> <span class="n">new_str</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="nd">@override</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="p">]:</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        Generate the code associated with this `VAR`.</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">        For this node specialization, the code metadata contains the instruction</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        (i.e., whether the context requires the variable&#39;s value or address),</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">        together with the variable identifier (`self.value`).</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        Parameters</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        ----------</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">        register : int</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">            Node.</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        Returns</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        -------</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">        code : list of dict</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">        register : int</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="n">var_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>            <span class="p">{</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">var_address</span><span class="p">}</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>            <span class="p">},</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>            <span class="p">{</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;ADD&quot;</span><span class="p">,</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>                    <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>                <span class="p">},</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>            <span class="p">}</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>        <span class="p">]</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">2</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>            <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>            <span class="p">})</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">        Returns</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        -------</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">        : dict[str, str]</span>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">            The variable metadata.</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>            <span class="c1"># Add an explicit cast when loading a `short` variable, as all</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>            <span class="c1"># variables are 4 byte-aligned.</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;short&quot;</span><span class="p">:</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>                <span class="n">cast_to_short</span><span class="p">,</span> <span class="n">register</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>                    <span class="n">original_type</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>                    <span class="n">target_type</span><span class="o">=</span><span class="s2">&quot;short&quot;</span><span class="p">,</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>                    <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>                <span class="p">)</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>                <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cast_to_short</span><span class="p">)</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">        Add context to this `VAR` node.</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">        Parameters</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">        ----------</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">        Notes</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        -----</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        instruction being used.</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="c1"># Update the context</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>        <span class="p">)</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">        Returns</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="sd">        -------</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">        : dict[str, str]</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">            The variable metadata.</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        Add context to this `VAR` node.</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">        Parameters</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        ----------</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        Notes</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        -----</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        instruction being used.</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>        <span class="c1"># Update the context</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -268,131 +281,141 @@
 </span><span id="VAR-28"><a href="#VAR-28"><span class="linenos"> 28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_metadata</span>
 </span><span id="VAR-29"><a href="#VAR-29"><span class="linenos"> 29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">id</span>
 </span><span id="VAR-30"><a href="#VAR-30"><span class="linenos"> 30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-</span><span id="VAR-31"><a href="#VAR-31"><span class="linenos"> 31</span></a>
-</span><span id="VAR-32"><a href="#VAR-32"><span class="linenos"> 32</span></a>        <span class="c1"># Handle the `instruction` and `symbol`. This defaults to the `read`</span>
-</span><span id="VAR-33"><a href="#VAR-33"><span class="linenos"> 33</span></a>        <span class="c1"># case, but can be changed by the AST as it is built</span>
-</span><span id="VAR-34"><a href="#VAR-34"><span class="linenos"> 34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_context</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">})</span>
-</span><span id="VAR-35"><a href="#VAR-35"><span class="linenos"> 35</span></a>
-</span><span id="VAR-36"><a href="#VAR-36"><span class="linenos"> 36</span></a>    <span class="nd">@override</span>
-</span><span id="VAR-37"><a href="#VAR-37"><span class="linenos"> 37</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="VAR-38"><a href="#VAR-38"><span class="linenos"> 38</span></a>        <span class="n">new_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
-</span><span id="VAR-39"><a href="#VAR-39"><span class="linenos"> 39</span></a>
-</span><span id="VAR-40"><a href="#VAR-40"><span class="linenos"> 40</span></a>        <span class="n">array_length</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">)</span>
-</span><span id="VAR-41"><a href="#VAR-41"><span class="linenos"> 41</span></a>        <span class="k">if</span> <span class="n">array_length</span><span class="p">:</span>
-</span><span id="VAR-42"><a href="#VAR-42"><span class="linenos"> 42</span></a>            <span class="n">new_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (array), Length: </span><span class="si">{</span><span class="n">array_length</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="VAR-43"><a href="#VAR-43"><span class="linenos"> 43</span></a>
-</span><span id="VAR-44"><a href="#VAR-44"><span class="linenos"> 44</span></a>        <span class="k">return</span> <span class="n">new_str</span>
-</span><span id="VAR-45"><a href="#VAR-45"><span class="linenos"> 45</span></a>
-</span><span id="VAR-46"><a href="#VAR-46"><span class="linenos"> 46</span></a>    <span class="nd">@override</span>
-</span><span id="VAR-47"><a href="#VAR-47"><span class="linenos"> 47</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
-</span><span id="VAR-48"><a href="#VAR-48"><span class="linenos"> 48</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
-</span><span id="VAR-49"><a href="#VAR-49"><span class="linenos"> 49</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="VAR-50"><a href="#VAR-50"><span class="linenos"> 50</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
-</span><span id="VAR-51"><a href="#VAR-51"><span class="linenos"> 51</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="VAR-52"><a href="#VAR-52"><span class="linenos"> 52</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
-</span><span id="VAR-53"><a href="#VAR-53"><span class="linenos"> 53</span></a>    <span class="p">]:</span>
-</span><span id="VAR-54"><a href="#VAR-54"><span class="linenos"> 54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR-55"><a href="#VAR-55"><span class="linenos"> 55</span></a><span class="sd">        Generate the code associated with this `VAR`.</span>
-</span><span id="VAR-56"><a href="#VAR-56"><span class="linenos"> 56</span></a>
-</span><span id="VAR-57"><a href="#VAR-57"><span class="linenos"> 57</span></a><span class="sd">        For this node specialization, the code metadata contains the instruction</span>
-</span><span id="VAR-58"><a href="#VAR-58"><span class="linenos"> 58</span></a><span class="sd">        (i.e., whether the context requires the variable&#39;s value or address),</span>
-</span><span id="VAR-59"><a href="#VAR-59"><span class="linenos"> 59</span></a><span class="sd">        together with the variable identifier (`self.value`).</span>
-</span><span id="VAR-60"><a href="#VAR-60"><span class="linenos"> 60</span></a>
-</span><span id="VAR-61"><a href="#VAR-61"><span class="linenos"> 61</span></a><span class="sd">        Parameters</span>
-</span><span id="VAR-62"><a href="#VAR-62"><span class="linenos"> 62</span></a><span class="sd">        ----------</span>
-</span><span id="VAR-63"><a href="#VAR-63"><span class="linenos"> 63</span></a><span class="sd">        register : int</span>
-</span><span id="VAR-64"><a href="#VAR-64"><span class="linenos"> 64</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="VAR-65"><a href="#VAR-65"><span class="linenos"> 65</span></a><span class="sd">            Node.</span>
-</span><span id="VAR-66"><a href="#VAR-66"><span class="linenos"> 66</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="VAR-67"><a href="#VAR-67"><span class="linenos"> 67</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
-</span><span id="VAR-68"><a href="#VAR-68"><span class="linenos"> 68</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
-</span><span id="VAR-69"><a href="#VAR-69"><span class="linenos"> 69</span></a>
-</span><span id="VAR-70"><a href="#VAR-70"><span class="linenos"> 70</span></a><span class="sd">        Returns</span>
-</span><span id="VAR-71"><a href="#VAR-71"><span class="linenos"> 71</span></a><span class="sd">        -------</span>
-</span><span id="VAR-72"><a href="#VAR-72"><span class="linenos"> 72</span></a><span class="sd">        code : list of dict</span>
-</span><span id="VAR-73"><a href="#VAR-73"><span class="linenos"> 73</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
-</span><span id="VAR-74"><a href="#VAR-74"><span class="linenos"> 74</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
-</span><span id="VAR-75"><a href="#VAR-75"><span class="linenos"> 75</span></a><span class="sd">        register : int</span>
-</span><span id="VAR-76"><a href="#VAR-76"><span class="linenos"> 76</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="VAR-77"><a href="#VAR-77"><span class="linenos"> 77</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="VAR-78"><a href="#VAR-78"><span class="linenos"> 78</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="VAR-79"><a href="#VAR-79"><span class="linenos"> 79</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR-80"><a href="#VAR-80"><span class="linenos"> 80</span></a>
-</span><span id="VAR-81"><a href="#VAR-81"><span class="linenos"> 81</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="VAR-82"><a href="#VAR-82"><span class="linenos"> 82</span></a>        <span class="n">var_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
-</span><span id="VAR-83"><a href="#VAR-83"><span class="linenos"> 83</span></a>
-</span><span id="VAR-84"><a href="#VAR-84"><span class="linenos"> 84</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="VAR-85"><a href="#VAR-85"><span class="linenos"> 85</span></a>            <span class="p">{</span>
-</span><span id="VAR-86"><a href="#VAR-86"><span class="linenos"> 86</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
-</span><span id="VAR-87"><a href="#VAR-87"><span class="linenos"> 87</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">var_address</span><span class="p">}</span>
-</span><span id="VAR-88"><a href="#VAR-88"><span class="linenos"> 88</span></a>            <span class="p">},</span>
-</span><span id="VAR-89"><a href="#VAR-89"><span class="linenos"> 89</span></a>            <span class="p">{</span>
-</span><span id="VAR-90"><a href="#VAR-90"><span class="linenos"> 90</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;ADD&quot;</span><span class="p">,</span>
-</span><span id="VAR-91"><a href="#VAR-91"><span class="linenos"> 91</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="VAR-92"><a href="#VAR-92"><span class="linenos"> 92</span></a>                    <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="VAR-93"><a href="#VAR-93"><span class="linenos"> 93</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
-</span><span id="VAR-94"><a href="#VAR-94"><span class="linenos"> 94</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span>
-</span><span id="VAR-95"><a href="#VAR-95"><span class="linenos"> 95</span></a>                <span class="p">},</span>
-</span><span id="VAR-96"><a href="#VAR-96"><span class="linenos"> 96</span></a>            <span class="p">}</span>
-</span><span id="VAR-97"><a href="#VAR-97"><span class="linenos"> 97</span></a>        <span class="p">]</span>
-</span><span id="VAR-98"><a href="#VAR-98"><span class="linenos"> 98</span></a>
-</span><span id="VAR-99"><a href="#VAR-99"><span class="linenos"> 99</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">2</span>
-</span><span id="VAR-100"><a href="#VAR-100"><span class="linenos">100</span></a>
-</span><span id="VAR-101"><a href="#VAR-101"><span class="linenos">101</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="VAR-102"><a href="#VAR-102"><span class="linenos">102</span></a>            <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-</span><span id="VAR-103"><a href="#VAR-103"><span class="linenos">103</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;LOAD&quot;</span><span class="p">,</span>
-</span><span id="VAR-104"><a href="#VAR-104"><span class="linenos">104</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>
-</span><span id="VAR-105"><a href="#VAR-105"><span class="linenos">105</span></a>            <span class="p">})</span>
-</span><span id="VAR-106"><a href="#VAR-106"><span class="linenos">106</span></a>
+</span><span id="VAR-31"><a href="#VAR-31"><span class="linenos"> 31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="s2">&quot;LOADF&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span> <span class="k">else</span> <span class="s2">&quot;LOAD&quot;</span>
+</span><span id="VAR-32"><a href="#VAR-32"><span class="linenos"> 32</span></a>
+</span><span id="VAR-33"><a href="#VAR-33"><span class="linenos"> 33</span></a>        <span class="c1"># Handle the `instruction` and `symbol`. This defaults to the `read`</span>
+</span><span id="VAR-34"><a href="#VAR-34"><span class="linenos"> 34</span></a>        <span class="c1"># case, but can be changed by the AST as it is built</span>
+</span><span id="VAR-35"><a href="#VAR-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_context</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">})</span>
+</span><span id="VAR-36"><a href="#VAR-36"><span class="linenos"> 36</span></a>
+</span><span id="VAR-37"><a href="#VAR-37"><span class="linenos"> 37</span></a>    <span class="nd">@override</span>
+</span><span id="VAR-38"><a href="#VAR-38"><span class="linenos"> 38</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="VAR-39"><a href="#VAR-39"><span class="linenos"> 39</span></a>        <span class="n">new_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+</span><span id="VAR-40"><a href="#VAR-40"><span class="linenos"> 40</span></a>
+</span><span id="VAR-41"><a href="#VAR-41"><span class="linenos"> 41</span></a>        <span class="n">array_length</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">)</span>
+</span><span id="VAR-42"><a href="#VAR-42"><span class="linenos"> 42</span></a>        <span class="k">if</span> <span class="n">array_length</span><span class="p">:</span>
+</span><span id="VAR-43"><a href="#VAR-43"><span class="linenos"> 43</span></a>            <span class="n">new_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (array), Length: </span><span class="si">{</span><span class="n">array_length</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="VAR-44"><a href="#VAR-44"><span class="linenos"> 44</span></a>
+</span><span id="VAR-45"><a href="#VAR-45"><span class="linenos"> 45</span></a>        <span class="k">return</span> <span class="n">new_str</span>
+</span><span id="VAR-46"><a href="#VAR-46"><span class="linenos"> 46</span></a>
+</span><span id="VAR-47"><a href="#VAR-47"><span class="linenos"> 47</span></a>    <span class="nd">@override</span>
+</span><span id="VAR-48"><a href="#VAR-48"><span class="linenos"> 48</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="VAR-49"><a href="#VAR-49"><span class="linenos"> 49</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+</span><span id="VAR-50"><a href="#VAR-50"><span class="linenos"> 50</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="VAR-51"><a href="#VAR-51"><span class="linenos"> 51</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
+</span><span id="VAR-52"><a href="#VAR-52"><span class="linenos"> 52</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="VAR-53"><a href="#VAR-53"><span class="linenos"> 53</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+</span><span id="VAR-54"><a href="#VAR-54"><span class="linenos"> 54</span></a>    <span class="p">]:</span>
+</span><span id="VAR-55"><a href="#VAR-55"><span class="linenos"> 55</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR-56"><a href="#VAR-56"><span class="linenos"> 56</span></a><span class="sd">        Generate the code associated with this `VAR`.</span>
+</span><span id="VAR-57"><a href="#VAR-57"><span class="linenos"> 57</span></a>
+</span><span id="VAR-58"><a href="#VAR-58"><span class="linenos"> 58</span></a><span class="sd">        For this node specialization, the code metadata contains the instruction</span>
+</span><span id="VAR-59"><a href="#VAR-59"><span class="linenos"> 59</span></a><span class="sd">        (i.e., whether the context requires the variable&#39;s value or address),</span>
+</span><span id="VAR-60"><a href="#VAR-60"><span class="linenos"> 60</span></a><span class="sd">        together with the variable identifier (`self.value`).</span>
+</span><span id="VAR-61"><a href="#VAR-61"><span class="linenos"> 61</span></a>
+</span><span id="VAR-62"><a href="#VAR-62"><span class="linenos"> 62</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR-63"><a href="#VAR-63"><span class="linenos"> 63</span></a><span class="sd">        ----------</span>
+</span><span id="VAR-64"><a href="#VAR-64"><span class="linenos"> 64</span></a><span class="sd">        register : int</span>
+</span><span id="VAR-65"><a href="#VAR-65"><span class="linenos"> 65</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="VAR-66"><a href="#VAR-66"><span class="linenos"> 66</span></a><span class="sd">            Node.</span>
+</span><span id="VAR-67"><a href="#VAR-67"><span class="linenos"> 67</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="VAR-68"><a href="#VAR-68"><span class="linenos"> 68</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="VAR-69"><a href="#VAR-69"><span class="linenos"> 69</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
+</span><span id="VAR-70"><a href="#VAR-70"><span class="linenos"> 70</span></a>
+</span><span id="VAR-71"><a href="#VAR-71"><span class="linenos"> 71</span></a><span class="sd">        Returns</span>
+</span><span id="VAR-72"><a href="#VAR-72"><span class="linenos"> 72</span></a><span class="sd">        -------</span>
+</span><span id="VAR-73"><a href="#VAR-73"><span class="linenos"> 73</span></a><span class="sd">        code : list of dict</span>
+</span><span id="VAR-74"><a href="#VAR-74"><span class="linenos"> 74</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
+</span><span id="VAR-75"><a href="#VAR-75"><span class="linenos"> 75</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
+</span><span id="VAR-76"><a href="#VAR-76"><span class="linenos"> 76</span></a><span class="sd">        register : int</span>
+</span><span id="VAR-77"><a href="#VAR-77"><span class="linenos"> 77</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="VAR-78"><a href="#VAR-78"><span class="linenos"> 78</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="VAR-79"><a href="#VAR-79"><span class="linenos"> 79</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
+</span><span id="VAR-80"><a href="#VAR-80"><span class="linenos"> 80</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR-81"><a href="#VAR-81"><span class="linenos"> 81</span></a>
+</span><span id="VAR-82"><a href="#VAR-82"><span class="linenos"> 82</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="VAR-83"><a href="#VAR-83"><span class="linenos"> 83</span></a>        <span class="n">var_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
+</span><span id="VAR-84"><a href="#VAR-84"><span class="linenos"> 84</span></a>
+</span><span id="VAR-85"><a href="#VAR-85"><span class="linenos"> 85</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="VAR-86"><a href="#VAR-86"><span class="linenos"> 86</span></a>            <span class="p">{</span>
+</span><span id="VAR-87"><a href="#VAR-87"><span class="linenos"> 87</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
+</span><span id="VAR-88"><a href="#VAR-88"><span class="linenos"> 88</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">var_address</span><span class="p">}</span>
+</span><span id="VAR-89"><a href="#VAR-89"><span class="linenos"> 89</span></a>            <span class="p">},</span>
+</span><span id="VAR-90"><a href="#VAR-90"><span class="linenos"> 90</span></a>            <span class="p">{</span>
+</span><span id="VAR-91"><a href="#VAR-91"><span class="linenos"> 91</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;ADD&quot;</span><span class="p">,</span>
+</span><span id="VAR-92"><a href="#VAR-92"><span class="linenos"> 92</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="VAR-93"><a href="#VAR-93"><span class="linenos"> 93</span></a>                    <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="VAR-94"><a href="#VAR-94"><span class="linenos"> 94</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="VAR-95"><a href="#VAR-95"><span class="linenos"> 95</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span>
+</span><span id="VAR-96"><a href="#VAR-96"><span class="linenos"> 96</span></a>                <span class="p">},</span>
+</span><span id="VAR-97"><a href="#VAR-97"><span class="linenos"> 97</span></a>            <span class="p">}</span>
+</span><span id="VAR-98"><a href="#VAR-98"><span class="linenos"> 98</span></a>        <span class="p">]</span>
+</span><span id="VAR-99"><a href="#VAR-99"><span class="linenos"> 99</span></a>
+</span><span id="VAR-100"><a href="#VAR-100"><span class="linenos">100</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">2</span>
+</span><span id="VAR-101"><a href="#VAR-101"><span class="linenos">101</span></a>
+</span><span id="VAR-102"><a href="#VAR-102"><span class="linenos">102</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="VAR-103"><a href="#VAR-103"><span class="linenos">103</span></a>            <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="VAR-104"><a href="#VAR-104"><span class="linenos">104</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span>
+</span><span id="VAR-105"><a href="#VAR-105"><span class="linenos">105</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>
+</span><span id="VAR-106"><a href="#VAR-106"><span class="linenos">106</span></a>            <span class="p">})</span>
 </span><span id="VAR-107"><a href="#VAR-107"><span class="linenos">107</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="VAR-108"><a href="#VAR-108"><span class="linenos">108</span></a>
-</span><span id="VAR-109"><a href="#VAR-109"><span class="linenos">109</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
-</span><span id="VAR-110"><a href="#VAR-110"><span class="linenos">110</span></a>
-</span><span id="VAR-111"><a href="#VAR-111"><span class="linenos">111</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="VAR-112"><a href="#VAR-112"><span class="linenos">112</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR-113"><a href="#VAR-113"><span class="linenos">113</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
-</span><span id="VAR-114"><a href="#VAR-114"><span class="linenos">114</span></a>
-</span><span id="VAR-115"><a href="#VAR-115"><span class="linenos">115</span></a><span class="sd">        Returns</span>
-</span><span id="VAR-116"><a href="#VAR-116"><span class="linenos">116</span></a><span class="sd">        -------</span>
-</span><span id="VAR-117"><a href="#VAR-117"><span class="linenos">117</span></a><span class="sd">        : dict[str, str]</span>
-</span><span id="VAR-118"><a href="#VAR-118"><span class="linenos">118</span></a><span class="sd">            The variable metadata.</span>
-</span><span id="VAR-119"><a href="#VAR-119"><span class="linenos">119</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR-109"><a href="#VAR-109"><span class="linenos">109</span></a>            <span class="c1"># Add an explicit cast when loading a `short` variable, as all</span>
+</span><span id="VAR-110"><a href="#VAR-110"><span class="linenos">110</span></a>            <span class="c1"># variables are 4 byte-aligned.</span>
+</span><span id="VAR-111"><a href="#VAR-111"><span class="linenos">111</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;short&quot;</span><span class="p">:</span>
+</span><span id="VAR-112"><a href="#VAR-112"><span class="linenos">112</span></a>                <span class="n">cast_to_short</span><span class="p">,</span> <span class="n">register</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
+</span><span id="VAR-113"><a href="#VAR-113"><span class="linenos">113</span></a>                    <span class="n">original_type</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+</span><span id="VAR-114"><a href="#VAR-114"><span class="linenos">114</span></a>                    <span class="n">target_type</span><span class="o">=</span><span class="s2">&quot;short&quot;</span><span class="p">,</span>
+</span><span id="VAR-115"><a href="#VAR-115"><span class="linenos">115</span></a>                    <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
+</span><span id="VAR-116"><a href="#VAR-116"><span class="linenos">116</span></a>                <span class="p">)</span>
+</span><span id="VAR-117"><a href="#VAR-117"><span class="linenos">117</span></a>                <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cast_to_short</span><span class="p">)</span>
+</span><span id="VAR-118"><a href="#VAR-118"><span class="linenos">118</span></a>
+</span><span id="VAR-119"><a href="#VAR-119"><span class="linenos">119</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
 </span><span id="VAR-120"><a href="#VAR-120"><span class="linenos">120</span></a>
-</span><span id="VAR-121"><a href="#VAR-121"><span class="linenos">121</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
-</span><span id="VAR-122"><a href="#VAR-122"><span class="linenos">122</span></a>
-</span><span id="VAR-123"><a href="#VAR-123"><span class="linenos">123</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="VAR-124"><a href="#VAR-124"><span class="linenos">124</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR-125"><a href="#VAR-125"><span class="linenos">125</span></a><span class="sd">        Add context to this `VAR` node.</span>
-</span><span id="VAR-126"><a href="#VAR-126"><span class="linenos">126</span></a>
-</span><span id="VAR-127"><a href="#VAR-127"><span class="linenos">127</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="VAR-128"><a href="#VAR-128"><span class="linenos">128</span></a>
-</span><span id="VAR-129"><a href="#VAR-129"><span class="linenos">129</span></a><span class="sd">        Parameters</span>
-</span><span id="VAR-130"><a href="#VAR-130"><span class="linenos">130</span></a><span class="sd">        ----------</span>
-</span><span id="VAR-131"><a href="#VAR-131"><span class="linenos">131</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="VAR-132"><a href="#VAR-132"><span class="linenos">132</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="VAR-133"><a href="#VAR-133"><span class="linenos">133</span></a>
-</span><span id="VAR-134"><a href="#VAR-134"><span class="linenos">134</span></a><span class="sd">        Notes</span>
-</span><span id="VAR-135"><a href="#VAR-135"><span class="linenos">135</span></a><span class="sd">        -----</span>
-</span><span id="VAR-136"><a href="#VAR-136"><span class="linenos">136</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
-</span><span id="VAR-137"><a href="#VAR-137"><span class="linenos">137</span></a><span class="sd">        instruction being used.</span>
-</span><span id="VAR-138"><a href="#VAR-138"><span class="linenos">138</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR-139"><a href="#VAR-139"><span class="linenos">139</span></a>
-</span><span id="VAR-140"><a href="#VAR-140"><span class="linenos">140</span></a>        <span class="c1"># Update the context</span>
-</span><span id="VAR-141"><a href="#VAR-141"><span class="linenos">141</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
-</span><span id="VAR-142"><a href="#VAR-142"><span class="linenos">142</span></a>
-</span><span id="VAR-143"><a href="#VAR-143"><span class="linenos">143</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="VAR-144"><a href="#VAR-144"><span class="linenos">144</span></a>
-</span><span id="VAR-145"><a href="#VAR-145"><span class="linenos">145</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="VAR-146"><a href="#VAR-146"><span class="linenos">146</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
-</span><span id="VAR-147"><a href="#VAR-147"><span class="linenos">147</span></a>
-</span><span id="VAR-148"><a href="#VAR-148"><span class="linenos">148</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="VAR-149"><a href="#VAR-149"><span class="linenos">149</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="VAR-150"><a href="#VAR-150"><span class="linenos">150</span></a>
-</span><span id="VAR-151"><a href="#VAR-151"><span class="linenos">151</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
-</span><span id="VAR-152"><a href="#VAR-152"><span class="linenos">152</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
-</span><span id="VAR-153"><a href="#VAR-153"><span class="linenos">153</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="VAR-154"><a href="#VAR-154"><span class="linenos">154</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
-</span><span id="VAR-155"><a href="#VAR-155"><span class="linenos">155</span></a>        <span class="p">)</span>
+</span><span id="VAR-121"><a href="#VAR-121"><span class="linenos">121</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span id="VAR-122"><a href="#VAR-122"><span class="linenos">122</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR-123"><a href="#VAR-123"><span class="linenos">123</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
+</span><span id="VAR-124"><a href="#VAR-124"><span class="linenos">124</span></a>
+</span><span id="VAR-125"><a href="#VAR-125"><span class="linenos">125</span></a><span class="sd">        Returns</span>
+</span><span id="VAR-126"><a href="#VAR-126"><span class="linenos">126</span></a><span class="sd">        -------</span>
+</span><span id="VAR-127"><a href="#VAR-127"><span class="linenos">127</span></a><span class="sd">        : dict[str, str]</span>
+</span><span id="VAR-128"><a href="#VAR-128"><span class="linenos">128</span></a><span class="sd">            The variable metadata.</span>
+</span><span id="VAR-129"><a href="#VAR-129"><span class="linenos">129</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR-130"><a href="#VAR-130"><span class="linenos">130</span></a>
+</span><span id="VAR-131"><a href="#VAR-131"><span class="linenos">131</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+</span><span id="VAR-132"><a href="#VAR-132"><span class="linenos">132</span></a>
+</span><span id="VAR-133"><a href="#VAR-133"><span class="linenos">133</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="VAR-134"><a href="#VAR-134"><span class="linenos">134</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR-135"><a href="#VAR-135"><span class="linenos">135</span></a><span class="sd">        Add context to this `VAR` node.</span>
+</span><span id="VAR-136"><a href="#VAR-136"><span class="linenos">136</span></a>
+</span><span id="VAR-137"><a href="#VAR-137"><span class="linenos">137</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="VAR-138"><a href="#VAR-138"><span class="linenos">138</span></a>
+</span><span id="VAR-139"><a href="#VAR-139"><span class="linenos">139</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR-140"><a href="#VAR-140"><span class="linenos">140</span></a><span class="sd">        ----------</span>
+</span><span id="VAR-141"><a href="#VAR-141"><span class="linenos">141</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="VAR-142"><a href="#VAR-142"><span class="linenos">142</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="VAR-143"><a href="#VAR-143"><span class="linenos">143</span></a>
+</span><span id="VAR-144"><a href="#VAR-144"><span class="linenos">144</span></a><span class="sd">        Notes</span>
+</span><span id="VAR-145"><a href="#VAR-145"><span class="linenos">145</span></a><span class="sd">        -----</span>
+</span><span id="VAR-146"><a href="#VAR-146"><span class="linenos">146</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
+</span><span id="VAR-147"><a href="#VAR-147"><span class="linenos">147</span></a><span class="sd">        instruction being used.</span>
+</span><span id="VAR-148"><a href="#VAR-148"><span class="linenos">148</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR-149"><a href="#VAR-149"><span class="linenos">149</span></a>
+</span><span id="VAR-150"><a href="#VAR-150"><span class="linenos">150</span></a>        <span class="c1"># Update the context</span>
+</span><span id="VAR-151"><a href="#VAR-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+</span><span id="VAR-152"><a href="#VAR-152"><span class="linenos">152</span></a>
+</span><span id="VAR-153"><a href="#VAR-153"><span class="linenos">153</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="VAR-154"><a href="#VAR-154"><span class="linenos">154</span></a>
+</span><span id="VAR-155"><a href="#VAR-155"><span class="linenos">155</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="VAR-156"><a href="#VAR-156"><span class="linenos">156</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="VAR-157"><a href="#VAR-157"><span class="linenos">157</span></a>
+</span><span id="VAR-158"><a href="#VAR-158"><span class="linenos">158</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="VAR-159"><a href="#VAR-159"><span class="linenos">159</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="VAR-160"><a href="#VAR-160"><span class="linenos">160</span></a>
+</span><span id="VAR-161"><a href="#VAR-161"><span class="linenos">161</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
+</span><span id="VAR-162"><a href="#VAR-162"><span class="linenos">162</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
+</span><span id="VAR-163"><a href="#VAR-163"><span class="linenos">163</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="VAR-164"><a href="#VAR-164"><span class="linenos">164</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
+</span><span id="VAR-165"><a href="#VAR-165"><span class="linenos">165</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -425,10 +448,11 @@
 </span><span id="VAR.__init__-28"><a href="#VAR.__init__-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_metadata</span>
 </span><span id="VAR.__init__-29"><a href="#VAR.__init__-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">id</span>
 </span><span id="VAR.__init__-30"><a href="#VAR.__init__-30"><span class="linenos">30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-</span><span id="VAR.__init__-31"><a href="#VAR.__init__-31"><span class="linenos">31</span></a>
-</span><span id="VAR.__init__-32"><a href="#VAR.__init__-32"><span class="linenos">32</span></a>        <span class="c1"># Handle the `instruction` and `symbol`. This defaults to the `read`</span>
-</span><span id="VAR.__init__-33"><a href="#VAR.__init__-33"><span class="linenos">33</span></a>        <span class="c1"># case, but can be changed by the AST as it is built</span>
-</span><span id="VAR.__init__-34"><a href="#VAR.__init__-34"><span class="linenos">34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_context</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">})</span>
+</span><span id="VAR.__init__-31"><a href="#VAR.__init__-31"><span class="linenos">31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="s2">&quot;LOADF&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span> <span class="k">else</span> <span class="s2">&quot;LOAD&quot;</span>
+</span><span id="VAR.__init__-32"><a href="#VAR.__init__-32"><span class="linenos">32</span></a>
+</span><span id="VAR.__init__-33"><a href="#VAR.__init__-33"><span class="linenos">33</span></a>        <span class="c1"># Handle the `instruction` and `symbol`. This defaults to the `read`</span>
+</span><span id="VAR.__init__-34"><a href="#VAR.__init__-34"><span class="linenos">34</span></a>        <span class="c1"># case, but can be changed by the AST as it is built</span>
+</span><span id="VAR.__init__-35"><a href="#VAR.__init__-35"><span class="linenos">35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">add_context</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;read&quot;</span><span class="p">})</span>
 </span></pre></div>
 
 
@@ -468,6 +492,17 @@
     
 
                             </div>
+                            <div id="VAR.instruction" class="classattr">
+                                <div class="attr variable">
+            <span class="name">instruction</span>
+
+        
+    </div>
+    <a class="headerlink" href="#VAR.instruction"></a>
+    
+    
+
+                            </div>
                             <div id="VAR.generate_code" class="classattr">
                                         <input id="VAR.generate_code-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -480,70 +515,79 @@
 
     </div>
     <a class="headerlink" href="#VAR.generate_code"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.generate_code-46"><a href="#VAR.generate_code-46"><span class="linenos"> 46</span></a>    <span class="nd">@override</span>
-</span><span id="VAR.generate_code-47"><a href="#VAR.generate_code-47"><span class="linenos"> 47</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
-</span><span id="VAR.generate_code-48"><a href="#VAR.generate_code-48"><span class="linenos"> 48</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
-</span><span id="VAR.generate_code-49"><a href="#VAR.generate_code-49"><span class="linenos"> 49</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-</span><span id="VAR.generate_code-50"><a href="#VAR.generate_code-50"><span class="linenos"> 50</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
-</span><span id="VAR.generate_code-51"><a href="#VAR.generate_code-51"><span class="linenos"> 51</span></a>        <span class="nb">int</span><span class="p">,</span>
-</span><span id="VAR.generate_code-52"><a href="#VAR.generate_code-52"><span class="linenos"> 52</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
-</span><span id="VAR.generate_code-53"><a href="#VAR.generate_code-53"><span class="linenos"> 53</span></a>    <span class="p">]:</span>
-</span><span id="VAR.generate_code-54"><a href="#VAR.generate_code-54"><span class="linenos"> 54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR.generate_code-55"><a href="#VAR.generate_code-55"><span class="linenos"> 55</span></a><span class="sd">        Generate the code associated with this `VAR`.</span>
-</span><span id="VAR.generate_code-56"><a href="#VAR.generate_code-56"><span class="linenos"> 56</span></a>
-</span><span id="VAR.generate_code-57"><a href="#VAR.generate_code-57"><span class="linenos"> 57</span></a><span class="sd">        For this node specialization, the code metadata contains the instruction</span>
-</span><span id="VAR.generate_code-58"><a href="#VAR.generate_code-58"><span class="linenos"> 58</span></a><span class="sd">        (i.e., whether the context requires the variable&#39;s value or address),</span>
-</span><span id="VAR.generate_code-59"><a href="#VAR.generate_code-59"><span class="linenos"> 59</span></a><span class="sd">        together with the variable identifier (`self.value`).</span>
-</span><span id="VAR.generate_code-60"><a href="#VAR.generate_code-60"><span class="linenos"> 60</span></a>
-</span><span id="VAR.generate_code-61"><a href="#VAR.generate_code-61"><span class="linenos"> 61</span></a><span class="sd">        Parameters</span>
-</span><span id="VAR.generate_code-62"><a href="#VAR.generate_code-62"><span class="linenos"> 62</span></a><span class="sd">        ----------</span>
-</span><span id="VAR.generate_code-63"><a href="#VAR.generate_code-63"><span class="linenos"> 63</span></a><span class="sd">        register : int</span>
-</span><span id="VAR.generate_code-64"><a href="#VAR.generate_code-64"><span class="linenos"> 64</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
-</span><span id="VAR.generate_code-65"><a href="#VAR.generate_code-65"><span class="linenos"> 65</span></a><span class="sd">            Node.</span>
-</span><span id="VAR.generate_code-66"><a href="#VAR.generate_code-66"><span class="linenos"> 66</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="VAR.generate_code-67"><a href="#VAR.generate_code-67"><span class="linenos"> 67</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
-</span><span id="VAR.generate_code-68"><a href="#VAR.generate_code-68"><span class="linenos"> 68</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
-</span><span id="VAR.generate_code-69"><a href="#VAR.generate_code-69"><span class="linenos"> 69</span></a>
-</span><span id="VAR.generate_code-70"><a href="#VAR.generate_code-70"><span class="linenos"> 70</span></a><span class="sd">        Returns</span>
-</span><span id="VAR.generate_code-71"><a href="#VAR.generate_code-71"><span class="linenos"> 71</span></a><span class="sd">        -------</span>
-</span><span id="VAR.generate_code-72"><a href="#VAR.generate_code-72"><span class="linenos"> 72</span></a><span class="sd">        code : list of dict</span>
-</span><span id="VAR.generate_code-73"><a href="#VAR.generate_code-73"><span class="linenos"> 73</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
-</span><span id="VAR.generate_code-74"><a href="#VAR.generate_code-74"><span class="linenos"> 74</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
-</span><span id="VAR.generate_code-75"><a href="#VAR.generate_code-75"><span class="linenos"> 75</span></a><span class="sd">        register : int</span>
-</span><span id="VAR.generate_code-76"><a href="#VAR.generate_code-76"><span class="linenos"> 76</span></a><span class="sd">            The number of the next register available.</span>
-</span><span id="VAR.generate_code-77"><a href="#VAR.generate_code-77"><span class="linenos"> 77</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="VAR.generate_code-78"><a href="#VAR.generate_code-78"><span class="linenos"> 78</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="VAR.generate_code-79"><a href="#VAR.generate_code-79"><span class="linenos"> 79</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR.generate_code-80"><a href="#VAR.generate_code-80"><span class="linenos"> 80</span></a>
-</span><span id="VAR.generate_code-81"><a href="#VAR.generate_code-81"><span class="linenos"> 81</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="VAR.generate_code-82"><a href="#VAR.generate_code-82"><span class="linenos"> 82</span></a>        <span class="n">var_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
-</span><span id="VAR.generate_code-83"><a href="#VAR.generate_code-83"><span class="linenos"> 83</span></a>
-</span><span id="VAR.generate_code-84"><a href="#VAR.generate_code-84"><span class="linenos"> 84</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="VAR.generate_code-85"><a href="#VAR.generate_code-85"><span class="linenos"> 85</span></a>            <span class="p">{</span>
-</span><span id="VAR.generate_code-86"><a href="#VAR.generate_code-86"><span class="linenos"> 86</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
-</span><span id="VAR.generate_code-87"><a href="#VAR.generate_code-87"><span class="linenos"> 87</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">var_address</span><span class="p">}</span>
-</span><span id="VAR.generate_code-88"><a href="#VAR.generate_code-88"><span class="linenos"> 88</span></a>            <span class="p">},</span>
-</span><span id="VAR.generate_code-89"><a href="#VAR.generate_code-89"><span class="linenos"> 89</span></a>            <span class="p">{</span>
-</span><span id="VAR.generate_code-90"><a href="#VAR.generate_code-90"><span class="linenos"> 90</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;ADD&quot;</span><span class="p">,</span>
-</span><span id="VAR.generate_code-91"><a href="#VAR.generate_code-91"><span class="linenos"> 91</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="VAR.generate_code-92"><a href="#VAR.generate_code-92"><span class="linenos"> 92</span></a>                    <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-</span><span id="VAR.generate_code-93"><a href="#VAR.generate_code-93"><span class="linenos"> 93</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
-</span><span id="VAR.generate_code-94"><a href="#VAR.generate_code-94"><span class="linenos"> 94</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span>
-</span><span id="VAR.generate_code-95"><a href="#VAR.generate_code-95"><span class="linenos"> 95</span></a>                <span class="p">},</span>
-</span><span id="VAR.generate_code-96"><a href="#VAR.generate_code-96"><span class="linenos"> 96</span></a>            <span class="p">}</span>
-</span><span id="VAR.generate_code-97"><a href="#VAR.generate_code-97"><span class="linenos"> 97</span></a>        <span class="p">]</span>
-</span><span id="VAR.generate_code-98"><a href="#VAR.generate_code-98"><span class="linenos"> 98</span></a>
-</span><span id="VAR.generate_code-99"><a href="#VAR.generate_code-99"><span class="linenos"> 99</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">2</span>
-</span><span id="VAR.generate_code-100"><a href="#VAR.generate_code-100"><span class="linenos">100</span></a>
-</span><span id="VAR.generate_code-101"><a href="#VAR.generate_code-101"><span class="linenos">101</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="VAR.generate_code-102"><a href="#VAR.generate_code-102"><span class="linenos">102</span></a>            <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-</span><span id="VAR.generate_code-103"><a href="#VAR.generate_code-103"><span class="linenos">103</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;LOAD&quot;</span><span class="p">,</span>
-</span><span id="VAR.generate_code-104"><a href="#VAR.generate_code-104"><span class="linenos">104</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>
-</span><span id="VAR.generate_code-105"><a href="#VAR.generate_code-105"><span class="linenos">105</span></a>            <span class="p">})</span>
-</span><span id="VAR.generate_code-106"><a href="#VAR.generate_code-106"><span class="linenos">106</span></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.generate_code-47"><a href="#VAR.generate_code-47"><span class="linenos"> 47</span></a>    <span class="nd">@override</span>
+</span><span id="VAR.generate_code-48"><a href="#VAR.generate_code-48"><span class="linenos"> 48</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_code</span><span class="p">(</span>
+</span><span id="VAR.generate_code-49"><a href="#VAR.generate_code-49"><span class="linenos"> 49</span></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">environment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+</span><span id="VAR.generate_code-50"><a href="#VAR.generate_code-50"><span class="linenos"> 50</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+</span><span id="VAR.generate_code-51"><a href="#VAR.generate_code-51"><span class="linenos"> 51</span></a>        <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
+</span><span id="VAR.generate_code-52"><a href="#VAR.generate_code-52"><span class="linenos"> 52</span></a>        <span class="nb">int</span><span class="p">,</span>
+</span><span id="VAR.generate_code-53"><a href="#VAR.generate_code-53"><span class="linenos"> 53</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+</span><span id="VAR.generate_code-54"><a href="#VAR.generate_code-54"><span class="linenos"> 54</span></a>    <span class="p">]:</span>
+</span><span id="VAR.generate_code-55"><a href="#VAR.generate_code-55"><span class="linenos"> 55</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR.generate_code-56"><a href="#VAR.generate_code-56"><span class="linenos"> 56</span></a><span class="sd">        Generate the code associated with this `VAR`.</span>
+</span><span id="VAR.generate_code-57"><a href="#VAR.generate_code-57"><span class="linenos"> 57</span></a>
+</span><span id="VAR.generate_code-58"><a href="#VAR.generate_code-58"><span class="linenos"> 58</span></a><span class="sd">        For this node specialization, the code metadata contains the instruction</span>
+</span><span id="VAR.generate_code-59"><a href="#VAR.generate_code-59"><span class="linenos"> 59</span></a><span class="sd">        (i.e., whether the context requires the variable&#39;s value or address),</span>
+</span><span id="VAR.generate_code-60"><a href="#VAR.generate_code-60"><span class="linenos"> 60</span></a><span class="sd">        together with the variable identifier (`self.value`).</span>
+</span><span id="VAR.generate_code-61"><a href="#VAR.generate_code-61"><span class="linenos"> 61</span></a>
+</span><span id="VAR.generate_code-62"><a href="#VAR.generate_code-62"><span class="linenos"> 62</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR.generate_code-63"><a href="#VAR.generate_code-63"><span class="linenos"> 63</span></a><span class="sd">        ----------</span>
+</span><span id="VAR.generate_code-64"><a href="#VAR.generate_code-64"><span class="linenos"> 64</span></a><span class="sd">        register : int</span>
+</span><span id="VAR.generate_code-65"><a href="#VAR.generate_code-65"><span class="linenos"> 65</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
+</span><span id="VAR.generate_code-66"><a href="#VAR.generate_code-66"><span class="linenos"> 66</span></a><span class="sd">            Node.</span>
+</span><span id="VAR.generate_code-67"><a href="#VAR.generate_code-67"><span class="linenos"> 67</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="VAR.generate_code-68"><a href="#VAR.generate_code-68"><span class="linenos"> 68</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="VAR.generate_code-69"><a href="#VAR.generate_code-69"><span class="linenos"> 69</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
+</span><span id="VAR.generate_code-70"><a href="#VAR.generate_code-70"><span class="linenos"> 70</span></a>
+</span><span id="VAR.generate_code-71"><a href="#VAR.generate_code-71"><span class="linenos"> 71</span></a><span class="sd">        Returns</span>
+</span><span id="VAR.generate_code-72"><a href="#VAR.generate_code-72"><span class="linenos"> 72</span></a><span class="sd">        -------</span>
+</span><span id="VAR.generate_code-73"><a href="#VAR.generate_code-73"><span class="linenos"> 73</span></a><span class="sd">        code : list of dict</span>
+</span><span id="VAR.generate_code-74"><a href="#VAR.generate_code-74"><span class="linenos"> 74</span></a><span class="sd">            Return a list of dictionaries containing code metadata: the register</span>
+</span><span id="VAR.generate_code-75"><a href="#VAR.generate_code-75"><span class="linenos"> 75</span></a><span class="sd">            to be used, the related `instruction` and its metadata.</span>
+</span><span id="VAR.generate_code-76"><a href="#VAR.generate_code-76"><span class="linenos"> 76</span></a><span class="sd">        register : int</span>
+</span><span id="VAR.generate_code-77"><a href="#VAR.generate_code-77"><span class="linenos"> 77</span></a><span class="sd">            The number of the next register available.</span>
+</span><span id="VAR.generate_code-78"><a href="#VAR.generate_code-78"><span class="linenos"> 78</span></a><span class="sd">        environment : dict[int, str]</span>
+</span><span id="VAR.generate_code-79"><a href="#VAR.generate_code-79"><span class="linenos"> 79</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
+</span><span id="VAR.generate_code-80"><a href="#VAR.generate_code-80"><span class="linenos"> 80</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR.generate_code-81"><a href="#VAR.generate_code-81"><span class="linenos"> 81</span></a>
+</span><span id="VAR.generate_code-82"><a href="#VAR.generate_code-82"><span class="linenos"> 82</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="VAR.generate_code-83"><a href="#VAR.generate_code-83"><span class="linenos"> 83</span></a>        <span class="n">var_address</span> <span class="o">=</span> <span class="n">environment</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span>
+</span><span id="VAR.generate_code-84"><a href="#VAR.generate_code-84"><span class="linenos"> 84</span></a>
+</span><span id="VAR.generate_code-85"><a href="#VAR.generate_code-85"><span class="linenos"> 85</span></a>        <span class="n">code</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="VAR.generate_code-86"><a href="#VAR.generate_code-86"><span class="linenos"> 86</span></a>            <span class="p">{</span>
+</span><span id="VAR.generate_code-87"><a href="#VAR.generate_code-87"><span class="linenos"> 87</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">,</span>
+</span><span id="VAR.generate_code-88"><a href="#VAR.generate_code-88"><span class="linenos"> 88</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">var_address</span><span class="p">}</span>
+</span><span id="VAR.generate_code-89"><a href="#VAR.generate_code-89"><span class="linenos"> 89</span></a>            <span class="p">},</span>
+</span><span id="VAR.generate_code-90"><a href="#VAR.generate_code-90"><span class="linenos"> 90</span></a>            <span class="p">{</span>
+</span><span id="VAR.generate_code-91"><a href="#VAR.generate_code-91"><span class="linenos"> 91</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;ADD&quot;</span><span class="p">,</span>
+</span><span id="VAR.generate_code-92"><a href="#VAR.generate_code-92"><span class="linenos"> 92</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="VAR.generate_code-93"><a href="#VAR.generate_code-93"><span class="linenos"> 93</span></a>                    <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="VAR.generate_code-94"><a href="#VAR.generate_code-94"><span class="linenos"> 94</span></a>                    <span class="s2">&quot;lhs_register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span>
+</span><span id="VAR.generate_code-95"><a href="#VAR.generate_code-95"><span class="linenos"> 95</span></a>                    <span class="s2">&quot;rhs_register&quot;</span><span class="p">:</span> <span class="s2">&quot;zero&quot;</span>
+</span><span id="VAR.generate_code-96"><a href="#VAR.generate_code-96"><span class="linenos"> 96</span></a>                <span class="p">},</span>
+</span><span id="VAR.generate_code-97"><a href="#VAR.generate_code-97"><span class="linenos"> 97</span></a>            <span class="p">}</span>
+</span><span id="VAR.generate_code-98"><a href="#VAR.generate_code-98"><span class="linenos"> 98</span></a>        <span class="p">]</span>
+</span><span id="VAR.generate_code-99"><a href="#VAR.generate_code-99"><span class="linenos"> 99</span></a>
+</span><span id="VAR.generate_code-100"><a href="#VAR.generate_code-100"><span class="linenos">100</span></a>        <span class="n">register</span> <span class="o">+=</span> <span class="mi">2</span>
+</span><span id="VAR.generate_code-101"><a href="#VAR.generate_code-101"><span class="linenos">101</span></a>
+</span><span id="VAR.generate_code-102"><a href="#VAR.generate_code-102"><span class="linenos">102</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="VAR.generate_code-103"><a href="#VAR.generate_code-103"><span class="linenos">103</span></a>            <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="VAR.generate_code-104"><a href="#VAR.generate_code-104"><span class="linenos">104</span></a>                <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction</span><span class="p">,</span>
+</span><span id="VAR.generate_code-105"><a href="#VAR.generate_code-105"><span class="linenos">105</span></a>                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="n">register</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>
+</span><span id="VAR.generate_code-106"><a href="#VAR.generate_code-106"><span class="linenos">106</span></a>            <span class="p">})</span>
 </span><span id="VAR.generate_code-107"><a href="#VAR.generate_code-107"><span class="linenos">107</span></a>            <span class="n">register</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span id="VAR.generate_code-108"><a href="#VAR.generate_code-108"><span class="linenos">108</span></a>
-</span><span id="VAR.generate_code-109"><a href="#VAR.generate_code-109"><span class="linenos">109</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
+</span><span id="VAR.generate_code-109"><a href="#VAR.generate_code-109"><span class="linenos">109</span></a>            <span class="c1"># Add an explicit cast when loading a `short` variable, as all</span>
+</span><span id="VAR.generate_code-110"><a href="#VAR.generate_code-110"><span class="linenos">110</span></a>            <span class="c1"># variables are 4 byte-aligned.</span>
+</span><span id="VAR.generate_code-111"><a href="#VAR.generate_code-111"><span class="linenos">111</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;short&quot;</span><span class="p">:</span>
+</span><span id="VAR.generate_code-112"><a href="#VAR.generate_code-112"><span class="linenos">112</span></a>                <span class="n">cast_to_short</span><span class="p">,</span> <span class="n">register</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
+</span><span id="VAR.generate_code-113"><a href="#VAR.generate_code-113"><span class="linenos">113</span></a>                    <span class="n">original_type</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+</span><span id="VAR.generate_code-114"><a href="#VAR.generate_code-114"><span class="linenos">114</span></a>                    <span class="n">target_type</span><span class="o">=</span><span class="s2">&quot;short&quot;</span><span class="p">,</span>
+</span><span id="VAR.generate_code-115"><a href="#VAR.generate_code-115"><span class="linenos">115</span></a>                    <span class="n">register</span><span class="o">=</span><span class="n">register</span><span class="p">,</span>
+</span><span id="VAR.generate_code-116"><a href="#VAR.generate_code-116"><span class="linenos">116</span></a>                <span class="p">)</span>
+</span><span id="VAR.generate_code-117"><a href="#VAR.generate_code-117"><span class="linenos">117</span></a>                <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cast_to_short</span><span class="p">)</span>
+</span><span id="VAR.generate_code-118"><a href="#VAR.generate_code-118"><span class="linenos">118</span></a>
+</span><span id="VAR.generate_code-119"><a href="#VAR.generate_code-119"><span class="linenos">119</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
 </span></pre></div>
 
 
@@ -586,17 +630,17 @@ environment : dict[int, str]
 
     </div>
     <a class="headerlink" href="#VAR.get_metadata"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.get_metadata-111"><a href="#VAR.get_metadata-111"><span class="linenos">111</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="VAR.get_metadata-112"><a href="#VAR.get_metadata-112"><span class="linenos">112</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR.get_metadata-113"><a href="#VAR.get_metadata-113"><span class="linenos">113</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
-</span><span id="VAR.get_metadata-114"><a href="#VAR.get_metadata-114"><span class="linenos">114</span></a>
-</span><span id="VAR.get_metadata-115"><a href="#VAR.get_metadata-115"><span class="linenos">115</span></a><span class="sd">        Returns</span>
-</span><span id="VAR.get_metadata-116"><a href="#VAR.get_metadata-116"><span class="linenos">116</span></a><span class="sd">        -------</span>
-</span><span id="VAR.get_metadata-117"><a href="#VAR.get_metadata-117"><span class="linenos">117</span></a><span class="sd">        : dict[str, str]</span>
-</span><span id="VAR.get_metadata-118"><a href="#VAR.get_metadata-118"><span class="linenos">118</span></a><span class="sd">            The variable metadata.</span>
-</span><span id="VAR.get_metadata-119"><a href="#VAR.get_metadata-119"><span class="linenos">119</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR.get_metadata-120"><a href="#VAR.get_metadata-120"><span class="linenos">120</span></a>
-</span><span id="VAR.get_metadata-121"><a href="#VAR.get_metadata-121"><span class="linenos">121</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.get_metadata-121"><a href="#VAR.get_metadata-121"><span class="linenos">121</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span id="VAR.get_metadata-122"><a href="#VAR.get_metadata-122"><span class="linenos">122</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR.get_metadata-123"><a href="#VAR.get_metadata-123"><span class="linenos">123</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
+</span><span id="VAR.get_metadata-124"><a href="#VAR.get_metadata-124"><span class="linenos">124</span></a>
+</span><span id="VAR.get_metadata-125"><a href="#VAR.get_metadata-125"><span class="linenos">125</span></a><span class="sd">        Returns</span>
+</span><span id="VAR.get_metadata-126"><a href="#VAR.get_metadata-126"><span class="linenos">126</span></a><span class="sd">        -------</span>
+</span><span id="VAR.get_metadata-127"><a href="#VAR.get_metadata-127"><span class="linenos">127</span></a><span class="sd">        : dict[str, str]</span>
+</span><span id="VAR.get_metadata-128"><a href="#VAR.get_metadata-128"><span class="linenos">128</span></a><span class="sd">            The variable metadata.</span>
+</span><span id="VAR.get_metadata-129"><a href="#VAR.get_metadata-129"><span class="linenos">129</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR.get_metadata-130"><a href="#VAR.get_metadata-130"><span class="linenos">130</span></a>
+</span><span id="VAR.get_metadata-131"><a href="#VAR.get_metadata-131"><span class="linenos">131</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
 </span></pre></div>
 
 
@@ -621,39 +665,39 @@ environment : dict[int, str]
 
     </div>
     <a class="headerlink" href="#VAR.add_context"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.add_context-123"><a href="#VAR.add_context-123"><span class="linenos">123</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="VAR.add_context-124"><a href="#VAR.add_context-124"><span class="linenos">124</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR.add_context-125"><a href="#VAR.add_context-125"><span class="linenos">125</span></a><span class="sd">        Add context to this `VAR` node.</span>
-</span><span id="VAR.add_context-126"><a href="#VAR.add_context-126"><span class="linenos">126</span></a>
-</span><span id="VAR.add_context-127"><a href="#VAR.add_context-127"><span class="linenos">127</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="VAR.add_context-128"><a href="#VAR.add_context-128"><span class="linenos">128</span></a>
-</span><span id="VAR.add_context-129"><a href="#VAR.add_context-129"><span class="linenos">129</span></a><span class="sd">        Parameters</span>
-</span><span id="VAR.add_context-130"><a href="#VAR.add_context-130"><span class="linenos">130</span></a><span class="sd">        ----------</span>
-</span><span id="VAR.add_context-131"><a href="#VAR.add_context-131"><span class="linenos">131</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="VAR.add_context-132"><a href="#VAR.add_context-132"><span class="linenos">132</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="VAR.add_context-133"><a href="#VAR.add_context-133"><span class="linenos">133</span></a>
-</span><span id="VAR.add_context-134"><a href="#VAR.add_context-134"><span class="linenos">134</span></a><span class="sd">        Notes</span>
-</span><span id="VAR.add_context-135"><a href="#VAR.add_context-135"><span class="linenos">135</span></a><span class="sd">        -----</span>
-</span><span id="VAR.add_context-136"><a href="#VAR.add_context-136"><span class="linenos">136</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
-</span><span id="VAR.add_context-137"><a href="#VAR.add_context-137"><span class="linenos">137</span></a><span class="sd">        instruction being used.</span>
-</span><span id="VAR.add_context-138"><a href="#VAR.add_context-138"><span class="linenos">138</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR.add_context-139"><a href="#VAR.add_context-139"><span class="linenos">139</span></a>
-</span><span id="VAR.add_context-140"><a href="#VAR.add_context-140"><span class="linenos">140</span></a>        <span class="c1"># Update the context</span>
-</span><span id="VAR.add_context-141"><a href="#VAR.add_context-141"><span class="linenos">141</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
-</span><span id="VAR.add_context-142"><a href="#VAR.add_context-142"><span class="linenos">142</span></a>
-</span><span id="VAR.add_context-143"><a href="#VAR.add_context-143"><span class="linenos">143</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="VAR.add_context-144"><a href="#VAR.add_context-144"><span class="linenos">144</span></a>
-</span><span id="VAR.add_context-145"><a href="#VAR.add_context-145"><span class="linenos">145</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="VAR.add_context-146"><a href="#VAR.add_context-146"><span class="linenos">146</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
-</span><span id="VAR.add_context-147"><a href="#VAR.add_context-147"><span class="linenos">147</span></a>
-</span><span id="VAR.add_context-148"><a href="#VAR.add_context-148"><span class="linenos">148</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="VAR.add_context-149"><a href="#VAR.add_context-149"><span class="linenos">149</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="VAR.add_context-150"><a href="#VAR.add_context-150"><span class="linenos">150</span></a>
-</span><span id="VAR.add_context-151"><a href="#VAR.add_context-151"><span class="linenos">151</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
-</span><span id="VAR.add_context-152"><a href="#VAR.add_context-152"><span class="linenos">152</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
-</span><span id="VAR.add_context-153"><a href="#VAR.add_context-153"><span class="linenos">153</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="VAR.add_context-154"><a href="#VAR.add_context-154"><span class="linenos">154</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
-</span><span id="VAR.add_context-155"><a href="#VAR.add_context-155"><span class="linenos">155</span></a>        <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.add_context-133"><a href="#VAR.add_context-133"><span class="linenos">133</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="VAR.add_context-134"><a href="#VAR.add_context-134"><span class="linenos">134</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR.add_context-135"><a href="#VAR.add_context-135"><span class="linenos">135</span></a><span class="sd">        Add context to this `VAR` node.</span>
+</span><span id="VAR.add_context-136"><a href="#VAR.add_context-136"><span class="linenos">136</span></a>
+</span><span id="VAR.add_context-137"><a href="#VAR.add_context-137"><span class="linenos">137</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="VAR.add_context-138"><a href="#VAR.add_context-138"><span class="linenos">138</span></a>
+</span><span id="VAR.add_context-139"><a href="#VAR.add_context-139"><span class="linenos">139</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR.add_context-140"><a href="#VAR.add_context-140"><span class="linenos">140</span></a><span class="sd">        ----------</span>
+</span><span id="VAR.add_context-141"><a href="#VAR.add_context-141"><span class="linenos">141</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="VAR.add_context-142"><a href="#VAR.add_context-142"><span class="linenos">142</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="VAR.add_context-143"><a href="#VAR.add_context-143"><span class="linenos">143</span></a>
+</span><span id="VAR.add_context-144"><a href="#VAR.add_context-144"><span class="linenos">144</span></a><span class="sd">        Notes</span>
+</span><span id="VAR.add_context-145"><a href="#VAR.add_context-145"><span class="linenos">145</span></a><span class="sd">        -----</span>
+</span><span id="VAR.add_context-146"><a href="#VAR.add_context-146"><span class="linenos">146</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
+</span><span id="VAR.add_context-147"><a href="#VAR.add_context-147"><span class="linenos">147</span></a><span class="sd">        instruction being used.</span>
+</span><span id="VAR.add_context-148"><a href="#VAR.add_context-148"><span class="linenos">148</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR.add_context-149"><a href="#VAR.add_context-149"><span class="linenos">149</span></a>
+</span><span id="VAR.add_context-150"><a href="#VAR.add_context-150"><span class="linenos">150</span></a>        <span class="c1"># Update the context</span>
+</span><span id="VAR.add_context-151"><a href="#VAR.add_context-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+</span><span id="VAR.add_context-152"><a href="#VAR.add_context-152"><span class="linenos">152</span></a>
+</span><span id="VAR.add_context-153"><a href="#VAR.add_context-153"><span class="linenos">153</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="VAR.add_context-154"><a href="#VAR.add_context-154"><span class="linenos">154</span></a>
+</span><span id="VAR.add_context-155"><a href="#VAR.add_context-155"><span class="linenos">155</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="VAR.add_context-156"><a href="#VAR.add_context-156"><span class="linenos">156</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="VAR.add_context-157"><a href="#VAR.add_context-157"><span class="linenos">157</span></a>
+</span><span id="VAR.add_context-158"><a href="#VAR.add_context-158"><span class="linenos">158</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="VAR.add_context-159"><a href="#VAR.add_context-159"><span class="linenos">159</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="VAR.add_context-160"><a href="#VAR.add_context-160"><span class="linenos">160</span></a>
+</span><span id="VAR.add_context-161"><a href="#VAR.add_context-161"><span class="linenos">161</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
+</span><span id="VAR.add_context-162"><a href="#VAR.add_context-162"><span class="linenos">162</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
+</span><span id="VAR.add_context-163"><a href="#VAR.add_context-163"><span class="linenos">163</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="VAR.add_context-164"><a href="#VAR.add_context-164"><span class="linenos">164</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
+</span><span id="VAR.add_context-165"><a href="#VAR.add_context-165"><span class="linenos">165</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -681,7 +725,6 @@ instruction being used.</p>
                                 <dd id="VAR.value" class="variable"><a href="../node.html#Node.value">value</a></dd>
                 <dd id="VAR.certificate_label" class="variable"><a href="../node.html#Node.certificate_label">certificate_label</a></dd>
                 <dd id="VAR.uses_register" class="variable"><a href="../node.html#Node.uses_register">uses_register</a></dd>
-                <dd id="VAR.instruction" class="variable"><a href="../node.html#Node.instruction">instruction</a></dd>
                 <dd id="VAR.symbol" class="variable"><a href="../node.html#Node.symbol">symbol</a></dd>
                 <dd id="VAR.get_value" class="function"><a href="../node.html#Node.get_value">get_value</a></dd>
                 <dd id="VAR.get_type" class="function"><a href="../node.html#Node.get_type">get_type</a></dd>
