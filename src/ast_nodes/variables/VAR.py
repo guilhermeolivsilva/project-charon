@@ -27,6 +27,7 @@ class VAR(Node):
         self.variable_metadata: dict[str, str] = variable_metadata
         self.id: int = id
         self.type = self.variable_metadata.get("type")
+        self.instruction = "LOADF" if self.type == "float" else "LOAD"
 
         # Handle the `instruction` and `symbol`. This defaults to the `read`
         # case, but can be changed by the AST as it is built
@@ -99,7 +100,7 @@ class VAR(Node):
 
         if operation == "read":
             code.append({
-                "instruction": "LOAD",
+                "instruction": self.instruction,
                 "metadata": {"register": register, "value": register - 1}
             })
 

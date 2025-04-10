@@ -34,7 +34,7 @@ class ASSIGN(Operation):
 
         super().__init__(lhs=lhs, rhs=rhs, type=lhs.type)
 
-        self.instruction: str = "STORE"
+        self.instruction: str = "STOREF" if lhs.get_type() == "float" else "STORE"
 
     @override
     def generate_code(

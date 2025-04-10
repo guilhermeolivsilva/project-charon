@@ -209,7 +209,7 @@ class ELEMENT_ACCESS(Node):
 
         if self.context.get("context") == "read":
             code.append({
-                "instruction": "LOAD",
+                "instruction": "LOADF" if self.type == "float" else "LOAD",
                 "metadata": {"register": register, "value": register - 1}
             })
 
@@ -287,11 +287,9 @@ class ELEMENT_ACCESS(Node):
 
         if _context == "read":
             symbol = get_certificate_symbol("VAR_VALUE")
-            self.instruction: str = "LOAD"
 
         else:
             symbol = get_certificate_symbol("VAR_ADDRESS")
-            self.instruction: str = "CONSTANT"
 
         self.symbol = symbol
 

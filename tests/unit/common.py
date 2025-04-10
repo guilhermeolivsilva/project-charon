@@ -921,7 +921,7 @@ MACHINE_CODE = {
             "instruction_id": 29,
         },
         {
-            "instruction": "STORE",
+            "instruction": "STOREF",
             "metadata": {"register": 24, "value": "arg"},
             "instruction_id": 30,
         },
@@ -946,7 +946,7 @@ MACHINE_CODE = {
             "instruction_id": 34,
         },
         {
-            "instruction": "LOAD",
+            "instruction": "LOADF",
             "metadata": {"register": 28, "value": 27},
             "instruction_id": 35,
         },
@@ -1046,7 +1046,7 @@ MACHINE_CODE = {
             "instruction_id": 54,
         },
         {
-            "instruction": "STORE",
+            "instruction": "STOREF",
             "metadata": {"register": 42, "value": 43},
             "instruction_id": 55,
         },
@@ -1121,7 +1121,7 @@ MACHINE_CODE = {
             "instruction_id": 69,
         },
         {
-            "instruction": "LOAD",
+            "instruction": "LOADF",
             "metadata": {"register": 59, "value": 58},
             "instruction_id": 70,
         },
@@ -1167,7 +1167,7 @@ MACHINE_CODE = {
             "instruction_id": 79,
         },
         {
-            "instruction": "LOAD",
+            "instruction": "LOADF",
             "metadata": {"register": 66, "value": 65},
             "instruction_id": 80,
         },

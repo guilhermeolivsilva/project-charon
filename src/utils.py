@@ -287,13 +287,13 @@ def flatten_list(list_of_lists: list[list], drop_duplicates: bool = True) -> lis
 __TYPE_CASTS = ["FPTOSI", "SIGNEXT", "SITOFP", "TRUNC"]
 
 
-__VARIABLES = {"VAR_DEF": [], "VAR_VALUE": ["LOAD"], "VAR_ADDRESS": ["ADDRESS"]}
+__VARIABLES = {"VAR_DEF": [], "VAR_VALUE": ["LOAD", "LOADF"], "VAR_ADDRESS": ["ADDRESS"]}
 
 
 __CONSTANTS = {"CST": ["CONSTANT"]}
 
 
-__UNOPS = {"ASSIGN": ["STORE"], "NOT": ["NOT"]}
+__UNOPS = {"ASSIGN": ["STORE", "STOREF"], "NOT": ["NOT"]}
 
 
 __BINOPS = {
@@ -329,7 +329,7 @@ __JUMPS = {
 }
 
 
-__FUNCTIONS = {"PARAM": ["CONSTANT", "STORE"], "ARG": ["MOV"]}
+__FUNCTIONS = {"PARAM": ["CONSTANT", "STORE", "STOREF"], "ARG": ["MOV"]}
 
 
 __MISC = {"PROG": ["HALT"]}

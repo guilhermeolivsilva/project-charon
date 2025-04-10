@@ -78,8 +78,9 @@ class PARAM(VAR_DEF):
         code.append(var_address_code)
 
         # Store the argument into the parameter's allocated memory.
+        _store_instruction = "STOREF" if self.type == "float" else "STORE"
         parameter_store_code = {
-            "instruction": "STORE",
+            "instruction": _store_instruction,
             "metadata": {"register": register, "value": "arg"},
         }
         code.append(parameter_store_code)

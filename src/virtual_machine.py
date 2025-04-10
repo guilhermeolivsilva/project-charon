@@ -666,11 +666,27 @@ class VirtualMachine:
         """
         Handle a `LOAD` bytecode.
 
-        This method loads the value of a registers into another register.
+        This method loads the value at some memory address into a register.
 
-        If an array or struct, it will load the value of the first element/
-        attribute to the register -- which is not a problem at all, as
-        `self.ELEMENT_ADDRESS` will handle this later.
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+        """
+
+        register_with_source_address: str = instruction_params["value"]
+        value_to_load_address = self.registers[register_with_source_address]
+        value_to_load = self.memory[value_to_load_address]
+
+        dest_register: int = instruction_params["register"]
+
+        self.registers[dest_register] = value_to_load
+
+    def LOADF(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
+        """
+        Handle a `LOADF` bytecode.
+
+        This is the `float`-only equivalent of `LOAD`.
 
         Parameters
         ----------
@@ -928,7 +944,31 @@ class VirtualMachine:
         """
         Handle a `STORE` bytecode.
 
-        This method stores some value into a memory address.
+        This method stores the contents of a register into a memory address.
+
+        Parameters
+        ----------
+        instruction_params : dict[str, Union[int, float, str]]
+            The bytecode metadata.
+        """
+
+        register_with_dest_address: str = instruction_params["register"]
+        dest_address: str = self.registers[register_with_dest_address]
+
+        value_to_store_register = instruction_params["value"]
+
+        if value_to_store_register == "arg":
+            value_to_store: Union[int, float] = self.registers["arg"].pop()
+        else:
+            value_to_store: Union[int, float] = self.registers[value_to_store_register]
+
+        self.memory[dest_address] = value_to_store
+
+    def STOREF(self, instruction_params: dict[str, Union[int, float, str]]) -> None:
+        """
+        Handle a `STORE` bytecode.
+
+        This is the `float`-only equivalent of `LOAD`.
 
         Parameters
         ----------
