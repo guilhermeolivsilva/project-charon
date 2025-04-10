@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import get_certificate_symbol
+from src.utils import get_certificate_symbol, type_cast
 
 
 class VAR(Node):
@@ -103,8 +103,17 @@ class VAR(Node):
                 "instruction": self.instruction,
                 "metadata": {"register": register, "value": register - 1}
             })
-
             register += 1
+
+            # Add an explicit cast when loading a `short` variable, as all
+            # variables are 4 byte-aligned.
+            if self.type == "short":
+                cast_to_short, register = type_cast(
+                    original_type="int",
+                    target_type="short",
+                    register=register,
+                )
+                code.extend(cast_to_short)
 
         return code, register, environment
 

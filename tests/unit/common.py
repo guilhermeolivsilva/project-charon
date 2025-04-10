@@ -1052,7 +1052,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 45, "value": "0x56"},
+            "metadata": {"register": 45, "value": "0x58"},
             "instruction_id": 56,
         },
         {
@@ -1213,7 +1213,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 73, "value": "0x5e"},
+            "metadata": {"register": 73, "value": "0x60"},
             "instruction_id": 89,
         },
         {
@@ -1254,7 +1254,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 79, "value": "0x62"},
+            "metadata": {"register": 79, "value": "0x64"},
             "instruction_id": 98,
         },
         {
@@ -1294,7 +1294,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 87, "value": "0x5e"},
+            "metadata": {"register": 87, "value": "0x60"},
             "instruction_id": 106,
         },
         {
@@ -1329,7 +1329,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 94, "value": "0x5e"},
+            "metadata": {"register": 94, "value": "0x60"},
             "instruction_id": 113,
         },
         {
@@ -1359,7 +1359,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 100, "value": "0x5e"},
+            "metadata": {"register": 100, "value": "0x60"},
             "instruction_id": 119,
         },
         {
@@ -1394,7 +1394,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 106, "value": "0x8a"},
+            "metadata": {"register": 106, "value": "0x8c"},
             "instruction_id": 126,
         },
         {
@@ -1404,7 +1404,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 108, "value": "0x5e"},
+            "metadata": {"register": 108, "value": "0x60"},
             "instruction_id": 128,
         },
         {
@@ -1439,7 +1439,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 114, "value": "0x8a"},
+            "metadata": {"register": 114, "value": "0x8c"},
             "instruction_id": 135,
         },
         {
@@ -1449,7 +1449,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 116, "value": "0x5e"},
+            "metadata": {"register": 116, "value": "0x60"},
             "instruction_id": 137,
         },
         {
@@ -1479,7 +1479,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 122, "value": "0x5e"},
+            "metadata": {"register": 122, "value": "0x60"},
             "instruction_id": 143,
         },
         {
@@ -1494,7 +1494,7 @@ MACHINE_CODE = {
         },
         {
             "instruction": "CONSTANT",
-            "metadata": {"register": 125, "value": "0x8a"},
+            "metadata": {"register": 125, "value": "0x8c"},
             "instruction_id": 146,
         },
         {

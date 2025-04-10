@@ -61,52 +61,52 @@ int main() {{
         {
             "function_name": "addition",
             "operator": "+",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 14, "0xc": 12},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 14, "0x10": 12},
         },
         {
             "function_name": "subtraction",
             "operator": "-",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 6, "0xc": 7},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 6, "0x10": 7},
         },
         {
             "function_name": "multiplication",
             "operator": "*",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 40, "0xc": 23},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 40, "0x10": 23},
         },
         {
             "function_name": "division",
             "operator": "/",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 2, "0xc": 4},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 2, "0x10": 4},
         },
         {
             "function_name": "greater_than",
             "operator": ">",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 1, "0x10": 1},
         },
         {
             "function_name": "less_than",
             "operator": "<",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 0, "0xc": 0},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 0, "0x10": 0},
         },
         {
             "function_name": "equal",
             "operator": "==",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 0, "0xc": 0},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 0, "0x10": 0},
         },
         {
             "function_name": "not_equal",
             "operator": "!=",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 1, "0x10": 1},
         },
         {
             "function_name": "logical_and",
             "operator": "&&",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 1, "0x10": 1},
         },
         {
             "function_name": "logical_or",
             "operator": "||",
-            "expected_memory": {"0x0": 10, "0x2": 4, "0x6": 2.3, "0xa": 1, "0xc": 1},
+            "expected_memory": {"0x0": 10, "0x4": 4, "0x8": 2.3, "0xc": 1, "0x10": 1},
         },
     ],
 )
@@ -132,27 +132,27 @@ def test_operation(test_suite: dict) -> None:
         {
             "function_name": "left_shift",
             "operator": "<<",
-            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 88},
+            "expected_memory": {"0x0": 11, "0x4": 3, "0x8": 88},
         },
         {
             "function_name": "right_shift",
             "operator": ">>",
-            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 1},
+            "expected_memory": {"0x0": 11, "0x4": 3, "0x8": 1},
         },
         {
             "function_name": "bitwise_and",
             "operator": "&",
-            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 3},
+            "expected_memory": {"0x0": 11, "0x4": 3, "0x8": 3},
         },
         {
             "function_name": "bitwise_or",
             "operator": "|",
-            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 11},
+            "expected_memory": {"0x0": 11, "0x4": 3, "0x8": 11},
         },
         {
             "function_name": "module",
             "operator": "%",
-            "expected_memory": {"0x0": 11, "0x2": 3, "0x6": 2},
+            "expected_memory": {"0x0": 11, "0x4": 3, "0x8": 2},
         },
     ],
 )

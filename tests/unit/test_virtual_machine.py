@@ -58,10 +58,10 @@ def test_run() -> None:
         '0x48': 2,
         '0x4c': 1,
         '0x50': 2.0,
-        '0x56': 1,
-        '0x5e': 3,
-        '0x76': 1,
-        '0x8a': 1
+        '0x58': 1,
+        '0x60': 3,
+        '0x78': 1,
+        '0x8c': 1
     }
 
     assert vm.get_memory() == expected_memory

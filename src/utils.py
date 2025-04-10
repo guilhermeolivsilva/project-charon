@@ -3,7 +3,7 @@
 from typing import Union
 
 
-builtin_types: dict[str, int] = {"short": 2, "int": 4, "float": 4}
+builtin_types: dict[str, int] = {"short": 4, "int": 4, "float": 4}
 
 
 def is_prime(number: int) -> bool:
@@ -178,7 +178,7 @@ def type_cast(
     register : int
         The number of the next register available.
     code : list[dict]
-        The code metadata of the `TYPECAST` instruction.
+        The code metadata of the type cast instruction.
     """
 
     # Direct casts
