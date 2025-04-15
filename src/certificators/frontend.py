@@ -39,7 +39,8 @@ class FrontendCertificator(AbstractCertificator):
             The list of labels that compose the computed certificate.
         """
 
-        self.computed_certificate = self._certificate_ast()
+        _computed_certificate = self._certificate_ast()
+        self.computed_certificate = "*".join(_computed_certificate)
 
         return self.computed_certificate
 
