@@ -287,7 +287,7 @@ def flatten_list(list_of_lists: list[list], drop_duplicates: bool = True) -> lis
 __TYPE_CASTS = ["FPTOSI", "SIGNEXT", "SITOFP", "TRUNC"]
 
 
-__VARIABLES = {"VAR_DEF": [], "VAR_VALUE": ["LOAD", "LOADF"], "VAR_ADDRESS": ["ADDRESS"]}
+__VARIABLES = {"VAR_DEF": [], "VAR_VALUE": ["LOAD", "LOADF"], "VAR_ADDRESS": []}
 
 
 __CONSTANTS = {"CST": ["CONSTANT"]}
@@ -369,7 +369,7 @@ SYMBOLS_MAP = {
     certificate: str(base)
     for certificate, base in zip(
         NODE_TO_INSTRUCTION_MAPPING.keys(),
-        primes_list(len(NODE_TO_INSTRUCTION_MAPPING.keys())),
+        sorted(primes_list(len(NODE_TO_INSTRUCTION_MAPPING.keys()))),
     )
 }
 
