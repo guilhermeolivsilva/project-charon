@@ -26,6 +26,7 @@ class IF(Conditional):
     def __init__(self, parenthesis_expression: Node, statement_if_true: Node) -> None:
         super().__init__(parenthesis_expression, statement_if_true)
 
+        self.symbol = SYMBOLS_MAP["IF"]
         self.boundary_symbol = SYMBOLS_MAP["IF_END"]
 
     @override
