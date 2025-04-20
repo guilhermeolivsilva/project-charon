@@ -254,9 +254,9 @@ class ELEMENT_ACCESS(Node):
         variable_prime = variable_metadata["prime"]
         certificate_label += f"^({variable_prime})"
 
-        # Add the access type composition
-        if self.access_type == "static":
-            offset_size = self.element_offset["offset_size"]
+        # Static access (i.e., indexing with a variable)
+        if isinstance(self.element, CST):
+            offset_size = self.element.get_value()
             certificate_label += f"^(2)^({offset_size + 1})"
 
         else:
