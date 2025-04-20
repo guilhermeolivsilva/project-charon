@@ -1,7 +1,10 @@
-"""Implement a certificate inverter."""
+"""Implement the base class for the certificate inverter."""
+
+from abc import abstractmethod
+from typing import Union
 
 
-class Inverter:
+class BaseInverter:
     """
     Invert a certificate to retrieve the original program in canonical form.
 
@@ -15,10 +18,23 @@ class Inverter:
         self.original_certificate: str = certificate
         self.certificate: list[list[int]] = self.preprocess_certificate(certificate)
 
-    @staticmethod
-    def preprocess_certificate(certificate: str) -> list[list[int]]:
+    def preprocess_certificate(self, certificate: str) -> list[dict[str, Union[int, list[int]]]]:
         """
-        TODO
+        Preprocess a certificate to split positional primes and symbols.
+
+        The result is returned as a list of dictionaries. Each dictionary has
+        three fields: `positional_prime`, `symbol`, and `additional_info`. The
+        former two will always have contents, while the latter might not.
+
+        Parameters
+        ----------
+        certificate : str
+            The certificate to process.
+
+        Returns
+        -------
+        preprocessed_certificate : list[dict[str, Union[int, list[int]]]]
+            The preprocessed certificate, as a list of dictionaries.
         """
 
         # Sort the certificate based on positional primes (i.e., the first
@@ -43,3 +59,13 @@ class Inverter:
         ]
         
         return preprocessed_certificate
+    
+    @abstractmethod
+    def invert_certificate(self) -> Union[str, dict[str, dict]]:
+        """
+        Invert the certificate to retrieve the original program.
+
+        The original program is generated in its canonical form.
+        """
+
+        raise NotImplementedError
