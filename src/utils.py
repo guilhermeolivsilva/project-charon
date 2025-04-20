@@ -374,6 +374,12 @@ SYMBOLS_MAP = {
 }
 
 
+INVERTED_SYMBOLS_MAP = {
+    int(value): key
+    for key, value in SYMBOLS_MAP.items()
+}
+
+
 TYPE_SYMBOLS_MAP = {
     _type: {"type_symbol": base, "enforce": float if _type == "float" else int}
     for _type, base in zip(builtin_types.keys(), primes_list(len(builtin_types.keys())))
