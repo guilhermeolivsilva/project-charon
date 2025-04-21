@@ -133,10 +133,13 @@
 </span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a><span class="sd">            The list of labels of the AST certificate.</span>
 </span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>
-</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>        <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_prime</span><span class="p">)</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>        <span class="n">ast_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>        <span class="k">return</span> <span class="n">ast_certificate</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>        <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>            <span class="n">positional_prime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_prime</span><span class="p">,</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>            <span class="n">certificator_env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>        <span class="p">)</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>        <span class="n">ast_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>
+</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>        <span class="k">return</span> <span class="n">ast_certificate</span>
 </span></pre></div>
 
 
@@ -205,10 +208,13 @@
 </span><span id="FrontendCertificator-64"><a href="#FrontendCertificator-64"><span class="linenos">64</span></a><span class="sd">            The list of labels of the AST certificate.</span>
 </span><span id="FrontendCertificator-65"><a href="#FrontendCertificator-65"><span class="linenos">65</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="FrontendCertificator-66"><a href="#FrontendCertificator-66"><span class="linenos">66</span></a>
-</span><span id="FrontendCertificator-67"><a href="#FrontendCertificator-67"><span class="linenos">67</span></a>        <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_prime</span><span class="p">)</span>
-</span><span id="FrontendCertificator-68"><a href="#FrontendCertificator-68"><span class="linenos">68</span></a>        <span class="n">ast_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
-</span><span id="FrontendCertificator-69"><a href="#FrontendCertificator-69"><span class="linenos">69</span></a>
-</span><span id="FrontendCertificator-70"><a href="#FrontendCertificator-70"><span class="linenos">70</span></a>        <span class="k">return</span> <span class="n">ast_certificate</span>
+</span><span id="FrontendCertificator-67"><a href="#FrontendCertificator-67"><span class="linenos">67</span></a>        <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span>
+</span><span id="FrontendCertificator-68"><a href="#FrontendCertificator-68"><span class="linenos">68</span></a>            <span class="n">positional_prime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_prime</span><span class="p">,</span>
+</span><span id="FrontendCertificator-69"><a href="#FrontendCertificator-69"><span class="linenos">69</span></a>            <span class="n">certificator_env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">environment</span>
+</span><span id="FrontendCertificator-70"><a href="#FrontendCertificator-70"><span class="linenos">70</span></a>        <span class="p">)</span>
+</span><span id="FrontendCertificator-71"><a href="#FrontendCertificator-71"><span class="linenos">71</span></a>        <span class="n">ast_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="FrontendCertificator-72"><a href="#FrontendCertificator-72"><span class="linenos">72</span></a>
+</span><span id="FrontendCertificator-73"><a href="#FrontendCertificator-73"><span class="linenos">73</span></a>        <span class="k">return</span> <span class="n">ast_certificate</span>
 </span></pre></div>
 
 
@@ -310,6 +316,7 @@ position and contents.</p>
                                     <div><dt><a href="abstract_certificator.html#AbstractCertificator">src.certificators.abstract_certificator.AbstractCertificator</a></dt>
                                 <dd id="FrontendCertificator.computed_certificate" class="variable"><a href="abstract_certificator.html#AbstractCertificator.computed_certificate">computed_certificate</a></dd>
                 <dd id="FrontendCertificator.initial_prime" class="variable"><a href="abstract_certificator.html#AbstractCertificator.initial_prime">initial_prime</a></dd>
+                <dd id="FrontendCertificator.environment" class="variable"><a href="abstract_certificator.html#AbstractCertificator.environment">environment</a></dd>
                 <dd id="FrontendCertificator.get_certificate" class="function"><a href="abstract_certificator.html#AbstractCertificator.get_certificate">get_certificate</a></dd>
 
             </div>

@@ -262,37 +262,53 @@
 </span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>        <span class="k">return</span> <span class="n">ifelse_code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
 </span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
 </span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>    <span class="nd">@override</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">        Parameters</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="sd">        ----------</span>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">            the source code.</span>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">        Returns</span>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">        -------</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">        : int</span>
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>        
-</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>        <span class="n">_else_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;ELSE_END&quot;</span><span class="p">]</span>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">else_boundary_certificate</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">_else_boundary_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>        <span class="p">)</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>
-</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">        Parameters</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">        ----------</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">            the source code.</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">        Returns</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">        -------</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="sd">        : int</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>        <span class="p">(</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>            <span class="n">certificator_env</span>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>        <span class="p">(</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>            <span class="n">certificator_env</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>        
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>        <span class="n">_else_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;ELSE_END&quot;</span><span class="p">]</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">else_boundary_certificate</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">_else_boundary_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>        <span class="p">)</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">),</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -479,37 +495,53 @@
 </span><span id="IFELSE-181"><a href="#IFELSE-181"><span class="linenos">181</span></a>        <span class="k">return</span> <span class="n">ifelse_code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
 </span><span id="IFELSE-182"><a href="#IFELSE-182"><span class="linenos">182</span></a>
 </span><span id="IFELSE-183"><a href="#IFELSE-183"><span class="linenos">183</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE-184"><a href="#IFELSE-184"><span class="linenos">184</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="IFELSE-185"><a href="#IFELSE-185"><span class="linenos">185</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE-186"><a href="#IFELSE-186"><span class="linenos">186</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
-</span><span id="IFELSE-187"><a href="#IFELSE-187"><span class="linenos">187</span></a>
-</span><span id="IFELSE-188"><a href="#IFELSE-188"><span class="linenos">188</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="IFELSE-189"><a href="#IFELSE-189"><span class="linenos">189</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
-</span><span id="IFELSE-190"><a href="#IFELSE-190"><span class="linenos">190</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
-</span><span id="IFELSE-191"><a href="#IFELSE-191"><span class="linenos">191</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="IFELSE-192"><a href="#IFELSE-192"><span class="linenos">192</span></a>
-</span><span id="IFELSE-193"><a href="#IFELSE-193"><span class="linenos">193</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE-194"><a href="#IFELSE-194"><span class="linenos">194</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE-195"><a href="#IFELSE-195"><span class="linenos">195</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="IFELSE-196"><a href="#IFELSE-196"><span class="linenos">196</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="IFELSE-197"><a href="#IFELSE-197"><span class="linenos">197</span></a><span class="sd">            the source code.</span>
-</span><span id="IFELSE-198"><a href="#IFELSE-198"><span class="linenos">198</span></a>
-</span><span id="IFELSE-199"><a href="#IFELSE-199"><span class="linenos">199</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE-200"><a href="#IFELSE-200"><span class="linenos">200</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE-201"><a href="#IFELSE-201"><span class="linenos">201</span></a><span class="sd">        : int</span>
-</span><span id="IFELSE-202"><a href="#IFELSE-202"><span class="linenos">202</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="IFELSE-203"><a href="#IFELSE-203"><span class="linenos">203</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE-204"><a href="#IFELSE-204"><span class="linenos">204</span></a>
-</span><span id="IFELSE-205"><a href="#IFELSE-205"><span class="linenos">205</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="IFELSE-206"><a href="#IFELSE-206"><span class="linenos">206</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="IFELSE-207"><a href="#IFELSE-207"><span class="linenos">207</span></a>        
-</span><span id="IFELSE-208"><a href="#IFELSE-208"><span class="linenos">208</span></a>        <span class="n">_else_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;ELSE_END&quot;</span><span class="p">]</span>
-</span><span id="IFELSE-209"><a href="#IFELSE-209"><span class="linenos">209</span></a>
-</span><span id="IFELSE-210"><a href="#IFELSE-210"><span class="linenos">210</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">else_boundary_certificate</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="IFELSE-211"><a href="#IFELSE-211"><span class="linenos">211</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">_else_boundary_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="IFELSE-212"><a href="#IFELSE-212"><span class="linenos">212</span></a>        <span class="p">)</span>
-</span><span id="IFELSE-213"><a href="#IFELSE-213"><span class="linenos">213</span></a>
-</span><span id="IFELSE-214"><a href="#IFELSE-214"><span class="linenos">214</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="IFELSE-184"><a href="#IFELSE-184"><span class="linenos">184</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
+</span><span id="IFELSE-185"><a href="#IFELSE-185"><span class="linenos">185</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="IFELSE-186"><a href="#IFELSE-186"><span class="linenos">186</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="IFELSE-187"><a href="#IFELSE-187"><span class="linenos">187</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="IFELSE-188"><a href="#IFELSE-188"><span class="linenos">188</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+</span><span id="IFELSE-189"><a href="#IFELSE-189"><span class="linenos">189</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE-190"><a href="#IFELSE-190"><span class="linenos">190</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
+</span><span id="IFELSE-191"><a href="#IFELSE-191"><span class="linenos">191</span></a>
+</span><span id="IFELSE-192"><a href="#IFELSE-192"><span class="linenos">192</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="IFELSE-193"><a href="#IFELSE-193"><span class="linenos">193</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
+</span><span id="IFELSE-194"><a href="#IFELSE-194"><span class="linenos">194</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
+</span><span id="IFELSE-195"><a href="#IFELSE-195"><span class="linenos">195</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
+</span><span id="IFELSE-196"><a href="#IFELSE-196"><span class="linenos">196</span></a>
+</span><span id="IFELSE-197"><a href="#IFELSE-197"><span class="linenos">197</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE-198"><a href="#IFELSE-198"><span class="linenos">198</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE-199"><a href="#IFELSE-199"><span class="linenos">199</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="IFELSE-200"><a href="#IFELSE-200"><span class="linenos">200</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="IFELSE-201"><a href="#IFELSE-201"><span class="linenos">201</span></a><span class="sd">            the source code.</span>
+</span><span id="IFELSE-202"><a href="#IFELSE-202"><span class="linenos">202</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="IFELSE-203"><a href="#IFELSE-203"><span class="linenos">203</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="IFELSE-204"><a href="#IFELSE-204"><span class="linenos">204</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="IFELSE-205"><a href="#IFELSE-205"><span class="linenos">205</span></a>
+</span><span id="IFELSE-206"><a href="#IFELSE-206"><span class="linenos">206</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE-207"><a href="#IFELSE-207"><span class="linenos">207</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE-208"><a href="#IFELSE-208"><span class="linenos">208</span></a><span class="sd">        : int</span>
+</span><span id="IFELSE-209"><a href="#IFELSE-209"><span class="linenos">209</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="IFELSE-210"><a href="#IFELSE-210"><span class="linenos">210</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="IFELSE-211"><a href="#IFELSE-211"><span class="linenos">211</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="IFELSE-212"><a href="#IFELSE-212"><span class="linenos">212</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="IFELSE-213"><a href="#IFELSE-213"><span class="linenos">213</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE-214"><a href="#IFELSE-214"><span class="linenos">214</span></a>
+</span><span id="IFELSE-215"><a href="#IFELSE-215"><span class="linenos">215</span></a>        <span class="p">(</span>
+</span><span id="IFELSE-216"><a href="#IFELSE-216"><span class="linenos">216</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
+</span><span id="IFELSE-217"><a href="#IFELSE-217"><span class="linenos">217</span></a>            <span class="n">certificator_env</span>
+</span><span id="IFELSE-218"><a href="#IFELSE-218"><span class="linenos">218</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="IFELSE-219"><a href="#IFELSE-219"><span class="linenos">219</span></a>        <span class="p">(</span>
+</span><span id="IFELSE-220"><a href="#IFELSE-220"><span class="linenos">220</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
+</span><span id="IFELSE-221"><a href="#IFELSE-221"><span class="linenos">221</span></a>            <span class="n">certificator_env</span>
+</span><span id="IFELSE-222"><a href="#IFELSE-222"><span class="linenos">222</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="IFELSE-223"><a href="#IFELSE-223"><span class="linenos">223</span></a>        
+</span><span id="IFELSE-224"><a href="#IFELSE-224"><span class="linenos">224</span></a>        <span class="n">_else_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;ELSE_END&quot;</span><span class="p">]</span>
+</span><span id="IFELSE-225"><a href="#IFELSE-225"><span class="linenos">225</span></a>
+</span><span id="IFELSE-226"><a href="#IFELSE-226"><span class="linenos">226</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">else_boundary_certificate</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="IFELSE-227"><a href="#IFELSE-227"><span class="linenos">227</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">_else_boundary_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="IFELSE-228"><a href="#IFELSE-228"><span class="linenos">228</span></a>        <span class="p">)</span>
+</span><span id="IFELSE-229"><a href="#IFELSE-229"><span class="linenos">229</span></a>
+</span><span id="IFELSE-230"><a href="#IFELSE-230"><span class="linenos">230</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">),</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -827,44 +859,60 @@ environment : dict[int, str]
                     <div class="decorator decorator-override">@override</div>
 
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span>:</span></span>
 
                 <label class="view-source-button" for="IFELSE.certificate-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#IFELSE.certificate"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="IFELSE.certificate-183"><a href="#IFELSE.certificate-183"><span class="linenos">183</span></a>    <span class="nd">@override</span>
-</span><span id="IFELSE.certificate-184"><a href="#IFELSE.certificate-184"><span class="linenos">184</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="IFELSE.certificate-185"><a href="#IFELSE.certificate-185"><span class="linenos">185</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="IFELSE.certificate-186"><a href="#IFELSE.certificate-186"><span class="linenos">186</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
-</span><span id="IFELSE.certificate-187"><a href="#IFELSE.certificate-187"><span class="linenos">187</span></a>
-</span><span id="IFELSE.certificate-188"><a href="#IFELSE.certificate-188"><span class="linenos">188</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
-</span><span id="IFELSE.certificate-189"><a href="#IFELSE.certificate-189"><span class="linenos">189</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
-</span><span id="IFELSE.certificate-190"><a href="#IFELSE.certificate-190"><span class="linenos">190</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
-</span><span id="IFELSE.certificate-191"><a href="#IFELSE.certificate-191"><span class="linenos">191</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
-</span><span id="IFELSE.certificate-192"><a href="#IFELSE.certificate-192"><span class="linenos">192</span></a>
-</span><span id="IFELSE.certificate-193"><a href="#IFELSE.certificate-193"><span class="linenos">193</span></a><span class="sd">        Parameters</span>
-</span><span id="IFELSE.certificate-194"><a href="#IFELSE.certificate-194"><span class="linenos">194</span></a><span class="sd">        ----------</span>
-</span><span id="IFELSE.certificate-195"><a href="#IFELSE.certificate-195"><span class="linenos">195</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="IFELSE.certificate-196"><a href="#IFELSE.certificate-196"><span class="linenos">196</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="IFELSE.certificate-197"><a href="#IFELSE.certificate-197"><span class="linenos">197</span></a><span class="sd">            the source code.</span>
-</span><span id="IFELSE.certificate-198"><a href="#IFELSE.certificate-198"><span class="linenos">198</span></a>
-</span><span id="IFELSE.certificate-199"><a href="#IFELSE.certificate-199"><span class="linenos">199</span></a><span class="sd">        Returns</span>
-</span><span id="IFELSE.certificate-200"><a href="#IFELSE.certificate-200"><span class="linenos">200</span></a><span class="sd">        -------</span>
-</span><span id="IFELSE.certificate-201"><a href="#IFELSE.certificate-201"><span class="linenos">201</span></a><span class="sd">        : int</span>
-</span><span id="IFELSE.certificate-202"><a href="#IFELSE.certificate-202"><span class="linenos">202</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="IFELSE.certificate-203"><a href="#IFELSE.certificate-203"><span class="linenos">203</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="IFELSE.certificate-204"><a href="#IFELSE.certificate-204"><span class="linenos">204</span></a>
-</span><span id="IFELSE.certificate-205"><a href="#IFELSE.certificate-205"><span class="linenos">205</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="IFELSE.certificate-206"><a href="#IFELSE.certificate-206"><span class="linenos">206</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="IFELSE.certificate-207"><a href="#IFELSE.certificate-207"><span class="linenos">207</span></a>        
-</span><span id="IFELSE.certificate-208"><a href="#IFELSE.certificate-208"><span class="linenos">208</span></a>        <span class="n">_else_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;ELSE_END&quot;</span><span class="p">]</span>
-</span><span id="IFELSE.certificate-209"><a href="#IFELSE.certificate-209"><span class="linenos">209</span></a>
-</span><span id="IFELSE.certificate-210"><a href="#IFELSE.certificate-210"><span class="linenos">210</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">else_boundary_certificate</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="IFELSE.certificate-211"><a href="#IFELSE.certificate-211"><span class="linenos">211</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">_else_boundary_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="IFELSE.certificate-212"><a href="#IFELSE.certificate-212"><span class="linenos">212</span></a>        <span class="p">)</span>
-</span><span id="IFELSE.certificate-213"><a href="#IFELSE.certificate-213"><span class="linenos">213</span></a>
-</span><span id="IFELSE.certificate-214"><a href="#IFELSE.certificate-214"><span class="linenos">214</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="IFELSE.certificate-184"><a href="#IFELSE.certificate-184"><span class="linenos">184</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
+</span><span id="IFELSE.certificate-185"><a href="#IFELSE.certificate-185"><span class="linenos">185</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="IFELSE.certificate-186"><a href="#IFELSE.certificate-186"><span class="linenos">186</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="IFELSE.certificate-187"><a href="#IFELSE.certificate-187"><span class="linenos">187</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="IFELSE.certificate-188"><a href="#IFELSE.certificate-188"><span class="linenos">188</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+</span><span id="IFELSE.certificate-189"><a href="#IFELSE.certificate-189"><span class="linenos">189</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="IFELSE.certificate-190"><a href="#IFELSE.certificate-190"><span class="linenos">190</span></a><span class="sd">        Compute the certificate of the current `IFELSE`, and set this attribute.</span>
+</span><span id="IFELSE.certificate-191"><a href="#IFELSE.certificate-191"><span class="linenos">191</span></a>
+</span><span id="IFELSE.certificate-192"><a href="#IFELSE.certificate-192"><span class="linenos">192</span></a><span class="sd">        For `IFELSE` nodes, certificate the `parenthesis_expression`,</span>
+</span><span id="IFELSE.certificate-193"><a href="#IFELSE.certificate-193"><span class="linenos">193</span></a><span class="sd">        recursively, and the `IFELSE` itself, and then the children</span>
+</span><span id="IFELSE.certificate-194"><a href="#IFELSE.certificate-194"><span class="linenos">194</span></a><span class="sd">        `statement` nodes -- also recursively -- in order (i.e., the</span>
+</span><span id="IFELSE.certificate-195"><a href="#IFELSE.certificate-195"><span class="linenos">195</span></a><span class="sd">        `statement_if_true` and then the `statement_if_false` subtrees).</span>
+</span><span id="IFELSE.certificate-196"><a href="#IFELSE.certificate-196"><span class="linenos">196</span></a>
+</span><span id="IFELSE.certificate-197"><a href="#IFELSE.certificate-197"><span class="linenos">197</span></a><span class="sd">        Parameters</span>
+</span><span id="IFELSE.certificate-198"><a href="#IFELSE.certificate-198"><span class="linenos">198</span></a><span class="sd">        ----------</span>
+</span><span id="IFELSE.certificate-199"><a href="#IFELSE.certificate-199"><span class="linenos">199</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="IFELSE.certificate-200"><a href="#IFELSE.certificate-200"><span class="linenos">200</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="IFELSE.certificate-201"><a href="#IFELSE.certificate-201"><span class="linenos">201</span></a><span class="sd">            the source code.</span>
+</span><span id="IFELSE.certificate-202"><a href="#IFELSE.certificate-202"><span class="linenos">202</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="IFELSE.certificate-203"><a href="#IFELSE.certificate-203"><span class="linenos">203</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="IFELSE.certificate-204"><a href="#IFELSE.certificate-204"><span class="linenos">204</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="IFELSE.certificate-205"><a href="#IFELSE.certificate-205"><span class="linenos">205</span></a>
+</span><span id="IFELSE.certificate-206"><a href="#IFELSE.certificate-206"><span class="linenos">206</span></a><span class="sd">        Returns</span>
+</span><span id="IFELSE.certificate-207"><a href="#IFELSE.certificate-207"><span class="linenos">207</span></a><span class="sd">        -------</span>
+</span><span id="IFELSE.certificate-208"><a href="#IFELSE.certificate-208"><span class="linenos">208</span></a><span class="sd">        : int</span>
+</span><span id="IFELSE.certificate-209"><a href="#IFELSE.certificate-209"><span class="linenos">209</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="IFELSE.certificate-210"><a href="#IFELSE.certificate-210"><span class="linenos">210</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="IFELSE.certificate-211"><a href="#IFELSE.certificate-211"><span class="linenos">211</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="IFELSE.certificate-212"><a href="#IFELSE.certificate-212"><span class="linenos">212</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="IFELSE.certificate-213"><a href="#IFELSE.certificate-213"><span class="linenos">213</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="IFELSE.certificate-214"><a href="#IFELSE.certificate-214"><span class="linenos">214</span></a>
+</span><span id="IFELSE.certificate-215"><a href="#IFELSE.certificate-215"><span class="linenos">215</span></a>        <span class="p">(</span>
+</span><span id="IFELSE.certificate-216"><a href="#IFELSE.certificate-216"><span class="linenos">216</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
+</span><span id="IFELSE.certificate-217"><a href="#IFELSE.certificate-217"><span class="linenos">217</span></a>            <span class="n">certificator_env</span>
+</span><span id="IFELSE.certificate-218"><a href="#IFELSE.certificate-218"><span class="linenos">218</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="IFELSE.certificate-219"><a href="#IFELSE.certificate-219"><span class="linenos">219</span></a>        <span class="p">(</span>
+</span><span id="IFELSE.certificate-220"><a href="#IFELSE.certificate-220"><span class="linenos">220</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
+</span><span id="IFELSE.certificate-221"><a href="#IFELSE.certificate-221"><span class="linenos">221</span></a>            <span class="n">certificator_env</span>
+</span><span id="IFELSE.certificate-222"><a href="#IFELSE.certificate-222"><span class="linenos">222</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_false</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="IFELSE.certificate-223"><a href="#IFELSE.certificate-223"><span class="linenos">223</span></a>        
+</span><span id="IFELSE.certificate-224"><a href="#IFELSE.certificate-224"><span class="linenos">224</span></a>        <span class="n">_else_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;ELSE_END&quot;</span><span class="p">]</span>
+</span><span id="IFELSE.certificate-225"><a href="#IFELSE.certificate-225"><span class="linenos">225</span></a>
+</span><span id="IFELSE.certificate-226"><a href="#IFELSE.certificate-226"><span class="linenos">226</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">else_boundary_certificate</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="IFELSE.certificate-227"><a href="#IFELSE.certificate-227"><span class="linenos">227</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">_else_boundary_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="IFELSE.certificate-228"><a href="#IFELSE.certificate-228"><span class="linenos">228</span></a>        <span class="p">)</span>
+</span><span id="IFELSE.certificate-229"><a href="#IFELSE.certificate-229"><span class="linenos">229</span></a>
+</span><span id="IFELSE.certificate-230"><a href="#IFELSE.certificate-230"><span class="linenos">230</span></a>        <span class="k">return</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">),</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -879,12 +927,18 @@ recursively, and the <code><a href="#IFELSE">IFELSE</a></code> itself, and then 
 
 <p>positional_prime : int
     A prime number that denotes the relative position of this node in
-    the source code.</p>
+    the source code.
+certificator_env : dict[int, list[int]]
+    The certificators's environment, that maps variables IDs to
+    encodings of their types.</p>
 
 <h2 id="returns">Returns</h2>
 
 <p>: int
-    The prime that comes immediately after <code>positional_prime</code>.</p>
+    The prime that comes immediately after <code>positional_prime</code>.
+certificator_env : dict[int, list[int]]
+    The certificators's environment, that maps variables IDs to
+    encodings of their types.</p>
 </div>
 
 
