@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import add_variable_to_environment, get_variable_size
+from src.utils import get_variable_size, builtin_types, TYPE_SYMBOLS_MAP
 
 
 class VAR_DEF(Node):
@@ -27,9 +27,13 @@ class VAR_DEF(Node):
 
         self.variable_metadata: dict = variable_metadata
 
-        prime: int = variable_metadata["prime"]
+        self.prime: int = variable_metadata["prime"]
         self.size: int = get_variable_size(variable_metadata)
-        self.symbol: str = f"({self.symbol})" + f"^({prime})" + f"^({self.size})"
+        self.symbol: str = (
+            f"({self.symbol})"
+            + f"^({self.prime})"
+            + f"^(TYPE_PLACEHOLDER_VAR_PRIME_{self.prime})"
+        )
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -91,10 +95,75 @@ class VAR_DEF(Node):
             The updated {var_id: address} environment mapping.
         """
 
-        environment = add_variable_to_environment(
-            environment=environment,
-            var_id=self.value,
-            size=self.size
-        )
+        # If no variables are defined in the environment, the dict will be empty
+        # and we manually set the ID and address.
+        variable_count = len(environment["variables"])
+
+        if not variable_count:
+            new_var_address = hex(0)
+        else:
+            last_var_id = list(environment["variables"]).pop()
+            last_var_address = environment["variables"][last_var_id]["address"]
+            last_var_size = environment["variables"][last_var_id]["size"]
+            new_var_address = hex(int(last_var_address, 16) + last_var_size)
+
+        var_id = self.value
+        environment["variables"][var_id] = {
+            "address": new_var_address,
+            "size": self.size
+        }
 
         return [], register, environment
+
+    @override
+    def certificate(
+        self,
+        positional_prime: int,
+        certificator_env: dict[int, list[int]]
+    ) -> tuple[int, dict[int, list[int]]]:
+        """
+        Compute the certificate of this variable definition.
+
+        `VAR_DEF` objects will add an entry in the `certificator_env` that maps
+        the variable's prime to the symbols that encode the type of this
+        variable. (The entry will be initiated as a sequence of `unknown`, with
+        `self.size` elements.)
+
+        The returned certificate will have a placeholder to represent the type
+        of this variable that will be later filled by the `certificator`.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+        certificator_env : dict[int, list[int]]
+            The certificators's environment, that maps variables IDs to
+            encodings of their types.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
+        certificator_env : dict[int, list[int]]
+            The updated certificator's environment, with any additional
+            information about the variable's types it might have captured.
+        """
+
+        # If this is a homogeneous variable (i.e., a simple variable or an
+        # array), then we know the type symbol upfront
+        if self.type in builtin_types:
+            certificator_env[self.prime] = [
+                TYPE_SYMBOLS_MAP[self.type]["type_symbol"]
+                for _ in range(self.size // builtin_types[self.type])
+            ]
+
+        # If it is not, add to the certificator environment as `unknown`
+        else:
+            # TODO: divide by the actual size of the type of this `VAR_DEF`
+            certificator_env[self.prime] = [
+                TYPE_SYMBOLS_MAP["__unknown_type__"]["type_symbol"]
+                for _ in range(self.size // 4)
+            ]
+
+        return super().certificate(positional_prime, certificator_env)

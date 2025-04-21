@@ -5,9 +5,8 @@ import re
 from typing_extensions import override
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
-from src.ast_nodes.variables.STRUCT_DEF import STRUCT_DEF
 from src.certificators.abstract_certificator import AbstractCertificator
-from src.utils import next_prime, TYPE_SYMBOLS_MAP
+from src.utils import primes_list
 
 
 class FrontendCertificator(AbstractCertificator):
@@ -40,14 +39,18 @@ class FrontendCertificator(AbstractCertificator):
         """
 
         _computed_certificate = self._certificate_ast()
-        self.computed_certificate = "*".join(_computed_certificate)
-        self.computed_certificate = "*".join(
+        computed_certificate = "*".join(_computed_certificate)
+        computed_certificate = "*".join(
             sorted(
-                self.computed_certificate.split("*"),
+                computed_certificate.split("*"),
                 key=lambda x: int(x.split("^")[0])
             )
         )
+        self.computed_certificate = self._add_types_certificates(
+            certificate=computed_certificate
+        )
 
+        # return self.computed_certificate
         return self.computed_certificate
 
     def _certificate_ast(self) -> list[str]:
@@ -70,3 +73,35 @@ class FrontendCertificator(AbstractCertificator):
         ast_certificate = self.ast.root.get_certificate_label()
 
         return ast_certificate
+    
+    def _add_types_certificates(self, certificate: str) -> str:
+        """
+        Add types certificates to the certificate.
+
+        This method will replace all the `PLACEHOLDERS` with the known types
+        certificates.
+
+        Parameters
+        ----------
+        certificate : str
+            The certificate to replace placeholders with the types certificates.
+
+        Returns
+        -------
+        certificate : str
+            The certificate with types certificates.
+        """
+
+        for var_prime, type_symbols in self.environment.items():
+            placeholder = f"TYPE_PLACEHOLDER_VAR_PRIME_{var_prime}"
+            type_certificate = "*".join(
+                f"({position_prime}^{type_symbol})"
+                for position_prime, type_symbol in zip(
+                    primes_list(len(type_symbols)),       
+                    type_symbols
+                )
+            )
+
+            certificate = certificate.replace(placeholder, type_certificate)
+
+        return certificate

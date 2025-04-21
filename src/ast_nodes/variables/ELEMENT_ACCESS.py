@@ -264,10 +264,18 @@ class ELEMENT_ACCESS(Node):
         variable_prime = variable_metadata["prime"]
         certificate_label += f"^({variable_prime})"
 
-        # Static access (i.e., indexing with a variable)
+        # Static access (i.e., indexing an array with a variable, or accessing
+        # a struct attribute)
         if isinstance(self.element, CST):
             offset_size = self.element.get_value()
             certificate_label += f"^(2)^({offset_size + 1})"
+
+            # Update the environment with the symbol of the accessed element's
+            # type
+            accessed_attribute_index: int = self.element.get_value()
+            certificator_env[variable_prime][accessed_attribute_index] = (
+                TYPE_SYMBOLS_MAP[self.type]["type_symbol"]
+            )
 
         else:
             indexing_variable_metadata = self.element.get_metadata()

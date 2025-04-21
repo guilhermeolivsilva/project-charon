@@ -3,7 +3,12 @@
 from typing import Union
 
 
-builtin_types: dict[str, int] = {"short": 4, "int": 4, "float": 4}
+builtin_types: dict[str, Union[int, None]] = {
+    "short": 4,
+    "int": 4,
+    "float": 4,
+    "__unknown_type__": None
+}
 
 
 def is_prime(number: int) -> bool:
@@ -106,48 +111,6 @@ def primes_list(length: int) -> list[int]:
     primes = list(_primes)
 
     return primes
-
-
-def add_variable_to_environment(
-    environment: dict[str, dict[int, str]], var_id: int, size: int
-) -> dict[str, dict[int, str]]:
-    """
-    Add a new variable to the environment.
-
-    Parameters
-    ----------
-    environment : dict[int, str]
-        The compiler's environment, that maps variables IDs to memory
-        addresses and function IDs to instructions indices.
-    var_id : int
-        The unique identifier of this variable.
-    size : int
-        The variable size, in bytes.
-
-    Returns
-    -------
-    environment : dict[str, dict[int, str]]
-        The updated environment.
-    """
-
-    # If no variables are defined in the environment, the dict will be empty
-    # and we manually set the ID and address.
-    variable_count = len(environment["variables"])
-
-    if not variable_count:
-        new_var_address = hex(0)
-    else:
-        last_var_id = list(environment["variables"]).pop()
-        last_var_address = environment["variables"][last_var_id]["address"]
-        last_var_size = environment["variables"][last_var_id]["size"]
-        new_var_address = hex(int(last_var_address, 16) + last_var_size)
-
-    environment["variables"][var_id] = {
-        "address": new_var_address,
-        "size": size
-    }
-
-    return environment
 
 
 def type_cast(
@@ -384,6 +347,7 @@ TYPE_SYMBOLS_MAP = {
     _type: {"type_symbol": base, "enforce": float if _type == "float" else int}
     for _type, base in zip(builtin_types.keys(), primes_list(len(builtin_types.keys())))
 }
+# TYPE_SYMBOLS_MAP["unknown"] = next_prime(len())
 
 
 def get_certificate_symbol(operation) -> str:
