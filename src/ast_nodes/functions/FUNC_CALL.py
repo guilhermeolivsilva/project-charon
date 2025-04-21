@@ -148,7 +148,11 @@ class FUNC_CALL(Node):
         return code, register, environment
 
     @override
-    def certificate(self, positional_prime: int) -> int:
+    def certificate(
+        self,
+        positional_prime: int,
+        certificator_env: dict[int, list[int]]
+    ) -> tuple[int, dict[int, list[int]]]:
         """
         Compute the certificate of the current `FUNC_CALL`, and set this attribute.
 
@@ -160,17 +164,26 @@ class FUNC_CALL(Node):
         positional_prime : int
             A prime number that denotes the relative position of this node in
             the source code.
+        certificator_env : dict[int, list[int]]
+            The certificators's environment, that maps variables IDs to
+            encodings of their types.
 
         Returns
         -------
         : int
             The prime that comes immediately after `positional_prime`.
+        certificator_env : dict[int, list[int]]
+            The updated certificator's environment, with any additional
+            information about the variable's types it might have captured.
         """
 
         for argument in self.arguments:
-            positional_prime = argument.certificate(positional_prime)
+            (
+                positional_prime,
+                certificator_env
+            ) = argument.certificate(positional_prime, certificator_env)
 
-        return super().certificate(positional_prime)
+        return super().certificate(positional_prime, certificator_env)
 
     def _build_children_nodes(self) -> list[Node]:
         arguments = self.function_call_metadata["arguments"]

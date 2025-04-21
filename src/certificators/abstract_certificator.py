@@ -10,6 +10,12 @@ class AbstractCertificator:
         self.computed_certificate: list[str] = []
         self.initial_prime: int = 2
 
+        # The environment maps variables primes to symbols that represents their
+        # associated types. `int x[2]` will be mapped to [3, 3], and
+        # `struct { int x; float y; }` will be mapped to [3, 5]. (3 represents
+        # integers, and 5 represents floating point numbers.)
+        self.environment: dict[int, int] = {}
+
     @abstractmethod
     def certificate(self, **kwargs) -> str:
         pass

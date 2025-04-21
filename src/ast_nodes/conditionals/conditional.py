@@ -73,7 +73,11 @@ class Conditional(Node):
         self.statement_if_true.print(indent + 1)
 
     @override
-    def certificate(self, positional_prime: int) -> int:
+    def certificate(
+        self,
+        positional_prime: int,
+        certificator_env: dict[int, list[int]]
+    ) -> tuple[int, dict[int, list[int]]]:
         """
         Compute the certificate of the current `Conditional`, and set this attribute.
 
@@ -86,11 +90,17 @@ class Conditional(Node):
         positional_prime : int
             A prime number that denotes the relative position of this node in
             the source code.
+        certificator_env : dict[int, list[int]]
+            The certificators's environment, that maps variables IDs to
+            encodings of their types.
 
         Returns
         -------
         : int
             The prime that comes immediately after `positional_prime`.
+        certificator_env : dict[int, list[int]]
+            The updated certificator's environment, with any additional
+            information about the variable's types it might have captured.
         """
 
         # Add the symbol to delimit the condition expression
@@ -101,10 +111,19 @@ class Conditional(Node):
 
         positional_prime = next_prime(positional_prime)
 
-        positional_prime = self.parenthesis_expression.certificate(positional_prime)
-        positional_prime = super().certificate(positional_prime)
-        positional_prime = self.statement_if_true.certificate(positional_prime)
+        (
+            positional_prime,
+            certificator_env
+        ) = self.parenthesis_expression.certificate(positional_prime, certificator_env)
+        (
+            positional_prime,
+            certificator_env
+        ) = super().certificate(positional_prime, certificator_env)
+        (
+            positional_prime,
+            certificator_env
+        ) = self.statement_if_true.certificate(positional_prime, certificator_env)
 
         self.boundary_certificate = f"{positional_prime}^({self.boundary_symbol})"
 
-        return next_prime(positional_prime)
+        return next_prime(positional_prime), certificator_env

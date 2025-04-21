@@ -63,7 +63,10 @@ class FrontendCertificator(AbstractCertificator):
             The list of labels of the AST certificate.
         """
 
-        _ = self.ast.root.certificate(positional_prime=self.initial_prime)
+        _, self.environment = self.ast.root.certificate(
+            positional_prime=self.initial_prime,
+            certificator_env=self.environment
+        )
         ast_certificate = self.ast.root.get_certificate_label()
 
         return ast_certificate

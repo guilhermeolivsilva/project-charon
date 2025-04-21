@@ -180,7 +180,11 @@ class IFELSE(IF):
         return ifelse_code, register, environment
 
     @override
-    def certificate(self, positional_prime: int) -> int:
+    def certificate(
+        self,
+        positional_prime: int,
+        certificator_env: dict[int, list[int]]
+    ) -> tuple[int, dict[int, list[int]]]:
         """
         Compute the certificate of the current `IFELSE`, and set this attribute.
 
@@ -194,15 +198,27 @@ class IFELSE(IF):
         positional_prime : int
             A prime number that denotes the relative position of this node in
             the source code.
+        certificator_env : dict[int, list[int]]
+            The certificators's environment, that maps variables IDs to
+            encodings of their types.
 
         Returns
         -------
         : int
             The prime that comes immediately after `positional_prime`.
+        certificator_env : dict[int, list[int]]
+            The certificators's environment, that maps variables IDs to
+            encodings of their types.
         """
 
-        positional_prime = super().certificate(positional_prime)
-        positional_prime = self.statement_if_false.certificate(positional_prime)
+        (
+            positional_prime,
+            certificator_env
+        ) = super().certificate(positional_prime, certificator_env)
+        (
+            positional_prime,
+            certificator_env
+        ) = self.statement_if_false.certificate(positional_prime, certificator_env)
         
         _else_boundary_symbol = SYMBOLS_MAP["ELSE_END"]
 
@@ -210,4 +226,4 @@ class IFELSE(IF):
             f"{positional_prime}^({_else_boundary_symbol})"
         )
 
-        return next_prime(positional_prime)
+        return next_prime(positional_prime), certificator_env
