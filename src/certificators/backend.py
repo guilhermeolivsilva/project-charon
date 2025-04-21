@@ -93,7 +93,7 @@ class BackendCertificator(AbstractCertificator):
         }
 
     @override
-    def certificate(self, **kwargs) -> list[str]:
+    def certificate(self, **kwargs) -> str:
         """
         Certificate the backend code.
 
@@ -102,14 +102,12 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        computed_certificate : list[str]
-            The list of labels that compose the computed certificate.
+        computed_certificate : str
+            The computed certificate.
         """
 
         for bytecode in self.bytecode_list:
             bytecode_id = bytecode["instruction_id"]
-
-            # print("current id:", bytecode_id)
 
             # Skip instructions that have already been certificated.
             if self.instruction_status[bytecode_id]:
@@ -125,6 +123,14 @@ class BackendCertificator(AbstractCertificator):
         # Assert all the instructions have been accounted for
         _err_msg = "Certification failed: there are uncertificated instructions."
         assert all(self.instruction_status.values()), _err_msg
+
+        self.computed_certificate = "*".join(self.computed_certificate)
+        self.computed_certificate = "*".join(
+            sorted(
+                self.computed_certificate.split("*"),
+                key=lambda x: int(x.split("^")[0])
+            )
+        )
 
         return self.computed_certificate
 
@@ -163,10 +169,6 @@ class BackendCertificator(AbstractCertificator):
 
             else:
                 handler = self.grouped_instructions_handlers[instruction]
-
-            # print(f"certificating {instruction} (id: {bytecode['instruction_id']}) with {handler}")
-            # print(f"current prime: {self.current_positional_prime}")
-            # print("")
 
             certificate = handler(bytecode)
 

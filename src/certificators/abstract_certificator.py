@@ -11,8 +11,8 @@ class AbstractCertificator:
         self.initial_prime: int = 2
 
     @abstractmethod
-    def certificate(self, **kwargs) -> list[str]:
+    def certificate(self, **kwargs) -> str:
         pass
 
-    def get_certificate(self) -> list[str]:
+    def get_certificate(self) -> str:
         return self.computed_certificate

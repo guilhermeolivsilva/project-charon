@@ -35,16 +35,9 @@ class BaseInverter:
             The preprocessed certificate, as a list of dictionaries.
         """
 
-        # Sort the certificate based on positional primes (i.e., the first
-        # element right before the first `^`).
-        sorted_certificate = sorted(
-            self.original_certificate.split("*"),
-            key=lambda x: int(x.split("^")[0])
-        )
-
         split_certificate = [
             list(map(int, token.replace("(", "").replace(")", "").split("^")))
-            for token in sorted_certificate
+            for token in self.original_certificate.split("*")
         ]
 
         preprocessed_certificate = [

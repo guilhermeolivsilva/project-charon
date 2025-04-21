@@ -26,7 +26,7 @@ class FrontendCertificator(AbstractCertificator):
         self.ast: AbstractSyntaxTree = ast
 
     @override
-    def certificate(self, **kwargs) -> list[str]:
+    def certificate(self, **kwargs) -> str:
         """
         Certificate the frontend code.
 
@@ -35,12 +35,18 @@ class FrontendCertificator(AbstractCertificator):
 
         Returns
         -------
-        computed_certificate : list[str]
-            The list of labels that compose the computed certificate.
+        computed_certificate : str
+            The the computed certificate.
         """
 
         _computed_certificate = self._certificate_ast()
         self.computed_certificate = "*".join(_computed_certificate)
+        self.computed_certificate = "*".join(
+            sorted(
+                self.computed_certificate.split("*"),
+                key=lambda x: int(x.split("^")[0])
+            )
+        )
 
         return self.computed_certificate
 
