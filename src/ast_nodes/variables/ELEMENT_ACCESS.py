@@ -312,12 +312,12 @@ class ELEMENT_ACCESS(Node):
         variable_metadata = self.variable.get_metadata()
         variable_type: str = variable_metadata["type"]
 
-        # If the type of the struct-like variable is in this mapping, then it is
-        # an array.
+        # If the type of the struct-like variable is a built-in, then it is an
+        # array of such type.
         if variable_type in TYPE_SYMBOLS_MAP:
             return variable_type
 
-        # If not, then it is an "actual" struct. Thus, get the type of the
+        # If not, then it is a user-defined struct. Thus, get the type of the
         # element being accessed.
         struct_attributes = variable_metadata["attributes"]
         accessed_attribute_index: int = self.element.get_value()
