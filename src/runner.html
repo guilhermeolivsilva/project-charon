@@ -227,22 +227,19 @@
 </span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="n">vm</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>    <span class="n">frontend_certificator</span> <span class="o">=</span> <span class="n">FrontendCertificator</span><span class="p">(</span><span class="n">ast</span><span class="o">=</span><span class="n">ast</span><span class="p">)</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>    <span class="c1"># TODO: uncomment this</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="c1"># backend_certificator = BackendCertificator(program=program)</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    <span class="n">backend_certificator</span> <span class="o">=</span> <span class="o">...</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>    <span class="n">_instance</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="s2">&quot;parsed_source&quot;</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="s2">&quot;ast&quot;</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        <span class="s2">&quot;code_generator&quot;</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="s2">&quot;program&quot;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>        <span class="s2">&quot;vm&quot;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>        <span class="s2">&quot;frontend_certificator&quot;</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="s2">&quot;backend_certificator&quot;</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>    <span class="p">}</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>    <span class="k">return</span> <span class="n">Charon</span><span class="p">(</span><span class="o">**</span><span class="n">_instance</span><span class="p">)</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="n">backend_certificator</span> <span class="o">=</span> <span class="n">BackendCertificator</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="n">_instance</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="s2">&quot;parsed_source&quot;</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="s2">&quot;ast&quot;</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="s2">&quot;code_generator&quot;</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="s2">&quot;program&quot;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="s2">&quot;vm&quot;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        <span class="s2">&quot;frontend_certificator&quot;</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="s2">&quot;backend_certificator&quot;</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>    <span class="p">}</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    <span class="k">return</span> <span class="n">Charon</span><span class="p">(</span><span class="o">**</span><span class="n">_instance</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -677,22 +674,19 @@ backend_certificator : BackendCertificator
 </span><span id="create_instance-119"><a href="#create_instance-119"><span class="linenos">119</span></a>    <span class="n">vm</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
 </span><span id="create_instance-120"><a href="#create_instance-120"><span class="linenos">120</span></a>
 </span><span id="create_instance-121"><a href="#create_instance-121"><span class="linenos">121</span></a>    <span class="n">frontend_certificator</span> <span class="o">=</span> <span class="n">FrontendCertificator</span><span class="p">(</span><span class="n">ast</span><span class="o">=</span><span class="n">ast</span><span class="p">)</span>
-</span><span id="create_instance-122"><a href="#create_instance-122"><span class="linenos">122</span></a>
-</span><span id="create_instance-123"><a href="#create_instance-123"><span class="linenos">123</span></a>    <span class="c1"># TODO: uncomment this</span>
-</span><span id="create_instance-124"><a href="#create_instance-124"><span class="linenos">124</span></a>    <span class="c1"># backend_certificator = BackendCertificator(program=program)</span>
-</span><span id="create_instance-125"><a href="#create_instance-125"><span class="linenos">125</span></a>    <span class="n">backend_certificator</span> <span class="o">=</span> <span class="o">...</span>
-</span><span id="create_instance-126"><a href="#create_instance-126"><span class="linenos">126</span></a>
-</span><span id="create_instance-127"><a href="#create_instance-127"><span class="linenos">127</span></a>    <span class="n">_instance</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="create_instance-128"><a href="#create_instance-128"><span class="linenos">128</span></a>        <span class="s2">&quot;parsed_source&quot;</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
-</span><span id="create_instance-129"><a href="#create_instance-129"><span class="linenos">129</span></a>        <span class="s2">&quot;ast&quot;</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
-</span><span id="create_instance-130"><a href="#create_instance-130"><span class="linenos">130</span></a>        <span class="s2">&quot;code_generator&quot;</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
-</span><span id="create_instance-131"><a href="#create_instance-131"><span class="linenos">131</span></a>        <span class="s2">&quot;program&quot;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
-</span><span id="create_instance-132"><a href="#create_instance-132"><span class="linenos">132</span></a>        <span class="s2">&quot;vm&quot;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
-</span><span id="create_instance-133"><a href="#create_instance-133"><span class="linenos">133</span></a>        <span class="s2">&quot;frontend_certificator&quot;</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
-</span><span id="create_instance-134"><a href="#create_instance-134"><span class="linenos">134</span></a>        <span class="s2">&quot;backend_certificator&quot;</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
-</span><span id="create_instance-135"><a href="#create_instance-135"><span class="linenos">135</span></a>    <span class="p">}</span>
-</span><span id="create_instance-136"><a href="#create_instance-136"><span class="linenos">136</span></a>
-</span><span id="create_instance-137"><a href="#create_instance-137"><span class="linenos">137</span></a>    <span class="k">return</span> <span class="n">Charon</span><span class="p">(</span><span class="o">**</span><span class="n">_instance</span><span class="p">)</span>
+</span><span id="create_instance-122"><a href="#create_instance-122"><span class="linenos">122</span></a>    <span class="n">backend_certificator</span> <span class="o">=</span> <span class="n">BackendCertificator</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
+</span><span id="create_instance-123"><a href="#create_instance-123"><span class="linenos">123</span></a>
+</span><span id="create_instance-124"><a href="#create_instance-124"><span class="linenos">124</span></a>    <span class="n">_instance</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="create_instance-125"><a href="#create_instance-125"><span class="linenos">125</span></a>        <span class="s2">&quot;parsed_source&quot;</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
+</span><span id="create_instance-126"><a href="#create_instance-126"><span class="linenos">126</span></a>        <span class="s2">&quot;ast&quot;</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
+</span><span id="create_instance-127"><a href="#create_instance-127"><span class="linenos">127</span></a>        <span class="s2">&quot;code_generator&quot;</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
+</span><span id="create_instance-128"><a href="#create_instance-128"><span class="linenos">128</span></a>        <span class="s2">&quot;program&quot;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
+</span><span id="create_instance-129"><a href="#create_instance-129"><span class="linenos">129</span></a>        <span class="s2">&quot;vm&quot;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+</span><span id="create_instance-130"><a href="#create_instance-130"><span class="linenos">130</span></a>        <span class="s2">&quot;frontend_certificator&quot;</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
+</span><span id="create_instance-131"><a href="#create_instance-131"><span class="linenos">131</span></a>        <span class="s2">&quot;backend_certificator&quot;</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
+</span><span id="create_instance-132"><a href="#create_instance-132"><span class="linenos">132</span></a>    <span class="p">}</span>
+</span><span id="create_instance-133"><a href="#create_instance-133"><span class="linenos">133</span></a>
+</span><span id="create_instance-134"><a href="#create_instance-134"><span class="linenos">134</span></a>    <span class="k">return</span> <span class="n">Charon</span><span class="p">(</span><span class="o">**</span><span class="n">_instance</span><span class="p">)</span>
 </span></pre></div>
 
 
