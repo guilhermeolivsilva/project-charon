@@ -80,19 +80,17 @@ class VirtualMachine:
 
         _str += "\n\n"
 
-        # Program variables: values and addresses
-        variables_info = {
-            variable_id: {"address": variable_value}
-            for variable_id, variable_value in self.variables.items()
+        # VM Memory state (only non-`None` positions)
+        memory_info = {
+            address: value
+            for address, value in self.memory.items()
+            if value is not None
         }
-
-        for key, value in variables_info.items():
-            address = value["address"]
-            variables_info[key]["value"] = self.memory[address]
-
-        _str += "Variables:\n  "
+        
+        _str += "Memory (non-null only):\n  "
         _str += "\n  ".join(
-            f"ID: {id}\n  Data: {data}\n" for id, data in variables_info.items()
+            f"Address: {address}\tData: {data}\n"
+            for address, data in memory_info.items()
         )
 
         return _str
