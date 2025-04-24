@@ -7,7 +7,7 @@ builtin_types: dict[str, Union[int, None]] = {
     "short": 4,
     "int": 4,
     "float": 4,
-    "__unknown_type__": None
+    "__unknown_type__": 4
 }
 
 
