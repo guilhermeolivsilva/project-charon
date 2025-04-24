@@ -118,10 +118,7 @@ def create_instance(source_code: str) -> Charon:
     vm = VirtualMachine(program=program)
 
     frontend_certificator = FrontendCertificator(ast=ast)
-
-    # TODO: uncomment this
-    # backend_certificator = BackendCertificator(program=program)
-    backend_certificator = ...
+    backend_certificator = BackendCertificator(program=program)
 
     _instance = {
         "parsed_source": parsed_source,

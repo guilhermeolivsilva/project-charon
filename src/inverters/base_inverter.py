@@ -103,11 +103,11 @@ class BaseInverter:
         """Handle a certificate token that represents a variable definition."""
 
         # TODO: handle types
-        variable_prime, size = certificate_token["additional_info"]
+        variable_prime, _, _ = certificate_token["additional_info"]
 
         return {
             "variable_prime": variable_prime,
-            "size": size
+            # "size": size
         }
 
     def __handle_variable(self, certificate_token: dict[str, Union[str, dict]]) -> dict[str, Union[str, dict]]:
