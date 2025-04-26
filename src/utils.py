@@ -373,4 +373,7 @@ def get_certificate_symbol(operation) -> str:
     if operation in INSTRUCTION_OPERATION_TO_NODE_MAPPING.keys():
         operation = INSTRUCTION_OPERATION_TO_NODE_MAPPING.get(operation)
 
+    # Corner-case: `HALT` does not map to `PROG`, so.....we replace it
+    operation = "PROG" if operation == "HALT" else operation
+
     return SYMBOLS_MAP.get(operation)

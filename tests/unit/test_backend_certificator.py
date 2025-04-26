@@ -12,7 +12,7 @@ def test_init() -> None:
     assert backend_certificator.computed_certificate == []
     assert backend_certificator.initial_prime == 2
     assert backend_certificator.program == MACHINE_CODE
-    assert backend_certificator.environment == {}
+    assert backend_certificator.environment == {"variables": {}}
     assert backend_certificator.current_positional_prime == 2
     assert backend_certificator.current_variable_prime == 2
 
