@@ -1,5 +1,7 @@
 """Certificator for the frontend representation of [C]haron programs."""
 
+from typing import Union
+
 from typing_extensions import override
 
 from src.certificators.abstract_certificator import AbstractCertificator
@@ -112,13 +114,13 @@ class BackendCertificator(AbstractCertificator):
                 if not status
             ])
 
-        self.computed_certificate = "*".join(self.computed_certificate)
-        self.computed_certificate = "*".join(
-            sorted(
-                self.computed_certificate.split("*"),
-                key=lambda x: int(x.split("^")[0])
-            )
-        )
+        # self.computed_certificate = "*".join(self.computed_certificate)
+        # self.computed_certificate = "*".join(
+        #     sorted(
+        #         self.computed_certificate.split("*"),
+        #         key=lambda x: int(x.split("^")[0])
+        #     )
+        # )
 
         return self.computed_certificate
 
@@ -212,20 +214,14 @@ class BackendCertificator(AbstractCertificator):
         )
 
         if is_variable:
-            following_bytecode = self.bytecode_list[next_bytecode_idx + 1]
-
-            is_variable_value = (
-                following_bytecode["instruction"] in ["LOAD", "LOADF"]
-            )
-
             return self.__handle_variable(
                 bytecode=bytecode,
-                bytecode_idx=bytecode_idx,
-                context="value" if is_variable_value else "address"
+                bytecode_idx=bytecode_idx
             )
 
         # Case 3: passing value to argument
         elif is_argument:
+            # TODO
             return ...
         
         # Case 4: just a constant
@@ -250,20 +246,78 @@ class BackendCertificator(AbstractCertificator):
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int,
-        context: str
     ) -> str:
         """
         TODO: docstring.
         TODO: handle structs/arrays.
         """
 
+        # Get (and, possibly, set) the variable prime.
+        var_prime = self.__get_variable_prime(bytecode)
+
+        # Speculate if this is an array or struct and compute the exponent and
+        # the number of instructions that implemented it based on the following
+        # bytecodes
+        next_bytecode_idx = bytecode_idx + 1
+
+        exponent, instructions_to_mark_as_done = self.__speculate_data_structure(
+            bytecode=bytecode,
+            bytecode_idx=bytecode_idx,
+            var_prime=var_prime,
+        )
+
+        # If not an array or struct, certificate as a simple variable.
+        if not all([exponent, instructions_to_mark_as_done]):
+            following_bytecode_idx = next_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            context = (
+                "value" if following_bytecode["instruction"] in ["LOAD", "LOADF"]
+                else "address"
+            )
+            symbol = get_certificate_symbol(f"VAR_{context.upper()}")
+
+            exponent = (
+                f"({symbol})"
+                + f"^({var_prime})"
+                + "^(2)"
+                + "^(1)"
+            )
+
+            # Post-certification steps
+            # Mark the involved instructions as done.
+            if context == "address":
+                # Mark `CONSTANT` and `ADD` as done.
+                instructions_to_mark_as_done = 2
+
+            else:
+                # Mark `CONSTANT`, `ADD`, and `LOAD` as done.
+                instructions_to_mark_as_done = 3
+
+                # If this variable is `short`-typed, also mark the type cast as done.
+                if self.bytecode_list[bytecode_idx + 3]["instruction"] == "TRUNC":
+                    instructions_to_mark_as_done += 1
+
+        certificate = f"{self.current_positional_prime}^({exponent})"
+
+        for idx in range(bytecode_idx, bytecode_idx + instructions_to_mark_as_done):
+            bytecode_id = self.bytecode_list[idx]["instruction_id"]
+            self.instruction_status[bytecode_id] = True
+
+        # Advance the positional prime
+        self.current_positional_prime = next_prime(self.current_positional_prime)
+
+        return certificate
+    
+    def __get_variable_prime(self, bytecode) -> int:
+        """
+        TODO: docstring
+        FIXME: this does not really get the *right* variable primes.
+        """
+
         # The `CONSTANT` instruction has the variable address as its value.
         var_address = bytecode["metadata"]["value"]
 
-        # Produce the certificate
-        symbol = get_certificate_symbol(f"VAR_{context.upper()}")
-
-        # Get (and, possibly, set) the variable prime.
         if var_address in self.environment["variables"]:
             var_prime = self.environment["variables"][var_address]["prime"]
         else:
@@ -276,38 +330,263 @@ class BackendCertificator(AbstractCertificator):
                 self.current_variable_prime
             )
 
-        exponent = (
-            f"({symbol})"
-            + f"^({var_prime})"
-            + "^(2)"
-            + "^(1)"
-        )
-
-        certificate = f"{self.current_positional_prime}^({exponent})"
-
-        # Post-certification steps
-        # Mark the involved instructions as done.
-        if context == "address":
-            # Mark `CONSTANT` and `ADD` as done.
-            instructions_to_mark_as_done = 2
-
-        else:
-            # Mark `CONSTANT`, `ADD`, and `LOAD` as done.
-            instructions_to_mark_as_done = 3
-
-            # If this variable is `short`-typed, also mark the type cast as done.
-            if self.bytecode_list[bytecode_idx + 3]["instruction"] == "TRUNC":
-                instructions_to_mark_as_done += 1
-
-        for idx in range(bytecode_idx, bytecode_idx + instructions_to_mark_as_done):
-            bytecode_id = self.bytecode_list[idx]["instruction_id"]
-            self.instruction_status[bytecode_id] = True
-
-        # Advance the positional prime
-        self.current_positional_prime = next_prime(self.current_positional_prime)
-
-        return certificate
+        return var_prime
     
+    def __speculate_data_structure(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int,
+        var_prime: int,
+    ) -> tuple[Union[int, None], Union[str, None]]:
+        """
+        TODO: docstring
+        """
+
+        following_bytecode_idx = bytecode_idx + 1
+        following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+        # The pattern for access to array or struct elements will always begin
+        # with `CONSTANT` (`bytecode`, that we already know that it is) + `ADD`
+        # (following_bytecode) to get the address of the indexing variable or
+        # the index of the element being accessed.
+        following_bytecode_is_add = following_bytecode["instruction"] == "ADD"
+
+        # Early return
+        if not following_bytecode_is_add:
+            return (None, None)
+
+        # Check if it is an access to a struct attribute or to an array element
+        # using a constant for index.
+        is_static_array_or_struct = True
+
+        # Prevent the speculation of going out of bounds or accessing an
+        # unexisting attribute
+        try:
+            speculated_base_address_register = bytecode["metadata"]["register"]
+            speculated_var_address_register = following_bytecode["metadata"]["register"]
+
+            # Pattern:
+            # 1. Following bytecode: `CONSTANT` (it has the offset size)
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            speculated_index_register = following_bytecode["metadata"]["register"]
+            speculated_index = following_bytecode["metadata"]["value"]
+
+            is_static_array_or_struct = (
+                is_static_array_or_struct
+                and following_bytecode["instruction"] == "CONSTANT"
+            )
+            
+            # 2. Following bytecode: `CONSTANT` (it has the type size)
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            speculated_type_size_register = following_bytecode["metadata"]["register"]
+
+            is_static_array_or_struct = (
+                is_static_array_or_struct
+                and following_bytecode["instruction"] == "CONSTANT"
+            )
+
+            # 2. Following bytecode: `MULT` (to compute the memory offset)
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            speculated_offset_register = following_bytecode["metadata"]["register"]
+
+            is_static_array_or_struct = (
+                is_static_array_or_struct
+                and following_bytecode["instruction"] == "MULT"
+                and following_bytecode["metadata"]["lhs_register"] == speculated_index_register
+                and following_bytecode["metadata"]["rhs_register"] == speculated_type_size_register
+            )
+
+            # 3. Following bytecode: `ADD` (to add the base address from
+            # `bytecode` to the `offset`)
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            is_static_array_or_struct = (
+                is_static_array_or_struct
+                and following_bytecode["instruction"] == "ADD"
+                and following_bytecode["metadata"]["lhs_register"] == speculated_var_address_register
+                and following_bytecode["metadata"]["rhs_register"] == speculated_offset_register
+            )
+
+            # If all the conditions held, return the adequate exponent and
+            # number of bytecodes already accounted for
+            if is_static_array_or_struct:
+                following_bytecode_idx = following_bytecode_idx + 1
+                following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+                context = (
+                    "value" if following_bytecode["instruction"] in ["LOAD", "LOADF"]
+                    else "address"
+                )
+                symbol = get_certificate_symbol(f"VAR_{context.upper()}")
+
+                exponent = (
+                    f"({symbol})"
+                    + f"^({var_prime})"
+                    + f"^(2)^({speculated_index + 1})"
+                )
+
+                # Account for:
+                #  - 2 instructions to obtain the variable base address
+                #  - 1 instruction to obtain the index
+                #  - 1 instruction to obtain the type size
+                #  - 2 instructions to compute the element address (`ADD` and `MULT`)
+                instructions_to_mark_as_done = 6
+
+                # Account for the `LOAD`, if this is a var. value case.
+                if context == "value":
+                    instructions_to_mark_as_done += 1
+
+                return (exponent, instructions_to_mark_as_done)
+
+        except (IndexError, KeyError):
+            pass
+
+        # Check if it is an access an array element using another variable for
+        # index.
+        is_dinamically_accessed_array = True
+
+        try:
+            # Pattern:
+            # 1. First bytecode: `CONSTANT`, with the base address of the array
+            following_bytecode_idx = bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            speculated_base_address_register = bytecode["metadata"]["register"]
+
+            # 2. Following bytecode: `ADD`, with `lhs=speculated_base_address_register`
+            # and `rhs=zero`
+            speculated_var_address_register = following_bytecode["metadata"]["register"]
+
+            is_dinamically_accessed_array = (
+                is_dinamically_accessed_array
+                and following_bytecode["instruction"] == "ADD"
+                and following_bytecode["metadata"]["lhs_register"] == speculated_base_address_register
+                and following_bytecode["metadata"]["rhs_register"] == "zero"
+            )
+
+            # 3. Following bytecode: `CONSTANT`, with the base address of the
+            # indexing variable.
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            # This is the base address
+            speculated_index_var_base_address_register = following_bytecode["metadata"]["register"]
+            speculated_index_var_prime = self.__get_variable_prime(following_bytecode)
+
+            is_dinamically_accessed_array = (
+                is_dinamically_accessed_array
+                and following_bytecode["instruction"] == "CONSTANT"
+            )
+
+            # 4. Following bytecode: `ADD`, with `lhs=speculated_index_var_base_address_register`
+            # and `rhs=zero`
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            # This is the actual address
+            speculated_index_var_address_register = following_bytecode["metadata"]["register"]
+
+            is_dinamically_accessed_array = (
+                is_dinamically_accessed_array
+                and following_bytecode["instruction"] == "ADD"
+                and following_bytecode["metadata"]["lhs_register"] == speculated_index_var_base_address_register
+                and following_bytecode["metadata"]["rhs_register"] == "zero"
+            )
+
+            # 5. Following bytecode: `LOAD`, fetching data from
+            # `speculated_index_address_register`
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+            
+            speculated_index_var_value_register = following_bytecode["metadata"]["register"]
+
+            is_dinamically_accessed_array = (
+                is_dinamically_accessed_array
+                and following_bytecode["instruction"] == "LOAD"
+                and following_bytecode["metadata"]["value"] == speculated_index_var_address_register
+            )
+
+            # 6. Following bytecode: `CONSTANT` (it has the type size)
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            speculated_type_size_register = following_bytecode["metadata"]["register"]
+
+            is_dinamically_accessed_array = (
+                is_dinamically_accessed_array
+                and following_bytecode["instruction"] == "CONSTANT"
+            )
+
+            # 7. Following bytecode: `MULT` (to compute the memory offset)
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            speculated_offset_register = following_bytecode["metadata"]["register"]
+
+            is_dinamically_accessed_array = (
+                is_dinamically_accessed_array
+                and following_bytecode["instruction"] == "MULT"
+                and following_bytecode["metadata"]["lhs_register"] == speculated_index_var_value_register
+                and following_bytecode["metadata"]["rhs_register"] == speculated_type_size_register
+            )
+
+            # 8. Following bytecode: `ADD` (to add the base address from
+            # `bytecode` to the `offset`)
+            following_bytecode_idx = following_bytecode_idx + 1
+            following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+            is_dinamically_accessed_array = (
+                is_dinamically_accessed_array
+                and following_bytecode["instruction"] == "ADD"
+                and following_bytecode["metadata"]["lhs_register"] == speculated_var_address_register
+                and following_bytecode["metadata"]["rhs_register"] == speculated_offset_register
+            )
+
+            # If all the conditions held, return the adequate exponent and
+            # number of bytecodes already accounted for
+            if is_dinamically_accessed_array:
+                following_bytecode_idx = following_bytecode_idx + 1
+                following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+                context = (
+                    "value" if following_bytecode["instruction"] in ["LOAD", "LOADF"]
+                    else "address"
+                )
+                symbol = get_certificate_symbol(f"VAR_{context.upper()}")
+                
+                exponent = (
+                    f"({symbol})"
+                    # + f"^({var_prime})"
+                    + f"^(VAR PRIME)"
+                    # + f"^(3)^({speculated_index_var_prime})"
+                    + f"^(3)^(INDEX VAR PRIME)"
+                )
+
+                # Account for:
+                #  - 2 instructions to obtain the variable base address
+                #  - 3 instructions to load the value from the index variable
+                #  - 1 instruction to obtain the type size
+                #  - 2 instructions to compute the element address (`ADD` and `MULT`)
+                instructions_to_mark_as_done = 8
+
+                # Account for the `LOAD`, if this is a var. value case.
+                if context == "value":
+                    instructions_to_mark_as_done += 1
+
+                return (exponent, instructions_to_mark_as_done)
+
+        except (IndexError, KeyError):
+            return (None, None)
+
+        return (None, None)
+   
     def _handle_mov(
         self,
         bytecode: dict[str, dict],
