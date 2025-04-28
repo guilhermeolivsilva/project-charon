@@ -138,7 +138,7 @@ class BackendCertificator(AbstractCertificator):
         Parameters
         ----------
         bytecode : dict[str, dict]
-            The instruction and its bytecode metadata.
+            The bytecode to certificate.
         bytecode_idx : int
             The index of this `bytecode` in `self.bytecode_list`.
 
@@ -188,7 +188,7 @@ class BackendCertificator(AbstractCertificator):
         Parameters
         ----------
         bytecode : dict[str, dict]
-            The `CONSTANT` instruction bytecode.
+            The `CONSTANT` bytecode.
         bytecode_idx : int
             The index of this `bytecode` in `self.bytecode_list`.
 
@@ -248,12 +248,24 @@ class BackendCertificator(AbstractCertificator):
         bytecode_idx: int,
     ) -> str:
         """
-        TODO: docstring.
-        TODO: handle structs/arrays.
-        """
+        Handle a variable use case.
 
-        # Get (and, possibly, set) the variable prime.
-        var_prime = self.__get_variable_prime(bytecode)
+        This method will return the appropriate certificate depending on the
+        variable kind (simple, struct/array, or array with dynamic indexing),
+        and whether it is being read from or written to.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The initial bytecode that implements this variable usage.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        certificate : str
+            The certificate of this variable usage.
+        """
 
         # Speculate if this is an array or struct and compute the exponent and
         # the number of instructions that implemented it based on the following
@@ -263,7 +275,6 @@ class BackendCertificator(AbstractCertificator):
         exponent, instructions_to_mark_as_done = self.__speculate_data_structure(
             bytecode=bytecode,
             bytecode_idx=bytecode_idx,
-            var_prime=var_prime,
         )
 
         # If not an array or struct, certificate as a simple variable.
@@ -276,6 +287,7 @@ class BackendCertificator(AbstractCertificator):
                 else "address"
             )
             symbol = get_certificate_symbol(f"VAR_{context.upper()}")
+            var_prime = self.__get_variable_prime(bytecode)
 
             exponent = (
                 f"({symbol})"
@@ -311,11 +323,26 @@ class BackendCertificator(AbstractCertificator):
     
     def __get_variable_prime(self, bytecode) -> int:
         """
-        TODO: docstring
-        FIXME: this does not really get the *right* variable primes.
+        Get the prime number that uniquely represents a variable.
+
+        This number is obtained from the certificator environment. This
+        environment maps the variable's base address to its unique prime nubmer.
+
+        This method is intended to be used exclusively with `CONSTANT` bytecode.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The `CONSTANT` bytecode. This bytecode contains the base address
+            of the variable of interest.
+
+        Returns
+        -------
+        : int
+            The variable prime.
         """
 
-        # The `CONSTANT` instruction has the variable address as its value.
+        # The `CONSTANT` bytecode has the variable address as its value.
         var_address = bytecode["metadata"]["value"]
 
         if var_address in self.environment["variables"]:
@@ -336,10 +363,30 @@ class BackendCertificator(AbstractCertificator):
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int,
-        var_prime: int,
-    ) -> tuple[Union[int, None], Union[str, None]]:
+    ) -> tuple[Union[str, None], Union[int, None]]:
         """
-        TODO: docstring
+        Speculate if this variable is a data structure (array/struct).
+
+        This is an _speculation_ because we can't tell if a variable is actually
+        an array or struct beforehand. To do so, we must check if a specific
+        sequence of bytecodes is observed near it.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The initial bytecode that implements this variable usage.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        exponent : str or None
+            The exponent (that will compose the certificate) of this data
+            structure. Returns `None` if this is not a data structure.
+        instructions_to_mark_as_done : int or None
+            The number of bytecodes, including `bytecode`, that will be marked
+            as done in `self.instruction_status`. Returns `None` if this is not
+            a data structure.
         """
 
         following_bytecode_idx = bytecode_idx + 1
@@ -354,6 +401,8 @@ class BackendCertificator(AbstractCertificator):
         # Early return
         if not following_bytecode_is_add:
             return (None, None)
+        
+        var_prime = self.__get_variable_prime(bytecode)
 
         # Check if it is an access to a struct attribute or to an array element
         # using a constant for index.
@@ -593,8 +642,24 @@ class BackendCertificator(AbstractCertificator):
         bytecode_idx: int
     ) -> str:
         """
-        TODO: docstring
-        TODO: arg/func call
+        Handle a `MOV` bytecode.
+
+        This method will identify what operation it implements and return the
+        adequate certificate.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The `MOV` bytecode.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        certificate : str
+            The adequate certificate.
+
+        TODO: support arg/func call
         """
 
         # Case 1: it is a `return` statement
@@ -636,8 +701,22 @@ class BackendCertificator(AbstractCertificator):
         bytecode_idx: int
     ) -> str:
         """
-        TODO: docstring
-        TODO: handle type casts
+        Handle a simple bytecode.
+
+        A bytecode is _simple_ if it does not require pattern matching in order
+        to identify what operation it implements.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The simple bytecode to certificate.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        certificate : str
+            The instruction certificate.
         """
 
         instruction = bytecode["instruction"]
