@@ -89,7 +89,7 @@ class VirtualMachine:
         
         _str += "Memory (non-null only):\n  "
         _str += "\n  ".join(
-            f"Address: {address}\tData: {data}\n"
+            f"Address: {address}\tData: {data}"
             for address, data in memory_info.items()
         )
 
