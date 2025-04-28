@@ -257,7 +257,7 @@
 </span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
 </span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;global_vars&quot;</span><span class="p">],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]:</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;instruction_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;bytecode_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
 </span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></pre></div>
 
@@ -432,7 +432,7 @@
 </span><span id="CodeGenerator-167"><a href="#CodeGenerator-167"><span class="linenos">167</span></a>        <span class="n">current_id</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span id="CodeGenerator-168"><a href="#CodeGenerator-168"><span class="linenos">168</span></a>
 </span><span id="CodeGenerator-169"><a href="#CodeGenerator-169"><span class="linenos">169</span></a>        <span class="k">for</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;global_vars&quot;</span><span class="p">],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]:</span>
-</span><span id="CodeGenerator-170"><a href="#CodeGenerator-170"><span class="linenos">170</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;instruction_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
+</span><span id="CodeGenerator-170"><a href="#CodeGenerator-170"><span class="linenos">170</span></a>            <span class="n">instruction</span><span class="p">[</span><span class="s2">&quot;bytecode_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_id</span>
 </span><span id="CodeGenerator-171"><a href="#CodeGenerator-171"><span class="linenos">171</span></a>            <span class="n">current_id</span> <span class="o">+=</span> <span class="mi">1</span>
 </span></pre></div>
 
