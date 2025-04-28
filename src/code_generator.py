@@ -166,5 +166,5 @@ class CodeGenerator:
         current_id = 1
 
         for instruction in [*self.program["global_vars"], *self.program["code"]]:
-            instruction["instruction_id"] = current_id
+            instruction["bytecode_id"] = current_id
             current_id += 1

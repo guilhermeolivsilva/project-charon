@@ -46,11 +46,11 @@ class BackendCertificator(AbstractCertificator):
             "variables": {},
         }
 
-        # Tell whether an instruction has been accounted for in the
-        # certification process or not. Maps the ID of `instruction_list` to
-        # `True` if already certificated, or `False` otherwise.
-        self.instruction_status: dict[int, bool] = {
-            bytecode["instruction_id"]: False
+        # Tell whether a bytecode has been accounted for in the certification
+        # process or not. Maps the ID of `bytecode_list` to `True` if already
+        # certificated, or `False` otherwise.
+        self.bytecode_status: dict[int, bool] = {
+            bytecode["bytecode_id"]: False
             for bytecode in self.bytecode_list
         }
 
@@ -80,7 +80,7 @@ class BackendCertificator(AbstractCertificator):
         """
         Certificate the backend code.
 
-        This method iterates over the machine code and annotate each instruction
+        This method iterates over the machine code and annotate each bytecode
         with its relative position and contents.
 
         Returns
@@ -90,10 +90,10 @@ class BackendCertificator(AbstractCertificator):
         """
 
         for idx, bytecode in enumerate(self.bytecode_list):
-            bytecode_id = bytecode["instruction_id"]
+            bytecode_id = bytecode["bytecode_id"]
 
             # Skip instructions that have already been certificated.
-            if self.instruction_status[bytecode_id]:
+            if self.bytecode_status[bytecode_id]:
                 continue
 
             certificate = self._certificate_instruction(
@@ -105,12 +105,12 @@ class BackendCertificator(AbstractCertificator):
 
         # Assert all the instructions have been accounted for
         _err_msg = "Certification failed: there are uncertificated instructions."
-        if not(all(self.instruction_status.values())):
+        if not(all(self.bytecode_status.values())):
             print(_err_msg)
             print("Instruction IDs with missing certificates:")
             print([
-                instruction_id
-                for instruction_id, status in self.instruction_status.items()
+                bytecode_id
+                for bytecode_id, status in self.bytecode_status.items()
                 if not status
             ])
 
@@ -234,8 +234,8 @@ class BackendCertificator(AbstractCertificator):
         )
 
         # Post-certification steps
-        # Mark the involved instruction as done.
-        self.instruction_status[bytecode["instruction_id"]] = True
+        # Mark the involved bytecode as done.
+        self.bytecode_status[bytecode["bytecode_id"]] = True
 
         # Advance the positional prime
         self.current_positional_prime = next_prime(self.current_positional_prime)
@@ -268,17 +268,17 @@ class BackendCertificator(AbstractCertificator):
         """
 
         # Speculate if this is an array or struct and compute the exponent and
-        # the number of instructions that implemented it based on the following
+        # the number of bytecodes that implemented it based on the following
         # bytecodes
         next_bytecode_idx = bytecode_idx + 1
 
-        exponent, instructions_to_mark_as_done = self.__speculate_data_structure(
+        exponent, bytecodes_to_mark_as_done = self.__speculate_data_structure(
             bytecode=bytecode,
             bytecode_idx=bytecode_idx,
         )
 
         # If not an array or struct, certificate as a simple variable.
-        if not all([exponent, instructions_to_mark_as_done]):
+        if not all([exponent, bytecodes_to_mark_as_done]):
             following_bytecode_idx = next_bytecode_idx + 1
             following_bytecode = self.bytecode_list[following_bytecode_idx]
 
@@ -297,24 +297,24 @@ class BackendCertificator(AbstractCertificator):
             )
 
             # Post-certification steps
-            # Mark the involved instructions as done.
+            # Mark the involved bytecodes as done.
             if context == "address":
                 # Mark `CONSTANT` and `ADD` as done.
-                instructions_to_mark_as_done = 2
+                bytecodes_to_mark_as_done = 2
 
             else:
                 # Mark `CONSTANT`, `ADD`, and `LOAD` as done.
-                instructions_to_mark_as_done = 3
+                bytecodes_to_mark_as_done = 3
 
                 # If this variable is `short`-typed, also mark the type cast as done.
                 if self.bytecode_list[bytecode_idx + 3]["instruction"] == "TRUNC":
-                    instructions_to_mark_as_done += 1
+                    bytecodes_to_mark_as_done += 1
 
         certificate = f"{self.current_positional_prime}^({exponent})"
 
-        for idx in range(bytecode_idx, bytecode_idx + instructions_to_mark_as_done):
-            bytecode_id = self.bytecode_list[idx]["instruction_id"]
-            self.instruction_status[bytecode_id] = True
+        for idx in range(bytecode_idx, bytecode_idx + bytecodes_to_mark_as_done):
+            bytecode_id = self.bytecode_list[idx]["bytecode_id"]
+            self.bytecode_status[bytecode_id] = True
 
         # Advance the positional prime
         self.current_positional_prime = next_prime(self.current_positional_prime)
@@ -383,9 +383,9 @@ class BackendCertificator(AbstractCertificator):
         exponent : str or None
             The exponent (that will compose the certificate) of this data
             structure. Returns `None` if this is not a data structure.
-        instructions_to_mark_as_done : int or None
+        bytecodes_to_mark_as_done : int or None
             The number of bytecodes, including `bytecode`, that will be marked
-            as done in `self.instruction_status`. Returns `None` if this is not
+            as done in `self.bytecode_status`. Returns `None` if this is not
             a data structure.
         """
 
@@ -482,17 +482,17 @@ class BackendCertificator(AbstractCertificator):
                 )
 
                 # Account for:
-                #  - 2 instructions to obtain the variable base address
-                #  - 1 instruction to obtain the index
-                #  - 1 instruction to obtain the type size
-                #  - 2 instructions to compute the element address (`ADD` and `MULT`)
-                instructions_to_mark_as_done = 6
+                #  - 2 bytecodes to obtain the variable base address
+                #  - 1 bytecode to obtain the index
+                #  - 1 bytecode to obtain the type size
+                #  - 2 bytecodes to compute the element address (`ADD` and `MULT`)
+                bytecodes_to_mark_as_done = 6
 
                 # Account for the `LOAD`, if this is a var. value case.
                 if context == "value":
-                    instructions_to_mark_as_done += 1
+                    bytecodes_to_mark_as_done += 1
 
-                return (exponent, instructions_to_mark_as_done)
+                return (exponent, bytecodes_to_mark_as_done)
 
         except (IndexError, KeyError):
             pass
@@ -619,17 +619,17 @@ class BackendCertificator(AbstractCertificator):
                 )
 
                 # Account for:
-                #  - 2 instructions to obtain the variable base address
-                #  - 3 instructions to load the value from the index variable
-                #  - 1 instruction to obtain the type size
-                #  - 2 instructions to compute the element address (`ADD` and `MULT`)
-                instructions_to_mark_as_done = 8
+                #  - 2 bytecodes to obtain the variable base address
+                #  - 3 bytecodes to load the value from the index variable
+                #  - 1 bytecode to obtain the type size
+                #  - 2 bytecodes to compute the element address (`ADD` and `MULT`)
+                bytecodes_to_mark_as_done = 8
 
                 # Account for the `LOAD`, if this is a var. value case.
                 if context == "value":
-                    instructions_to_mark_as_done += 1
+                    bytecodes_to_mark_as_done += 1
 
-                return (exponent, instructions_to_mark_as_done)
+                return (exponent, bytecodes_to_mark_as_done)
 
         except (IndexError, KeyError):
             return (None, None)
@@ -683,12 +683,12 @@ class BackendCertificator(AbstractCertificator):
         certificate = f"{self.current_positional_prime}^({exponent})"
 
         # Post-certification steps
-        # Mark this instruction and the next -- `JR` -- as done.
-        current_instruction_id = bytecode["instruction_id"]
-        self.instruction_status[current_instruction_id] = True
+        # Mark this bytecode and the next -- `JR` -- as done.
+        current_bytecode_id = bytecode["bytecode_id"]
+        self.bytecode_status[current_bytecode_id] = True
 
-        next_instruction_id = self.bytecode_list[bytecode_idx + 1]["instruction_id"]
-        self.instruction_status[next_instruction_id] = True
+        next_bytecode_id = self.bytecode_list[bytecode_idx + 1]["bytecode_id"]
+        self.bytecode_status[next_bytecode_id] = True
 
         # Advance the positional prime
         self.current_positional_prime = next_prime(self.current_positional_prime)
@@ -726,9 +726,9 @@ class BackendCertificator(AbstractCertificator):
         certificate = f"{self.current_positional_prime}^({symbol})"
 
         # Post-certification steps
-        # Mark this instruction as done.
-        instruction_id = bytecode["instruction_id"]
-        self.instruction_status[instruction_id] = True
+        # Mark this bytecode as done.
+        bytecode_id = bytecode["bytecode_id"]
+        self.bytecode_status[bytecode_id] = True
 
         # Advance the positional prime
         self.current_positional_prime = next_prime(self.current_positional_prime)

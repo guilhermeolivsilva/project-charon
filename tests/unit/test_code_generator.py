@@ -40,7 +40,7 @@ def test_parse_global_variables() -> None:
     # Manually add the IDs
     current_id = 1
     for element in cg.program["global_vars"]:
-        element["instruction_id"] = current_id
+        element["bytecode_id"] = current_id
         current_id += 1
 
     assert cg.environment == expected_environment
