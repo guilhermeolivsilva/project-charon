@@ -110,7 +110,7 @@ def primes_list(length: int) -> list[int]:
 
     primes = list(_primes)
 
-    return primes
+    return sorted(primes)
 
 
 def type_cast(

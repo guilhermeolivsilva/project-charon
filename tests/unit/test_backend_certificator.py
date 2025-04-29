@@ -12,7 +12,20 @@ def test_init() -> None:
     assert backend_certificator.computed_certificate == []
     assert backend_certificator.initial_prime == 2
     assert backend_certificator.program == MACHINE_CODE
-    assert backend_certificator.environment == {"variables": {}}
+    assert backend_certificator.environment == {
+        '0x28': {'prime': 2},
+        '0x30': {'prime': 3},
+        '0x34': {'prime': 5},
+        '0x38': {'prime': 7},
+        '0x3c': {'prime': 11},
+        '0x40': {'prime': 13},
+        '0x4c': {'prime': 17},
+        '0x50': {'prime': 19},
+        '0x58': {'prime': 23},
+        '0x60': {'prime': 29},
+        '0x64': {'prime': 31},
+        '0x8c': {'prime': 37}
+    }
     assert backend_certificator.current_positional_prime == 2
     assert backend_certificator.current_variable_prime == 2
 

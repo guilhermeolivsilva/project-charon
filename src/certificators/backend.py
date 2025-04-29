@@ -42,9 +42,11 @@ class BackendCertificator(AbstractCertificator):
             )
         }
 
-        self.environment = {
-            "variables": {},
-        }
+        self.environment = {}
+
+        # Compute the primes and identify the types of the alive variables
+        self._compute_variables_primes()
+        self._compute_variables_types()
 
         # Tell whether a bytecode has been accounted for in the certification
         # process or not. Maps the ID of `bytecode_list` to `True` if already
@@ -123,6 +125,65 @@ class BackendCertificator(AbstractCertificator):
         # )
 
         return self.computed_certificate
+
+    def _compute_variables_primes(self) -> None:
+        """
+        Compute the variable prime associated with each variable.
+
+        This method will map the variable's base address to a unique prime
+        number. The primes are in ascending order and are assigned to variables
+        according to their addresses also in ascending order.
+        """
+
+        variables = set()
+
+        for bytecode_idx, bytecode in enumerate(self.bytecode_list):
+            try:
+                next_bytecode_idx = bytecode_idx + 1
+                next_bytecode = self.bytecode_list[next_bytecode_idx]
+
+                # Basic pattern for any variable, regardless of kind (simple or
+                # data structure).
+                is_variable = (
+                    bytecode["instruction"] == "CONSTANT"
+                    and next_bytecode["instruction"] == "ADD"
+                    and next_bytecode["metadata"]["rhs_register"] == "zero"
+                )
+
+                if not is_variable:
+                    continue
+
+                var_address = bytecode["metadata"]["value"]
+                variables.add(var_address)
+
+            # Avoid going out of bounds
+            except IndexError:
+                break
+
+            # The elements of `bytecode` we access above might not exist
+            except KeyError:
+                continue
+
+        variables_primes = {
+            var_address: {
+                "prime": prime,
+            }
+            for var_address, prime
+            in zip(
+                sorted(variables),
+                primes_list(len(variables))
+            )
+        }
+
+        self.environment = variables_primes
+
+    def _compute_variables_types(self) -> None:
+        """
+        TODO: docstring
+        TODO: implement
+        """
+
+        ...
 
     def _certificate_instruction(
         self,
@@ -344,20 +405,7 @@ class BackendCertificator(AbstractCertificator):
 
         # The `CONSTANT` bytecode has the variable address as its value.
         var_address = bytecode["metadata"]["value"]
-
-        if var_address in self.environment["variables"]:
-            var_prime = self.environment["variables"][var_address]["prime"]
-        else:
-            var_prime = self.current_variable_prime
-            self.environment["variables"][var_address] = {
-                "prime": var_prime
-            }
-
-            self.current_variable_prime = next_prime(
-                self.current_variable_prime
-            )
-
-        return var_prime
+        return self.environment[var_address]["prime"]
     
     def __speculate_data_structure(
         self,
