@@ -210,7 +210,7 @@
 </span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
 </span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>    <span class="n">primes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_primes</span><span class="p">)</span>
 </span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>    <span class="k">return</span> <span class="n">primes</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">primes</span><span class="p">)</span>
 </span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>
 </span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>
 </span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="k">def</span><span class="w"> </span><span class="nf">type_cast</span><span class="p">(</span>
@@ -684,7 +684,7 @@
 </span><span id="primes_list-111"><a href="#primes_list-111"><span class="linenos">111</span></a>
 </span><span id="primes_list-112"><a href="#primes_list-112"><span class="linenos">112</span></a>    <span class="n">primes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_primes</span><span class="p">)</span>
 </span><span id="primes_list-113"><a href="#primes_list-113"><span class="linenos">113</span></a>
-</span><span id="primes_list-114"><a href="#primes_list-114"><span class="linenos">114</span></a>    <span class="k">return</span> <span class="n">primes</span>
+</span><span id="primes_list-114"><a href="#primes_list-114"><span class="linenos">114</span></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">primes</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -966,7 +966,7 @@ drop_duplicates : bool (optional, default = True)
                     <div class="attr variable">
             <span class="name">INSTRUCTIONS_CATEGORIES</span>        =
 <input id="INSTRUCTIONS_CATEGORIES-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;variables&#39;: [&#39;LOADF&#39;, &#39;LOAD&#39;], &#39;functions&#39;: [&#39;MOV&#39;, &#39;CONSTANT&#39;, &#39;STOREF&#39;, &#39;STORE&#39;], &#39;jumps&#39;: [&#39;JAL&#39;, &#39;JR&#39;, &#39;MOV&#39;, &#39;JZ&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STOREF&#39;, &#39;STORE&#39;], &#39;binops&#39;: [&#39;FMULT&#39;, &#39;FNEQ&#39;, &#39;DIV&#39;, &#39;OR&#39;, &#39;FGT&#39;, &#39;AND&#39;, &#39;BITAND&#39;, &#39;GT&#39;, &#39;FLT&#39;, &#39;LSHIFT&#39;, &#39;FOR&#39;, &#39;FAND&#39;, &#39;SUB&#39;, &#39;RSHIFT&#39;, &#39;FADD&#39;, &#39;ADD&#39;, &#39;BITOR&#39;, &#39;MOD&#39;, &#39;NEQ&#39;, &#39;FEQ&#39;, &#39;LT&#39;, &#39;FDIV&#39;, &#39;FSUB&#39;, &#39;MULT&#39;, &#39;EQ&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
+            <label class="view-value-button pdoc-button" for="INSTRUCTIONS_CATEGORIES-view-value"></label><span class="default_value">{&#39;constants&#39;: [&#39;CONSTANT&#39;], &#39;variables&#39;: [&#39;LOADF&#39;, &#39;LOAD&#39;], &#39;functions&#39;: [&#39;MOV&#39;, &#39;STOREF&#39;, &#39;STORE&#39;, &#39;CONSTANT&#39;], &#39;jumps&#39;: [&#39;JR&#39;, &#39;JAL&#39;, &#39;JZ&#39;, &#39;MOV&#39;], &#39;unops&#39;: [&#39;NOT&#39;, &#39;STOREF&#39;, &#39;STORE&#39;], &#39;binops&#39;: [&#39;DIV&#39;, &#39;FMULT&#39;, &#39;SUB&#39;, &#39;BITOR&#39;, &#39;OR&#39;, &#39;FAND&#39;, &#39;LSHIFT&#39;, &#39;EQ&#39;, &#39;ADD&#39;, &#39;FSUB&#39;, &#39;GT&#39;, &#39;FNEQ&#39;, &#39;FOR&#39;, &#39;MOD&#39;, &#39;FDIV&#39;, &#39;FLT&#39;, &#39;FGT&#39;, &#39;MULT&#39;, &#39;NEQ&#39;, &#39;RSHIFT&#39;, &#39;BITAND&#39;, &#39;AND&#39;, &#39;LT&#39;, &#39;FADD&#39;, &#39;FEQ&#39;], &#39;misc&#39;: [&#39;HALT&#39;], &#39;type_casts&#39;: [&#39;FPTOSI&#39;, &#39;SIGNEXT&#39;, &#39;SITOFP&#39;, &#39;TRUNC&#39;]}</span>
 
         
     </div>
