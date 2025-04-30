@@ -141,24 +141,25 @@ class ELEMENT_ACCESS(Node):
 
         code.extend(variable_code)
 
-        (
-            element_code,
-            register,
-            environment
-        ) = self.element.generate_code(
-            register=register,
-            environment=environment
-        )
-        element_value_register = register - 1
-        code.extend(element_code)
-
         # The offset computation depends on it being an array or a struct
 
         # Case 1: array
         # In this case, we simply multiply the value of the expression by the
         # array type size and add it to the variable base address.
-        if self.is_array:
+        if isinstance(self.element, VAR):
+            (
+                element_code,
+                register,
+                environment
+            ) = self.element.generate_code(
+                register=register,
+                environment=environment
+            )
+            element_value_register = register - 1
+
             code.extend([
+                *element_code,
+
                 # Load the variable size into a register
                 {
                     "instruction": "CONSTANT",
@@ -363,17 +364,24 @@ class ELEMENT_ACCESS(Node):
 
         offset_size: int = 0
 
-        # Iterate over the attributes and sum the offset, in bytes, until
-        # the `element` is found
-        for attribute_metadata in variable_attributes.values():
-            attribute_position: int = attribute_metadata.get("attr_pointer")
+        # Struct
+        if variable_attributes is not None:
+            # Iterate over the attributes and sum the offset, in bytes, until
+            # the `element` is found
+            for attribute_metadata in variable_attributes.values():
+                attribute_position: int = attribute_metadata.get("attr_pointer")
 
-            if attribute_position == self.element.get_value():
-                break
+                if attribute_position == self.element.get_value():
+                    break
 
-            attribute_type: str = attribute_metadata.get("type")
-            attribute_size: int = builtin_types.get(attribute_type)
+                attribute_type: str = attribute_metadata.get("type")
+                attribute_size: int = builtin_types.get(attribute_type)
 
-            offset_size += attribute_size
+                offset_size += attribute_size
+
+        # Array
+        else:
+            var_type = self.variable.get_type()
+            offset_size = self.element.get_value() * builtin_types.get(var_type)
 
         return offset_size
