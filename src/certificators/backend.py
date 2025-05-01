@@ -467,39 +467,17 @@ class BackendCertificator(AbstractCertificator):
             following_bytecode_idx = following_bytecode_idx + 1
             following_bytecode = self.bytecode_list[following_bytecode_idx]
 
-            speculated_index_register = following_bytecode["metadata"]["register"]
+            speculated_offset_register = following_bytecode["metadata"]["register"]
+
+            # TODO: divide `speculated_index` by the size of the variable type
             speculated_index = following_bytecode["metadata"]["value"]
 
             is_static_array_or_struct = (
                 is_static_array_or_struct
                 and following_bytecode["instruction"] == "CONSTANT"
             )
-            
-            # 2. Following bytecode: `CONSTANT` (it has the type size)
-            following_bytecode_idx = following_bytecode_idx + 1
-            following_bytecode = self.bytecode_list[following_bytecode_idx]
 
-            speculated_type_size_register = following_bytecode["metadata"]["register"]
-
-            is_static_array_or_struct = (
-                is_static_array_or_struct
-                and following_bytecode["instruction"] == "CONSTANT"
-            )
-
-            # 2. Following bytecode: `MULT` (to compute the memory offset)
-            following_bytecode_idx = following_bytecode_idx + 1
-            following_bytecode = self.bytecode_list[following_bytecode_idx]
-
-            speculated_offset_register = following_bytecode["metadata"]["register"]
-
-            is_static_array_or_struct = (
-                is_static_array_or_struct
-                and following_bytecode["instruction"] == "MULT"
-                and following_bytecode["metadata"]["lhs_register"] == speculated_index_register
-                and following_bytecode["metadata"]["rhs_register"] == speculated_type_size_register
-            )
-
-            # 3. Following bytecode: `ADD` (to add the base address from
+            # 2. Following bytecode: `ADD` (to add the base address from
             # `bytecode` to the `offset`)
             following_bytecode_idx = following_bytecode_idx + 1
             following_bytecode = self.bytecode_list[following_bytecode_idx]
@@ -531,10 +509,9 @@ class BackendCertificator(AbstractCertificator):
 
                 # Account for:
                 #  - 2 bytecodes to obtain the variable base address
-                #  - 1 bytecode to obtain the index
-                #  - 1 bytecode to obtain the type size
-                #  - 2 bytecodes to compute the element address (`ADD` and `MULT`)
-                bytecodes_to_mark_as_done = 6
+                #  - 1 bytecode to obtain the offset size
+                #  - 1 bytecode to obtain the accessed item address
+                bytecodes_to_mark_as_done = 4
 
                 # Account for the `LOAD`, if this is a var. value case.
                 if context == "value":

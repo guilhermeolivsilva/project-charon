@@ -143,7 +143,7 @@ class ELEMENT_ACCESS(Node):
 
         # The offset computation depends on it being an array or a struct
 
-        # Case 1: array
+        # Case 1: array indexed by variable
         # In this case, we simply multiply the value of the expression by the
         # array type size and add it to the variable base address.
         if isinstance(self.element, VAR):
@@ -182,7 +182,7 @@ class ELEMENT_ACCESS(Node):
 
             register += 2
 
-        # Case 2: struct
+        # Case 2: struct or array indexed by constant
         # In this case, the compiler already knows the offset. As such, 
         else:
             code.append({
