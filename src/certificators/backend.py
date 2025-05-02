@@ -42,12 +42,6 @@ class BackendCertificator(AbstractCertificator):
             )
         }
 
-        self.environment = {}
-
-        # Compute the primes and identify the types of the alive variables
-        self._compute_variables_primes()
-        self._compute_variables_types()
-
         # Tell whether a bytecode has been accounted for in the certification
         # process or not. Maps the ID of `bytecode_list` to `True` if already
         # certificated, or `False` otherwise.
@@ -55,6 +49,11 @@ class BackendCertificator(AbstractCertificator):
             bytecode["bytecode_id"]: False
             for bytecode in self.bytecode_list
         }
+
+        self.environment = {}
+
+        # Compute the primes and identify the types of the alive variables
+        self._preprocess_variables()
 
         self.bytecode_handlers = {
             # Instructions that might implement more than 1 operation
@@ -126,7 +125,7 @@ class BackendCertificator(AbstractCertificator):
 
         return self.computed_certificate
 
-    def _compute_variables_primes(self) -> None:
+    def _preprocess_variables(self) -> None:
         """
         Compute the variable prime associated with each variable.
 
@@ -135,15 +134,18 @@ class BackendCertificator(AbstractCertificator):
         according to their addresses also in ascending order.
         """
 
-        variables = set()
+        temp_variables = {}
 
         for bytecode_idx, bytecode in enumerate(self.bytecode_list):
+            # Mark any type-casts as done, as they're handled below
+            if bytecode["instruction"] in INSTRUCTIONS_CATEGORIES["type_casts"]:
+                bytecode_id = bytecode["bytecode_id"]
+                self.bytecode_status[bytecode_id] = True
+
             try:
                 next_bytecode_idx = bytecode_idx + 1
                 next_bytecode = self.bytecode_list[next_bytecode_idx]
 
-                # Basic pattern for any variable, regardless of kind (simple or
-                # data structure).
                 is_variable = (
                     bytecode["instruction"] == "CONSTANT"
                     and next_bytecode["instruction"] == "ADD"
@@ -153,37 +155,111 @@ class BackendCertificator(AbstractCertificator):
                 if not is_variable:
                     continue
 
-                var_address = bytecode["metadata"]["value"]
-                variables.add(var_address)
+                # Try to infer the variable type
+                var_type = None
 
-            # Avoid going out of bounds
+                # Find the *actual* variable register (right now, we have the
+                # register with the base address of it)
+                var_base_address_register = next_bytecode["metadata"]["register"]
+                var_base_address = bytecode["metadata"]["value"]
+
+                var_address_register, var_address = None, None
+
+                _to_analyze = self.bytecode_list[next_bytecode_idx:]
+                for _idx, temp_bytecode in enumerate(_to_analyze):
+                    temp_bytecode_idx = _idx + next_bytecode_idx
+
+                    # We can only know the offset if it is constant
+                    # (that comes right before `ADD`)
+                    can_tell_var_offset = (
+                        temp_bytecode["instruction"] == "ADD"
+                        and temp_bytecode["metadata"]["lhs_register"] == var_base_address_register
+                        and self.bytecode_list[temp_bytecode_idx - 1]["instruction"] == "CONSTANT"
+                    )
+
+                    if can_tell_var_offset:
+                        var_offset = self.bytecode_list[temp_bytecode_idx - 1]["metadata"]["value"]
+                        
+                        var_address = hex(int(var_base_address, 16) + var_offset)
+                        var_address_register = temp_bytecode["metadata"]["register"]
+
+                        break
+
+                # If there isn't any `ADD` instruction computed with the base
+                # address, then the base address is already the actual address.
+                if var_address_register is None:
+                    var_address_register = var_base_address_register
+                    var_address = var_base_address
+
+                following_bytecode_idx = next_bytecode_idx + 1
+                following_bytecode = self.bytecode_list[following_bytecode_idx]
+
+                # 1. First attempt: by checking if it is being read from
+                #    - just a `LOAD`: integer
+                #    - just a `LOADF`: float
+                #    - `LOAD` followed by `TRUNC`: short
+                if following_bytecode["instruction"] == "LOAD":
+                    var_type = (
+                        "short"
+
+                        # The type-cast to short should be right after `LOAD`
+                        if self.bytecode_list[following_bytecode_idx + 1]["instruction"] == "TRUNC"
+                        else "int"
+                    )
+
+                elif following_bytecode["instruction"] == "LOADF":
+                    var_type = "float"
+
+                # 2. Second attempt: by checking how a value is written to it
+                #    - just a `STORE`: integer
+                #    - just a `STOREF`: float
+                #    - `STORE` preceeded by `TRUNC`: short
+
+                for _idx, temp_bytecode in enumerate(self.bytecode_list[following_bytecode_idx:]):
+                    temp_bytecode_idx = _idx + following_bytecode_idx
+
+                    if temp_bytecode["instruction"] == "STORE" and temp_bytecode["metadata"]["register"] == var_address_register:
+                        var_type = (
+                            "short"
+                            if self.bytecode_list[temp_bytecode_idx - 1]["instruction"] == "TRUNC"
+                            else "int"
+                        )
+                        break
+
+                    if temp_bytecode["instruction"] == "STOREF" and temp_bytecode["metadata"]["register"] == var_address_register:
+                        var_type = "float"
+                        break
+
+                if var_type is None:
+                    continue
+
+                if var_base_address in temp_variables:
+                    temp_variables[var_base_address]["addresses"][var_address] = var_type
+
+                else:
+                    temp_variables[var_base_address] = {
+                        "addresses": {var_address: var_type}
+                    }
+
             except IndexError:
                 break
 
-            # The elements of `bytecode` we access above might not exist
             except KeyError:
                 continue
 
-        variables_primes = {
-            var_address: {
-                "prime": prime,
+
+        variables = {
+            key: {
+                "addresses": temp_variables[key]["addresses"],
+                "prime": var_prime
             }
-            for var_address, prime
-            in zip(
-                sorted(variables),
-                primes_list(len(variables))
+            for key, var_prime in zip(
+                sorted(temp_variables.keys(), key=lambda x: int(x, 16)),
+                primes_list(len(temp_variables.keys()))
             )
         }
 
-        self.environment = variables_primes
-
-    def _compute_variables_types(self) -> None:
-        """
-        TODO: docstring
-        TODO: implement
-        """
-
-        ...
+        self.environment = variables
 
     def _certificate_instruction(
         self,
