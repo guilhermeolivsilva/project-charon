@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import get_certificate_symbol, type_cast
+from src.utils import get_certificate_symbol, next_prime, type_cast
 
 
 class VAR(Node):
@@ -116,6 +116,50 @@ class VAR(Node):
                 code.extend(cast_to_short)
 
         return code, register, environment
+    
+    @override
+    def certificate(
+        self,
+        positional_prime: int,
+        certificator_env: dict[int, list[int]]
+    ) -> tuple[int, dict[int, list[int]]]:
+        """
+        Compute the certificate of this `VAR`.
+
+        This will also check if it is a parameter, and emit the symbol
+        accordingly.
+
+        Parameters
+        ----------
+        positional_prime : int
+            A prime number that denotes the relative position of this node in
+            the source code.
+        certificator_env : dict[int, list[int]]
+            The certificators's environment, that maps variables IDs to
+            encodings of their types.
+
+        Returns
+        -------
+        : int
+            The prime that comes immediately after `positional_prime`.
+        certificator_env : dict[int, list[int]]
+            The updated certificator's environment, with any additional
+            information about the variable's types it might have captured.
+        """
+
+        self.certificate_label = f"{positional_prime}^({self.symbol})"
+        positional_prime = next_prime(positional_prime)
+
+        # Check if it is a parameter
+        var_prime = self.variable_metadata['prime']
+        is_parameter = certificator_env[var_prime].get("parameter")
+
+        if is_parameter:
+            parameter_symbol = get_certificate_symbol("PARAM")
+            self.certificate_label += f"*{positional_prime}^({parameter_symbol})"
+            positional_prime = next_prime(positional_prime)
+
+        return positional_prime, certificator_env
 
     def get_metadata(self) -> dict[str, str]:
         """
