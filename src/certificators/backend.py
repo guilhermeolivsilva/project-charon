@@ -34,14 +34,6 @@ class BackendCertificator(AbstractCertificator):
         self.current_positional_prime = self.initial_prime
         self.current_variable_prime = self.initial_prime
 
-        _functions_ids = range(1, len(program["functions"]) + 1)
-        self.functions_primes: dict[int, int] = {
-            function_id: prime
-            for function_id, prime in zip(
-                _functions_ids, primes_list(len(_functions_ids))
-            )
-        }
-
         # Tell whether a bytecode has been accounted for in the certification
         # process or not. Maps the ID of `bytecode_list` to `True` if already
         # certificated, or `False` otherwise.
@@ -50,15 +42,22 @@ class BackendCertificator(AbstractCertificator):
             for bytecode in self.bytecode_list
         }
 
-        self.environment = {}
+        self.environment = {
+            "functions": {},
+            "variables": {},
+        }
 
-        # Compute the primes and identify the types of the alive variables
+        # Compute the primes associated with the defined functions, and the
+        # primes and identify the types of variables.
+        self._preprocess_functions()
         self._preprocess_variables()
 
         self.bytecode_handlers = {
-            # Instructions that might implement more than 1 operation
+            # Instructions that might implement more than 1 operation, or
+            # require special handling
             "CONSTANT": self._handle_constant,
             "MOV": self._handle_mov,
+            "JAL": self._handle_function_call,
 
             # 1:1 instructions
             **{
@@ -102,7 +101,7 @@ class BackendCertificator(AbstractCertificator):
                 bytecode_idx=idx
             )
 
-            self.computed_certificate.append(certificate)
+            self.computed_certificate.extend(certificate)
 
         # Assert all the instructions have been accounted for
         _err_msg = "Certification failed: there are uncertificated instructions."
@@ -124,6 +123,22 @@ class BackendCertificator(AbstractCertificator):
         # )
 
         return self.computed_certificate
+
+    def _preprocess_functions(self) -> None:
+        """
+        Compute the function prime associated with each function.
+
+        This method will map the function's ID to a unique prime number.
+        """
+
+        _functions_ids = range(1, len(self.program["functions"]) + 1)
+        self.environment["functions"] = {
+            function_id: {"prime": prime}
+
+            for function_id, prime in zip(
+                _functions_ids, primes_list(len(_functions_ids))
+            )
+        }
 
     def _preprocess_variables(self) -> None:
         """
@@ -259,13 +274,13 @@ class BackendCertificator(AbstractCertificator):
             )
         }
 
-        self.environment = variables
+        self.environment["variables"] = variables
 
     def _certificate_instruction(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int
-    ) -> str:
+    ) -> list[str]:
         """
         Compute the certificate of an instruction.
 
@@ -281,7 +296,7 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
+        certificate : list[str]
             The instruction certificate.
         """
 
@@ -306,7 +321,7 @@ class BackendCertificator(AbstractCertificator):
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int
-    ) -> str:
+    ) -> list[str]:
         """
         Handle a `CONSTANT` bytecode.
 
@@ -316,8 +331,7 @@ class BackendCertificator(AbstractCertificator):
         is loading the value of a variable into a register;
         2. If followed by `ADD r_add r_constant zero`, it is loading the address
         of a variable into a register;
-        3. If followed by `STORE(F) r_constant arg`, it is passing the value of
-        an argument to a function parameter;
+        3. If followed by `STORE(F) r_constant arg`, it is a function parameter.
         4. It is a simple constant that will be used in an expression.
 
         So we must handle it accordingly.
@@ -345,30 +359,29 @@ class BackendCertificator(AbstractCertificator):
             and next_bytecode["metadata"]["rhs_register"] == "zero"
         )
 
-        is_argument = (
+        is_parameter = (
             next_bytecode["instruction"] in ["STORE", "STOREF"]
             and next_bytecode["metadata"]["value"] == "arg"
         )
 
         if is_variable:
-            return self.__handle_variable(
+            return self._handle_variable(
                 bytecode=bytecode,
                 bytecode_idx=bytecode_idx
             )
 
-        # Case 3: passing value to argument
-        elif is_argument:
-            # TODO
-            return ...
+        # Case 3: function parameter
+        elif is_parameter:
+            return self._handle_parameter(
+                bytecode=bytecode,
+                bytecode_idx=bytecode_idx
+            )
         
         # Case 4: just a constant
         constant_value = bytecode["metadata"]["value"] + 1 # Avoid exp. identity
         symbol = get_certificate_symbol("CST")
-        certificate = (
-            f"{self.current_positional_prime}^("
-            + f"({symbol})"
-            + f"^({constant_value}))"
-        )
+        exponent = f"({symbol})^({constant_value})"
+        certificate = f"{self.current_positional_prime}^({exponent})"
 
         # Post-certification steps
         # Mark the involved bytecode as done.
@@ -377,13 +390,13 @@ class BackendCertificator(AbstractCertificator):
         # Advance the positional prime
         self.current_positional_prime = next_prime(self.current_positional_prime)
 
-        return certificate
+        return [certificate]
 
-    def __handle_variable(
+    def _handle_variable(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int,
-    ) -> str:
+    ) -> list[str]:
         """
         Handle a variable use case.
 
@@ -409,7 +422,7 @@ class BackendCertificator(AbstractCertificator):
         # bytecodes
         next_bytecode_idx = bytecode_idx + 1
 
-        exponent, bytecodes_to_mark_as_done = self.__speculate_data_structure(
+        exponent, bytecodes_to_mark_as_done = self._speculate_data_structure(
             bytecode=bytecode,
             bytecode_idx=bytecode_idx,
         )
@@ -424,7 +437,7 @@ class BackendCertificator(AbstractCertificator):
                 else "address"
             )
             symbol = get_certificate_symbol(f"VAR_{context.upper()}")
-            var_prime = self.__get_variable_prime(bytecode)
+            var_prime = self._get_variable_prime(bytecode)
 
             exponent = (
                 f"({symbol})"
@@ -447,7 +460,19 @@ class BackendCertificator(AbstractCertificator):
                 if self.bytecode_list[bytecode_idx + 3]["instruction"] == "TRUNC":
                     bytecodes_to_mark_as_done += 1
 
-        certificate = f"{self.current_positional_prime}^({exponent})"
+        certificate = [f"{self.current_positional_prime}^({exponent})"]
+        
+        # Handle usage of parameter
+        var_address = bytecode["metadata"]["value"]
+        is_parameter = (
+            self.environment["variables"]
+                            [var_address].get("parameter", False)
+        )
+
+        if is_parameter:
+            param_symbol = get_certificate_symbol("PARAM")
+            self.current_positional_prime = next_prime(self.current_positional_prime)
+            certificate.append(f"{self.current_positional_prime}^({param_symbol})")
 
         for idx in range(bytecode_idx, bytecode_idx + bytecodes_to_mark_as_done):
             bytecode_id = self.bytecode_list[idx]["bytecode_id"]
@@ -458,7 +483,7 @@ class BackendCertificator(AbstractCertificator):
 
         return certificate
     
-    def __get_variable_prime(self, bytecode) -> int:
+    def _get_variable_prime(self, bytecode) -> int:
         """
         Get the prime number that uniquely represents a variable.
 
@@ -481,9 +506,9 @@ class BackendCertificator(AbstractCertificator):
 
         # The `CONSTANT` bytecode has the variable address as its value.
         var_address = bytecode["metadata"]["value"]
-        return self.environment[var_address]["prime"]
+        return self.environment["variables"][var_address]["prime"]
     
-    def __speculate_data_structure(
+    def _speculate_data_structure(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int,
@@ -526,7 +551,7 @@ class BackendCertificator(AbstractCertificator):
         if not following_bytecode_is_add:
             return (None, None)
         
-        var_prime = self.__get_variable_prime(bytecode)
+        var_prime = self._get_variable_prime(bytecode)
 
         # Check if it is an access to a struct attribute or to an array element
         # using a constant for index.
@@ -628,7 +653,7 @@ class BackendCertificator(AbstractCertificator):
 
             # This is the base address
             speculated_index_var_base_address_register = following_bytecode["metadata"]["register"]
-            speculated_index_var_prime = self.__get_variable_prime(following_bytecode)
+            speculated_index_var_prime = self._get_variable_prime(following_bytecode)
 
             is_dinamically_accessed_array = (
                 is_dinamically_accessed_array
@@ -737,16 +762,60 @@ class BackendCertificator(AbstractCertificator):
 
         return (None, None)
    
+    def _handle_parameter(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> list[str]:
+        """
+        Handle function parameter definition.
+
+        The only case that will land in this handler is the set of instructions
+        that transmit data from the `arg` register to a variable within the
+        function scope. This is the equivalent of "defining" such variable.
+        
+        As variable definitions do not have an intrinsic certificate, we simply
+        flag this variable as a parameter in the certificator environment. The
+        certificator will always emit the `PARAM` symbol after any uses of this
+        variable.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The initial bytecode that implements this parameteer.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        certificate : str
+            The certificate of this parameter.
+        """
+
+        # Mark this variable as a parameter in the environment. The `CONSTANT`
+        # bytecode has the variable address as its value.
+        var_address = bytecode["metadata"]["value"]
+        self.environment["variables"][var_address]["parameter"] = True
+
+        # Mark this `CONSTANT` and the `STORE` as done.
+        bytecodes_to_mark_as_done = 2
+
+        for idx in range(bytecode_idx, bytecode_idx + bytecodes_to_mark_as_done):
+            bytecode_id = self.bytecode_list[idx]["bytecode_id"]
+            self.bytecode_status[bytecode_id] = True
+
+        return []
+
     def _handle_mov(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int
-    ) -> str:
+    ) -> list[str]:
         """
         Handle a `MOV` bytecode.
 
-        This method will identify what operation it implements and return the
-        adequate certificate.
+        This bytecode might implement a `return` statement or the passing of an
+        argument to a function.
 
         Parameters
         ----------
@@ -759,28 +828,40 @@ class BackendCertificator(AbstractCertificator):
         -------
         certificate : str
             The adequate certificate.
-
-        TODO: support arg/func call
         """
 
         # Case 1: it is a `return` statement
         is_return = (bytecode["metadata"]["register"] == "ret_value")
 
         if is_return:
-            return self.__handle_return(
+            return self._handle_return(
                 bytecode=bytecode,
                 bytecode_idx=bytecode_idx
             )
         
-    def __handle_return(
+        # Case 2: it is a function argument
+        is_function_argument = (bytecode["metadata"]["register"] == "arg")
+
+        if is_function_argument:
+            return self._handle_function_argument(
+                bytecode=bytecode,
+                bytecode_idx=bytecode_idx
+            )
+        
+        # There are no other known use cases for `MOV` that have not already
+        # been covered.
+        err_msg = f"Unknown use case of MOV instruction: {bytecode}."
+        raise SyntaxError(err_msg)
+        
+    def _handle_return(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int
-    ) -> str:
+    ) -> list[str]:
 
         # Produce the certificate
         symbol = get_certificate_symbol("RET_SYM")
-        exponent = f"({symbol})"
+        exponent = f"{symbol}"
         certificate = f"{self.current_positional_prime}^({exponent})"
 
         # Post-certification steps
@@ -794,13 +875,112 @@ class BackendCertificator(AbstractCertificator):
         # Advance the positional prime
         self.current_positional_prime = next_prime(self.current_positional_prime)
 
-        return certificate
+        return [certificate]
+
+    def _handle_function_argument(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> list[str]:
+        """
+        Handle the passing of a value as an argument to a function call.
+
+        This method simply handles the `MOV` bytecode that has `arg` as its
+        destination.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The bytecode to certificate.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        certificate : str
+            The certificate.
+        """
+
+        # Produce the certificate
+        symbol = get_certificate_symbol("ARG")
+        exponent = f"{symbol}"
+        certificate = f"{self.current_positional_prime}^({exponent})"
+
+        # Post-certification steps
+        # Mark this bytecode as done.
+        bytecode_id = bytecode["bytecode_id"]
+        self.bytecode_status[bytecode_id] = True
+
+        # Advance the positional prime
+        self.current_positional_prime = next_prime(self.current_positional_prime)
+
+        return [certificate]
+    
+    def _handle_function_call(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> list[str]:
+        """
+        Handle the function call operation.
+
+        This method handles both the "jump and link" (`JAL`) and "obtain the
+        returned value" (`MOV`, with `ret_value` as its source) bytecodes.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The bytecode to certificate.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        certificate : str
+            The certificate.
+        """
+
+        # Assert the function call follows the expected pattern
+        next_bytecode_idx = bytecode_idx + 1
+        next_bytecode = self.bytecode_list[next_bytecode_idx]
+
+        is_function_call = (
+            bytecode["instruction"] == "JAL"
+            and next_bytecode["instruction"] == "MOV"
+            and next_bytecode["metadata"]["value"] == "ret_value"
+        )
+
+        if not is_function_call:
+            err_msg = f"Invalid function call near bytecode {bytecode}."
+            raise SyntaxError(err_msg)
+
+        # Produce the certificate
+        symbol = get_certificate_symbol("FUNC_CALL")
+
+        function_id = bytecode["metadata"]["value"]
+        function_prime = self.environment["functions"][function_id]["prime"]
+
+        exponent = f"({symbol})^({function_prime})"
+        certificate = f"{self.current_positional_prime}^({exponent})"
+
+        # Post-certification steps
+        # Mark this bytecode and the next -- `MOV` -- as done.
+        current_bytecode_id = bytecode["bytecode_id"]
+        self.bytecode_status[current_bytecode_id] = True
+
+        next_bytecode_id = self.bytecode_list[bytecode_idx + 1]["bytecode_id"]
+        self.bytecode_status[next_bytecode_id] = True
+
+        # Advance the positional prime
+        self.current_positional_prime = next_prime(self.current_positional_prime)
+
+        return [certificate]
 
     def _handle_simple_instruction(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int
-    ) -> str:
+    ) -> list[str]:
         """
         Handle a simple bytecode.
 
@@ -824,7 +1004,8 @@ class BackendCertificator(AbstractCertificator):
 
         # Produce the certificate
         symbol = get_certificate_symbol(instruction)
-        certificate = f"{self.current_positional_prime}^({symbol})"
+        exponent = f"{symbol}"
+        certificate = f"{self.current_positional_prime}^({exponent})"
 
         # Post-certification steps
         # Mark this bytecode as done.
@@ -834,4 +1015,4 @@ class BackendCertificator(AbstractCertificator):
         # Advance the positional prime
         self.current_positional_prime = next_prime(self.current_positional_prime)
 
-        return certificate
+        return [certificate]
