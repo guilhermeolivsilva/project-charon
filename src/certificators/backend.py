@@ -7,7 +7,6 @@ from typing_extensions import override
 from src.certificators.abstract_certificator import AbstractCertificator
 from src.utils import (
     get_certificate_symbol,
-    next_prime,
     primes_list,
     INSTRUCTIONS_CATEGORIES,
 )
@@ -31,9 +30,6 @@ class BackendCertificator(AbstractCertificator):
         self.program = program
         self.bytecode_list = self.program["code"]
 
-        self.current_positional_prime = self.initial_prime
-        self.current_variable_prime = self.initial_prime
-
         # Tell whether a bytecode has been accounted for in the certification
         # process or not. Maps the ID of `bytecode_list` to `True` if already
         # certificated, or `False` otherwise.
@@ -42,6 +38,8 @@ class BackendCertificator(AbstractCertificator):
             for bytecode in self.bytecode_list
         }
 
+        self.register_to_bytecode_dependencies = {}
+
         self.environment = {
             "functions": {},
             "variables": {},
@@ -49,8 +47,10 @@ class BackendCertificator(AbstractCertificator):
 
         # Compute the primes associated with the defined functions, and the
         # primes and identify the types of variables.
+        self._compute_register_to_bytecode_dependencies()
         self._preprocess_functions()
         self._preprocess_variables()
+        self._preprocess_conditionals()
 
         self.bytecode_handlers = {
             # Instructions that might implement more than 1 operation, or
@@ -58,6 +58,7 @@ class BackendCertificator(AbstractCertificator):
             "CONSTANT": self._handle_constant,
             "MOV": self._handle_mov,
             "JAL": self._handle_function_call,
+            "JZ": self._handle_control_flow,
 
             # 1:1 instructions
             **{
@@ -74,55 +75,64 @@ class BackendCertificator(AbstractCertificator):
             },
         }
 
-
-    @override
-    def certificate(self, **kwargs) -> str:
+    def _compute_register_to_bytecode_dependencies(self) -> None:
         """
-        Certificate the backend code.
-
-        This method iterates over the machine code and annotate each bytecode
-        with its relative position and contents.
-
-        Returns
-        -------
-        computed_certificate : str
-            The computed certificate.
+        TODO: docstring
         """
 
-        for idx, bytecode in enumerate(self.bytecode_list):
-            bytecode_id = bytecode["bytecode_id"]
+        sinks = ["CONSTANT", "LOAD", "MOV"]
 
-            # Skip instructions that have already been certificated.
-            if self.bytecode_status[bytecode_id]:
+        for bytecode in self.program["code"]:
+            # We don't care about bytecodes that do not write in a temporary
+            # register
+            if "register" not in bytecode["metadata"]:
                 continue
 
-            certificate = self._certificate_instruction(
-                bytecode=bytecode,
-                bytecode_idx=idx
-            )
+            register = bytecode["metadata"]["register"]
 
-            self.computed_certificate.extend(certificate)
+            # Ignore special registers (the same apply for the repetitions of
+            # this check)
+            if isinstance(register, str):
+                continue
 
-        # Assert all the instructions have been accounted for
-        _err_msg = "Certification failed: there are uncertificated instructions."
-        if not(all(self.bytecode_status.values())):
-            print(_err_msg)
-            print("Instruction IDs with missing certificates:")
-            print([
-                bytecode_id
-                for bytecode_id, status in self.bytecode_status.items()
-                if not status
-            ])
+            instruction = bytecode["instruction"]
+            bytecode_id = bytecode["bytecode_id"]
 
-        # self.computed_certificate = "*".join(self.computed_certificate)
-        # self.computed_certificate = "*".join(
-        #     sorted(
-        #         self.computed_certificate.split("*"),
-        #         key=lambda x: int(x.split("^")[0])
-        #     )
-        # )
+            if instruction in sinks:
+                self.register_to_bytecode_dependencies[register] = [bytecode_id]
 
-        return self.computed_certificate
+            elif instruction in INSTRUCTIONS_CATEGORIES["binops"]:
+                lhs_register = bytecode["metadata"]["lhs_register"]
+                if isinstance(lhs_register, int):
+                    bytecode_ids_lhs_depends_on = (
+                        self.register_to_bytecode_dependencies[lhs_register]
+                    )
+                else:
+                    bytecode_ids_lhs_depends_on = []
+
+                rhs_register = bytecode["metadata"]["rhs_register"]
+                if isinstance(rhs_register, int):
+                    bytecode_ids_rhs_depends_on = (
+                        self.register_to_bytecode_dependencies[rhs_register]
+                    )
+                else:
+                    bytecode_ids_rhs_depends_on = []
+
+
+                self.register_to_bytecode_dependencies[register] = [
+                    *bytecode_ids_lhs_depends_on,
+                    *bytecode_ids_rhs_depends_on
+                ]
+
+            elif instruction in INSTRUCTIONS_CATEGORIES["unops"]:
+                value_register = bytecode["metadata"]["value"]
+                if isinstance(value_register, int):
+                    bytecode_ids_value_depends_on = (
+                        self.register_to_bytecode_dependencies[value_register]           
+                    )
+                    self.register_to_bytecode_dependencies[register] = (
+                        bytecode_ids_value_depends_on
+                    )
 
     def _preprocess_functions(self) -> None:
         """
@@ -276,6 +286,72 @@ class BackendCertificator(AbstractCertificator):
 
         self.environment["variables"] = variables
 
+    def _preprocess_conditionals() -> None:
+        """
+        TODO: docstrings
+        """
+
+        ...
+
+    @override
+    def certificate(self, **kwargs) -> str:
+        """
+        Certificate the backend code.
+
+        This method iterates over the machine code and annotate each bytecode
+        with its relative position and contents.
+
+        Returns
+        -------
+        computed_certificate : str
+            The computed certificate.
+        """
+
+        computed_exponents = []
+
+        for idx, bytecode in enumerate(self.bytecode_list):
+            bytecode_id = bytecode["bytecode_id"]
+
+            # Skip instructions that have already been handled.
+            if self.bytecode_status[bytecode_id]:
+                continue
+
+            exponent = self._certificate_instruction(
+                bytecode=bytecode,
+                bytecode_idx=idx
+            )
+
+            computed_exponents.extend(exponent)
+
+        # Assert all the instructions have been accounted for
+        _err_msg = "Certification failed: there are uncertificated instructions."
+        if not(all(self.bytecode_status.values())):
+            print("Instruction IDs with missing certificates:")
+            print([
+                bytecode_id
+                for bytecode_id, status in self.bytecode_status.items()
+                if not status
+            ])
+            raise ValueError(_err_msg)
+
+        self.computed_certificate = [
+            f"{positional_prime}^({exponent})"
+            for positional_prime, exponent in zip(
+                primes_list(len(computed_exponents)),
+                computed_exponents
+            )
+        ]
+
+        # self.computed_certificate = "*".join(self.computed_certificate)
+        # self.computed_certificate = "*".join(
+        #     sorted(
+        #         self.computed_certificate.split("*"),
+        #         key=lambda x: int(x.split("^")[0])
+        #     )
+        # )
+
+        return self.computed_certificate
+
     def _certificate_instruction(
         self,
         bytecode: dict[str, dict],
@@ -296,15 +372,15 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : list[str]
-            The instruction certificate.
+        exponent : list[str]
+            The exponent that encodes the operation this instruction implements.
         """
 
         instruction = bytecode["instruction"]
 
         try:
             bytecode_handler = self.bytecode_handlers[instruction]
-            certificate = bytecode_handler(
+            exponent = bytecode_handler(
                 bytecode=bytecode,
                 bytecode_idx=bytecode_idx
             )
@@ -315,7 +391,7 @@ class BackendCertificator(AbstractCertificator):
             print(e)
             raise e
 
-        return certificate
+        return exponent
 
     def _handle_constant(
         self,
@@ -345,8 +421,8 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
-            The certificate of operation this `CONSTANT` implements.
+        exponent : list[str]
+            The encoding of the operation this `CONSTANT` implements.
         """
 
         # Figure out what operation it implements
@@ -381,16 +457,11 @@ class BackendCertificator(AbstractCertificator):
         constant_value = bytecode["metadata"]["value"] + 1 # Avoid exp. identity
         symbol = get_certificate_symbol("CST")
         exponent = f"({symbol})^({constant_value})"
-        certificate = f"{self.current_positional_prime}^({exponent})"
 
-        # Post-certification steps
         # Mark the involved bytecode as done.
         self.bytecode_status[bytecode["bytecode_id"]] = True
 
-        # Advance the positional prime
-        self.current_positional_prime = next_prime(self.current_positional_prime)
-
-        return [certificate]
+        return [exponent]
 
     def _handle_variable(
         self,
@@ -400,9 +471,9 @@ class BackendCertificator(AbstractCertificator):
         """
         Handle a variable use case.
 
-        This method will return the appropriate certificate depending on the
-        variable kind (simple, struct/array, or array with dynamic indexing),
-        and whether it is being read from or written to.
+        This method will return the appropriate encoding exponent depending on
+        the variable kind (simple, struct/array, or array with dynamic
+        indexing), and whether it is being read from or written to.
 
         Parameters
         ----------
@@ -413,8 +484,8 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
-            The certificate of this variable usage.
+        exponent : list[str]
+            The encoding xponent of this variable usage.
         """
 
         # Speculate if this is an array or struct and compute the exponent and
@@ -446,7 +517,6 @@ class BackendCertificator(AbstractCertificator):
                 + "^(1)"
             )
 
-            # Post-certification steps
             # Mark the involved bytecodes as done.
             if context == "address":
                 # Mark `CONSTANT` and `ADD` as done.
@@ -460,7 +530,7 @@ class BackendCertificator(AbstractCertificator):
                 if self.bytecode_list[bytecode_idx + 3]["instruction"] == "TRUNC":
                     bytecodes_to_mark_as_done += 1
 
-        certificate = [f"{self.current_positional_prime}^({exponent})"]
+        exponents = [exponent]
         
         # Handle usage of parameter
         var_address = bytecode["metadata"]["value"]
@@ -471,17 +541,13 @@ class BackendCertificator(AbstractCertificator):
 
         if is_parameter:
             param_symbol = get_certificate_symbol("PARAM")
-            self.current_positional_prime = next_prime(self.current_positional_prime)
-            certificate.append(f"{self.current_positional_prime}^({param_symbol})")
+            exponents.append(param_symbol)
 
         for idx in range(bytecode_idx, bytecode_idx + bytecodes_to_mark_as_done):
             bytecode_id = self.bytecode_list[idx]["bytecode_id"]
             self.bytecode_status[bytecode_id] = True
 
-        # Advance the positional prime
-        self.current_positional_prime = next_prime(self.current_positional_prime)
-
-        return certificate
+        return exponents
     
     def _get_variable_prime(self, bytecode) -> int:
         """
@@ -788,8 +854,8 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
-            The certificate of this parameter.
+        exponent : list[str]
+            The encoding exponent of this parameter.
         """
 
         # Mark this variable as a parameter in the environment. The `CONSTANT`
@@ -826,8 +892,8 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
-            The adequate certificate.
+        exponent : list[str]
+            The adequate encoding exponent.
         """
 
         # Case 1: it is a `return` statement
@@ -851,20 +917,21 @@ class BackendCertificator(AbstractCertificator):
         # There are no other known use cases for `MOV` that have not already
         # been covered.
         err_msg = f"Unknown use case of MOV instruction: {bytecode}."
-        raise SyntaxError(err_msg)
+        raise ValueError(err_msg)
         
     def _handle_return(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int
     ) -> list[str]:
+        """
+        TODO: docstring
+        """
 
-        # Produce the certificate
+        # Produce the exponent
         symbol = get_certificate_symbol("RET_SYM")
         exponent = f"{symbol}"
-        certificate = f"{self.current_positional_prime}^({exponent})"
 
-        # Post-certification steps
         # Mark this bytecode and the next -- `JR` -- as done.
         current_bytecode_id = bytecode["bytecode_id"]
         self.bytecode_status[current_bytecode_id] = True
@@ -872,10 +939,7 @@ class BackendCertificator(AbstractCertificator):
         next_bytecode_id = self.bytecode_list[bytecode_idx + 1]["bytecode_id"]
         self.bytecode_status[next_bytecode_id] = True
 
-        # Advance the positional prime
-        self.current_positional_prime = next_prime(self.current_positional_prime)
-
-        return [certificate]
+        return [exponent]
 
     def _handle_function_argument(
         self,
@@ -897,24 +961,19 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
-            The certificate.
+        exponent : list[str]
+            The encoding exponent.
         """
 
         # Produce the certificate
         symbol = get_certificate_symbol("ARG")
         exponent = f"{symbol}"
-        certificate = f"{self.current_positional_prime}^({exponent})"
 
-        # Post-certification steps
         # Mark this bytecode as done.
         bytecode_id = bytecode["bytecode_id"]
         self.bytecode_status[bytecode_id] = True
 
-        # Advance the positional prime
-        self.current_positional_prime = next_prime(self.current_positional_prime)
-
-        return [certificate]
+        return [exponent]
     
     def _handle_function_call(
         self,
@@ -936,8 +995,8 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
-            The certificate.
+        exponent : list[str]
+            The encoding exponent.
         """
 
         # Assert the function call follows the expected pattern
@@ -952,7 +1011,7 @@ class BackendCertificator(AbstractCertificator):
 
         if not is_function_call:
             err_msg = f"Invalid function call near bytecode {bytecode}."
-            raise SyntaxError(err_msg)
+            raise ValueError(err_msg)
 
         # Produce the certificate
         symbol = get_certificate_symbol("FUNC_CALL")
@@ -961,9 +1020,7 @@ class BackendCertificator(AbstractCertificator):
         function_prime = self.environment["functions"][function_id]["prime"]
 
         exponent = f"({symbol})^({function_prime})"
-        certificate = f"{self.current_positional_prime}^({exponent})"
 
-        # Post-certification steps
         # Mark this bytecode and the next -- `MOV` -- as done.
         current_bytecode_id = bytecode["bytecode_id"]
         self.bytecode_status[current_bytecode_id] = True
@@ -971,10 +1028,129 @@ class BackendCertificator(AbstractCertificator):
         next_bytecode_id = self.bytecode_list[bytecode_idx + 1]["bytecode_id"]
         self.bytecode_status[next_bytecode_id] = True
 
-        # Advance the positional prime
-        self.current_positional_prime = next_prime(self.current_positional_prime)
+        return [exponent]
 
-        return [certificate]
+    def _handle_control_flow(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> list[str]:
+        """
+        TODO: docstring
+        """
+
+        # Identify what kind of control flow construct this `JZ` implements
+        _control_flow = self._identify_control_flow(
+            bytecode=bytecode,
+            bytecode_idx=bytecode_idx
+        )
+
+        if _control_flow == "if":
+            return self._handle_if(
+                bytecode=bytecode,
+                bytecode_idx=bytecode_idx
+            )
+
+        elif _control_flow == "if_else":
+            return self._handle_if_else(
+                bytecode=bytecode,
+                bytecode_idx=bytecode_idx
+            )
+
+        elif _control_flow == "while":
+            return self._handle_while(
+                bytecode=bytecode,
+                bytecode_idx=bytecode_idx
+            )
+
+        err_msg = f"Invalid conditional jump implemented by bytecode {bytecode}."
+        raise ValueError(err_msg)
+
+    def _identify_control_flow(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> str:
+        """
+        Identify the control flow construct this `JZ` bytecode implements.
+
+        The derivation rules to derive the control flow construct from the
+        conditional jump are:
+
+        1. `IF`: the conditional jump lands on a bytecode that is not preceeded
+        by some other conditional jump.
+        2. `IF/ELSE`: the conditional jump lands on a bytecode that *is*
+        preceeded by some other conditional jump. This other bytecode will have
+        the program counter jump *forward*.
+        3. `WHILE`: the conditional jump lands on a bytecode that *is*
+        preceeded by some other conditional jump. This other bytecode will have
+        the program counter jump *backwards*.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The `JZ` bytecode.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        control_flow_construct : str
+            The control flow construct this bytecode implements.
+        """
+
+        jump_size = bytecode["metadata"]["jump_size"]
+        
+        bytecode_to_land_on_idx = bytecode_idx + jump_size
+        bytecode_preceeding_landing_spot_idx = bytecode_to_land_on_idx - 1
+        bytecode_preceeding_landing_spot = (
+            self.bytecode_list[bytecode_preceeding_landing_spot_idx]
+        )
+
+        if bytecode_preceeding_landing_spot["instruction"] != "JZ":
+            return "if"
+
+        other_conditional_jump_size = (
+            bytecode_preceeding_landing_spot["metadata"]["jump_size"]
+        )
+
+        if other_conditional_jump_size < 0:
+            return "while"
+        
+        return "if_else"
+
+    def _handle_if(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> str:
+        """
+        TODO: docstring
+        """
+
+        return []
+
+    def _handle_if_else(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> str:
+        """
+        TODO: docstring
+        """
+
+        return []
+
+    def _handle_while(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> str:
+        """
+        TODO: docstring
+        """
+
+        return []
 
     def _handle_simple_instruction(
         self,
@@ -996,23 +1172,18 @@ class BackendCertificator(AbstractCertificator):
 
         Returns
         -------
-        certificate : str
-            The instruction certificate.
+        exponent : list[str]
+            The encoding exponent.
         """
 
         instruction = bytecode["instruction"]
 
-        # Produce the certificate
+        # Produce the exponent
         symbol = get_certificate_symbol(instruction)
         exponent = f"{symbol}"
-        certificate = f"{self.current_positional_prime}^({exponent})"
 
-        # Post-certification steps
         # Mark this bytecode as done.
         bytecode_id = bytecode["bytecode_id"]
         self.bytecode_status[bytecode_id] = True
 
-        # Advance the positional prime
-        self.current_positional_prime = next_prime(self.current_positional_prime)
-
-        return [certificate]
+        return [exponent]
