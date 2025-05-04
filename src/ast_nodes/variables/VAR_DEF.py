@@ -29,11 +29,6 @@ class VAR_DEF(Node):
 
         self.prime: int = variable_metadata["prime"]
         self.size: int = get_variable_size(variable_metadata)
-        self.symbol: str = (
-            f"({self.symbol})"
-            + f"^({self.prime})"
-            + f"^(TYPE_PLACEHOLDER_VAR_PRIME_{self.prime})"
-        )
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -153,17 +148,21 @@ class VAR_DEF(Node):
         # If this is a homogeneous variable (i.e., a simple variable or an
         # array), then we know the type symbol upfront
         if self.type in builtin_types:
-            certificator_env[self.prime] = [
-                TYPE_SYMBOLS_MAP[self.type]["type_symbol"]
-                for _ in range(self.size // builtin_types[self.type])
-            ]
+            certificator_env[self.prime] = {
+                "type": [
+                    TYPE_SYMBOLS_MAP[self.type]["type_symbol"]
+                    for _ in range(self.size // builtin_types[self.type])
+                ]
+            }
 
         # If it is not, add to the certificator environment as `unknown`
         else:
             # TODO: divide by the actual size of the type of this `VAR_DEF`
-            certificator_env[self.prime] = [
-                TYPE_SYMBOLS_MAP["__unknown_type__"]["type_symbol"]
-                for _ in range(self.size // 4)
-            ]
+            certificator_env[self.prime] = {
+                "type": [
+                    TYPE_SYMBOLS_MAP["__unknown_type__"]["type_symbol"]
+                    for _ in range(self.size // 4)
+                ]
+            }
 
-        return super().certificate(positional_prime, certificator_env)
+        return positional_prime, certificator_env
