@@ -52,6 +52,9 @@
                                 <a class="function" href="#VAR.generate_code">generate_code</a>
                         </li>
                         <li>
+                                <a class="function" href="#VAR.certificate">certificate</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#VAR.get_metadata">get_metadata</a>
                         </li>
                         <li>
@@ -90,7 +93,7 @@
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_certificate_symbol</span><span class="p">,</span> <span class="n">type_cast</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_certificate_symbol</span><span class="p">,</span> <span class="n">next_prime</span><span class="p">,</span> <span class="n">type_cast</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">VAR</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
@@ -201,52 +204,96 @@
 </span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>                <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cast_to_short</span><span class="p">)</span>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>
 </span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">        Returns</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="sd">        -------</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">        : dict[str, str]</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">            The variable metadata.</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>    
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>    <span class="nd">@override</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">        Compute the certificate of this `VAR`.</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">        This will also check if it is a parameter, and emit the symbol</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">        accordingly.</span>
 </span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        Add context to this `VAR` node.</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">        Parameters</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        ----------</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        Notes</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        -----</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        instruction being used.</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>        <span class="c1"># Update the context</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">        Parameters</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">        ----------</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">            the source code.</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        Returns</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        -------</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        : int</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>        <span class="c1"># Check if it is a parameter</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>        <span class="n">var_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>        <span class="n">is_parameter</span> <span class="o">=</span> <span class="n">certificator_env</span><span class="p">[</span><span class="n">var_prime</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span>
 </span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>        <span class="p">)</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="k">if</span> <span class="n">is_parameter</span><span class="p">:</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>            <span class="n">parameter_symbol</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;PARAM&quot;</span><span class="p">)</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">parameter_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>            <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">        Returns</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">        -------</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">        : dict[str, str]</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">            The variable metadata.</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">        Add context to this `VAR` node.</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">        Parameters</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">        ----------</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">        Notes</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">        -----</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">        instruction being used.</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>        <span class="c1"># Update the context</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -370,52 +417,96 @@
 </span><span id="VAR-117"><a href="#VAR-117"><span class="linenos">117</span></a>                <span class="n">code</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cast_to_short</span><span class="p">)</span>
 </span><span id="VAR-118"><a href="#VAR-118"><span class="linenos">118</span></a>
 </span><span id="VAR-119"><a href="#VAR-119"><span class="linenos">119</span></a>        <span class="k">return</span> <span class="n">code</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">environment</span>
-</span><span id="VAR-120"><a href="#VAR-120"><span class="linenos">120</span></a>
-</span><span id="VAR-121"><a href="#VAR-121"><span class="linenos">121</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="VAR-122"><a href="#VAR-122"><span class="linenos">122</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR-123"><a href="#VAR-123"><span class="linenos">123</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
-</span><span id="VAR-124"><a href="#VAR-124"><span class="linenos">124</span></a>
-</span><span id="VAR-125"><a href="#VAR-125"><span class="linenos">125</span></a><span class="sd">        Returns</span>
-</span><span id="VAR-126"><a href="#VAR-126"><span class="linenos">126</span></a><span class="sd">        -------</span>
-</span><span id="VAR-127"><a href="#VAR-127"><span class="linenos">127</span></a><span class="sd">        : dict[str, str]</span>
-</span><span id="VAR-128"><a href="#VAR-128"><span class="linenos">128</span></a><span class="sd">            The variable metadata.</span>
-</span><span id="VAR-129"><a href="#VAR-129"><span class="linenos">129</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR-130"><a href="#VAR-130"><span class="linenos">130</span></a>
-</span><span id="VAR-131"><a href="#VAR-131"><span class="linenos">131</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+</span><span id="VAR-120"><a href="#VAR-120"><span class="linenos">120</span></a>    
+</span><span id="VAR-121"><a href="#VAR-121"><span class="linenos">121</span></a>    <span class="nd">@override</span>
+</span><span id="VAR-122"><a href="#VAR-122"><span class="linenos">122</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
+</span><span id="VAR-123"><a href="#VAR-123"><span class="linenos">123</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="VAR-124"><a href="#VAR-124"><span class="linenos">124</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="VAR-125"><a href="#VAR-125"><span class="linenos">125</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="VAR-126"><a href="#VAR-126"><span class="linenos">126</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+</span><span id="VAR-127"><a href="#VAR-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR-128"><a href="#VAR-128"><span class="linenos">128</span></a><span class="sd">        Compute the certificate of this `VAR`.</span>
+</span><span id="VAR-129"><a href="#VAR-129"><span class="linenos">129</span></a>
+</span><span id="VAR-130"><a href="#VAR-130"><span class="linenos">130</span></a><span class="sd">        This will also check if it is a parameter, and emit the symbol</span>
+</span><span id="VAR-131"><a href="#VAR-131"><span class="linenos">131</span></a><span class="sd">        accordingly.</span>
 </span><span id="VAR-132"><a href="#VAR-132"><span class="linenos">132</span></a>
-</span><span id="VAR-133"><a href="#VAR-133"><span class="linenos">133</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="VAR-134"><a href="#VAR-134"><span class="linenos">134</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR-135"><a href="#VAR-135"><span class="linenos">135</span></a><span class="sd">        Add context to this `VAR` node.</span>
-</span><span id="VAR-136"><a href="#VAR-136"><span class="linenos">136</span></a>
-</span><span id="VAR-137"><a href="#VAR-137"><span class="linenos">137</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="VAR-138"><a href="#VAR-138"><span class="linenos">138</span></a>
-</span><span id="VAR-139"><a href="#VAR-139"><span class="linenos">139</span></a><span class="sd">        Parameters</span>
-</span><span id="VAR-140"><a href="#VAR-140"><span class="linenos">140</span></a><span class="sd">        ----------</span>
-</span><span id="VAR-141"><a href="#VAR-141"><span class="linenos">141</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="VAR-142"><a href="#VAR-142"><span class="linenos">142</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="VAR-143"><a href="#VAR-143"><span class="linenos">143</span></a>
-</span><span id="VAR-144"><a href="#VAR-144"><span class="linenos">144</span></a><span class="sd">        Notes</span>
-</span><span id="VAR-145"><a href="#VAR-145"><span class="linenos">145</span></a><span class="sd">        -----</span>
-</span><span id="VAR-146"><a href="#VAR-146"><span class="linenos">146</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
-</span><span id="VAR-147"><a href="#VAR-147"><span class="linenos">147</span></a><span class="sd">        instruction being used.</span>
-</span><span id="VAR-148"><a href="#VAR-148"><span class="linenos">148</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR-149"><a href="#VAR-149"><span class="linenos">149</span></a>
-</span><span id="VAR-150"><a href="#VAR-150"><span class="linenos">150</span></a>        <span class="c1"># Update the context</span>
-</span><span id="VAR-151"><a href="#VAR-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
-</span><span id="VAR-152"><a href="#VAR-152"><span class="linenos">152</span></a>
-</span><span id="VAR-153"><a href="#VAR-153"><span class="linenos">153</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="VAR-154"><a href="#VAR-154"><span class="linenos">154</span></a>
-</span><span id="VAR-155"><a href="#VAR-155"><span class="linenos">155</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="VAR-156"><a href="#VAR-156"><span class="linenos">156</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="VAR-133"><a href="#VAR-133"><span class="linenos">133</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR-134"><a href="#VAR-134"><span class="linenos">134</span></a><span class="sd">        ----------</span>
+</span><span id="VAR-135"><a href="#VAR-135"><span class="linenos">135</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="VAR-136"><a href="#VAR-136"><span class="linenos">136</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="VAR-137"><a href="#VAR-137"><span class="linenos">137</span></a><span class="sd">            the source code.</span>
+</span><span id="VAR-138"><a href="#VAR-138"><span class="linenos">138</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="VAR-139"><a href="#VAR-139"><span class="linenos">139</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="VAR-140"><a href="#VAR-140"><span class="linenos">140</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="VAR-141"><a href="#VAR-141"><span class="linenos">141</span></a>
+</span><span id="VAR-142"><a href="#VAR-142"><span class="linenos">142</span></a><span class="sd">        Returns</span>
+</span><span id="VAR-143"><a href="#VAR-143"><span class="linenos">143</span></a><span class="sd">        -------</span>
+</span><span id="VAR-144"><a href="#VAR-144"><span class="linenos">144</span></a><span class="sd">        : int</span>
+</span><span id="VAR-145"><a href="#VAR-145"><span class="linenos">145</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="VAR-146"><a href="#VAR-146"><span class="linenos">146</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="VAR-147"><a href="#VAR-147"><span class="linenos">147</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="VAR-148"><a href="#VAR-148"><span class="linenos">148</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="VAR-149"><a href="#VAR-149"><span class="linenos">149</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR-150"><a href="#VAR-150"><span class="linenos">150</span></a>
+</span><span id="VAR-151"><a href="#VAR-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="VAR-152"><a href="#VAR-152"><span class="linenos">152</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="VAR-153"><a href="#VAR-153"><span class="linenos">153</span></a>
+</span><span id="VAR-154"><a href="#VAR-154"><span class="linenos">154</span></a>        <span class="c1"># Check if it is a parameter</span>
+</span><span id="VAR-155"><a href="#VAR-155"><span class="linenos">155</span></a>        <span class="n">var_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span>
+</span><span id="VAR-156"><a href="#VAR-156"><span class="linenos">156</span></a>        <span class="n">is_parameter</span> <span class="o">=</span> <span class="n">certificator_env</span><span class="p">[</span><span class="n">var_prime</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span>
 </span><span id="VAR-157"><a href="#VAR-157"><span class="linenos">157</span></a>
-</span><span id="VAR-158"><a href="#VAR-158"><span class="linenos">158</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="VAR-159"><a href="#VAR-159"><span class="linenos">159</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="VAR-160"><a href="#VAR-160"><span class="linenos">160</span></a>
-</span><span id="VAR-161"><a href="#VAR-161"><span class="linenos">161</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
-</span><span id="VAR-162"><a href="#VAR-162"><span class="linenos">162</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
-</span><span id="VAR-163"><a href="#VAR-163"><span class="linenos">163</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="VAR-164"><a href="#VAR-164"><span class="linenos">164</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
-</span><span id="VAR-165"><a href="#VAR-165"><span class="linenos">165</span></a>        <span class="p">)</span>
+</span><span id="VAR-158"><a href="#VAR-158"><span class="linenos">158</span></a>        <span class="k">if</span> <span class="n">is_parameter</span><span class="p">:</span>
+</span><span id="VAR-159"><a href="#VAR-159"><span class="linenos">159</span></a>            <span class="n">parameter_symbol</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;PARAM&quot;</span><span class="p">)</span>
+</span><span id="VAR-160"><a href="#VAR-160"><span class="linenos">160</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">parameter_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="VAR-161"><a href="#VAR-161"><span class="linenos">161</span></a>            <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="VAR-162"><a href="#VAR-162"><span class="linenos">162</span></a>
+</span><span id="VAR-163"><a href="#VAR-163"><span class="linenos">163</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
+</span><span id="VAR-164"><a href="#VAR-164"><span class="linenos">164</span></a>
+</span><span id="VAR-165"><a href="#VAR-165"><span class="linenos">165</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span id="VAR-166"><a href="#VAR-166"><span class="linenos">166</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR-167"><a href="#VAR-167"><span class="linenos">167</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
+</span><span id="VAR-168"><a href="#VAR-168"><span class="linenos">168</span></a>
+</span><span id="VAR-169"><a href="#VAR-169"><span class="linenos">169</span></a><span class="sd">        Returns</span>
+</span><span id="VAR-170"><a href="#VAR-170"><span class="linenos">170</span></a><span class="sd">        -------</span>
+</span><span id="VAR-171"><a href="#VAR-171"><span class="linenos">171</span></a><span class="sd">        : dict[str, str]</span>
+</span><span id="VAR-172"><a href="#VAR-172"><span class="linenos">172</span></a><span class="sd">            The variable metadata.</span>
+</span><span id="VAR-173"><a href="#VAR-173"><span class="linenos">173</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR-174"><a href="#VAR-174"><span class="linenos">174</span></a>
+</span><span id="VAR-175"><a href="#VAR-175"><span class="linenos">175</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+</span><span id="VAR-176"><a href="#VAR-176"><span class="linenos">176</span></a>
+</span><span id="VAR-177"><a href="#VAR-177"><span class="linenos">177</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="VAR-178"><a href="#VAR-178"><span class="linenos">178</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR-179"><a href="#VAR-179"><span class="linenos">179</span></a><span class="sd">        Add context to this `VAR` node.</span>
+</span><span id="VAR-180"><a href="#VAR-180"><span class="linenos">180</span></a>
+</span><span id="VAR-181"><a href="#VAR-181"><span class="linenos">181</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="VAR-182"><a href="#VAR-182"><span class="linenos">182</span></a>
+</span><span id="VAR-183"><a href="#VAR-183"><span class="linenos">183</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR-184"><a href="#VAR-184"><span class="linenos">184</span></a><span class="sd">        ----------</span>
+</span><span id="VAR-185"><a href="#VAR-185"><span class="linenos">185</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="VAR-186"><a href="#VAR-186"><span class="linenos">186</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="VAR-187"><a href="#VAR-187"><span class="linenos">187</span></a>
+</span><span id="VAR-188"><a href="#VAR-188"><span class="linenos">188</span></a><span class="sd">        Notes</span>
+</span><span id="VAR-189"><a href="#VAR-189"><span class="linenos">189</span></a><span class="sd">        -----</span>
+</span><span id="VAR-190"><a href="#VAR-190"><span class="linenos">190</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
+</span><span id="VAR-191"><a href="#VAR-191"><span class="linenos">191</span></a><span class="sd">        instruction being used.</span>
+</span><span id="VAR-192"><a href="#VAR-192"><span class="linenos">192</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR-193"><a href="#VAR-193"><span class="linenos">193</span></a>
+</span><span id="VAR-194"><a href="#VAR-194"><span class="linenos">194</span></a>        <span class="c1"># Update the context</span>
+</span><span id="VAR-195"><a href="#VAR-195"><span class="linenos">195</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+</span><span id="VAR-196"><a href="#VAR-196"><span class="linenos">196</span></a>
+</span><span id="VAR-197"><a href="#VAR-197"><span class="linenos">197</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="VAR-198"><a href="#VAR-198"><span class="linenos">198</span></a>
+</span><span id="VAR-199"><a href="#VAR-199"><span class="linenos">199</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="VAR-200"><a href="#VAR-200"><span class="linenos">200</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="VAR-201"><a href="#VAR-201"><span class="linenos">201</span></a>
+</span><span id="VAR-202"><a href="#VAR-202"><span class="linenos">202</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="VAR-203"><a href="#VAR-203"><span class="linenos">203</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="VAR-204"><a href="#VAR-204"><span class="linenos">204</span></a>
+</span><span id="VAR-205"><a href="#VAR-205"><span class="linenos">205</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
+</span><span id="VAR-206"><a href="#VAR-206"><span class="linenos">206</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
+</span><span id="VAR-207"><a href="#VAR-207"><span class="linenos">207</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="VAR-208"><a href="#VAR-208"><span class="linenos">208</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
+</span><span id="VAR-209"><a href="#VAR-209"><span class="linenos">209</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -619,6 +710,89 @@ environment : dict[int, str]
 
 
                             </div>
+                            <div id="VAR.certificate" class="classattr">
+                                        <input id="VAR.certificate-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-override">@override</div>
+
+        <span class="def">def</span>
+        <span class="name">certificate</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span>:</span></span>
+
+                <label class="view-source-button" for="VAR.certificate-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#VAR.certificate"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.certificate-121"><a href="#VAR.certificate-121"><span class="linenos">121</span></a>    <span class="nd">@override</span>
+</span><span id="VAR.certificate-122"><a href="#VAR.certificate-122"><span class="linenos">122</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
+</span><span id="VAR.certificate-123"><a href="#VAR.certificate-123"><span class="linenos">123</span></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="VAR.certificate-124"><a href="#VAR.certificate-124"><span class="linenos">124</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="VAR.certificate-125"><a href="#VAR.certificate-125"><span class="linenos">125</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="VAR.certificate-126"><a href="#VAR.certificate-126"><span class="linenos">126</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+</span><span id="VAR.certificate-127"><a href="#VAR.certificate-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR.certificate-128"><a href="#VAR.certificate-128"><span class="linenos">128</span></a><span class="sd">        Compute the certificate of this `VAR`.</span>
+</span><span id="VAR.certificate-129"><a href="#VAR.certificate-129"><span class="linenos">129</span></a>
+</span><span id="VAR.certificate-130"><a href="#VAR.certificate-130"><span class="linenos">130</span></a><span class="sd">        This will also check if it is a parameter, and emit the symbol</span>
+</span><span id="VAR.certificate-131"><a href="#VAR.certificate-131"><span class="linenos">131</span></a><span class="sd">        accordingly.</span>
+</span><span id="VAR.certificate-132"><a href="#VAR.certificate-132"><span class="linenos">132</span></a>
+</span><span id="VAR.certificate-133"><a href="#VAR.certificate-133"><span class="linenos">133</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR.certificate-134"><a href="#VAR.certificate-134"><span class="linenos">134</span></a><span class="sd">        ----------</span>
+</span><span id="VAR.certificate-135"><a href="#VAR.certificate-135"><span class="linenos">135</span></a><span class="sd">        positional_prime : int</span>
+</span><span id="VAR.certificate-136"><a href="#VAR.certificate-136"><span class="linenos">136</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
+</span><span id="VAR.certificate-137"><a href="#VAR.certificate-137"><span class="linenos">137</span></a><span class="sd">            the source code.</span>
+</span><span id="VAR.certificate-138"><a href="#VAR.certificate-138"><span class="linenos">138</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="VAR.certificate-139"><a href="#VAR.certificate-139"><span class="linenos">139</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="VAR.certificate-140"><a href="#VAR.certificate-140"><span class="linenos">140</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="VAR.certificate-141"><a href="#VAR.certificate-141"><span class="linenos">141</span></a>
+</span><span id="VAR.certificate-142"><a href="#VAR.certificate-142"><span class="linenos">142</span></a><span class="sd">        Returns</span>
+</span><span id="VAR.certificate-143"><a href="#VAR.certificate-143"><span class="linenos">143</span></a><span class="sd">        -------</span>
+</span><span id="VAR.certificate-144"><a href="#VAR.certificate-144"><span class="linenos">144</span></a><span class="sd">        : int</span>
+</span><span id="VAR.certificate-145"><a href="#VAR.certificate-145"><span class="linenos">145</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
+</span><span id="VAR.certificate-146"><a href="#VAR.certificate-146"><span class="linenos">146</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="VAR.certificate-147"><a href="#VAR.certificate-147"><span class="linenos">147</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="VAR.certificate-148"><a href="#VAR.certificate-148"><span class="linenos">148</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="VAR.certificate-149"><a href="#VAR.certificate-149"><span class="linenos">149</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR.certificate-150"><a href="#VAR.certificate-150"><span class="linenos">150</span></a>
+</span><span id="VAR.certificate-151"><a href="#VAR.certificate-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="VAR.certificate-152"><a href="#VAR.certificate-152"><span class="linenos">152</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="VAR.certificate-153"><a href="#VAR.certificate-153"><span class="linenos">153</span></a>
+</span><span id="VAR.certificate-154"><a href="#VAR.certificate-154"><span class="linenos">154</span></a>        <span class="c1"># Check if it is a parameter</span>
+</span><span id="VAR.certificate-155"><a href="#VAR.certificate-155"><span class="linenos">155</span></a>        <span class="n">var_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span>
+</span><span id="VAR.certificate-156"><a href="#VAR.certificate-156"><span class="linenos">156</span></a>        <span class="n">is_parameter</span> <span class="o">=</span> <span class="n">certificator_env</span><span class="p">[</span><span class="n">var_prime</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span>
+</span><span id="VAR.certificate-157"><a href="#VAR.certificate-157"><span class="linenos">157</span></a>
+</span><span id="VAR.certificate-158"><a href="#VAR.certificate-158"><span class="linenos">158</span></a>        <span class="k">if</span> <span class="n">is_parameter</span><span class="p">:</span>
+</span><span id="VAR.certificate-159"><a href="#VAR.certificate-159"><span class="linenos">159</span></a>            <span class="n">parameter_symbol</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;PARAM&quot;</span><span class="p">)</span>
+</span><span id="VAR.certificate-160"><a href="#VAR.certificate-160"><span class="linenos">160</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^(</span><span class="si">{</span><span class="n">parameter_symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span id="VAR.certificate-161"><a href="#VAR.certificate-161"><span class="linenos">161</span></a>            <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
+</span><span id="VAR.certificate-162"><a href="#VAR.certificate-162"><span class="linenos">162</span></a>
+</span><span id="VAR.certificate-163"><a href="#VAR.certificate-163"><span class="linenos">163</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Compute the certificate of this <code><a href="#VAR">VAR</a></code>.</p>
+
+<p>This will also check if it is a parameter, and emit the symbol
+accordingly.</p>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>positional_prime : int
+    A prime number that denotes the relative position of this node in
+    the source code.
+certificator_env : dict[int, list[int]]
+    The certificators's environment, that maps variables IDs to
+    encodings of their types.</p>
+
+<h2 id="returns">Returns</h2>
+
+<p>: int
+    The prime that comes immediately after <code>positional_prime</code>.
+certificator_env : dict[int, list[int]]
+    The updated certificator's environment, with any additional
+    information about the variable's types it might have captured.</p>
+</div>
+
+
+                            </div>
                             <div id="VAR.get_metadata" class="classattr">
                                         <input id="VAR.get_metadata-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -630,17 +804,17 @@ environment : dict[int, str]
 
     </div>
     <a class="headerlink" href="#VAR.get_metadata"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.get_metadata-121"><a href="#VAR.get_metadata-121"><span class="linenos">121</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="VAR.get_metadata-122"><a href="#VAR.get_metadata-122"><span class="linenos">122</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR.get_metadata-123"><a href="#VAR.get_metadata-123"><span class="linenos">123</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
-</span><span id="VAR.get_metadata-124"><a href="#VAR.get_metadata-124"><span class="linenos">124</span></a>
-</span><span id="VAR.get_metadata-125"><a href="#VAR.get_metadata-125"><span class="linenos">125</span></a><span class="sd">        Returns</span>
-</span><span id="VAR.get_metadata-126"><a href="#VAR.get_metadata-126"><span class="linenos">126</span></a><span class="sd">        -------</span>
-</span><span id="VAR.get_metadata-127"><a href="#VAR.get_metadata-127"><span class="linenos">127</span></a><span class="sd">        : dict[str, str]</span>
-</span><span id="VAR.get_metadata-128"><a href="#VAR.get_metadata-128"><span class="linenos">128</span></a><span class="sd">            The variable metadata.</span>
-</span><span id="VAR.get_metadata-129"><a href="#VAR.get_metadata-129"><span class="linenos">129</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR.get_metadata-130"><a href="#VAR.get_metadata-130"><span class="linenos">130</span></a>
-</span><span id="VAR.get_metadata-131"><a href="#VAR.get_metadata-131"><span class="linenos">131</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.get_metadata-165"><a href="#VAR.get_metadata-165"><span class="linenos">165</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span id="VAR.get_metadata-166"><a href="#VAR.get_metadata-166"><span class="linenos">166</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR.get_metadata-167"><a href="#VAR.get_metadata-167"><span class="linenos">167</span></a><span class="sd">        Get the metadata of this `VAR`.</span>
+</span><span id="VAR.get_metadata-168"><a href="#VAR.get_metadata-168"><span class="linenos">168</span></a>
+</span><span id="VAR.get_metadata-169"><a href="#VAR.get_metadata-169"><span class="linenos">169</span></a><span class="sd">        Returns</span>
+</span><span id="VAR.get_metadata-170"><a href="#VAR.get_metadata-170"><span class="linenos">170</span></a><span class="sd">        -------</span>
+</span><span id="VAR.get_metadata-171"><a href="#VAR.get_metadata-171"><span class="linenos">171</span></a><span class="sd">        : dict[str, str]</span>
+</span><span id="VAR.get_metadata-172"><a href="#VAR.get_metadata-172"><span class="linenos">172</span></a><span class="sd">            The variable metadata.</span>
+</span><span id="VAR.get_metadata-173"><a href="#VAR.get_metadata-173"><span class="linenos">173</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR.get_metadata-174"><a href="#VAR.get_metadata-174"><span class="linenos">174</span></a>
+</span><span id="VAR.get_metadata-175"><a href="#VAR.get_metadata-175"><span class="linenos">175</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span>
 </span></pre></div>
 
 
@@ -665,39 +839,39 @@ environment : dict[int, str]
 
     </div>
     <a class="headerlink" href="#VAR.add_context"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.add_context-133"><a href="#VAR.add_context-133"><span class="linenos">133</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="VAR.add_context-134"><a href="#VAR.add_context-134"><span class="linenos">134</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="VAR.add_context-135"><a href="#VAR.add_context-135"><span class="linenos">135</span></a><span class="sd">        Add context to this `VAR` node.</span>
-</span><span id="VAR.add_context-136"><a href="#VAR.add_context-136"><span class="linenos">136</span></a>
-</span><span id="VAR.add_context-137"><a href="#VAR.add_context-137"><span class="linenos">137</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
-</span><span id="VAR.add_context-138"><a href="#VAR.add_context-138"><span class="linenos">138</span></a>
-</span><span id="VAR.add_context-139"><a href="#VAR.add_context-139"><span class="linenos">139</span></a><span class="sd">        Parameters</span>
-</span><span id="VAR.add_context-140"><a href="#VAR.add_context-140"><span class="linenos">140</span></a><span class="sd">        ----------</span>
-</span><span id="VAR.add_context-141"><a href="#VAR.add_context-141"><span class="linenos">141</span></a><span class="sd">        context : dict[str, str]</span>
-</span><span id="VAR.add_context-142"><a href="#VAR.add_context-142"><span class="linenos">142</span></a><span class="sd">            The context of this variable use.</span>
-</span><span id="VAR.add_context-143"><a href="#VAR.add_context-143"><span class="linenos">143</span></a>
-</span><span id="VAR.add_context-144"><a href="#VAR.add_context-144"><span class="linenos">144</span></a><span class="sd">        Notes</span>
-</span><span id="VAR.add_context-145"><a href="#VAR.add_context-145"><span class="linenos">145</span></a><span class="sd">        -----</span>
-</span><span id="VAR.add_context-146"><a href="#VAR.add_context-146"><span class="linenos">146</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
-</span><span id="VAR.add_context-147"><a href="#VAR.add_context-147"><span class="linenos">147</span></a><span class="sd">        instruction being used.</span>
-</span><span id="VAR.add_context-148"><a href="#VAR.add_context-148"><span class="linenos">148</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="VAR.add_context-149"><a href="#VAR.add_context-149"><span class="linenos">149</span></a>
-</span><span id="VAR.add_context-150"><a href="#VAR.add_context-150"><span class="linenos">150</span></a>        <span class="c1"># Update the context</span>
-</span><span id="VAR.add_context-151"><a href="#VAR.add_context-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
-</span><span id="VAR.add_context-152"><a href="#VAR.add_context-152"><span class="linenos">152</span></a>
-</span><span id="VAR.add_context-153"><a href="#VAR.add_context-153"><span class="linenos">153</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
-</span><span id="VAR.add_context-154"><a href="#VAR.add_context-154"><span class="linenos">154</span></a>
-</span><span id="VAR.add_context-155"><a href="#VAR.add_context-155"><span class="linenos">155</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
-</span><span id="VAR.add_context-156"><a href="#VAR.add_context-156"><span class="linenos">156</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
-</span><span id="VAR.add_context-157"><a href="#VAR.add_context-157"><span class="linenos">157</span></a>
-</span><span id="VAR.add_context-158"><a href="#VAR.add_context-158"><span class="linenos">158</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="VAR.add_context-159"><a href="#VAR.add_context-159"><span class="linenos">159</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
-</span><span id="VAR.add_context-160"><a href="#VAR.add_context-160"><span class="linenos">160</span></a>
-</span><span id="VAR.add_context-161"><a href="#VAR.add_context-161"><span class="linenos">161</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
-</span><span id="VAR.add_context-162"><a href="#VAR.add_context-162"><span class="linenos">162</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
-</span><span id="VAR.add_context-163"><a href="#VAR.add_context-163"><span class="linenos">163</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="VAR.add_context-164"><a href="#VAR.add_context-164"><span class="linenos">164</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
-</span><span id="VAR.add_context-165"><a href="#VAR.add_context-165"><span class="linenos">165</span></a>        <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="VAR.add_context-177"><a href="#VAR.add_context-177"><span class="linenos">177</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="VAR.add_context-178"><a href="#VAR.add_context-178"><span class="linenos">178</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="VAR.add_context-179"><a href="#VAR.add_context-179"><span class="linenos">179</span></a><span class="sd">        Add context to this `VAR` node.</span>
+</span><span id="VAR.add_context-180"><a href="#VAR.add_context-180"><span class="linenos">180</span></a>
+</span><span id="VAR.add_context-181"><a href="#VAR.add_context-181"><span class="linenos">181</span></a><span class="sd">        The context indicates whether this variable is being readed or written.</span>
+</span><span id="VAR.add_context-182"><a href="#VAR.add_context-182"><span class="linenos">182</span></a>
+</span><span id="VAR.add_context-183"><a href="#VAR.add_context-183"><span class="linenos">183</span></a><span class="sd">        Parameters</span>
+</span><span id="VAR.add_context-184"><a href="#VAR.add_context-184"><span class="linenos">184</span></a><span class="sd">        ----------</span>
+</span><span id="VAR.add_context-185"><a href="#VAR.add_context-185"><span class="linenos">185</span></a><span class="sd">        context : dict[str, str]</span>
+</span><span id="VAR.add_context-186"><a href="#VAR.add_context-186"><span class="linenos">186</span></a><span class="sd">            The context of this variable use.</span>
+</span><span id="VAR.add_context-187"><a href="#VAR.add_context-187"><span class="linenos">187</span></a>
+</span><span id="VAR.add_context-188"><a href="#VAR.add_context-188"><span class="linenos">188</span></a><span class="sd">        Notes</span>
+</span><span id="VAR.add_context-189"><a href="#VAR.add_context-189"><span class="linenos">189</span></a><span class="sd">        -----</span>
+</span><span id="VAR.add_context-190"><a href="#VAR.add_context-190"><span class="linenos">190</span></a><span class="sd">        This method also changes the `symbol` attribute according to the</span>
+</span><span id="VAR.add_context-191"><a href="#VAR.add_context-191"><span class="linenos">191</span></a><span class="sd">        instruction being used.</span>
+</span><span id="VAR.add_context-192"><a href="#VAR.add_context-192"><span class="linenos">192</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="VAR.add_context-193"><a href="#VAR.add_context-193"><span class="linenos">193</span></a>
+</span><span id="VAR.add_context-194"><a href="#VAR.add_context-194"><span class="linenos">194</span></a>        <span class="c1"># Update the context</span>
+</span><span id="VAR.add_context-195"><a href="#VAR.add_context-195"><span class="linenos">195</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+</span><span id="VAR.add_context-196"><a href="#VAR.add_context-196"><span class="linenos">196</span></a>
+</span><span id="VAR.add_context-197"><a href="#VAR.add_context-197"><span class="linenos">197</span></a>        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span>
+</span><span id="VAR.add_context-198"><a href="#VAR.add_context-198"><span class="linenos">198</span></a>
+</span><span id="VAR.add_context-199"><a href="#VAR.add_context-199"><span class="linenos">199</span></a>        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;read&quot;</span><span class="p">:</span>
+</span><span id="VAR.add_context-200"><a href="#VAR.add_context-200"><span class="linenos">200</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_VALUE&quot;</span><span class="p">)</span>
+</span><span id="VAR.add_context-201"><a href="#VAR.add_context-201"><span class="linenos">201</span></a>
+</span><span id="VAR.add_context-202"><a href="#VAR.add_context-202"><span class="linenos">202</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="VAR.add_context-203"><a href="#VAR.add_context-203"><span class="linenos">203</span></a>            <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_certificate_symbol</span><span class="p">(</span><span class="s2">&quot;VAR_ADDRESS&quot;</span><span class="p">)</span>
+</span><span id="VAR.add_context-204"><a href="#VAR.add_context-204"><span class="linenos">204</span></a>
+</span><span id="VAR.add_context-205"><a href="#VAR.add_context-205"><span class="linenos">205</span></a>        <span class="c1"># Add ^1 because it means memory offset + 1. As this is a regular</span>
+</span><span id="VAR.add_context-206"><a href="#VAR.add_context-206"><span class="linenos">206</span></a>        <span class="c1"># variable – and not an array nor struct –, the offset is always 0.</span>
+</span><span id="VAR.add_context-207"><a href="#VAR.add_context-207"><span class="linenos">207</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="VAR.add_context-208"><a href="#VAR.add_context-208"><span class="linenos">208</span></a>            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;^(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_metadata</span><span class="p">[</span><span class="s1">&#39;prime&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(2)&quot;</span> <span class="o">+</span> <span class="s2">&quot;^(1)&quot;</span>
+</span><span id="VAR.add_context-209"><a href="#VAR.add_context-209"><span class="linenos">209</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -730,7 +904,6 @@ instruction being used.</p>
                 <dd id="VAR.get_type" class="function"><a href="../node.html#Node.get_type">get_type</a></dd>
                 <dd id="VAR.get_certificate_label" class="function"><a href="../node.html#Node.get_certificate_label">get_certificate_label</a></dd>
                 <dd id="VAR.print" class="function"><a href="../node.html#Node.print">print</a></dd>
-                <dd id="VAR.certificate" class="function"><a href="../node.html#Node.certificate">certificate</a></dd>
 
             </div>
                                 </dl>
