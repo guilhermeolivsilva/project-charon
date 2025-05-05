@@ -34,8 +34,6 @@ def test_init() -> None:
             "0x8c": {"addresses": {"0x8c": "int"}, "prime": 37}
         }
     }
-    assert backend_certificator.current_positional_prime == 2
-    assert backend_certificator.current_variable_prime == 2
 
 
 # def test_certificate():

@@ -80,7 +80,7 @@ class BackendCertificator(AbstractCertificator):
         TODO: docstring
         """
 
-        sinks = ["CONSTANT", "LOAD", "MOV"]
+        sinks = ["CONSTANT", "LOAD", "LOADF", "MOV"]
 
         for bytecode in self.program["code"]:
             # We don't care about bytecodes that do not write in a temporary
@@ -124,7 +124,10 @@ class BackendCertificator(AbstractCertificator):
                     *bytecode_ids_rhs_depends_on
                 ]
 
-            elif instruction in INSTRUCTIONS_CATEGORIES["unops"]:
+            elif instruction in [
+                *INSTRUCTIONS_CATEGORIES["unops"], 
+                *INSTRUCTIONS_CATEGORIES["type_casts"]
+            ]:
                 value_register = bytecode["metadata"]["value"]
                 if isinstance(value_register, int):
                     bytecode_ids_value_depends_on = (
@@ -286,7 +289,7 @@ class BackendCertificator(AbstractCertificator):
 
         self.environment["variables"] = variables
 
-    def _preprocess_conditionals() -> None:
+    def _preprocess_conditionals(self) -> None:
         """
         TODO: docstrings
         """
