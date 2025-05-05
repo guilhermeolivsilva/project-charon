@@ -11,7 +11,18 @@ def test_init() -> None:
 
     assert backend_certificator.computed_certificate == []
     assert backend_certificator.initial_prime == 2
-    assert backend_certificator.program == MACHINE_CODE
+
+    # Filter out "ghost" bytecodes
+    _program = {}
+    _program["functions"] = backend_certificator.program["functions"]
+    _program["global_vars"] = backend_certificator.program["global_vars"]
+    _program["code"] = [
+        bytecode
+        for bytecode in backend_certificator.program["code"]
+        if bytecode["instruction"] != "CONDITIONAL"
+    ]
+    assert _program == MACHINE_CODE
+
     assert backend_certificator.environment == {
        "functions": {
            1: {"prime": 2},

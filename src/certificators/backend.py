@@ -1,5 +1,6 @@
 """Certificator for the frontend representation of [C]haron programs."""
 
+from copy import deepcopy
 from typing import Union
 
 from typing_extensions import override
@@ -27,8 +28,15 @@ class BackendCertificator(AbstractCertificator):
         super().__init__()
 
         # Input
-        self.program = program
+        self.program = deepcopy(program)
         self.bytecode_list = self.program["code"]
+
+        self.register_to_bytecode_dependencies = {}
+
+        self.environment = {
+            "functions": {},
+            "variables": {},
+        }
 
         # Tell whether a bytecode has been accounted for in the certification
         # process or not. Maps the ID of `bytecode_list` to `True` if already
@@ -38,19 +46,12 @@ class BackendCertificator(AbstractCertificator):
             for bytecode in self.bytecode_list
         }
 
-        self.register_to_bytecode_dependencies = {}
-
-        self.environment = {
-            "functions": {},
-            "variables": {},
-        }
-
         # Compute the primes associated with the defined functions, and the
         # primes and identify the types of variables.
         self._compute_register_to_bytecode_dependencies()
+        self._preprocess_conditionals()
         self._preprocess_functions()
         self._preprocess_variables()
-        self._preprocess_conditionals()
 
         self.bytecode_handlers = {
             # Instructions that might implement more than 1 operation, or
@@ -58,6 +59,7 @@ class BackendCertificator(AbstractCertificator):
             "CONSTANT": self._handle_constant,
             "MOV": self._handle_mov,
             "JAL": self._handle_function_call,
+            "CONDITIONAL": self._handle_conditional,
             "JZ": self._handle_control_flow,
 
             # 1:1 instructions
@@ -77,10 +79,13 @@ class BackendCertificator(AbstractCertificator):
 
     def _compute_register_to_bytecode_dependencies(self) -> None:
         """
-        TODO: docstring
-        """
+        Compute the dependency relation between a register and bytecode IDs.
 
-        sinks = ["CONSTANT", "LOAD", "LOADF", "MOV"]
+        This will map a register to the first bytecode ID of each operation
+        upon which it depends on. For example, if a register depends on a
+        variable to be computed, it will be mapped to the bytecode ID of the
+        `CONSTANT` instruction that first obtains the variable's base address.
+        """
 
         for bytecode in self.program["code"]:
             # We don't care about bytecodes that do not write in a temporary
@@ -98,7 +103,7 @@ class BackendCertificator(AbstractCertificator):
             instruction = bytecode["instruction"]
             bytecode_id = bytecode["bytecode_id"]
 
-            if instruction in sinks:
+            if instruction in ["CONSTANT", "MOV"]:
                 self.register_to_bytecode_dependencies[register] = [bytecode_id]
 
             elif instruction in INSTRUCTIONS_CATEGORIES["binops"]:
@@ -126,7 +131,8 @@ class BackendCertificator(AbstractCertificator):
 
             elif instruction in [
                 *INSTRUCTIONS_CATEGORIES["unops"], 
-                *INSTRUCTIONS_CATEGORIES["type_casts"]
+                *INSTRUCTIONS_CATEGORIES["type_casts"],
+                *["LOAD", "LOADF"]
             ]:
                 value_register = bytecode["metadata"]["value"]
                 if isinstance(value_register, int):
@@ -291,10 +297,45 @@ class BackendCertificator(AbstractCertificator):
 
     def _preprocess_conditionals(self) -> None:
         """
-        TODO: docstrings
+        Parse the bytecode list and preprocess all the conditional jumps.
+
+        This method will mark the beginning of every expression that predicate
+        conditionals (in the form of `JZ` bytecodes that *do not* evaluate the
+        `zero` register) by adding a "ghost" bytecode that preceeds it.
+
+        This "ghost" bytecode, `CONDITIONAL`, does not change the semantics
+        of the program, for it is just a marker.
         """
 
-        ...
+        insertion_points = []
+
+        for bytecode in self.program["code"]:
+            is_conditional = (
+                bytecode["instruction"] == "JZ"
+                and bytecode["metadata"]["conditional_register"] != "zero"
+            )
+
+            if not is_conditional:
+                continue
+
+            register = bytecode["metadata"]["conditional_register"]
+
+            bytecode_ids_it_depends_on = self.register_to_bytecode_dependencies[register]
+            insertion_points.append(min(bytecode_ids_it_depends_on) - 1)
+
+        # As we're adding based on the index, we must offset each `CONDITIONAL`
+        # we add
+        offset = 0
+        for point in insertion_points:
+            self.program["code"].insert(
+                point + offset,
+                {
+                    "instruction": "CONDITIONAL",
+                    "metadata": {},
+                    "bytecode_id": -1
+                }
+            )
+            offset += 1
 
     @override
     def certificate(self, **kwargs) -> str:
@@ -308,6 +349,12 @@ class BackendCertificator(AbstractCertificator):
         -------
         computed_certificate : str
             The computed certificate.
+
+        Raises
+        ------
+        ValueError
+            Raised if there are unprocessed bytecodes (i.e., not marked as done
+            in `self.bytecode_status`).
         """
 
         computed_exponents = []
@@ -335,6 +382,10 @@ class BackendCertificator(AbstractCertificator):
                 for bytecode_id, status in self.bytecode_status.items()
                 if not status
             ])
+
+            print("------")
+            print("\n".join(computed_exponents))
+            print("------")
             raise ValueError(_err_msg)
 
         self.computed_certificate = [
@@ -377,6 +428,12 @@ class BackendCertificator(AbstractCertificator):
         -------
         exponent : list[str]
             The exponent that encodes the operation this instruction implements.
+
+        Raises
+        ------
+        RuntimeError
+            Raised if the certificator can't find the adequate handler for a
+            given bytecode.
         """
 
         instruction = bytecode["instruction"]
@@ -392,7 +449,7 @@ class BackendCertificator(AbstractCertificator):
             print(f"Handler for {instruction} has not been implemented yet")
             print(bytecode)
             print(e)
-            raise e
+            raise RuntimeError
 
         return exponent
 
@@ -897,6 +954,11 @@ class BackendCertificator(AbstractCertificator):
         -------
         exponent : list[str]
             The adequate encoding exponent.
+
+        Raises
+        ------
+        ValueError
+            Raised if this `MOV` does not match any known patterns.
         """
 
         # Case 1: it is a `return` statement
@@ -928,7 +990,19 @@ class BackendCertificator(AbstractCertificator):
         bytecode_idx: int
     ) -> list[str]:
         """
-        TODO: docstring
+        Handle the `return` statement of a function.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The bytecode to certificate.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        exponent : list[str]
+            The encoding exponent.
         """
 
         # Produce the exponent
@@ -1000,6 +1074,11 @@ class BackendCertificator(AbstractCertificator):
         -------
         exponent : list[str]
             The encoding exponent.
+
+        Raises
+        ------
+        ValueError
+            Raised if this `JAL` does not match any known patterns.
         """
 
         # Assert the function call follows the expected pattern
@@ -1032,8 +1111,8 @@ class BackendCertificator(AbstractCertificator):
         self.bytecode_status[next_bytecode_id] = True
 
         return [exponent]
-
-    def _handle_control_flow(
+    
+    def _handle_conditional(
         self,
         bytecode: dict[str, dict],
         bytecode_idx: int
@@ -1042,12 +1121,44 @@ class BackendCertificator(AbstractCertificator):
         TODO: docstring
         """
 
-        # Identify what kind of control flow construct this `JZ` implements
+        return [get_certificate_symbol("COND")]
+
+    def _handle_control_flow(
+        self,
+        bytecode: dict[str, dict],
+        bytecode_idx: int
+    ) -> list[str]:
+        """
+        Handle control flow constructs.
+
+        This method will identify what construct a conditional jump (i.e., the
+        `JZ` bytecode) implements and handle it accordingly.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The bytecode to certificate.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        exponent : list[str]
+            The encoding exponent.
+
+        Raises
+        ------
+        ValueError
+            Raised if this `JZ` does not match any known patterns.
+        """
+
+        # Identify the construct
         _control_flow = self._identify_control_flow(
             bytecode=bytecode,
             bytecode_idx=bytecode_idx
         )
 
+        # Call the adequate handler
         if _control_flow == "if":
             return self._handle_if(
                 bytecode=bytecode,
