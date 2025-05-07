@@ -332,7 +332,7 @@ class BackendCertificator(AbstractCertificator):
                 {
                     "instruction": "CONDITIONAL",
                     "metadata": {},
-                    "bytecode_id": -1
+                    "bytecode_id": None
                 }
             )
             offset += 1
@@ -363,7 +363,7 @@ class BackendCertificator(AbstractCertificator):
             bytecode_id = bytecode["bytecode_id"]
 
             # Skip instructions that have already been handled.
-            if self.bytecode_status[bytecode_id]:
+            if bytecode_id is not None and self.bytecode_status[bytecode_id]:
                 continue
 
             exponent = self._certificate_instruction(
