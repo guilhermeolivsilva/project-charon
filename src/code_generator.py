@@ -25,6 +25,7 @@ class CodeGenerator:
         self.program: dict[str, Union[list, dict]] = {
             "functions": {},
             "global_vars": [],
+            "data": {},
             "code": [],
         }
         self.environment: dict[str, dict[int, str]] = {
@@ -103,6 +104,7 @@ class CodeGenerator:
         self.program["code"].append({"instruction": "HALT", "metadata": {}})
 
         self._add_ids_to_source()
+        self._export_data()
 
         return self.program
 
@@ -168,3 +170,15 @@ class CodeGenerator:
         for instruction in [*self.program["global_vars"], *self.program["code"]]:
             instruction["bytecode_id"] = current_id
             current_id += 1
+
+    def _export_data(self) -> None:
+        """
+        Export the `data` section of the program.
+
+        This section maps variable's base addresses to their sizes.
+        """
+
+        self.program["data"] = {
+            var["address"]: var["size"]
+            for var in self.environment["variables"].values()
+        }

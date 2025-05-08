@@ -16,6 +16,7 @@ def test_init() -> None:
     _program = {}
     _program["functions"] = backend_certificator.program["functions"]
     _program["global_vars"] = backend_certificator.program["global_vars"]
+    _program["data"] = backend_certificator.program["data"]
     _program["code"] = [
         bytecode
         for bytecode in backend_certificator.program["code"]
