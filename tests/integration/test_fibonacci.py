@@ -46,15 +46,15 @@ def test_fib() -> None:
     assert vm.get_memory() == expected_memory
 
 
-# def test_fib_certification() -> None:
-#     """Test the front and backend certification."""
+def test_fib_certification() -> None:
+    """Test the front and backend certification."""
 
-#     instance = create_instance(source_code=SOURCE_CODE)
+    instance = create_instance(source_code=SOURCE_CODE)
 
-#     ast = instance.get_ast()
-#     frontend_certificate = FrontendCertificator(ast=ast).certificate()
+    ast = instance.get_ast()
+    frontend_certificate = FrontendCertificator(ast=ast).certificate()
 
-#     program = instance.get_program()
-#     backend_certificate = BackendCertificator(program=program).certificate()
+    program = instance.get_program()
+    backend_certificate = BackendCertificator(program=program).certificate()
 
-#     assert frontend_certificate == backend_certificate
+    assert frontend_certificate == backend_certificate

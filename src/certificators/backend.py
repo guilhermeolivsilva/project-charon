@@ -308,6 +308,26 @@ class BackendCertificator(AbstractCertificator):
 
         self.environment["variables"] = variables
 
+    def _add_to_stash(self, index: int, element: str) -> None:
+        """
+        Add an element to the stash, in the given index.
+
+        Parameters
+        ----------
+        index : int
+            The index to add at.
+        element : str
+            The element to add at the index.
+        """
+
+        # If this index is already in the stash, add to the beginning of its
+        # corresponding list.
+        if index in self.environment["stash"]:
+            self.environment["stash"][index].insert(0, element)
+
+        else:
+            self.environment["stash"][index] = [element]
+
     def _preprocess_conditionals(self) -> None:
         """
         Parse the bytecode list and preprocess all the conditional jumps.
@@ -317,7 +337,7 @@ class BackendCertificator(AbstractCertificator):
         `zero` register) by adding a "pending symbol" to the environment stash.
         """
 
-        insertion_points = []
+        insertion_indices = []
 
         for bytecode in self.program["code"]:
             is_conditional = (
@@ -331,10 +351,13 @@ class BackendCertificator(AbstractCertificator):
             register = bytecode["metadata"]["conditional_register"]
 
             bytecode_ids_it_depends_on = self.register_to_bytecode_dependencies[register]
-            insertion_points.append(min(bytecode_ids_it_depends_on) - 1)
+            insertion_indices.append(min(bytecode_ids_it_depends_on) - 1)
 
-        for point in insertion_points:
-            self.environment["stash"][point] = [str(get_certificate_symbol("COND"))]
+        for index in insertion_indices:
+            self._add_to_stash(
+                index=index,
+                element=str(get_certificate_symbol("COND"))
+            )
 
     @override
     def certificate(self, **kwargs) -> str:
@@ -361,14 +384,14 @@ class BackendCertificator(AbstractCertificator):
         for idx, bytecode in enumerate(self.bytecode_list):
             bytecode_id = bytecode["bytecode_id"]
 
-            # Skip instructions that have already been handled.
-            if bytecode_id is not None and self.bytecode_status[bytecode_id]:
-                continue
-
             # First, check if there are any pending exponents for this index
             if idx in self.environment["stash"]:
                 pending_exponent = self.environment["stash"][idx]
                 computed_exponents.extend(pending_exponent)
+
+            # Skip instructions that have already been handled.
+            if bytecode_id is not None and self.bytecode_status[bytecode_id]:
+                continue
 
             # ...then handle this bytecode
             exponent = self._certificate_instruction(
@@ -1249,8 +1272,11 @@ class BackendCertificator(AbstractCertificator):
         # Add the `IF_END` symbol to the stash
         jump_size = bytecode["metadata"]["jump_size"]
         idx_to_stash_at = bytecode_idx + jump_size
-        if_end_symbol = [str(get_certificate_symbol("IF_END"))]
-        self.environment["stash"][idx_to_stash_at] = if_end_symbol
+        if_end_symbol = str(get_certificate_symbol("IF_END"))
+        self._add_to_stash(
+            index=idx_to_stash_at,
+            element=if_end_symbol
+        )
 
         # Produce the exponent
         symbol = get_certificate_symbol("IF")
@@ -1288,15 +1314,21 @@ class BackendCertificator(AbstractCertificator):
         # Add the `IF_END` symbol to the stash
         if_jump_size = bytecode["metadata"]["jump_size"]
         idx_to_stash_if_end_at = bytecode_idx + if_jump_size
-        if_end_symbol = [str(get_certificate_symbol("IF_END"))]
-        self.environment["stash"][idx_to_stash_if_end_at] = if_end_symbol
+        if_end_symbol = str(get_certificate_symbol("IF_END"))
+        self._add_to_stash(
+            index=idx_to_stash_if_end_at,
+            element=if_end_symbol
+        )
 
         # Add the `ELSE_END` symbol to the stash
         else_bytecode = self.bytecode_list[bytecode_idx + if_jump_size - 1]
         else_jump_size = else_bytecode["metadata"]["jump_size"]
         idx_to_stash_else_end_at = bytecode_idx + if_jump_size - 1 + else_jump_size
-        else_end_symbol = [str(get_certificate_symbol("ELSE_END"))]
-        self.environment["stash"][idx_to_stash_else_end_at] = else_end_symbol
+        else_end_symbol = str(get_certificate_symbol("ELSE_END"))
+        self._add_to_stash(
+            index=idx_to_stash_else_end_at,
+            element=else_end_symbol
+        )
 
         # Produce the exponent
         symbol = get_certificate_symbol("IF")
@@ -1337,8 +1369,11 @@ class BackendCertificator(AbstractCertificator):
         # Add the `WHILE_END` symbol to the stash
         jump_size = bytecode["metadata"]["jump_size"]
         idx_to_stash_while_end_at = bytecode_idx + jump_size
-        while_end_symbol = [str(get_certificate_symbol("WHILE_END"))]
-        self.environment["stash"][idx_to_stash_while_end_at] = while_end_symbol
+        while_end_symbol = str(get_certificate_symbol("WHILE_END"))
+        self._add_to_stash(
+            index=idx_to_stash_while_end_at,
+            element=while_end_symbol
+        )
 
         # Produce the exponent
         symbol = get_certificate_symbol("WHILE")
