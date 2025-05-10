@@ -218,6 +218,19 @@ class BackendCertificator(AbstractCertificator):
                         var_address_register = temp_bytecode["metadata"]["register"]
 
                         break
+                
+                    # If the variable is being indexed by another variable, the
+                    # register with its (dynamically) computed address is still
+                    # relevant
+                    is_offset_in_another_var = (
+                        temp_bytecode["instruction"] == "ADD"
+                        and temp_bytecode["metadata"]["lhs_register"] == var_base_address_register
+                        and self.bytecode_list[temp_bytecode_idx - 1]["instruction"] == "MULT"
+                    )
+
+                    if is_offset_in_another_var:
+                        var_address_register = temp_bytecode["metadata"]["register"]
+                        var_address = var_base_address
 
                 # If there isn't any `ADD` instruction computed with the base
                 # address, then the base address is already the actual address.
@@ -687,8 +700,6 @@ class BackendCertificator(AbstractCertificator):
             following_bytecode = self.bytecode_list[following_bytecode_idx]
 
             speculated_offset_register = following_bytecode["metadata"]["register"]
-
-            # TODO: divide `speculated_index` by the size of the variable type
             speculated_index = following_bytecode["metadata"]["value"]
 
             is_static_array_or_struct = (
@@ -719,6 +730,10 @@ class BackendCertificator(AbstractCertificator):
                     else "address"
                 )
                 symbol = get_certificate_symbol(f"VAR_{context.upper()}")
+
+                # TODO: divide `speculated_index` by the size of the variable
+                # type # (as of now, all types have 4 bytes)
+                speculated_index = speculated_index // 4
 
                 exponent = (
                     f"({symbol})"
@@ -856,10 +871,8 @@ class BackendCertificator(AbstractCertificator):
                 
                 exponent = (
                     f"({symbol})"
-                    # + f"^({var_prime})"
-                    + f"^(VAR PRIME)"
-                    # + f"^(3)^({speculated_index_var_prime})"
-                    + f"^(3)^(INDEX VAR PRIME)"
+                    + f"^({var_prime})"
+                    + f"^(3)^({speculated_index_var_prime})"
                 )
 
                 # Account for:
