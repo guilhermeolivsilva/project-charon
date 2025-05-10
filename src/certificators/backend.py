@@ -1038,7 +1038,7 @@ class BackendCertificator(AbstractCertificator):
         symbol = get_certificate_symbol("ARG")
         exponent = f"{symbol}"
 
-        # Mark this bytecode as done.
+        # Mark this bytecode as done
         bytecode_id = bytecode["bytecode_id"]
         self.bytecode_status[bytecode_id] = True
 
@@ -1220,10 +1220,38 @@ class BackendCertificator(AbstractCertificator):
         bytecode_idx: int
     ) -> str:
         """
-        TODO: docstring
+        Handle a `IF` control flow from a `JZ` bytecode.
+
+        This method will add the `IF_END` symbol to the stash.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The `JZ` bytecode.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        exponent : list[str]
+            The encoding exponent.
         """
 
-        return []
+        # Add the `IF_END` symbol to the stash
+        jump_size = bytecode["metadata"]["jump_size"]
+        idx_to_stash_at = bytecode_idx + jump_size
+        if_end_symbol = [str(get_certificate_symbol("IF_END"))]
+        self.environment["stash"][idx_to_stash_at] = if_end_symbol
+
+        # Produce the exponent
+        symbol = get_certificate_symbol("IF")
+        exponent = f"{symbol}"
+
+        # Mark this bytecode as done
+        bytecode_id = bytecode["bytecode_id"]
+        self.bytecode_status[bytecode_id] = True
+
+        return [exponent]
 
     def _handle_if_else(
         self,
@@ -1231,10 +1259,48 @@ class BackendCertificator(AbstractCertificator):
         bytecode_idx: int
     ) -> str:
         """
-        TODO: docstring
+        Handle a `IF/ELSE` control flow from a `JZ` bytecode.
+
+        This method will add the `IF_END` and `ELSE_END` symbols to the stash.
+
+        Parameters
+        ----------
+        bytecode : dict[str, dict]
+            The `JZ` bytecode.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        exponent : list[str]
+            The encoding exponent.
         """
 
-        return []
+        # Add the `IF_END` symbol to the stash
+        if_jump_size = bytecode["metadata"]["jump_size"]
+        idx_to_stash_if_end_at = bytecode_idx + if_jump_size
+        if_end_symbol = [str(get_certificate_symbol("IF_END"))]
+        self.environment["stash"][idx_to_stash_if_end_at] = if_end_symbol
+
+        # Add the `ELSE_END` symbol to the stash
+        else_bytecode = self.bytecode_list[bytecode_idx + if_jump_size - 1]
+        else_jump_size = else_bytecode["metadata"]["jump_size"]
+        idx_to_stash_else_end_at = bytecode_idx + if_jump_size - 1 + else_jump_size
+        else_end_symbol = [str(get_certificate_symbol("IF_END"))]
+        self.environment["stash"][idx_to_stash_else_end_at] = else_end_symbol
+
+        # Produce the exponent
+        symbol = get_certificate_symbol("IF")
+        exponent = f"{symbol}"
+
+        # Mark both jump bytecodes as done
+        if_bytecode_id = bytecode["bytecode_id"]
+        self.bytecode_status[if_bytecode_id] = True
+
+        else_bytecode_id = else_bytecode["bytecode_id"]
+        self.bytecode_status[else_bytecode_id] = True
+
+        return [exponent]
 
     def _handle_while(
         self,
@@ -1242,10 +1308,43 @@ class BackendCertificator(AbstractCertificator):
         bytecode_idx: int
     ) -> str:
         """
-        TODO: docstring
+        Handle a `WHILE` control flow from a `JZ` bytecode.
+
+        This method will add the `WHILE_END` symbol to the stash.
+
+        Parameters`
+        ----------
+        bytecode : dict[str, dict]
+            The `JZ` bytecode.
+        bytecode_idx : int
+            The index of this `bytecode` in `self.bytecode_list`.
+
+        Returns
+        -------
+        exponent : list[str]
+            The encoding exponent.
         """
 
-        return []
+        # Add the `WHILE_END` symbol to the stash
+        jump_size = bytecode["metadata"]["jump_size"]
+        idx_to_stash_while_end_at = bytecode_idx + jump_size
+        while_end_symbol = [str(get_certificate_symbol("WHILE_END"))]
+        self.environment["stash"][idx_to_stash_while_end_at] = while_end_symbol
+
+        # Produce the exponent
+        symbol = get_certificate_symbol("WHILE")
+        exponent = f"{symbol}"
+
+        # Mark both jump bytecodes as done
+        if_bytecode_id = bytecode["bytecode_id"]
+        self.bytecode_status[if_bytecode_id] = True
+
+        jump_to_predicate_bytecode_idx = bytecode_idx + jump_size - 1
+        jump_to_predicate_bytecode = self.bytecode_list[jump_to_predicate_bytecode_idx]
+        jump_to_predicate_bytecode_id = jump_to_predicate_bytecode["bytecode_id"]
+        self.bytecode_status[jump_to_predicate_bytecode_id] = True
+
+        return [exponent]
 
     def _handle_simple_instruction(
         self,
@@ -1277,7 +1376,7 @@ class BackendCertificator(AbstractCertificator):
         symbol = get_certificate_symbol(instruction)
         exponent = f"{symbol}"
 
-        # Mark this bytecode as done.
+        # Mark this bytecode as done
         bytecode_id = bytecode["bytecode_id"]
         self.bytecode_status[bytecode_id] = True
 
