@@ -36,6 +36,7 @@ class BackendCertificator(AbstractCertificator):
         self.environment = {
             "functions": {},
             "variables": {},
+            "stash": {}
         }
 
         # Tell whether a bytecode has been accounted for in the certification
@@ -59,7 +60,6 @@ class BackendCertificator(AbstractCertificator):
             "CONSTANT": self._handle_constant,
             "MOV": self._handle_mov,
             "JAL": self._handle_function_call,
-            "CONDITIONAL": self._handle_conditional,
             "JZ": self._handle_control_flow,
 
             # 1:1 instructions
@@ -301,10 +301,7 @@ class BackendCertificator(AbstractCertificator):
 
         This method will mark the beginning of every expression that predicate
         conditionals (in the form of `JZ` bytecodes that *do not* evaluate the
-        `zero` register) by adding a "ghost" bytecode that preceeds it.
-
-        This "ghost" bytecode, `CONDITIONAL`, does not change the semantics
-        of the program, for it is just a marker.
+        `zero` register) by adding a "pending symbol" to the environment stash.
         """
 
         insertion_points = []
@@ -323,19 +320,8 @@ class BackendCertificator(AbstractCertificator):
             bytecode_ids_it_depends_on = self.register_to_bytecode_dependencies[register]
             insertion_points.append(min(bytecode_ids_it_depends_on) - 1)
 
-        # As we're adding based on the index, we must offset each `CONDITIONAL`
-        # we add
-        offset = 0
         for point in insertion_points:
-            self.program["code"].insert(
-                point + offset,
-                {
-                    "instruction": "CONDITIONAL",
-                    "metadata": {},
-                    "bytecode_id": None
-                }
-            )
-            offset += 1
+            self.environment["stash"][point] = [str(get_certificate_symbol("COND"))]
 
     @override
     def certificate(self, **kwargs) -> str:
@@ -366,6 +352,12 @@ class BackendCertificator(AbstractCertificator):
             if bytecode_id is not None and self.bytecode_status[bytecode_id]:
                 continue
 
+            # First, check if there are any pending exponents for this index
+            if idx in self.environment["stash"]:
+                pending_exponent = self.environment["stash"][idx]
+                computed_exponents.extend(pending_exponent)
+
+            # ...then handle this bytecode
             exponent = self._certificate_instruction(
                 bytecode=bytecode,
                 bytecode_idx=idx
@@ -1111,17 +1103,6 @@ class BackendCertificator(AbstractCertificator):
         self.bytecode_status[next_bytecode_id] = True
 
         return [exponent]
-    
-    def _handle_conditional(
-        self,
-        bytecode: dict[str, dict],
-        bytecode_idx: int
-    ) -> list[str]:
-        """
-        TODO: docstring
-        """
-
-        return [get_certificate_symbol("COND")]
 
     def _handle_control_flow(
         self,

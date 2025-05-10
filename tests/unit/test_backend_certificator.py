@@ -11,18 +11,7 @@ def test_init() -> None:
 
     assert backend_certificator.computed_certificate == []
     assert backend_certificator.initial_prime == 2
-
-    # Filter out "ghost" bytecodes
-    _program = {}
-    _program["functions"] = backend_certificator.program["functions"]
-    _program["global_vars"] = backend_certificator.program["global_vars"]
-    _program["data"] = backend_certificator.program["data"]
-    _program["code"] = [
-        bytecode
-        for bytecode in backend_certificator.program["code"]
-        if bytecode["instruction"] != "CONDITIONAL"
-    ]
-    assert _program == MACHINE_CODE
+    assert backend_certificator.program == MACHINE_CODE
 
     assert backend_certificator.environment == {
        "functions": {
@@ -44,7 +33,8 @@ def test_init() -> None:
             "0x60": {"addresses": {"0x60": "int"}, "prime": 29},
             "0x64": {"addresses": {"0x78": "int"}, "prime": 31},
             "0x8c": {"addresses": {"0x8c": "int"}, "prime": 37}
-        }
+        },
+        "stash": {101: ["23"]}
     }
 
 
