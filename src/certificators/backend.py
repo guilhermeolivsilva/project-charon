@@ -387,10 +387,6 @@ class BackendCertificator(AbstractCertificator):
                 for bytecode_id, status in self.bytecode_status.items()
                 if not status
             ])
-
-            print("------")
-            print("\n".join(computed_exponents))
-            print("------")
             raise ValueError(_err_msg)
 
         self.computed_certificate = [
@@ -401,13 +397,13 @@ class BackendCertificator(AbstractCertificator):
             )
         ]
 
-        # self.computed_certificate = "*".join(self.computed_certificate)
-        # self.computed_certificate = "*".join(
-        #     sorted(
-        #         self.computed_certificate.split("*"),
-        #         key=lambda x: int(x.split("^")[0])
-        #     )
-        # )
+        self.computed_certificate = "*".join(self.computed_certificate)
+        self.computed_certificate = "*".join(
+            sorted(
+                self.computed_certificate.split("*"),
+                key=lambda x: int(x.split("^")[0])
+            )
+        )
 
         return self.computed_certificate
 
@@ -1299,7 +1295,7 @@ class BackendCertificator(AbstractCertificator):
         else_bytecode = self.bytecode_list[bytecode_idx + if_jump_size - 1]
         else_jump_size = else_bytecode["metadata"]["jump_size"]
         idx_to_stash_else_end_at = bytecode_idx + if_jump_size - 1 + else_jump_size
-        else_end_symbol = [str(get_certificate_symbol("IF_END"))]
+        else_end_symbol = [str(get_certificate_symbol("ELSE_END"))]
         self.environment["stash"][idx_to_stash_else_end_at] = else_end_symbol
 
         # Produce the exponent
