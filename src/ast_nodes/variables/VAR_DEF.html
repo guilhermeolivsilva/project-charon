@@ -87,7 +87,7 @@
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_variable_size</span><span class="p">,</span> <span class="n">builtin_types</span><span class="p">,</span> <span class="n">TYPE_SYMBOLS_MAP</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_variable_size</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">VAR_DEF</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
@@ -221,27 +221,16 @@
 </span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
 </span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>        <span class="c1"># If this is a homogeneous variable (i.e., a simple variable or an</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>        <span class="c1"># array), then we know the type symbol upfront</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">builtin_types</span><span class="p">:</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>            <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>                    <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">][</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">]</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">builtin_types</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">])</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>                <span class="p">]</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>            <span class="p">}</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="c1"># If it is not, add to the certificator environment as `unknown`</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>            <span class="c1"># TODO: divide by the actual size of the type of this `VAR_DEF`</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>            <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>                    <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;__unknown_type__&quot;</span><span class="p">][</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">]</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>                <span class="p">]</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>            <span class="p">}</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>        <span class="c1"># Add all of the elements to the certificator environment as `unknown`</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>        <span class="c1"># TODO: divide by the actual size of the type of this `VAR_DEF`</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>                <span class="s2">&quot;__unknown_type__&quot;</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="p">]</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>        <span class="p">}</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -388,27 +377,16 @@
 </span><span id="VAR_DEF-140"><a href="#VAR_DEF-140"><span class="linenos">140</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
 </span><span id="VAR_DEF-141"><a href="#VAR_DEF-141"><span class="linenos">141</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="VAR_DEF-142"><a href="#VAR_DEF-142"><span class="linenos">142</span></a>
-</span><span id="VAR_DEF-143"><a href="#VAR_DEF-143"><span class="linenos">143</span></a>        <span class="c1"># If this is a homogeneous variable (i.e., a simple variable or an</span>
-</span><span id="VAR_DEF-144"><a href="#VAR_DEF-144"><span class="linenos">144</span></a>        <span class="c1"># array), then we know the type symbol upfront</span>
-</span><span id="VAR_DEF-145"><a href="#VAR_DEF-145"><span class="linenos">145</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">builtin_types</span><span class="p">:</span>
-</span><span id="VAR_DEF-146"><a href="#VAR_DEF-146"><span class="linenos">146</span></a>            <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="VAR_DEF-147"><a href="#VAR_DEF-147"><span class="linenos">147</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="VAR_DEF-148"><a href="#VAR_DEF-148"><span class="linenos">148</span></a>                    <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">][</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">]</span>
-</span><span id="VAR_DEF-149"><a href="#VAR_DEF-149"><span class="linenos">149</span></a>                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">builtin_types</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">])</span>
-</span><span id="VAR_DEF-150"><a href="#VAR_DEF-150"><span class="linenos">150</span></a>                <span class="p">]</span>
-</span><span id="VAR_DEF-151"><a href="#VAR_DEF-151"><span class="linenos">151</span></a>            <span class="p">}</span>
-</span><span id="VAR_DEF-152"><a href="#VAR_DEF-152"><span class="linenos">152</span></a>
-</span><span id="VAR_DEF-153"><a href="#VAR_DEF-153"><span class="linenos">153</span></a>        <span class="c1"># If it is not, add to the certificator environment as `unknown`</span>
-</span><span id="VAR_DEF-154"><a href="#VAR_DEF-154"><span class="linenos">154</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="VAR_DEF-155"><a href="#VAR_DEF-155"><span class="linenos">155</span></a>            <span class="c1"># TODO: divide by the actual size of the type of this `VAR_DEF`</span>
-</span><span id="VAR_DEF-156"><a href="#VAR_DEF-156"><span class="linenos">156</span></a>            <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="VAR_DEF-157"><a href="#VAR_DEF-157"><span class="linenos">157</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="VAR_DEF-158"><a href="#VAR_DEF-158"><span class="linenos">158</span></a>                    <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;__unknown_type__&quot;</span><span class="p">][</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">]</span>
-</span><span id="VAR_DEF-159"><a href="#VAR_DEF-159"><span class="linenos">159</span></a>                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
-</span><span id="VAR_DEF-160"><a href="#VAR_DEF-160"><span class="linenos">160</span></a>                <span class="p">]</span>
-</span><span id="VAR_DEF-161"><a href="#VAR_DEF-161"><span class="linenos">161</span></a>            <span class="p">}</span>
-</span><span id="VAR_DEF-162"><a href="#VAR_DEF-162"><span class="linenos">162</span></a>
-</span><span id="VAR_DEF-163"><a href="#VAR_DEF-163"><span class="linenos">163</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="VAR_DEF-143"><a href="#VAR_DEF-143"><span class="linenos">143</span></a>        <span class="c1"># Add all of the elements to the certificator environment as `unknown`</span>
+</span><span id="VAR_DEF-144"><a href="#VAR_DEF-144"><span class="linenos">144</span></a>        <span class="c1"># TODO: divide by the actual size of the type of this `VAR_DEF`</span>
+</span><span id="VAR_DEF-145"><a href="#VAR_DEF-145"><span class="linenos">145</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="VAR_DEF-146"><a href="#VAR_DEF-146"><span class="linenos">146</span></a>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="VAR_DEF-147"><a href="#VAR_DEF-147"><span class="linenos">147</span></a>                <span class="s2">&quot;__unknown_type__&quot;</span>
+</span><span id="VAR_DEF-148"><a href="#VAR_DEF-148"><span class="linenos">148</span></a>                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
+</span><span id="VAR_DEF-149"><a href="#VAR_DEF-149"><span class="linenos">149</span></a>            <span class="p">]</span>
+</span><span id="VAR_DEF-150"><a href="#VAR_DEF-150"><span class="linenos">150</span></a>        <span class="p">}</span>
+</span><span id="VAR_DEF-151"><a href="#VAR_DEF-151"><span class="linenos">151</span></a>
+</span><span id="VAR_DEF-152"><a href="#VAR_DEF-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -671,27 +649,16 @@ environment : dict[int, str]
 </span><span id="VAR_DEF.certificate-140"><a href="#VAR_DEF.certificate-140"><span class="linenos">140</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
 </span><span id="VAR_DEF.certificate-141"><a href="#VAR_DEF.certificate-141"><span class="linenos">141</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="VAR_DEF.certificate-142"><a href="#VAR_DEF.certificate-142"><span class="linenos">142</span></a>
-</span><span id="VAR_DEF.certificate-143"><a href="#VAR_DEF.certificate-143"><span class="linenos">143</span></a>        <span class="c1"># If this is a homogeneous variable (i.e., a simple variable or an</span>
-</span><span id="VAR_DEF.certificate-144"><a href="#VAR_DEF.certificate-144"><span class="linenos">144</span></a>        <span class="c1"># array), then we know the type symbol upfront</span>
-</span><span id="VAR_DEF.certificate-145"><a href="#VAR_DEF.certificate-145"><span class="linenos">145</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">builtin_types</span><span class="p">:</span>
-</span><span id="VAR_DEF.certificate-146"><a href="#VAR_DEF.certificate-146"><span class="linenos">146</span></a>            <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="VAR_DEF.certificate-147"><a href="#VAR_DEF.certificate-147"><span class="linenos">147</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="VAR_DEF.certificate-148"><a href="#VAR_DEF.certificate-148"><span class="linenos">148</span></a>                    <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">][</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">]</span>
-</span><span id="VAR_DEF.certificate-149"><a href="#VAR_DEF.certificate-149"><span class="linenos">149</span></a>                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">builtin_types</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">])</span>
-</span><span id="VAR_DEF.certificate-150"><a href="#VAR_DEF.certificate-150"><span class="linenos">150</span></a>                <span class="p">]</span>
-</span><span id="VAR_DEF.certificate-151"><a href="#VAR_DEF.certificate-151"><span class="linenos">151</span></a>            <span class="p">}</span>
-</span><span id="VAR_DEF.certificate-152"><a href="#VAR_DEF.certificate-152"><span class="linenos">152</span></a>
-</span><span id="VAR_DEF.certificate-153"><a href="#VAR_DEF.certificate-153"><span class="linenos">153</span></a>        <span class="c1"># If it is not, add to the certificator environment as `unknown`</span>
-</span><span id="VAR_DEF.certificate-154"><a href="#VAR_DEF.certificate-154"><span class="linenos">154</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="VAR_DEF.certificate-155"><a href="#VAR_DEF.certificate-155"><span class="linenos">155</span></a>            <span class="c1"># TODO: divide by the actual size of the type of this `VAR_DEF`</span>
-</span><span id="VAR_DEF.certificate-156"><a href="#VAR_DEF.certificate-156"><span class="linenos">156</span></a>            <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="VAR_DEF.certificate-157"><a href="#VAR_DEF.certificate-157"><span class="linenos">157</span></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="VAR_DEF.certificate-158"><a href="#VAR_DEF.certificate-158"><span class="linenos">158</span></a>                    <span class="n">TYPE_SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;__unknown_type__&quot;</span><span class="p">][</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">]</span>
-</span><span id="VAR_DEF.certificate-159"><a href="#VAR_DEF.certificate-159"><span class="linenos">159</span></a>                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
-</span><span id="VAR_DEF.certificate-160"><a href="#VAR_DEF.certificate-160"><span class="linenos">160</span></a>                <span class="p">]</span>
-</span><span id="VAR_DEF.certificate-161"><a href="#VAR_DEF.certificate-161"><span class="linenos">161</span></a>            <span class="p">}</span>
-</span><span id="VAR_DEF.certificate-162"><a href="#VAR_DEF.certificate-162"><span class="linenos">162</span></a>
-</span><span id="VAR_DEF.certificate-163"><a href="#VAR_DEF.certificate-163"><span class="linenos">163</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="VAR_DEF.certificate-143"><a href="#VAR_DEF.certificate-143"><span class="linenos">143</span></a>        <span class="c1"># Add all of the elements to the certificator environment as `unknown`</span>
+</span><span id="VAR_DEF.certificate-144"><a href="#VAR_DEF.certificate-144"><span class="linenos">144</span></a>        <span class="c1"># TODO: divide by the actual size of the type of this `VAR_DEF`</span>
+</span><span id="VAR_DEF.certificate-145"><a href="#VAR_DEF.certificate-145"><span class="linenos">145</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="VAR_DEF.certificate-146"><a href="#VAR_DEF.certificate-146"><span class="linenos">146</span></a>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="VAR_DEF.certificate-147"><a href="#VAR_DEF.certificate-147"><span class="linenos">147</span></a>                <span class="s2">&quot;__unknown_type__&quot;</span>
+</span><span id="VAR_DEF.certificate-148"><a href="#VAR_DEF.certificate-148"><span class="linenos">148</span></a>                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
+</span><span id="VAR_DEF.certificate-149"><a href="#VAR_DEF.certificate-149"><span class="linenos">149</span></a>            <span class="p">]</span>
+</span><span id="VAR_DEF.certificate-150"><a href="#VAR_DEF.certificate-150"><span class="linenos">150</span></a>        <span class="p">}</span>
+</span><span id="VAR_DEF.certificate-151"><a href="#VAR_DEF.certificate-151"><span class="linenos">151</span></a>
+</span><span id="VAR_DEF.certificate-152"><a href="#VAR_DEF.certificate-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
