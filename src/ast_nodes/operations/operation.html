@@ -87,7 +87,7 @@
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.ast_nodes.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">next_prime</span><span class="p">,</span> <span class="n">type_cast</span><span class="p">,</span> <span class="n">TYPE_SYMBOLS_MAP</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">type_cast</span><span class="p">,</span> <span class="n">TYPE_SYMBOLS_MAP</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Operation</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
@@ -236,124 +236,111 @@
 </span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>    <span class="nd">@override</span>
 </span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        Compute the certificate of the current `Operation`, and set this attribute.</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        For `Operation` nodes, certificate the `lhs` and `rhs` children first,</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        and then the `Operation` itself.</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        Parameters</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">        ----------</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">            the source code.</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">        Returns</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">        -------</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">        : int</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        Compute the certificate of the current `Operation`, and set this attribute.</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        For `Operation` nodes, certificate the `lhs` and `rhs` children first,</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        and then the `Operation` itself.</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        Parameters</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        ----------</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">        Returns</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">        -------</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="n">lhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>        <span class="n">rhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
 </span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>        <span class="p">(</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>            <span class="n">certificator_env</span>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>        <span class="n">lhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>        <span class="p">(</span>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>            <span class="n">certificator_env</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>        <span class="n">rhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="n">operation_certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>            <span class="n">operation_certificate_label</span>
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">lhs_certificate_label</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">rhs_certificate_label</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>        <span class="p">)</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>        <span class="n">operation_certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>            <span class="o">*</span><span class="n">lhs_certificate_label</span><span class="p">,</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>            <span class="o">*</span><span class="n">rhs_certificate_label</span><span class="p">,</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>            <span class="n">operation_certificate_label</span><span class="p">,</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>        <span class="p">]</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_operation_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">        Compute the type this `Operation` will return.</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">        The type is set to be the least restrictive between the `lhs` and `rhs`</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">        children Nodes -- i.e., if `lhs` is `float`, and `rhs` is `int`, return</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">        `float`.</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">        This method also type checks: if the node does not support floating</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">        point numbers, but its type is `float`, it will raise a TypeError.</span>
 </span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>
-</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_operation_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="sd">        Compute the type this `Operation` will return.</span>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="sd">        The type is set to be the least restrictive between the `lhs` and `rhs`</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="sd">        children Nodes -- i.e., if `lhs` is `float`, and `rhs` is `int`, return</span>
-</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a><span class="sd">        `float`.</span>
-</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>
-</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="sd">        This method also type checks: if the node does not support floating</span>
-</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a><span class="sd">        point numbers, but its type is `float`, it will raise a TypeError.</span>
-</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>
-</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a><span class="sd">        Returns</span>
-</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a><span class="sd">        -------</span>
-</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a><span class="sd">        operation_type : str</span>
-</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a><span class="sd">            The type of this Operation.</span>
-</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>
-</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a><span class="sd">        Raises</span>
-</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a><span class="sd">        ------</span>
-</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="sd">        TypeError</span>
-</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a><span class="sd">            - Raised if the `type` is detected to be `float`, but</span>
-</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a><span class="sd">            `supports_float` is set to `False`.</span>
-</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">        Returns</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">        -------</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="sd">        operation_type : str</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">            The type of this Operation.</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a><span class="sd">        Raises</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="sd">        ------</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="sd">        TypeError</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a><span class="sd">            - Raised if the `type` is detected to be `float`, but</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="sd">            `supports_float` is set to `False`.</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>        <span class="n">operation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>        <span class="n">lhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>        <span class="n">lhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>        <span class="n">rhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>        <span class="n">rhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a>        <span class="k">if</span> <span class="n">lhs_type_symbol</span> <span class="o">&gt;</span> <span class="n">rhs_type_symbol</span><span class="p">:</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">lhs_type</span>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">rhs_type</span>
 </span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>
-</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>        <span class="n">operation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>
-</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>        <span class="n">lhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
-</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>        <span class="n">lhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
-</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>
-</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>        <span class="n">rhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
-</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>        <span class="n">rhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>        <span class="k">if</span> <span class="n">operation_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_float</span><span class="p">:</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not support floating point &quot;</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>                <span class="s2">&quot;numbers. Check the parameters.&quot;</span>
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>            <span class="p">)</span>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>        <span class="k">return</span> <span class="n">operation_type</span>
 </span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>
-</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>        <span class="k">if</span> <span class="n">lhs_type_symbol</span> <span class="o">&gt;</span> <span class="n">rhs_type_symbol</span><span class="p">:</span>
-</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">lhs_type</span>
-</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">rhs_type</span>
-</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>
-</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>        <span class="k">if</span> <span class="n">operation_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_float</span><span class="p">:</span>
-</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not support floating point &quot;</span>
-</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>                <span class="s2">&quot;numbers. Check the parameters.&quot;</span>
-</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>            <span class="p">)</span>
-</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>
-</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>        <span class="k">return</span> <span class="n">operation_type</span>
-</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>
-</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_instruction</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a><span class="sd">        Compute `instruction` attribute to be used by an Operation node.</span>
-</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>
-</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a><span class="sd">        Parameters</span>
-</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a><span class="sd">        ----------</span>
-</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a><span class="sd">        base_instruction : str</span>
-</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a><span class="sd">            The base instruction. It will receive an `F` as preffix if the</span>
-</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a><span class="sd">            Operation supports floating point numbers and is of `float` type.</span>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_instruction</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a><span class="sd">        Compute `instruction` attribute to be used by an Operation node.</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a><span class="sd">        Parameters</span>
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a><span class="sd">        ----------</span>
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a><span class="sd">        base_instruction : str</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a><span class="sd">            The base instruction. It will receive an `F` as preffix if the</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a><span class="sd">            Operation supports floating point numbers and is of `float` type.</span>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a><span class="sd">        Returns</span>
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a><span class="sd">        -------</span>
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a><span class="sd">        instruction : str</span>
+</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a><span class="sd">            The instruction to be used by the Operation node.</span>
+</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>
+</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>        <span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a>
+</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;F</span><span class="si">{</span><span class="n">base_instruction</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="n">base_instruction</span>
 </span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>
-</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a><span class="sd">        Returns</span>
-</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a><span class="sd">        -------</span>
-</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a><span class="sd">        instruction : str</span>
-</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a><span class="sd">            The instruction to be used by the Operation node.</span>
-</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>
-</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>        <span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>
-</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
-</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;F</span><span class="si">{</span><span class="n">base_instruction</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="n">base_instruction</span>
-</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a>
-</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a>        <span class="k">return</span> <span class="n">instruction</span>
+</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a>        <span class="k">return</span> <span class="n">instruction</span>
 </span></pre></div>
 
 
@@ -515,124 +502,111 @@
 </span><span id="Operation-155"><a href="#Operation-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
 </span><span id="Operation-156"><a href="#Operation-156"><span class="linenos">156</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="Operation-157"><a href="#Operation-157"><span class="linenos">157</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="Operation-158"><a href="#Operation-158"><span class="linenos">158</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="Operation-159"><a href="#Operation-159"><span class="linenos">159</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="Operation-160"><a href="#Operation-160"><span class="linenos">160</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="Operation-161"><a href="#Operation-161"><span class="linenos">161</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Operation-162"><a href="#Operation-162"><span class="linenos">162</span></a><span class="sd">        Compute the certificate of the current `Operation`, and set this attribute.</span>
-</span><span id="Operation-163"><a href="#Operation-163"><span class="linenos">163</span></a>
-</span><span id="Operation-164"><a href="#Operation-164"><span class="linenos">164</span></a><span class="sd">        For `Operation` nodes, certificate the `lhs` and `rhs` children first,</span>
-</span><span id="Operation-165"><a href="#Operation-165"><span class="linenos">165</span></a><span class="sd">        and then the `Operation` itself.</span>
-</span><span id="Operation-166"><a href="#Operation-166"><span class="linenos">166</span></a>
-</span><span id="Operation-167"><a href="#Operation-167"><span class="linenos">167</span></a><span class="sd">        Parameters</span>
-</span><span id="Operation-168"><a href="#Operation-168"><span class="linenos">168</span></a><span class="sd">        ----------</span>
-</span><span id="Operation-169"><a href="#Operation-169"><span class="linenos">169</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="Operation-170"><a href="#Operation-170"><span class="linenos">170</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="Operation-171"><a href="#Operation-171"><span class="linenos">171</span></a><span class="sd">            the source code.</span>
-</span><span id="Operation-172"><a href="#Operation-172"><span class="linenos">172</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Operation-173"><a href="#Operation-173"><span class="linenos">173</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="Operation-174"><a href="#Operation-174"><span class="linenos">174</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="Operation-175"><a href="#Operation-175"><span class="linenos">175</span></a>
-</span><span id="Operation-176"><a href="#Operation-176"><span class="linenos">176</span></a><span class="sd">        Returns</span>
-</span><span id="Operation-177"><a href="#Operation-177"><span class="linenos">177</span></a><span class="sd">        -------</span>
-</span><span id="Operation-178"><a href="#Operation-178"><span class="linenos">178</span></a><span class="sd">        : int</span>
-</span><span id="Operation-179"><a href="#Operation-179"><span class="linenos">179</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="Operation-180"><a href="#Operation-180"><span class="linenos">180</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Operation-181"><a href="#Operation-181"><span class="linenos">181</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="Operation-182"><a href="#Operation-182"><span class="linenos">182</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="Operation-183"><a href="#Operation-183"><span class="linenos">183</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Operation-158"><a href="#Operation-158"><span class="linenos">158</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="Operation-159"><a href="#Operation-159"><span class="linenos">159</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="Operation-160"><a href="#Operation-160"><span class="linenos">160</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Operation-161"><a href="#Operation-161"><span class="linenos">161</span></a><span class="sd">        Compute the certificate of the current `Operation`, and set this attribute.</span>
+</span><span id="Operation-162"><a href="#Operation-162"><span class="linenos">162</span></a>
+</span><span id="Operation-163"><a href="#Operation-163"><span class="linenos">163</span></a><span class="sd">        For `Operation` nodes, certificate the `lhs` and `rhs` children first,</span>
+</span><span id="Operation-164"><a href="#Operation-164"><span class="linenos">164</span></a><span class="sd">        and then the `Operation` itself.</span>
+</span><span id="Operation-165"><a href="#Operation-165"><span class="linenos">165</span></a>
+</span><span id="Operation-166"><a href="#Operation-166"><span class="linenos">166</span></a><span class="sd">        Parameters</span>
+</span><span id="Operation-167"><a href="#Operation-167"><span class="linenos">167</span></a><span class="sd">        ----------</span>
+</span><span id="Operation-168"><a href="#Operation-168"><span class="linenos">168</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="Operation-169"><a href="#Operation-169"><span class="linenos">169</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="Operation-170"><a href="#Operation-170"><span class="linenos">170</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="Operation-171"><a href="#Operation-171"><span class="linenos">171</span></a>
+</span><span id="Operation-172"><a href="#Operation-172"><span class="linenos">172</span></a><span class="sd">        Returns</span>
+</span><span id="Operation-173"><a href="#Operation-173"><span class="linenos">173</span></a><span class="sd">        -------</span>
+</span><span id="Operation-174"><a href="#Operation-174"><span class="linenos">174</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="Operation-175"><a href="#Operation-175"><span class="linenos">175</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="Operation-176"><a href="#Operation-176"><span class="linenos">176</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="Operation-177"><a href="#Operation-177"><span class="linenos">177</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Operation-178"><a href="#Operation-178"><span class="linenos">178</span></a>
+</span><span id="Operation-179"><a href="#Operation-179"><span class="linenos">179</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="Operation-180"><a href="#Operation-180"><span class="linenos">180</span></a>        <span class="n">lhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="Operation-181"><a href="#Operation-181"><span class="linenos">181</span></a>
+</span><span id="Operation-182"><a href="#Operation-182"><span class="linenos">182</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="Operation-183"><a href="#Operation-183"><span class="linenos">183</span></a>        <span class="n">rhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
 </span><span id="Operation-184"><a href="#Operation-184"><span class="linenos">184</span></a>
-</span><span id="Operation-185"><a href="#Operation-185"><span class="linenos">185</span></a>        <span class="p">(</span>
-</span><span id="Operation-186"><a href="#Operation-186"><span class="linenos">186</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="Operation-187"><a href="#Operation-187"><span class="linenos">187</span></a>            <span class="n">certificator_env</span>
-</span><span id="Operation-188"><a href="#Operation-188"><span class="linenos">188</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="Operation-189"><a href="#Operation-189"><span class="linenos">189</span></a>        <span class="n">lhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-</span><span id="Operation-190"><a href="#Operation-190"><span class="linenos">190</span></a>
-</span><span id="Operation-191"><a href="#Operation-191"><span class="linenos">191</span></a>        <span class="p">(</span>
-</span><span id="Operation-192"><a href="#Operation-192"><span class="linenos">192</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="Operation-193"><a href="#Operation-193"><span class="linenos">193</span></a>            <span class="n">certificator_env</span>
-</span><span id="Operation-194"><a href="#Operation-194"><span class="linenos">194</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="Operation-195"><a href="#Operation-195"><span class="linenos">195</span></a>        <span class="n">rhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-</span><span id="Operation-196"><a href="#Operation-196"><span class="linenos">196</span></a>
-</span><span id="Operation-197"><a href="#Operation-197"><span class="linenos">197</span></a>        <span class="n">operation_certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="Operation-198"><a href="#Operation-198"><span class="linenos">198</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="Operation-199"><a href="#Operation-199"><span class="linenos">199</span></a>
-</span><span id="Operation-200"><a href="#Operation-200"><span class="linenos">200</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="Operation-201"><a href="#Operation-201"><span class="linenos">201</span></a>            <span class="n">operation_certificate_label</span>
-</span><span id="Operation-202"><a href="#Operation-202"><span class="linenos">202</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">lhs_certificate_label</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="Operation-203"><a href="#Operation-203"><span class="linenos">203</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">rhs_certificate_label</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="Operation-204"><a href="#Operation-204"><span class="linenos">204</span></a>        <span class="p">)</span>
+</span><span id="Operation-185"><a href="#Operation-185"><span class="linenos">185</span></a>        <span class="n">operation_certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Operation-186"><a href="#Operation-186"><span class="linenos">186</span></a>
+</span><span id="Operation-187"><a href="#Operation-187"><span class="linenos">187</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="Operation-188"><a href="#Operation-188"><span class="linenos">188</span></a>            <span class="o">*</span><span class="n">lhs_certificate_label</span><span class="p">,</span>
+</span><span id="Operation-189"><a href="#Operation-189"><span class="linenos">189</span></a>            <span class="o">*</span><span class="n">rhs_certificate_label</span><span class="p">,</span>
+</span><span id="Operation-190"><a href="#Operation-190"><span class="linenos">190</span></a>            <span class="n">operation_certificate_label</span><span class="p">,</span>
+</span><span id="Operation-191"><a href="#Operation-191"><span class="linenos">191</span></a>        <span class="p">]</span>
+</span><span id="Operation-192"><a href="#Operation-192"><span class="linenos">192</span></a>
+</span><span id="Operation-193"><a href="#Operation-193"><span class="linenos">193</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="Operation-194"><a href="#Operation-194"><span class="linenos">194</span></a>
+</span><span id="Operation-195"><a href="#Operation-195"><span class="linenos">195</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_operation_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="Operation-196"><a href="#Operation-196"><span class="linenos">196</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Operation-197"><a href="#Operation-197"><span class="linenos">197</span></a><span class="sd">        Compute the type this `Operation` will return.</span>
+</span><span id="Operation-198"><a href="#Operation-198"><span class="linenos">198</span></a>
+</span><span id="Operation-199"><a href="#Operation-199"><span class="linenos">199</span></a><span class="sd">        The type is set to be the least restrictive between the `lhs` and `rhs`</span>
+</span><span id="Operation-200"><a href="#Operation-200"><span class="linenos">200</span></a><span class="sd">        children Nodes -- i.e., if `lhs` is `float`, and `rhs` is `int`, return</span>
+</span><span id="Operation-201"><a href="#Operation-201"><span class="linenos">201</span></a><span class="sd">        `float`.</span>
+</span><span id="Operation-202"><a href="#Operation-202"><span class="linenos">202</span></a>
+</span><span id="Operation-203"><a href="#Operation-203"><span class="linenos">203</span></a><span class="sd">        This method also type checks: if the node does not support floating</span>
+</span><span id="Operation-204"><a href="#Operation-204"><span class="linenos">204</span></a><span class="sd">        point numbers, but its type is `float`, it will raise a TypeError.</span>
 </span><span id="Operation-205"><a href="#Operation-205"><span class="linenos">205</span></a>
-</span><span id="Operation-206"><a href="#Operation-206"><span class="linenos">206</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
-</span><span id="Operation-207"><a href="#Operation-207"><span class="linenos">207</span></a>
-</span><span id="Operation-208"><a href="#Operation-208"><span class="linenos">208</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_operation_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="Operation-209"><a href="#Operation-209"><span class="linenos">209</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Operation-210"><a href="#Operation-210"><span class="linenos">210</span></a><span class="sd">        Compute the type this `Operation` will return.</span>
-</span><span id="Operation-211"><a href="#Operation-211"><span class="linenos">211</span></a>
-</span><span id="Operation-212"><a href="#Operation-212"><span class="linenos">212</span></a><span class="sd">        The type is set to be the least restrictive between the `lhs` and `rhs`</span>
-</span><span id="Operation-213"><a href="#Operation-213"><span class="linenos">213</span></a><span class="sd">        children Nodes -- i.e., if `lhs` is `float`, and `rhs` is `int`, return</span>
-</span><span id="Operation-214"><a href="#Operation-214"><span class="linenos">214</span></a><span class="sd">        `float`.</span>
-</span><span id="Operation-215"><a href="#Operation-215"><span class="linenos">215</span></a>
-</span><span id="Operation-216"><a href="#Operation-216"><span class="linenos">216</span></a><span class="sd">        This method also type checks: if the node does not support floating</span>
-</span><span id="Operation-217"><a href="#Operation-217"><span class="linenos">217</span></a><span class="sd">        point numbers, but its type is `float`, it will raise a TypeError.</span>
-</span><span id="Operation-218"><a href="#Operation-218"><span class="linenos">218</span></a>
-</span><span id="Operation-219"><a href="#Operation-219"><span class="linenos">219</span></a><span class="sd">        Returns</span>
-</span><span id="Operation-220"><a href="#Operation-220"><span class="linenos">220</span></a><span class="sd">        -------</span>
-</span><span id="Operation-221"><a href="#Operation-221"><span class="linenos">221</span></a><span class="sd">        operation_type : str</span>
-</span><span id="Operation-222"><a href="#Operation-222"><span class="linenos">222</span></a><span class="sd">            The type of this Operation.</span>
-</span><span id="Operation-223"><a href="#Operation-223"><span class="linenos">223</span></a>
-</span><span id="Operation-224"><a href="#Operation-224"><span class="linenos">224</span></a><span class="sd">        Raises</span>
-</span><span id="Operation-225"><a href="#Operation-225"><span class="linenos">225</span></a><span class="sd">        ------</span>
-</span><span id="Operation-226"><a href="#Operation-226"><span class="linenos">226</span></a><span class="sd">        TypeError</span>
-</span><span id="Operation-227"><a href="#Operation-227"><span class="linenos">227</span></a><span class="sd">            - Raised if the `type` is detected to be `float`, but</span>
-</span><span id="Operation-228"><a href="#Operation-228"><span class="linenos">228</span></a><span class="sd">            `supports_float` is set to `False`.</span>
-</span><span id="Operation-229"><a href="#Operation-229"><span class="linenos">229</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Operation-206"><a href="#Operation-206"><span class="linenos">206</span></a><span class="sd">        Returns</span>
+</span><span id="Operation-207"><a href="#Operation-207"><span class="linenos">207</span></a><span class="sd">        -------</span>
+</span><span id="Operation-208"><a href="#Operation-208"><span class="linenos">208</span></a><span class="sd">        operation_type : str</span>
+</span><span id="Operation-209"><a href="#Operation-209"><span class="linenos">209</span></a><span class="sd">            The type of this Operation.</span>
+</span><span id="Operation-210"><a href="#Operation-210"><span class="linenos">210</span></a>
+</span><span id="Operation-211"><a href="#Operation-211"><span class="linenos">211</span></a><span class="sd">        Raises</span>
+</span><span id="Operation-212"><a href="#Operation-212"><span class="linenos">212</span></a><span class="sd">        ------</span>
+</span><span id="Operation-213"><a href="#Operation-213"><span class="linenos">213</span></a><span class="sd">        TypeError</span>
+</span><span id="Operation-214"><a href="#Operation-214"><span class="linenos">214</span></a><span class="sd">            - Raised if the `type` is detected to be `float`, but</span>
+</span><span id="Operation-215"><a href="#Operation-215"><span class="linenos">215</span></a><span class="sd">            `supports_float` is set to `False`.</span>
+</span><span id="Operation-216"><a href="#Operation-216"><span class="linenos">216</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Operation-217"><a href="#Operation-217"><span class="linenos">217</span></a>
+</span><span id="Operation-218"><a href="#Operation-218"><span class="linenos">218</span></a>        <span class="n">operation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="Operation-219"><a href="#Operation-219"><span class="linenos">219</span></a>
+</span><span id="Operation-220"><a href="#Operation-220"><span class="linenos">220</span></a>        <span class="n">lhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+</span><span id="Operation-221"><a href="#Operation-221"><span class="linenos">221</span></a>        <span class="n">lhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
+</span><span id="Operation-222"><a href="#Operation-222"><span class="linenos">222</span></a>
+</span><span id="Operation-223"><a href="#Operation-223"><span class="linenos">223</span></a>        <span class="n">rhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+</span><span id="Operation-224"><a href="#Operation-224"><span class="linenos">224</span></a>        <span class="n">rhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
+</span><span id="Operation-225"><a href="#Operation-225"><span class="linenos">225</span></a>
+</span><span id="Operation-226"><a href="#Operation-226"><span class="linenos">226</span></a>        <span class="k">if</span> <span class="n">lhs_type_symbol</span> <span class="o">&gt;</span> <span class="n">rhs_type_symbol</span><span class="p">:</span>
+</span><span id="Operation-227"><a href="#Operation-227"><span class="linenos">227</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">lhs_type</span>
+</span><span id="Operation-228"><a href="#Operation-228"><span class="linenos">228</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="Operation-229"><a href="#Operation-229"><span class="linenos">229</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">rhs_type</span>
 </span><span id="Operation-230"><a href="#Operation-230"><span class="linenos">230</span></a>
-</span><span id="Operation-231"><a href="#Operation-231"><span class="linenos">231</span></a>        <span class="n">operation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span id="Operation-232"><a href="#Operation-232"><span class="linenos">232</span></a>
-</span><span id="Operation-233"><a href="#Operation-233"><span class="linenos">233</span></a>        <span class="n">lhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
-</span><span id="Operation-234"><a href="#Operation-234"><span class="linenos">234</span></a>        <span class="n">lhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
-</span><span id="Operation-235"><a href="#Operation-235"><span class="linenos">235</span></a>
-</span><span id="Operation-236"><a href="#Operation-236"><span class="linenos">236</span></a>        <span class="n">rhs_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
-</span><span id="Operation-237"><a href="#Operation-237"><span class="linenos">237</span></a>        <span class="n">rhs_type_symbol</span> <span class="o">=</span> <span class="n">TYPE_SYMBOLS_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rhs_type</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_symbol&quot;</span><span class="p">)</span>
+</span><span id="Operation-231"><a href="#Operation-231"><span class="linenos">231</span></a>        <span class="k">if</span> <span class="n">operation_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_float</span><span class="p">:</span>
+</span><span id="Operation-232"><a href="#Operation-232"><span class="linenos">232</span></a>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+</span><span id="Operation-233"><a href="#Operation-233"><span class="linenos">233</span></a>                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not support floating point &quot;</span>
+</span><span id="Operation-234"><a href="#Operation-234"><span class="linenos">234</span></a>                <span class="s2">&quot;numbers. Check the parameters.&quot;</span>
+</span><span id="Operation-235"><a href="#Operation-235"><span class="linenos">235</span></a>            <span class="p">)</span>
+</span><span id="Operation-236"><a href="#Operation-236"><span class="linenos">236</span></a>
+</span><span id="Operation-237"><a href="#Operation-237"><span class="linenos">237</span></a>        <span class="k">return</span> <span class="n">operation_type</span>
 </span><span id="Operation-238"><a href="#Operation-238"><span class="linenos">238</span></a>
-</span><span id="Operation-239"><a href="#Operation-239"><span class="linenos">239</span></a>        <span class="k">if</span> <span class="n">lhs_type_symbol</span> <span class="o">&gt;</span> <span class="n">rhs_type_symbol</span><span class="p">:</span>
-</span><span id="Operation-240"><a href="#Operation-240"><span class="linenos">240</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">lhs_type</span>
-</span><span id="Operation-241"><a href="#Operation-241"><span class="linenos">241</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="Operation-242"><a href="#Operation-242"><span class="linenos">242</span></a>            <span class="n">operation_type</span> <span class="o">=</span> <span class="n">rhs_type</span>
-</span><span id="Operation-243"><a href="#Operation-243"><span class="linenos">243</span></a>
-</span><span id="Operation-244"><a href="#Operation-244"><span class="linenos">244</span></a>        <span class="k">if</span> <span class="n">operation_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_float</span><span class="p">:</span>
-</span><span id="Operation-245"><a href="#Operation-245"><span class="linenos">245</span></a>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-</span><span id="Operation-246"><a href="#Operation-246"><span class="linenos">246</span></a>                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not support floating point &quot;</span>
-</span><span id="Operation-247"><a href="#Operation-247"><span class="linenos">247</span></a>                <span class="s2">&quot;numbers. Check the parameters.&quot;</span>
-</span><span id="Operation-248"><a href="#Operation-248"><span class="linenos">248</span></a>            <span class="p">)</span>
-</span><span id="Operation-249"><a href="#Operation-249"><span class="linenos">249</span></a>
-</span><span id="Operation-250"><a href="#Operation-250"><span class="linenos">250</span></a>        <span class="k">return</span> <span class="n">operation_type</span>
-</span><span id="Operation-251"><a href="#Operation-251"><span class="linenos">251</span></a>
-</span><span id="Operation-252"><a href="#Operation-252"><span class="linenos">252</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_instruction</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="Operation-253"><a href="#Operation-253"><span class="linenos">253</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Operation-254"><a href="#Operation-254"><span class="linenos">254</span></a><span class="sd">        Compute `instruction` attribute to be used by an Operation node.</span>
-</span><span id="Operation-255"><a href="#Operation-255"><span class="linenos">255</span></a>
-</span><span id="Operation-256"><a href="#Operation-256"><span class="linenos">256</span></a><span class="sd">        Parameters</span>
-</span><span id="Operation-257"><a href="#Operation-257"><span class="linenos">257</span></a><span class="sd">        ----------</span>
-</span><span id="Operation-258"><a href="#Operation-258"><span class="linenos">258</span></a><span class="sd">        base_instruction : str</span>
-</span><span id="Operation-259"><a href="#Operation-259"><span class="linenos">259</span></a><span class="sd">            The base instruction. It will receive an `F` as preffix if the</span>
-</span><span id="Operation-260"><a href="#Operation-260"><span class="linenos">260</span></a><span class="sd">            Operation supports floating point numbers and is of `float` type.</span>
+</span><span id="Operation-239"><a href="#Operation-239"><span class="linenos">239</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_instruction</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="Operation-240"><a href="#Operation-240"><span class="linenos">240</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Operation-241"><a href="#Operation-241"><span class="linenos">241</span></a><span class="sd">        Compute `instruction` attribute to be used by an Operation node.</span>
+</span><span id="Operation-242"><a href="#Operation-242"><span class="linenos">242</span></a>
+</span><span id="Operation-243"><a href="#Operation-243"><span class="linenos">243</span></a><span class="sd">        Parameters</span>
+</span><span id="Operation-244"><a href="#Operation-244"><span class="linenos">244</span></a><span class="sd">        ----------</span>
+</span><span id="Operation-245"><a href="#Operation-245"><span class="linenos">245</span></a><span class="sd">        base_instruction : str</span>
+</span><span id="Operation-246"><a href="#Operation-246"><span class="linenos">246</span></a><span class="sd">            The base instruction. It will receive an `F` as preffix if the</span>
+</span><span id="Operation-247"><a href="#Operation-247"><span class="linenos">247</span></a><span class="sd">            Operation supports floating point numbers and is of `float` type.</span>
+</span><span id="Operation-248"><a href="#Operation-248"><span class="linenos">248</span></a>
+</span><span id="Operation-249"><a href="#Operation-249"><span class="linenos">249</span></a><span class="sd">        Returns</span>
+</span><span id="Operation-250"><a href="#Operation-250"><span class="linenos">250</span></a><span class="sd">        -------</span>
+</span><span id="Operation-251"><a href="#Operation-251"><span class="linenos">251</span></a><span class="sd">        instruction : str</span>
+</span><span id="Operation-252"><a href="#Operation-252"><span class="linenos">252</span></a><span class="sd">            The instruction to be used by the Operation node.</span>
+</span><span id="Operation-253"><a href="#Operation-253"><span class="linenos">253</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Operation-254"><a href="#Operation-254"><span class="linenos">254</span></a>
+</span><span id="Operation-255"><a href="#Operation-255"><span class="linenos">255</span></a>        <span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="Operation-256"><a href="#Operation-256"><span class="linenos">256</span></a>
+</span><span id="Operation-257"><a href="#Operation-257"><span class="linenos">257</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+</span><span id="Operation-258"><a href="#Operation-258"><span class="linenos">258</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;F</span><span class="si">{</span><span class="n">base_instruction</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Operation-259"><a href="#Operation-259"><span class="linenos">259</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="Operation-260"><a href="#Operation-260"><span class="linenos">260</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="n">base_instruction</span>
 </span><span id="Operation-261"><a href="#Operation-261"><span class="linenos">261</span></a>
-</span><span id="Operation-262"><a href="#Operation-262"><span class="linenos">262</span></a><span class="sd">        Returns</span>
-</span><span id="Operation-263"><a href="#Operation-263"><span class="linenos">263</span></a><span class="sd">        -------</span>
-</span><span id="Operation-264"><a href="#Operation-264"><span class="linenos">264</span></a><span class="sd">        instruction : str</span>
-</span><span id="Operation-265"><a href="#Operation-265"><span class="linenos">265</span></a><span class="sd">            The instruction to be used by the Operation node.</span>
-</span><span id="Operation-266"><a href="#Operation-266"><span class="linenos">266</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Operation-267"><a href="#Operation-267"><span class="linenos">267</span></a>
-</span><span id="Operation-268"><a href="#Operation-268"><span class="linenos">268</span></a>        <span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span id="Operation-269"><a href="#Operation-269"><span class="linenos">269</span></a>
-</span><span id="Operation-270"><a href="#Operation-270"><span class="linenos">270</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
-</span><span id="Operation-271"><a href="#Operation-271"><span class="linenos">271</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;F</span><span class="si">{</span><span class="n">base_instruction</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="Operation-272"><a href="#Operation-272"><span class="linenos">272</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="Operation-273"><a href="#Operation-273"><span class="linenos">273</span></a>            <span class="n">instruction</span> <span class="o">=</span> <span class="n">base_instruction</span>
-</span><span id="Operation-274"><a href="#Operation-274"><span class="linenos">274</span></a>
-</span><span id="Operation-275"><a href="#Operation-275"><span class="linenos">275</span></a>        <span class="k">return</span> <span class="n">instruction</span>
+</span><span id="Operation-262"><a href="#Operation-262"><span class="linenos">262</span></a>        <span class="k">return</span> <span class="n">instruction</span>
 </span></pre></div>
 
 
@@ -901,7 +875,7 @@ environment : dict[int, str]
                     <div class="decorator decorator-override">@override</div>
 
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>:</span></span>
 
                 <label class="view-source-button" for="Operation.certificate-view-source"><span>View Source</span></label>
 
@@ -910,55 +884,42 @@ environment : dict[int, str]
             <div class="pdoc-code codehilite"><pre><span></span><span id="Operation.certificate-155"><a href="#Operation.certificate-155"><span class="linenos">155</span></a>    <span class="nd">@override</span>
 </span><span id="Operation.certificate-156"><a href="#Operation.certificate-156"><span class="linenos">156</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="Operation.certificate-157"><a href="#Operation.certificate-157"><span class="linenos">157</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="Operation.certificate-158"><a href="#Operation.certificate-158"><span class="linenos">158</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="Operation.certificate-159"><a href="#Operation.certificate-159"><span class="linenos">159</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="Operation.certificate-160"><a href="#Operation.certificate-160"><span class="linenos">160</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="Operation.certificate-161"><a href="#Operation.certificate-161"><span class="linenos">161</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Operation.certificate-162"><a href="#Operation.certificate-162"><span class="linenos">162</span></a><span class="sd">        Compute the certificate of the current `Operation`, and set this attribute.</span>
-</span><span id="Operation.certificate-163"><a href="#Operation.certificate-163"><span class="linenos">163</span></a>
-</span><span id="Operation.certificate-164"><a href="#Operation.certificate-164"><span class="linenos">164</span></a><span class="sd">        For `Operation` nodes, certificate the `lhs` and `rhs` children first,</span>
-</span><span id="Operation.certificate-165"><a href="#Operation.certificate-165"><span class="linenos">165</span></a><span class="sd">        and then the `Operation` itself.</span>
-</span><span id="Operation.certificate-166"><a href="#Operation.certificate-166"><span class="linenos">166</span></a>
-</span><span id="Operation.certificate-167"><a href="#Operation.certificate-167"><span class="linenos">167</span></a><span class="sd">        Parameters</span>
-</span><span id="Operation.certificate-168"><a href="#Operation.certificate-168"><span class="linenos">168</span></a><span class="sd">        ----------</span>
-</span><span id="Operation.certificate-169"><a href="#Operation.certificate-169"><span class="linenos">169</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="Operation.certificate-170"><a href="#Operation.certificate-170"><span class="linenos">170</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="Operation.certificate-171"><a href="#Operation.certificate-171"><span class="linenos">171</span></a><span class="sd">            the source code.</span>
-</span><span id="Operation.certificate-172"><a href="#Operation.certificate-172"><span class="linenos">172</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Operation.certificate-173"><a href="#Operation.certificate-173"><span class="linenos">173</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="Operation.certificate-174"><a href="#Operation.certificate-174"><span class="linenos">174</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="Operation.certificate-175"><a href="#Operation.certificate-175"><span class="linenos">175</span></a>
-</span><span id="Operation.certificate-176"><a href="#Operation.certificate-176"><span class="linenos">176</span></a><span class="sd">        Returns</span>
-</span><span id="Operation.certificate-177"><a href="#Operation.certificate-177"><span class="linenos">177</span></a><span class="sd">        -------</span>
-</span><span id="Operation.certificate-178"><a href="#Operation.certificate-178"><span class="linenos">178</span></a><span class="sd">        : int</span>
-</span><span id="Operation.certificate-179"><a href="#Operation.certificate-179"><span class="linenos">179</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="Operation.certificate-180"><a href="#Operation.certificate-180"><span class="linenos">180</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Operation.certificate-181"><a href="#Operation.certificate-181"><span class="linenos">181</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="Operation.certificate-182"><a href="#Operation.certificate-182"><span class="linenos">182</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="Operation.certificate-183"><a href="#Operation.certificate-183"><span class="linenos">183</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Operation.certificate-158"><a href="#Operation.certificate-158"><span class="linenos">158</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="Operation.certificate-159"><a href="#Operation.certificate-159"><span class="linenos">159</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="Operation.certificate-160"><a href="#Operation.certificate-160"><span class="linenos">160</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Operation.certificate-161"><a href="#Operation.certificate-161"><span class="linenos">161</span></a><span class="sd">        Compute the certificate of the current `Operation`, and set this attribute.</span>
+</span><span id="Operation.certificate-162"><a href="#Operation.certificate-162"><span class="linenos">162</span></a>
+</span><span id="Operation.certificate-163"><a href="#Operation.certificate-163"><span class="linenos">163</span></a><span class="sd">        For `Operation` nodes, certificate the `lhs` and `rhs` children first,</span>
+</span><span id="Operation.certificate-164"><a href="#Operation.certificate-164"><span class="linenos">164</span></a><span class="sd">        and then the `Operation` itself.</span>
+</span><span id="Operation.certificate-165"><a href="#Operation.certificate-165"><span class="linenos">165</span></a>
+</span><span id="Operation.certificate-166"><a href="#Operation.certificate-166"><span class="linenos">166</span></a><span class="sd">        Parameters</span>
+</span><span id="Operation.certificate-167"><a href="#Operation.certificate-167"><span class="linenos">167</span></a><span class="sd">        ----------</span>
+</span><span id="Operation.certificate-168"><a href="#Operation.certificate-168"><span class="linenos">168</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="Operation.certificate-169"><a href="#Operation.certificate-169"><span class="linenos">169</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="Operation.certificate-170"><a href="#Operation.certificate-170"><span class="linenos">170</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="Operation.certificate-171"><a href="#Operation.certificate-171"><span class="linenos">171</span></a>
+</span><span id="Operation.certificate-172"><a href="#Operation.certificate-172"><span class="linenos">172</span></a><span class="sd">        Returns</span>
+</span><span id="Operation.certificate-173"><a href="#Operation.certificate-173"><span class="linenos">173</span></a><span class="sd">        -------</span>
+</span><span id="Operation.certificate-174"><a href="#Operation.certificate-174"><span class="linenos">174</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="Operation.certificate-175"><a href="#Operation.certificate-175"><span class="linenos">175</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="Operation.certificate-176"><a href="#Operation.certificate-176"><span class="linenos">176</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="Operation.certificate-177"><a href="#Operation.certificate-177"><span class="linenos">177</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Operation.certificate-178"><a href="#Operation.certificate-178"><span class="linenos">178</span></a>
+</span><span id="Operation.certificate-179"><a href="#Operation.certificate-179"><span class="linenos">179</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="Operation.certificate-180"><a href="#Operation.certificate-180"><span class="linenos">180</span></a>        <span class="n">lhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="Operation.certificate-181"><a href="#Operation.certificate-181"><span class="linenos">181</span></a>
+</span><span id="Operation.certificate-182"><a href="#Operation.certificate-182"><span class="linenos">182</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="Operation.certificate-183"><a href="#Operation.certificate-183"><span class="linenos">183</span></a>        <span class="n">rhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
 </span><span id="Operation.certificate-184"><a href="#Operation.certificate-184"><span class="linenos">184</span></a>
-</span><span id="Operation.certificate-185"><a href="#Operation.certificate-185"><span class="linenos">185</span></a>        <span class="p">(</span>
-</span><span id="Operation.certificate-186"><a href="#Operation.certificate-186"><span class="linenos">186</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="Operation.certificate-187"><a href="#Operation.certificate-187"><span class="linenos">187</span></a>            <span class="n">certificator_env</span>
-</span><span id="Operation.certificate-188"><a href="#Operation.certificate-188"><span class="linenos">188</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="Operation.certificate-189"><a href="#Operation.certificate-189"><span class="linenos">189</span></a>        <span class="n">lhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-</span><span id="Operation.certificate-190"><a href="#Operation.certificate-190"><span class="linenos">190</span></a>
-</span><span id="Operation.certificate-191"><a href="#Operation.certificate-191"><span class="linenos">191</span></a>        <span class="p">(</span>
-</span><span id="Operation.certificate-192"><a href="#Operation.certificate-192"><span class="linenos">192</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="Operation.certificate-193"><a href="#Operation.certificate-193"><span class="linenos">193</span></a>            <span class="n">certificator_env</span>
-</span><span id="Operation.certificate-194"><a href="#Operation.certificate-194"><span class="linenos">194</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="Operation.certificate-195"><a href="#Operation.certificate-195"><span class="linenos">195</span></a>        <span class="n">rhs_certificate_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-</span><span id="Operation.certificate-196"><a href="#Operation.certificate-196"><span class="linenos">196</span></a>
-</span><span id="Operation.certificate-197"><a href="#Operation.certificate-197"><span class="linenos">197</span></a>        <span class="n">operation_certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">positional_prime</span><span class="si">}</span><span class="s2">^&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">)&quot;</span>
-</span><span id="Operation.certificate-198"><a href="#Operation.certificate-198"><span class="linenos">198</span></a>        <span class="n">positional_prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">)</span>
-</span><span id="Operation.certificate-199"><a href="#Operation.certificate-199"><span class="linenos">199</span></a>
-</span><span id="Operation.certificate-200"><a href="#Operation.certificate-200"><span class="linenos">200</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="Operation.certificate-201"><a href="#Operation.certificate-201"><span class="linenos">201</span></a>            <span class="n">operation_certificate_label</span>
-</span><span id="Operation.certificate-202"><a href="#Operation.certificate-202"><span class="linenos">202</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">lhs_certificate_label</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="Operation.certificate-203"><a href="#Operation.certificate-203"><span class="linenos">203</span></a>            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">rhs_certificate_label</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="Operation.certificate-204"><a href="#Operation.certificate-204"><span class="linenos">204</span></a>        <span class="p">)</span>
-</span><span id="Operation.certificate-205"><a href="#Operation.certificate-205"><span class="linenos">205</span></a>
-</span><span id="Operation.certificate-206"><a href="#Operation.certificate-206"><span class="linenos">206</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
+</span><span id="Operation.certificate-185"><a href="#Operation.certificate-185"><span class="linenos">185</span></a>        <span class="n">operation_certificate_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Operation.certificate-186"><a href="#Operation.certificate-186"><span class="linenos">186</span></a>
+</span><span id="Operation.certificate-187"><a href="#Operation.certificate-187"><span class="linenos">187</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="Operation.certificate-188"><a href="#Operation.certificate-188"><span class="linenos">188</span></a>            <span class="o">*</span><span class="n">lhs_certificate_label</span><span class="p">,</span>
+</span><span id="Operation.certificate-189"><a href="#Operation.certificate-189"><span class="linenos">189</span></a>            <span class="o">*</span><span class="n">rhs_certificate_label</span><span class="p">,</span>
+</span><span id="Operation.certificate-190"><a href="#Operation.certificate-190"><span class="linenos">190</span></a>            <span class="n">operation_certificate_label</span><span class="p">,</span>
+</span><span id="Operation.certificate-191"><a href="#Operation.certificate-191"><span class="linenos">191</span></a>        <span class="p">]</span>
+</span><span id="Operation.certificate-192"><a href="#Operation.certificate-192"><span class="linenos">192</span></a>
+</span><span id="Operation.certificate-193"><a href="#Operation.certificate-193"><span class="linenos">193</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -969,18 +930,13 @@ and then the <code><a href="#Operation">Operation</a></code> itself.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>positional_prime : int
-    A prime number that denotes the relative position of this node in
-    the source code.
-certificator_env : dict[int, list[int]]
+<p>certificator_env : dict[int, list[int]]
     The certificators's environment, that maps variables IDs to
     encodings of their types.</p>
 
 <h2 id="returns">Returns</h2>
 
-<p>: int
-    The prime that comes immediately after <code>positional_prime</code>.
-certificator_env : dict[int, list[int]]
+<p>certificator_env : dict[int, list[int]]
     The updated certificator's environment, with any additional
     information about the variable's types it might have captured.</p>
 </div>

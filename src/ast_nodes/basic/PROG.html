@@ -214,40 +214,31 @@
 </span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>    <span class="nd">@override</span>
 </span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        For `PROG` nodes, certificate the `first_statement`, recursively, and</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        then the `PROG` node itself.</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        Parameters</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        ----------</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">            the source code.</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">        Returns</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">        -------</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">        : int</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>            <span class="p">(</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>                <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>                <span class="n">certificator_env</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>            <span class="p">)</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        For `PROG` nodes, certificate the `first_statement`, recursively, and</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        then the `PROG` node itself.</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        Parameters</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        ----------</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        Returns</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        -------</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -388,40 +379,31 @@
 </span><span id="PROG-133"><a href="#PROG-133"><span class="linenos">133</span></a>    <span class="nd">@override</span>
 </span><span id="PROG-134"><a href="#PROG-134"><span class="linenos">134</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="PROG-135"><a href="#PROG-135"><span class="linenos">135</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="PROG-136"><a href="#PROG-136"><span class="linenos">136</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="PROG-137"><a href="#PROG-137"><span class="linenos">137</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="PROG-138"><a href="#PROG-138"><span class="linenos">138</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="PROG-139"><a href="#PROG-139"><span class="linenos">139</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="PROG-140"><a href="#PROG-140"><span class="linenos">140</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
-</span><span id="PROG-141"><a href="#PROG-141"><span class="linenos">141</span></a>
-</span><span id="PROG-142"><a href="#PROG-142"><span class="linenos">142</span></a><span class="sd">        For `PROG` nodes, certificate the `first_statement`, recursively, and</span>
-</span><span id="PROG-143"><a href="#PROG-143"><span class="linenos">143</span></a><span class="sd">        then the `PROG` node itself.</span>
-</span><span id="PROG-144"><a href="#PROG-144"><span class="linenos">144</span></a>
-</span><span id="PROG-145"><a href="#PROG-145"><span class="linenos">145</span></a><span class="sd">        Parameters</span>
-</span><span id="PROG-146"><a href="#PROG-146"><span class="linenos">146</span></a><span class="sd">        ----------</span>
-</span><span id="PROG-147"><a href="#PROG-147"><span class="linenos">147</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="PROG-148"><a href="#PROG-148"><span class="linenos">148</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="PROG-149"><a href="#PROG-149"><span class="linenos">149</span></a><span class="sd">            the source code.</span>
-</span><span id="PROG-150"><a href="#PROG-150"><span class="linenos">150</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PROG-151"><a href="#PROG-151"><span class="linenos">151</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="PROG-152"><a href="#PROG-152"><span class="linenos">152</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="PROG-153"><a href="#PROG-153"><span class="linenos">153</span></a>
-</span><span id="PROG-154"><a href="#PROG-154"><span class="linenos">154</span></a><span class="sd">        Returns</span>
-</span><span id="PROG-155"><a href="#PROG-155"><span class="linenos">155</span></a><span class="sd">        -------</span>
-</span><span id="PROG-156"><a href="#PROG-156"><span class="linenos">156</span></a><span class="sd">        : int</span>
-</span><span id="PROG-157"><a href="#PROG-157"><span class="linenos">157</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="PROG-158"><a href="#PROG-158"><span class="linenos">158</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PROG-159"><a href="#PROG-159"><span class="linenos">159</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="PROG-160"><a href="#PROG-160"><span class="linenos">160</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="PROG-161"><a href="#PROG-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="PROG-162"><a href="#PROG-162"><span class="linenos">162</span></a>
-</span><span id="PROG-163"><a href="#PROG-163"><span class="linenos">163</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="PROG-164"><a href="#PROG-164"><span class="linenos">164</span></a>            <span class="p">(</span>
-</span><span id="PROG-165"><a href="#PROG-165"><span class="linenos">165</span></a>                <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="PROG-166"><a href="#PROG-166"><span class="linenos">166</span></a>                <span class="n">certificator_env</span>
-</span><span id="PROG-167"><a href="#PROG-167"><span class="linenos">167</span></a>            <span class="p">)</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="PROG-168"><a href="#PROG-168"><span class="linenos">168</span></a>
-</span><span id="PROG-169"><a href="#PROG-169"><span class="linenos">169</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="PROG-136"><a href="#PROG-136"><span class="linenos">136</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="PROG-137"><a href="#PROG-137"><span class="linenos">137</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="PROG-138"><a href="#PROG-138"><span class="linenos">138</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="PROG-139"><a href="#PROG-139"><span class="linenos">139</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
+</span><span id="PROG-140"><a href="#PROG-140"><span class="linenos">140</span></a>
+</span><span id="PROG-141"><a href="#PROG-141"><span class="linenos">141</span></a><span class="sd">        For `PROG` nodes, certificate the `first_statement`, recursively, and</span>
+</span><span id="PROG-142"><a href="#PROG-142"><span class="linenos">142</span></a><span class="sd">        then the `PROG` node itself.</span>
+</span><span id="PROG-143"><a href="#PROG-143"><span class="linenos">143</span></a>
+</span><span id="PROG-144"><a href="#PROG-144"><span class="linenos">144</span></a><span class="sd">        Parameters</span>
+</span><span id="PROG-145"><a href="#PROG-145"><span class="linenos">145</span></a><span class="sd">        ----------</span>
+</span><span id="PROG-146"><a href="#PROG-146"><span class="linenos">146</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PROG-147"><a href="#PROG-147"><span class="linenos">147</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="PROG-148"><a href="#PROG-148"><span class="linenos">148</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="PROG-149"><a href="#PROG-149"><span class="linenos">149</span></a>
+</span><span id="PROG-150"><a href="#PROG-150"><span class="linenos">150</span></a><span class="sd">        Returns</span>
+</span><span id="PROG-151"><a href="#PROG-151"><span class="linenos">151</span></a><span class="sd">        -------</span>
+</span><span id="PROG-152"><a href="#PROG-152"><span class="linenos">152</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PROG-153"><a href="#PROG-153"><span class="linenos">153</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="PROG-154"><a href="#PROG-154"><span class="linenos">154</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="PROG-155"><a href="#PROG-155"><span class="linenos">155</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="PROG-156"><a href="#PROG-156"><span class="linenos">156</span></a>
+</span><span id="PROG-157"><a href="#PROG-157"><span class="linenos">157</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="PROG-158"><a href="#PROG-158"><span class="linenos">158</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="PROG-159"><a href="#PROG-159"><span class="linenos">159</span></a>
+</span><span id="PROG-160"><a href="#PROG-160"><span class="linenos">160</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -692,7 +674,7 @@ environment : dict[int, str]
                     <div class="decorator decorator-override">@override</div>
 
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>:</span></span>
 
                 <label class="view-source-button" for="PROG.certificate-view-source"><span>View Source</span></label>
 
@@ -701,40 +683,31 @@ environment : dict[int, str]
             <div class="pdoc-code codehilite"><pre><span></span><span id="PROG.certificate-133"><a href="#PROG.certificate-133"><span class="linenos">133</span></a>    <span class="nd">@override</span>
 </span><span id="PROG.certificate-134"><a href="#PROG.certificate-134"><span class="linenos">134</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="PROG.certificate-135"><a href="#PROG.certificate-135"><span class="linenos">135</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="PROG.certificate-136"><a href="#PROG.certificate-136"><span class="linenos">136</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="PROG.certificate-137"><a href="#PROG.certificate-137"><span class="linenos">137</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="PROG.certificate-138"><a href="#PROG.certificate-138"><span class="linenos">138</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="PROG.certificate-139"><a href="#PROG.certificate-139"><span class="linenos">139</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="PROG.certificate-140"><a href="#PROG.certificate-140"><span class="linenos">140</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
-</span><span id="PROG.certificate-141"><a href="#PROG.certificate-141"><span class="linenos">141</span></a>
-</span><span id="PROG.certificate-142"><a href="#PROG.certificate-142"><span class="linenos">142</span></a><span class="sd">        For `PROG` nodes, certificate the `first_statement`, recursively, and</span>
-</span><span id="PROG.certificate-143"><a href="#PROG.certificate-143"><span class="linenos">143</span></a><span class="sd">        then the `PROG` node itself.</span>
-</span><span id="PROG.certificate-144"><a href="#PROG.certificate-144"><span class="linenos">144</span></a>
-</span><span id="PROG.certificate-145"><a href="#PROG.certificate-145"><span class="linenos">145</span></a><span class="sd">        Parameters</span>
-</span><span id="PROG.certificate-146"><a href="#PROG.certificate-146"><span class="linenos">146</span></a><span class="sd">        ----------</span>
-</span><span id="PROG.certificate-147"><a href="#PROG.certificate-147"><span class="linenos">147</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="PROG.certificate-148"><a href="#PROG.certificate-148"><span class="linenos">148</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="PROG.certificate-149"><a href="#PROG.certificate-149"><span class="linenos">149</span></a><span class="sd">            the source code.</span>
-</span><span id="PROG.certificate-150"><a href="#PROG.certificate-150"><span class="linenos">150</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PROG.certificate-151"><a href="#PROG.certificate-151"><span class="linenos">151</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="PROG.certificate-152"><a href="#PROG.certificate-152"><span class="linenos">152</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="PROG.certificate-153"><a href="#PROG.certificate-153"><span class="linenos">153</span></a>
-</span><span id="PROG.certificate-154"><a href="#PROG.certificate-154"><span class="linenos">154</span></a><span class="sd">        Returns</span>
-</span><span id="PROG.certificate-155"><a href="#PROG.certificate-155"><span class="linenos">155</span></a><span class="sd">        -------</span>
-</span><span id="PROG.certificate-156"><a href="#PROG.certificate-156"><span class="linenos">156</span></a><span class="sd">        : int</span>
-</span><span id="PROG.certificate-157"><a href="#PROG.certificate-157"><span class="linenos">157</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="PROG.certificate-158"><a href="#PROG.certificate-158"><span class="linenos">158</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PROG.certificate-159"><a href="#PROG.certificate-159"><span class="linenos">159</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="PROG.certificate-160"><a href="#PROG.certificate-160"><span class="linenos">160</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="PROG.certificate-161"><a href="#PROG.certificate-161"><span class="linenos">161</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="PROG.certificate-162"><a href="#PROG.certificate-162"><span class="linenos">162</span></a>
-</span><span id="PROG.certificate-163"><a href="#PROG.certificate-163"><span class="linenos">163</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="PROG.certificate-164"><a href="#PROG.certificate-164"><span class="linenos">164</span></a>            <span class="p">(</span>
-</span><span id="PROG.certificate-165"><a href="#PROG.certificate-165"><span class="linenos">165</span></a>                <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="PROG.certificate-166"><a href="#PROG.certificate-166"><span class="linenos">166</span></a>                <span class="n">certificator_env</span>
-</span><span id="PROG.certificate-167"><a href="#PROG.certificate-167"><span class="linenos">167</span></a>            <span class="p">)</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="PROG.certificate-168"><a href="#PROG.certificate-168"><span class="linenos">168</span></a>
-</span><span id="PROG.certificate-169"><a href="#PROG.certificate-169"><span class="linenos">169</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="PROG.certificate-136"><a href="#PROG.certificate-136"><span class="linenos">136</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="PROG.certificate-137"><a href="#PROG.certificate-137"><span class="linenos">137</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="PROG.certificate-138"><a href="#PROG.certificate-138"><span class="linenos">138</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="PROG.certificate-139"><a href="#PROG.certificate-139"><span class="linenos">139</span></a><span class="sd">        Compute the certificate of `PROG`, and set this attribute.</span>
+</span><span id="PROG.certificate-140"><a href="#PROG.certificate-140"><span class="linenos">140</span></a>
+</span><span id="PROG.certificate-141"><a href="#PROG.certificate-141"><span class="linenos">141</span></a><span class="sd">        For `PROG` nodes, certificate the `first_statement`, recursively, and</span>
+</span><span id="PROG.certificate-142"><a href="#PROG.certificate-142"><span class="linenos">142</span></a><span class="sd">        then the `PROG` node itself.</span>
+</span><span id="PROG.certificate-143"><a href="#PROG.certificate-143"><span class="linenos">143</span></a>
+</span><span id="PROG.certificate-144"><a href="#PROG.certificate-144"><span class="linenos">144</span></a><span class="sd">        Parameters</span>
+</span><span id="PROG.certificate-145"><a href="#PROG.certificate-145"><span class="linenos">145</span></a><span class="sd">        ----------</span>
+</span><span id="PROG.certificate-146"><a href="#PROG.certificate-146"><span class="linenos">146</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PROG.certificate-147"><a href="#PROG.certificate-147"><span class="linenos">147</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="PROG.certificate-148"><a href="#PROG.certificate-148"><span class="linenos">148</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="PROG.certificate-149"><a href="#PROG.certificate-149"><span class="linenos">149</span></a>
+</span><span id="PROG.certificate-150"><a href="#PROG.certificate-150"><span class="linenos">150</span></a><span class="sd">        Returns</span>
+</span><span id="PROG.certificate-151"><a href="#PROG.certificate-151"><span class="linenos">151</span></a><span class="sd">        -------</span>
+</span><span id="PROG.certificate-152"><a href="#PROG.certificate-152"><span class="linenos">152</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PROG.certificate-153"><a href="#PROG.certificate-153"><span class="linenos">153</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="PROG.certificate-154"><a href="#PROG.certificate-154"><span class="linenos">154</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="PROG.certificate-155"><a href="#PROG.certificate-155"><span class="linenos">155</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="PROG.certificate-156"><a href="#PROG.certificate-156"><span class="linenos">156</span></a>
+</span><span id="PROG.certificate-157"><a href="#PROG.certificate-157"><span class="linenos">157</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="PROG.certificate-158"><a href="#PROG.certificate-158"><span class="linenos">158</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="PROG.certificate-159"><a href="#PROG.certificate-159"><span class="linenos">159</span></a>
+</span><span id="PROG.certificate-160"><a href="#PROG.certificate-160"><span class="linenos">160</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -745,18 +718,13 @@ then the <code><a href="#PROG">PROG</a></code> node itself.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>positional_prime : int
-    A prime number that denotes the relative position of this node in
-    the source code.
-certificator_env : dict[int, list[int]]
+<p>certificator_env : dict[int, list[int]]
     The certificators's environment, that maps variables IDs to
     encodings of their types.</p>
 
 <h2 id="returns">Returns</h2>
 
-<p>: int
-    The prime that comes immediately after <code>positional_prime</code>.
-certificator_env : dict[int, list[int]]
+<p>certificator_env : dict[int, list[int]]
     The updated certificator's environment, with any additional
     information about the variable's types it might have captured.</p>
 </div>

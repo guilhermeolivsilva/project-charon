@@ -160,47 +160,38 @@
 </span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>    <span class="nd">@override</span>
 </span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">        `self.size` elements.)</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">        The returned certificate will have a placeholder to represent the type</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        of this variable that will be later filled by the `certificator`.</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">        Parameters</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        ----------</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">            the source code.</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">        Returns</span>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        -------</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">        : int</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="p">(</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>            <span class="n">certificator_env</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        `self.size` elements.)</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        The returned certificate will have a placeholder to represent the type</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">        of this variable that will be later filled by the `certificator`.</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        Parameters</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">        ----------</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        Returns</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">        -------</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -299,47 +290,38 @@
 </span><span id="PARAM-91"><a href="#PARAM-91"><span class="linenos"> 91</span></a>    <span class="nd">@override</span>
 </span><span id="PARAM-92"><a href="#PARAM-92"><span class="linenos"> 92</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="PARAM-93"><a href="#PARAM-93"><span class="linenos"> 93</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="PARAM-94"><a href="#PARAM-94"><span class="linenos"> 94</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="PARAM-95"><a href="#PARAM-95"><span class="linenos"> 95</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="PARAM-96"><a href="#PARAM-96"><span class="linenos"> 96</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="PARAM-97"><a href="#PARAM-97"><span class="linenos"> 97</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="PARAM-98"><a href="#PARAM-98"><span class="linenos"> 98</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
-</span><span id="PARAM-99"><a href="#PARAM-99"><span class="linenos"> 99</span></a>
-</span><span id="PARAM-100"><a href="#PARAM-100"><span class="linenos">100</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
-</span><span id="PARAM-101"><a href="#PARAM-101"><span class="linenos">101</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
-</span><span id="PARAM-102"><a href="#PARAM-102"><span class="linenos">102</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
-</span><span id="PARAM-103"><a href="#PARAM-103"><span class="linenos">103</span></a><span class="sd">        `self.size` elements.)</span>
-</span><span id="PARAM-104"><a href="#PARAM-104"><span class="linenos">104</span></a>
-</span><span id="PARAM-105"><a href="#PARAM-105"><span class="linenos">105</span></a><span class="sd">        The returned certificate will have a placeholder to represent the type</span>
-</span><span id="PARAM-106"><a href="#PARAM-106"><span class="linenos">106</span></a><span class="sd">        of this variable that will be later filled by the `certificator`.</span>
-</span><span id="PARAM-107"><a href="#PARAM-107"><span class="linenos">107</span></a>
-</span><span id="PARAM-108"><a href="#PARAM-108"><span class="linenos">108</span></a><span class="sd">        Parameters</span>
-</span><span id="PARAM-109"><a href="#PARAM-109"><span class="linenos">109</span></a><span class="sd">        ----------</span>
-</span><span id="PARAM-110"><a href="#PARAM-110"><span class="linenos">110</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="PARAM-111"><a href="#PARAM-111"><span class="linenos">111</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="PARAM-112"><a href="#PARAM-112"><span class="linenos">112</span></a><span class="sd">            the source code.</span>
-</span><span id="PARAM-113"><a href="#PARAM-113"><span class="linenos">113</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PARAM-114"><a href="#PARAM-114"><span class="linenos">114</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="PARAM-115"><a href="#PARAM-115"><span class="linenos">115</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="PARAM-116"><a href="#PARAM-116"><span class="linenos">116</span></a>
-</span><span id="PARAM-117"><a href="#PARAM-117"><span class="linenos">117</span></a><span class="sd">        Returns</span>
-</span><span id="PARAM-118"><a href="#PARAM-118"><span class="linenos">118</span></a><span class="sd">        -------</span>
-</span><span id="PARAM-119"><a href="#PARAM-119"><span class="linenos">119</span></a><span class="sd">        : int</span>
-</span><span id="PARAM-120"><a href="#PARAM-120"><span class="linenos">120</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="PARAM-121"><a href="#PARAM-121"><span class="linenos">121</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PARAM-122"><a href="#PARAM-122"><span class="linenos">122</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="PARAM-123"><a href="#PARAM-123"><span class="linenos">123</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="PARAM-124"><a href="#PARAM-124"><span class="linenos">124</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="PARAM-125"><a href="#PARAM-125"><span class="linenos">125</span></a>
-</span><span id="PARAM-126"><a href="#PARAM-126"><span class="linenos">126</span></a>        <span class="p">(</span>
-</span><span id="PARAM-127"><a href="#PARAM-127"><span class="linenos">127</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="PARAM-128"><a href="#PARAM-128"><span class="linenos">128</span></a>            <span class="n">certificator_env</span>
-</span><span id="PARAM-129"><a href="#PARAM-129"><span class="linenos">129</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="PARAM-130"><a href="#PARAM-130"><span class="linenos">130</span></a>
-</span><span id="PARAM-131"><a href="#PARAM-131"><span class="linenos">131</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
-</span><span id="PARAM-132"><a href="#PARAM-132"><span class="linenos">132</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="PARAM-133"><a href="#PARAM-133"><span class="linenos">133</span></a>
-</span><span id="PARAM-134"><a href="#PARAM-134"><span class="linenos">134</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
+</span><span id="PARAM-94"><a href="#PARAM-94"><span class="linenos"> 94</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="PARAM-95"><a href="#PARAM-95"><span class="linenos"> 95</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="PARAM-96"><a href="#PARAM-96"><span class="linenos"> 96</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="PARAM-97"><a href="#PARAM-97"><span class="linenos"> 97</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
+</span><span id="PARAM-98"><a href="#PARAM-98"><span class="linenos"> 98</span></a>
+</span><span id="PARAM-99"><a href="#PARAM-99"><span class="linenos"> 99</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
+</span><span id="PARAM-100"><a href="#PARAM-100"><span class="linenos">100</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
+</span><span id="PARAM-101"><a href="#PARAM-101"><span class="linenos">101</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
+</span><span id="PARAM-102"><a href="#PARAM-102"><span class="linenos">102</span></a><span class="sd">        `self.size` elements.)</span>
+</span><span id="PARAM-103"><a href="#PARAM-103"><span class="linenos">103</span></a>
+</span><span id="PARAM-104"><a href="#PARAM-104"><span class="linenos">104</span></a><span class="sd">        The returned certificate will have a placeholder to represent the type</span>
+</span><span id="PARAM-105"><a href="#PARAM-105"><span class="linenos">105</span></a><span class="sd">        of this variable that will be later filled by the `certificator`.</span>
+</span><span id="PARAM-106"><a href="#PARAM-106"><span class="linenos">106</span></a>
+</span><span id="PARAM-107"><a href="#PARAM-107"><span class="linenos">107</span></a><span class="sd">        Parameters</span>
+</span><span id="PARAM-108"><a href="#PARAM-108"><span class="linenos">108</span></a><span class="sd">        ----------</span>
+</span><span id="PARAM-109"><a href="#PARAM-109"><span class="linenos">109</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PARAM-110"><a href="#PARAM-110"><span class="linenos">110</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="PARAM-111"><a href="#PARAM-111"><span class="linenos">111</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="PARAM-112"><a href="#PARAM-112"><span class="linenos">112</span></a>
+</span><span id="PARAM-113"><a href="#PARAM-113"><span class="linenos">113</span></a><span class="sd">        Returns</span>
+</span><span id="PARAM-114"><a href="#PARAM-114"><span class="linenos">114</span></a><span class="sd">        -------</span>
+</span><span id="PARAM-115"><a href="#PARAM-115"><span class="linenos">115</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PARAM-116"><a href="#PARAM-116"><span class="linenos">116</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="PARAM-117"><a href="#PARAM-117"><span class="linenos">117</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="PARAM-118"><a href="#PARAM-118"><span class="linenos">118</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="PARAM-119"><a href="#PARAM-119"><span class="linenos">119</span></a>
+</span><span id="PARAM-120"><a href="#PARAM-120"><span class="linenos">120</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="PARAM-121"><a href="#PARAM-121"><span class="linenos">121</span></a>
+</span><span id="PARAM-122"><a href="#PARAM-122"><span class="linenos">122</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
+</span><span id="PARAM-123"><a href="#PARAM-123"><span class="linenos">123</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="PARAM-124"><a href="#PARAM-124"><span class="linenos">124</span></a>
+</span><span id="PARAM-125"><a href="#PARAM-125"><span class="linenos">125</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -486,7 +468,7 @@ environment : dict[int, str]
                     <div class="decorator decorator-override">@override</div>
 
         <span class="def">def</span>
-        <span class="name">certificate</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span>:</span></span>
+        <span class="name">certificate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>:</span></span>
 
                 <label class="view-source-button" for="PARAM.certificate-view-source"><span>View Source</span></label>
 
@@ -495,47 +477,38 @@ environment : dict[int, str]
             <div class="pdoc-code codehilite"><pre><span></span><span id="PARAM.certificate-91"><a href="#PARAM.certificate-91"><span class="linenos"> 91</span></a>    <span class="nd">@override</span>
 </span><span id="PARAM.certificate-92"><a href="#PARAM.certificate-92"><span class="linenos"> 92</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">certificate</span><span class="p">(</span>
 </span><span id="PARAM.certificate-93"><a href="#PARAM.certificate-93"><span class="linenos"> 93</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="PARAM.certificate-94"><a href="#PARAM.certificate-94"><span class="linenos"> 94</span></a>        <span class="n">positional_prime</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="PARAM.certificate-95"><a href="#PARAM.certificate-95"><span class="linenos"> 95</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
-</span><span id="PARAM.certificate-96"><a href="#PARAM.certificate-96"><span class="linenos"> 96</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
-</span><span id="PARAM.certificate-97"><a href="#PARAM.certificate-97"><span class="linenos"> 97</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="PARAM.certificate-98"><a href="#PARAM.certificate-98"><span class="linenos"> 98</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
-</span><span id="PARAM.certificate-99"><a href="#PARAM.certificate-99"><span class="linenos"> 99</span></a>
-</span><span id="PARAM.certificate-100"><a href="#PARAM.certificate-100"><span class="linenos">100</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
-</span><span id="PARAM.certificate-101"><a href="#PARAM.certificate-101"><span class="linenos">101</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
-</span><span id="PARAM.certificate-102"><a href="#PARAM.certificate-102"><span class="linenos">102</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
-</span><span id="PARAM.certificate-103"><a href="#PARAM.certificate-103"><span class="linenos">103</span></a><span class="sd">        `self.size` elements.)</span>
-</span><span id="PARAM.certificate-104"><a href="#PARAM.certificate-104"><span class="linenos">104</span></a>
-</span><span id="PARAM.certificate-105"><a href="#PARAM.certificate-105"><span class="linenos">105</span></a><span class="sd">        The returned certificate will have a placeholder to represent the type</span>
-</span><span id="PARAM.certificate-106"><a href="#PARAM.certificate-106"><span class="linenos">106</span></a><span class="sd">        of this variable that will be later filled by the `certificator`.</span>
-</span><span id="PARAM.certificate-107"><a href="#PARAM.certificate-107"><span class="linenos">107</span></a>
-</span><span id="PARAM.certificate-108"><a href="#PARAM.certificate-108"><span class="linenos">108</span></a><span class="sd">        Parameters</span>
-</span><span id="PARAM.certificate-109"><a href="#PARAM.certificate-109"><span class="linenos">109</span></a><span class="sd">        ----------</span>
-</span><span id="PARAM.certificate-110"><a href="#PARAM.certificate-110"><span class="linenos">110</span></a><span class="sd">        positional_prime : int</span>
-</span><span id="PARAM.certificate-111"><a href="#PARAM.certificate-111"><span class="linenos">111</span></a><span class="sd">            A prime number that denotes the relative position of this node in</span>
-</span><span id="PARAM.certificate-112"><a href="#PARAM.certificate-112"><span class="linenos">112</span></a><span class="sd">            the source code.</span>
-</span><span id="PARAM.certificate-113"><a href="#PARAM.certificate-113"><span class="linenos">113</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PARAM.certificate-114"><a href="#PARAM.certificate-114"><span class="linenos">114</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="PARAM.certificate-115"><a href="#PARAM.certificate-115"><span class="linenos">115</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="PARAM.certificate-116"><a href="#PARAM.certificate-116"><span class="linenos">116</span></a>
-</span><span id="PARAM.certificate-117"><a href="#PARAM.certificate-117"><span class="linenos">117</span></a><span class="sd">        Returns</span>
-</span><span id="PARAM.certificate-118"><a href="#PARAM.certificate-118"><span class="linenos">118</span></a><span class="sd">        -------</span>
-</span><span id="PARAM.certificate-119"><a href="#PARAM.certificate-119"><span class="linenos">119</span></a><span class="sd">        : int</span>
-</span><span id="PARAM.certificate-120"><a href="#PARAM.certificate-120"><span class="linenos">120</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="PARAM.certificate-121"><a href="#PARAM.certificate-121"><span class="linenos">121</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="PARAM.certificate-122"><a href="#PARAM.certificate-122"><span class="linenos">122</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="PARAM.certificate-123"><a href="#PARAM.certificate-123"><span class="linenos">123</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="PARAM.certificate-124"><a href="#PARAM.certificate-124"><span class="linenos">124</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="PARAM.certificate-125"><a href="#PARAM.certificate-125"><span class="linenos">125</span></a>
-</span><span id="PARAM.certificate-126"><a href="#PARAM.certificate-126"><span class="linenos">126</span></a>        <span class="p">(</span>
-</span><span id="PARAM.certificate-127"><a href="#PARAM.certificate-127"><span class="linenos">127</span></a>            <span class="n">positional_prime</span><span class="p">,</span>
-</span><span id="PARAM.certificate-128"><a href="#PARAM.certificate-128"><span class="linenos">128</span></a>            <span class="n">certificator_env</span>
-</span><span id="PARAM.certificate-129"><a href="#PARAM.certificate-129"><span class="linenos">129</span></a>        <span class="p">)</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="PARAM.certificate-130"><a href="#PARAM.certificate-130"><span class="linenos">130</span></a>
-</span><span id="PARAM.certificate-131"><a href="#PARAM.certificate-131"><span class="linenos">131</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
-</span><span id="PARAM.certificate-132"><a href="#PARAM.certificate-132"><span class="linenos">132</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="PARAM.certificate-133"><a href="#PARAM.certificate-133"><span class="linenos">133</span></a>
-</span><span id="PARAM.certificate-134"><a href="#PARAM.certificate-134"><span class="linenos">134</span></a>        <span class="k">return</span> <span class="n">positional_prime</span><span class="p">,</span> <span class="n">certificator_env</span>
+</span><span id="PARAM.certificate-94"><a href="#PARAM.certificate-94"><span class="linenos"> 94</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+</span><span id="PARAM.certificate-95"><a href="#PARAM.certificate-95"><span class="linenos"> 95</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+</span><span id="PARAM.certificate-96"><a href="#PARAM.certificate-96"><span class="linenos"> 96</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="PARAM.certificate-97"><a href="#PARAM.certificate-97"><span class="linenos"> 97</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
+</span><span id="PARAM.certificate-98"><a href="#PARAM.certificate-98"><span class="linenos"> 98</span></a>
+</span><span id="PARAM.certificate-99"><a href="#PARAM.certificate-99"><span class="linenos"> 99</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
+</span><span id="PARAM.certificate-100"><a href="#PARAM.certificate-100"><span class="linenos">100</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
+</span><span id="PARAM.certificate-101"><a href="#PARAM.certificate-101"><span class="linenos">101</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
+</span><span id="PARAM.certificate-102"><a href="#PARAM.certificate-102"><span class="linenos">102</span></a><span class="sd">        `self.size` elements.)</span>
+</span><span id="PARAM.certificate-103"><a href="#PARAM.certificate-103"><span class="linenos">103</span></a>
+</span><span id="PARAM.certificate-104"><a href="#PARAM.certificate-104"><span class="linenos">104</span></a><span class="sd">        The returned certificate will have a placeholder to represent the type</span>
+</span><span id="PARAM.certificate-105"><a href="#PARAM.certificate-105"><span class="linenos">105</span></a><span class="sd">        of this variable that will be later filled by the `certificator`.</span>
+</span><span id="PARAM.certificate-106"><a href="#PARAM.certificate-106"><span class="linenos">106</span></a>
+</span><span id="PARAM.certificate-107"><a href="#PARAM.certificate-107"><span class="linenos">107</span></a><span class="sd">        Parameters</span>
+</span><span id="PARAM.certificate-108"><a href="#PARAM.certificate-108"><span class="linenos">108</span></a><span class="sd">        ----------</span>
+</span><span id="PARAM.certificate-109"><a href="#PARAM.certificate-109"><span class="linenos">109</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PARAM.certificate-110"><a href="#PARAM.certificate-110"><span class="linenos">110</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="PARAM.certificate-111"><a href="#PARAM.certificate-111"><span class="linenos">111</span></a><span class="sd">            encodings of their types.</span>
+</span><span id="PARAM.certificate-112"><a href="#PARAM.certificate-112"><span class="linenos">112</span></a>
+</span><span id="PARAM.certificate-113"><a href="#PARAM.certificate-113"><span class="linenos">113</span></a><span class="sd">        Returns</span>
+</span><span id="PARAM.certificate-114"><a href="#PARAM.certificate-114"><span class="linenos">114</span></a><span class="sd">        -------</span>
+</span><span id="PARAM.certificate-115"><a href="#PARAM.certificate-115"><span class="linenos">115</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="PARAM.certificate-116"><a href="#PARAM.certificate-116"><span class="linenos">116</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="PARAM.certificate-117"><a href="#PARAM.certificate-117"><span class="linenos">117</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="PARAM.certificate-118"><a href="#PARAM.certificate-118"><span class="linenos">118</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="PARAM.certificate-119"><a href="#PARAM.certificate-119"><span class="linenos">119</span></a>
+</span><span id="PARAM.certificate-120"><a href="#PARAM.certificate-120"><span class="linenos">120</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="PARAM.certificate-121"><a href="#PARAM.certificate-121"><span class="linenos">121</span></a>
+</span><span id="PARAM.certificate-122"><a href="#PARAM.certificate-122"><span class="linenos">122</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
+</span><span id="PARAM.certificate-123"><a href="#PARAM.certificate-123"><span class="linenos">123</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="PARAM.certificate-124"><a href="#PARAM.certificate-124"><span class="linenos">124</span></a>
+</span><span id="PARAM.certificate-125"><a href="#PARAM.certificate-125"><span class="linenos">125</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -551,18 +524,13 @@ of this variable that will be later filled by the <code>certificator</code>.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>positional_prime : int
-    A prime number that denotes the relative position of this node in
-    the source code.
-certificator_env : dict[int, list[int]]
+<p>certificator_env : dict[int, list[int]]
     The certificators's environment, that maps variables IDs to
     encodings of their types.</p>
 
 <h2 id="returns">Returns</h2>
 
-<p>: int
-    The prime that comes immediately after <code>positional_prime</code>.
-certificator_env : dict[int, list[int]]
+<p>certificator_env : dict[int, list[int]]
     The updated certificator's environment, with any additional
     information about the variable's types it might have captured.</p>
 </div>
