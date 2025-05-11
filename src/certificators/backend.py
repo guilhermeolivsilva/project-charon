@@ -421,12 +421,6 @@ class BackendCertificator(AbstractCertificator):
         ]
 
         self.computed_certificate = "*".join(self.computed_certificate)
-        self.computed_certificate = "*".join(
-            sorted(
-                self.computed_certificate.split("*"),
-                key=lambda x: int(x.split("^")[0])
-            )
-        )
 
         return self.computed_certificate
 

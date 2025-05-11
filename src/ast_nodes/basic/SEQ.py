@@ -123,9 +123,8 @@ class SEQ(Node):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the current `SEQ`, and set this attribute.
 
@@ -134,9 +133,6 @@ class SEQ(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
@@ -151,9 +147,6 @@ class SEQ(Node):
         """
 
         for child in self.children:
-            (
-                positional_prime,
-                certificator_env
-            ) = child.certificate(positional_prime, certificator_env)
+            certificator_env = child.certificate(certificator_env)
 
-        return positional_prime, certificator_env
+        return certificator_env

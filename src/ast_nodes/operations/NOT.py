@@ -5,7 +5,6 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import next_prime
 
 
 class NOT(Node):
@@ -104,9 +103,8 @@ class NOT(Node):
 
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of `NOT`, and set this attribute.
 
@@ -115,33 +113,24 @@ class NOT(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
         """
 
         # Certificate the negated `expression`
-        (
-            positional_prime,
-            certificator_env
-        ) = self.expression.certificate(positional_prime, certificator_env)
-        expression_certificate_label = self.expression.get_certificate_label().pop()
+        certificator_env = self.expression.certificate(certificator_env)
+        expression_certificate_label = self.expression.get_certificate_label()
 
-        self.certificate_label = (
-            f"{positional_prime}"
-            + f"^({self.symbol})"
-            + f"*{expression_certificate_label}"
-        )
+        self.certificate_label = [
+            *expression_certificate_label,
+            f"{self.symbol}",
+        ]
 
-        return next_prime(positional_prime), certificator_env
+        return certificator_env

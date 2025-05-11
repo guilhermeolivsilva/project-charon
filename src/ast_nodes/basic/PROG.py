@@ -132,9 +132,8 @@ class PROG(Node):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of `PROG`, and set this attribute.
 
@@ -143,26 +142,18 @@ class PROG(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
         """
 
         for child in self.children:
-            (
-                positional_prime,
-                certificator_env
-            ) = child.certificate(positional_prime, certificator_env)
+            certificator_env = child.certificate(certificator_env)
 
-        return super().certificate(positional_prime, certificator_env)
+        return super().certificate(certificator_env)

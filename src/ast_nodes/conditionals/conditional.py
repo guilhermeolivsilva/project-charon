@@ -3,7 +3,7 @@
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import next_prime, SYMBOLS_MAP
+from src.utils import SYMBOLS_MAP
 
 
 class Conditional(Node):
@@ -75,9 +75,8 @@ class Conditional(Node):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the current `Conditional`, and set this attribute.
 
@@ -87,17 +86,12 @@ class Conditional(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
@@ -106,24 +100,13 @@ class Conditional(Node):
         # Add the symbol to delimit the condition expression
         _conditional_expression_boundary_symbol = SYMBOLS_MAP["COND"]
         self.conditional_expression_boundary = (
-            f"{positional_prime}^({_conditional_expression_boundary_symbol})"
+            f"{_conditional_expression_boundary_symbol}"
         )
 
-        positional_prime = next_prime(positional_prime)
+        certificator_env = self.parenthesis_expression.certificate(certificator_env)
+        certificator_env = super().certificate(certificator_env)
+        certificator_env = self.statement_if_true.certificate(certificator_env)
 
-        (
-            positional_prime,
-            certificator_env
-        ) = self.parenthesis_expression.certificate(positional_prime, certificator_env)
-        (
-            positional_prime,
-            certificator_env
-        ) = super().certificate(positional_prime, certificator_env)
-        (
-            positional_prime,
-            certificator_env
-        ) = self.statement_if_true.certificate(positional_prime, certificator_env)
+        self.boundary_certificate = f"{self.boundary_symbol}"
 
-        self.boundary_certificate = f"{positional_prime}^({self.boundary_symbol})"
-
-        return next_prime(positional_prime), certificator_env
+        return certificator_env

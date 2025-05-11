@@ -2,7 +2,7 @@
 
 from typing import Union
 
-from src.utils import get_certificate_symbol, next_prime
+from src.utils import get_certificate_symbol
 
 
 class Node:
@@ -28,7 +28,7 @@ class Node:
     ) -> None:
         self.value: Union[int, str, float, None] = value
         self.type: Union[str, None] = type
-        self.certificate_label: str = None
+        self.certificate_label: list[str] = []
         self.uses_register: bool = uses_register
 
         # Each `Node` specialization must set its own `instruction` and
@@ -77,7 +77,7 @@ class Node:
         if self.type is not None:
             _str += f", Type: {self.type}"
 
-        if self.certificate_label is not None:
+        if len(self.certificate_label) > 0:
             _str += f", Certificate Label: {self.certificate_label}"
 
         return _str
@@ -122,7 +122,7 @@ class Node:
         subclasses should return a composition of lists.
         """
 
-        return [self.certificate_label]
+        return self.certificate_label
 
     def print(self, indent: int = 0) -> None:
         """
@@ -200,30 +200,24 @@ class Node:
 
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the current `Node`, and set this attribute.
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
         """
 
-        self.certificate_label = f"{positional_prime}^({self.symbol})"
+        self.certificate_label = [f"{self.symbol}"]
 
-        return next_prime(positional_prime), certificator_env
+        return certificator_env

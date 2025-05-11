@@ -38,19 +38,18 @@ class FrontendCertificator(AbstractCertificator):
             The the computed certificate.
         """
 
-        _computed_certificate = self._certificate_ast()
-        computed_certificate = "*".join(_computed_certificate)
-        computed_certificate = "*".join(
-            sorted(
-                computed_certificate.split("*"),
-                key=lambda x: int(x.split("^")[0])
-            )
-        )
-        self.computed_certificate = self._add_types_certificates(
-            certificate=computed_certificate
-        )
+        computed_exponents = self._certificate_ast()
 
-        # return self.computed_certificate
+        self.computed_certificate = [
+            f"{positional_prime}^({exponent})"
+            for positional_prime, exponent in zip(
+                primes_list(len(computed_exponents)),
+                computed_exponents
+            )
+        ]
+
+        self.computed_certificate = "*".join(self.computed_certificate)
+
         return self.computed_certificate
 
     def _certificate_ast(self) -> list[str]:
@@ -66,8 +65,7 @@ class FrontendCertificator(AbstractCertificator):
             The list of labels of the AST certificate.
         """
 
-        _, self.environment = self.ast.root.certificate(
-            positional_prime=self.initial_prime,
+        self.environment = self.ast.root.certificate(
             certificator_env=self.environment
         )
         ast_certificate = self.ast.root.get_certificate_label()

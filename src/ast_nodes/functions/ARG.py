@@ -7,7 +7,7 @@ from typing_extensions import override
 from src.ast_nodes.basic.CST import CST
 from src.ast_nodes.node import Node
 from src.ast_nodes.variables.VAR import VAR
-from src.utils import type_cast, next_prime
+from src.utils import type_cast
 
 
 class ARG(Node):
@@ -28,22 +28,6 @@ class ARG(Node):
 
         self.argument_value: Union[CST, VAR] = argument_value
         self.parameter_type: str = parameter_type
-
-    @override
-    def get_certificate_label(self) -> list[str]:
-        """
-        Get the contents of `certificate_label`.
-
-        For `ARG` nodes, obtain the certificates, from the `argument_value` node
-        first, and then from the `ARG` node itself.
-
-        Returns
-        -------
-        : list of str
-            A list containing the certificate label of the `Node`.
-        """
-
-        return super().get_certificate_label()
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -137,9 +121,8 @@ class ARG(Node):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the this `ARG`, and set this attribute.
 
@@ -148,9 +131,6 @@ class ARG(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
@@ -164,16 +144,9 @@ class ARG(Node):
             information about the variable's types it might have captured.
         """
 
-        (
-            positional_prime,
-            certificator_env
-        ) = self.argument_value.certificate(positional_prime, certificator_env)
-        _argument_value_certificate = self.argument_value.get_certificate_label().pop()
+        certificator_env = self.argument_value.certificate(certificator_env)
+        _argument_value_certificate = self.argument_value.get_certificate_label()
 
-        self.certificate_label = (
-            f"{positional_prime}^"
-            + f"({self.symbol})"
-            + f"*{_argument_value_certificate}"
-        )
+        self.certificate_label = [*_argument_value_certificate, f"{self.symbol}"]
 
-        return next_prime(positional_prime), certificator_env
+        return certificator_env

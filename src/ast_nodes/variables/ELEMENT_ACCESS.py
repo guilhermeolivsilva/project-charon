@@ -10,7 +10,6 @@ from src.ast_nodes.basic.CST import CST
 from src.utils import (
     builtin_types,
     get_certificate_symbol,
-    next_prime,
     TYPE_SYMBOLS_MAP,
 )
 
@@ -222,9 +221,8 @@ class ELEMENT_ACCESS(Node):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the current `ELEMENT_ACCESS`, and set this attribute.
 
@@ -242,17 +240,12 @@ class ELEMENT_ACCESS(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
@@ -274,7 +267,7 @@ class ELEMENT_ACCESS(Node):
             # Update the environment with the symbol of the accessed element's
             # type
             accessed_attribute_index: int = self.element.get_value()
-            certificator_env[variable_prime][accessed_attribute_index] = (
+            certificator_env[variable_prime]["type"][accessed_attribute_index] = (
                 TYPE_SYMBOLS_MAP[self.type]["type_symbol"]
             )
 
@@ -283,9 +276,9 @@ class ELEMENT_ACCESS(Node):
             indexing_variable_prime = indexing_variable_metadata["prime"]
             certificate_label += f"^(3)^({indexing_variable_prime})"
 
-        self.certificate_label = f"{positional_prime}^({certificate_label})"
+        self.certificate_label = [f"{certificate_label}"]
 
-        return next_prime(positional_prime), certificator_env
+        return certificator_env
 
     def add_context(self, context: dict[str, str]) -> None:
         """

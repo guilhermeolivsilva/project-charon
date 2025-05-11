@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import next_prime, type_cast, TYPE_SYMBOLS_MAP
+from src.utils import type_cast, TYPE_SYMBOLS_MAP
 
 
 class Operation(Node):
@@ -154,9 +154,8 @@ class Operation(Node):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the current `Operation`, and set this attribute.
 
@@ -165,44 +164,32 @@ class Operation(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
         """
 
-        (
-            positional_prime,
-            certificator_env
-        ) = self.lhs.certificate(positional_prime, certificator_env)
-        lhs_certificate_label = self.lhs.get_certificate_label().pop()
+        certificator_env = self.lhs.certificate(certificator_env)
+        lhs_certificate_label = self.lhs.get_certificate_label()
 
-        (
-            positional_prime,
-            certificator_env
-        ) = self.rhs.certificate(positional_prime, certificator_env)
-        rhs_certificate_label = self.rhs.get_certificate_label().pop()
+        certificator_env = self.rhs.certificate(certificator_env)
+        rhs_certificate_label = self.rhs.get_certificate_label()
 
-        operation_certificate_label = f"{positional_prime}^" + f"({self.symbol})"
-        positional_prime = next_prime(positional_prime)
+        operation_certificate_label = f"{self.symbol}"
 
-        self.certificate_label = (
-            operation_certificate_label
-            + f"*{lhs_certificate_label}"
-            + f"*{rhs_certificate_label}"
-        )
+        self.certificate_label = [
+            *lhs_certificate_label,
+            *rhs_certificate_label,
+            operation_certificate_label,
+        ]
 
-        return positional_prime, certificator_env
+        return certificator_env
 
     def _compute_operation_type(self) -> str:
         """

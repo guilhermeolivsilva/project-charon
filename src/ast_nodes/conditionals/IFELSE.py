@@ -6,7 +6,7 @@ from typing_extensions import override
 
 from src.ast_nodes.node import Node
 from src.ast_nodes.conditionals.IF import IF
-from src.utils import next_prime, SYMBOLS_MAP
+from src.utils import SYMBOLS_MAP
 
 
 class IFELSE(IF):
@@ -182,9 +182,8 @@ class IFELSE(IF):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the current `IFELSE`, and set this attribute.
 
@@ -195,35 +194,21 @@ class IFELSE(IF):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
         """
 
-        (
-            positional_prime,
-            certificator_env
-        ) = super().certificate(positional_prime, certificator_env)
-        (
-            positional_prime,
-            certificator_env
-        ) = self.statement_if_false.certificate(positional_prime, certificator_env)
+        certificator_env = super().certificate(certificator_env)
+        certificator_env = self.statement_if_false.certificate(certificator_env)
         
         _else_boundary_symbol = SYMBOLS_MAP["ELSE_END"]
+        self.else_boundary_certificate = f"{_else_boundary_symbol}"
 
-        self.else_boundary_certificate = (
-            f"{positional_prime}^({_else_boundary_symbol})"
-        )
-
-        return next_prime(positional_prime), certificator_env
+        return certificator_env

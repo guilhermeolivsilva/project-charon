@@ -48,13 +48,15 @@ class FUNC_CALL(Node):
             A list containing the certificate label of the `Node`.
         """
 
-        certificate_label: str = super().get_certificate_label().pop()
+        certificate_label: list[str] = []
 
         for argument in self.arguments:
-            _argument_certificate = argument.get_certificate_label().pop()
-            certificate_label += f"*{_argument_certificate}"
+            _argument_certificate = argument.get_certificate_label()
+            certificate_label.extend(_argument_certificate)
 
-        return [certificate_label]
+        certificate_label.extend(super().get_certificate_label())
+
+        return certificate_label
 
     @override
     def print(self, indent: int = 0) -> None:
@@ -150,9 +152,8 @@ class FUNC_CALL(Node):
     @override
     def certificate(
         self,
-        positional_prime: int,
         certificator_env: dict[int, list[int]]
-    ) -> tuple[int, dict[int, list[int]]]:
+    ) -> dict[int, list[int]]:
         """
         Compute the certificate of the current `FUNC_CALL`, and set this attribute.
 
@@ -161,29 +162,21 @@ class FUNC_CALL(Node):
 
         Parameters
         ----------
-        positional_prime : int
-            A prime number that denotes the relative position of this node in
-            the source code.
         certificator_env : dict[int, list[int]]
             The certificators's environment, that maps variables IDs to
             encodings of their types.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
         """
 
         for argument in self.arguments:
-            (
-                positional_prime,
-                certificator_env
-            ) = argument.certificate(positional_prime, certificator_env)
+            certificator_env = argument.certificate(certificator_env)
 
-        return super().certificate(positional_prime, certificator_env)
+        return super().certificate(certificator_env)
 
     def _build_children_nodes(self) -> list[Node]:
         arguments = self.function_call_metadata["arguments"]
