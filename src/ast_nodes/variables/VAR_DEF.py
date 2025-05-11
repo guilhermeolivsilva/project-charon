@@ -5,7 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.node import Node
-from src.utils import get_variable_size, builtin_types, TYPE_SYMBOLS_MAP
+from src.utils import get_variable_size
 
 
 class VAR_DEF(Node):
@@ -139,24 +139,13 @@ class VAR_DEF(Node):
             information about the variable's types it might have captured.
         """
 
-        # If this is a homogeneous variable (i.e., a simple variable or an
-        # array), then we know the type symbol upfront
-        if self.type in builtin_types:
-            certificator_env[self.prime] = {
-                "type": [
-                    TYPE_SYMBOLS_MAP[self.type]["type_symbol"]
-                    for _ in range(self.size // builtin_types[self.type])
-                ]
-            }
-
-        # If it is not, add to the certificator environment as `unknown`
-        else:
-            # TODO: divide by the actual size of the type of this `VAR_DEF`
-            certificator_env[self.prime] = {
-                "type": [
-                    TYPE_SYMBOLS_MAP["__unknown_type__"]["type_symbol"]
-                    for _ in range(self.size // 4)
-                ]
-            }
+        # Add all of the elements to the certificator environment as `unknown`
+        # TODO: divide by the actual size of the type of this `VAR_DEF`
+        certificator_env[self.prime] = {
+            "type": [
+                "__unknown_type__"
+                for _ in range(self.size // 4)
+            ]
+        }
 
         return certificator_env

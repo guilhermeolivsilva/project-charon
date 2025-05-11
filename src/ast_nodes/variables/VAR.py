@@ -151,6 +151,8 @@ class VAR(Node):
             parameter_symbol = get_certificate_symbol("PARAM")
             self.certificate_label.append(f"{parameter_symbol}")
 
+        certificator_env[var_prime]["type"] = [self.type]
+
         return certificator_env
 
     def get_metadata(self) -> dict[str, str]:

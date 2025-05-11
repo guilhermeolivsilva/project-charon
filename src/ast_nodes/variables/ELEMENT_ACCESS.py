@@ -217,7 +217,6 @@ class ELEMENT_ACCESS(Node):
 
         return code, register, environment
 
-
     @override
     def certificate(
         self,
@@ -268,13 +267,21 @@ class ELEMENT_ACCESS(Node):
             # type
             accessed_attribute_index: int = self.element.get_value()
             certificator_env[variable_prime]["type"][accessed_attribute_index] = (
-                TYPE_SYMBOLS_MAP[self.type]["type_symbol"]
+                self.type
             )
 
         else:
             indexing_variable_metadata = self.element.get_metadata()
             indexing_variable_prime = indexing_variable_metadata["prime"]
             certificate_label += f"^(3)^({indexing_variable_prime})"
+
+            # Update the environment to tell all the elements of this variable
+            # have the same type symbol
+            number_of_elements = len(certificator_env[variable_prime]["type"])
+            certificator_env[variable_prime]["type"] = [
+                self.type
+                for _ in range(number_of_elements)
+            ]
 
         self.certificate_label = [f"{certificate_label}"]
 
