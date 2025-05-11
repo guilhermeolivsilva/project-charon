@@ -217,6 +217,9 @@ class BackendCertificator(AbstractCertificator):
                         var_address = hex(int(var_base_address, 16) + var_offset)
                         var_address_register = temp_bytecode["metadata"]["register"]
 
+                        next_bytecode_idx = temp_bytecode_idx
+                        next_bytecode = temp_bytecode
+
                         break
                 
                     # If the variable is being indexed by another variable, the
@@ -231,6 +234,11 @@ class BackendCertificator(AbstractCertificator):
                     if is_offset_in_another_var:
                         var_address_register = temp_bytecode["metadata"]["register"]
                         var_address = var_base_address
+
+                        next_bytecode_idx = temp_bytecode_idx
+                        next_bytecode = temp_bytecode
+
+                        break
 
                 # If there isn't any `ADD` instruction computed with the base
                 # address, then the base address is already the actual address.
@@ -261,21 +269,30 @@ class BackendCertificator(AbstractCertificator):
                 #    - just a `STORE`: integer
                 #    - just a `STOREF`: float
                 #    - `STORE` preceeded by `TRUNC`: short
+                if var_type is None:
+                    for _idx, temp_bytecode in enumerate(self.bytecode_list[following_bytecode_idx:]):
+                        temp_bytecode_idx = _idx + following_bytecode_idx
 
-                for _idx, temp_bytecode in enumerate(self.bytecode_list[following_bytecode_idx:]):
-                    temp_bytecode_idx = _idx + following_bytecode_idx
-
-                    if temp_bytecode["instruction"] == "STORE" and temp_bytecode["metadata"]["register"] == var_address_register:
-                        var_type = (
-                            "short"
-                            if self.bytecode_list[temp_bytecode_idx - 1]["instruction"] == "TRUNC"
-                            else "int"
+                        found_int_store_bytecode = (
+                            temp_bytecode["instruction"] == "STORE"
+                            and temp_bytecode["metadata"]["register"] == var_address_register
                         )
-                        break
 
-                    if temp_bytecode["instruction"] == "STOREF" and temp_bytecode["metadata"]["register"] == var_address_register:
-                        var_type = "float"
-                        break
+                        if found_int_store_bytecode:
+                            var_type = (
+                                "short"
+                                if self.bytecode_list[temp_bytecode_idx - 1]["instruction"] == "TRUNC"
+                                else "int"
+                            )
+                            break
+
+                        found_float_store_bytecode = (
+                            temp_bytecode["instruction"] == "STOREF"
+                            and temp_bytecode["metadata"]["register"] == var_address_register
+                        )
+                        if found_float_store_bytecode:
+                            var_type = "float"
+                            break
 
                 if var_type is None:
                     continue
