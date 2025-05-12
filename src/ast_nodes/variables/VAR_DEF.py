@@ -25,9 +25,8 @@ class VAR_DEF(Node):
 
         super().__init__(id, type)
 
+        self.id = id
         self.variable_metadata: dict = variable_metadata
-
-        self.prime: int = variable_metadata["prime"]
         self.size: int = get_variable_size(variable_metadata)
 
     @override
@@ -141,11 +140,12 @@ class VAR_DEF(Node):
 
         # Add all of the elements to the certificator environment as `unknown`
         # TODO: divide by the actual size of the type of this `VAR_DEF`
-        certificator_env[self.prime] = {
+        certificator_env[self.id] = {
             "type": [
                 "__unknown_type__"
                 for _ in range(self.size // 4)
-            ]
+            ],
+            "active": False
         }
 
         return certificator_env

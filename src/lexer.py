@@ -3,7 +3,7 @@
 from copy import deepcopy
 from typing import Union
 
-from src.utils import next_prime, primes_list, TYPE_SYMBOLS_MAP
+from src.utils import primes_list, TYPE_SYMBOLS_MAP
 
 
 class Lexer:
@@ -75,10 +75,6 @@ class Lexer:
         self.globals: dict[str, dict] = {"structs": {}, "variables": {}}
 
         self.variable_count: int = 0
-
-        # Start at the first prime, 2
-        self.struct_prime: int = 2
-        self.variable_prime: int = 2
 
     def parse_source_code(self) -> dict[str, dict]:
         """
@@ -264,12 +260,9 @@ class Lexer:
                     )
 
                     struct_id = len(self.globals["structs"]) + 1
-                    struct_prime = self.struct_prime
-                    self.struct_prime = next_prime(struct_prime)
 
                     self.globals["structs"][struct_name] = {
                         "id": struct_id,
-                        "prime": struct_prime,
                         "attributes": struct_attributes,
                         "active": False,
                     }
@@ -292,12 +285,8 @@ class Lexer:
                         variable_name, variable_metadata = definition_metadata
 
                         var_id = self.variable_count + 1
-                        var_prime = self.variable_prime
                         variable_metadata["id"] = var_id
-                        variable_metadata["prime"] = var_prime
                         self.globals["variables"][variable_name] = variable_metadata
-
-                        self.variable_prime = next_prime(self.variable_prime)
                         self.variable_count += 1
 
     def _parse_function(
@@ -392,15 +381,11 @@ class Lexer:
                     existing_variables.append(variable_name)
 
                     var_id = self.variable_count + 1
-                    var_prime = self.variable_prime
-
                     self.variable_count += 1
-                    self.variable_prime = next_prime(self.variable_prime)
 
                     variable_metadata = {
                         "name": variable_name,
                         "id": var_id,
-                        "prime": var_prime,
                         **variable_type,
                     }
 
@@ -902,15 +887,11 @@ class Lexer:
                         raise SyntaxError(err_msg)
 
                     parameter_id = self.variable_count + 1
-                    parameter_prime = self.variable_prime
-
                     self.variable_count += 1
-                    self.variable_prime = next_prime(self.variable_prime)
 
                     parameters[param_name] = {
                         "type": param_type,
                         "id": parameter_id,
-                        "prime": parameter_prime,
                     }
                     curr_idx += 2
 

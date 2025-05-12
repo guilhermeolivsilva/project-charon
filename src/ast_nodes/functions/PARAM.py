@@ -96,7 +96,7 @@ class PARAM(VAR_DEF):
         Compute the certificate of this variable definition.
 
         `VAR_DEF` objects will add an entry in the `certificator_env` that maps
-        the variable's prime to the symbols that encode the type of this
+        the variable's ID to the symbols that encode the type of this
         variable. (The entry will be initiated as a sequence of `unknown`, with
         `self.size` elements.)
 
@@ -118,7 +118,9 @@ class PARAM(VAR_DEF):
 
         certificator_env = super().certificate(certificator_env)
 
-        # Tag this var. prime as a parameter
-        certificator_env[self.prime]["parameter"] = True
+        # Tag this variable as a parameter
+        certificator_env[self.id]["type"] = [self.type]
+        certificator_env[self.id]["parameter"] = True
+        certificator_env[self.id]["active"] = True
 
         return certificator_env

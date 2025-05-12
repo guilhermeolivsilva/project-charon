@@ -74,7 +74,6 @@ TOKENIZED_SOURCE_CODE = {
         "structs": {
             "my_struct": {
                 "id": 1,
-                "prime": 2,
                 "attributes": {
                     "x": {"type": "int", "attr_pointer": 0},
                     "y": {"type": "float", "attr_pointer": 1},
@@ -83,7 +82,6 @@ TOKENIZED_SOURCE_CODE = {
             },
             "test_struct": {
                 "id": 2,
-                "prime": 3,
                 "attributes": {
                     "abcd": {"type": "int", "attr_pointer": 0},
                     "xyz": {"type": "int", "attr_pointer": 1},
@@ -92,7 +90,7 @@ TOKENIZED_SOURCE_CODE = {
             },
         },
         "variables": {
-            "a": {"type": "int", "length": 10, "id": 1, "prime": 2},
+            "a": {"type": "int", "length": 10, "id": 1},
             "global_var": {
                 "type": "my_struct",
                 "attributes": {
@@ -100,7 +98,6 @@ TOKENIZED_SOURCE_CODE = {
                     "y": {"type": "float", "attr_pointer": 1},
                 },
                 "id": 2,
-                "prime": 3,
             },
         },
     },
@@ -110,8 +107,8 @@ TOKENIZED_SOURCE_CODE = {
             "prime": 2,
             "type": "my_struct",
             "parameters": {
-                "xyz": {"type": "int", "id": 3, "prime": 5},
-                "aaa": {"type": "int", "id": 4, "prime": 7},
+                "xyz": {"type": "int", "id": 3},
+                "aaa": {"type": "int", "id": 4},
             },
             "statements": [
                 ("LCBRA", {}),
@@ -120,7 +117,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "internal_guy",
                         "id": 5,
-                        "prime": 11,
                         "type": "int",
                     },
                 ),
@@ -130,20 +126,18 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "internal_guy",
                         "id": 5,
-                        "prime": 11,
                         "type": "int",
                     },
                 ),
                 ("ASSIGN", {}),
-                ("VAR", {"type": "int", "id": 3, "prime": 5}),
+                ("VAR", {"type": "int", "id": 3}),
                 ("ADD", {}),
-                ("VAR", {"type": "int", "id": 4, "prime": 7}),
+                ("VAR", {"type": "int", "id": 4}),
                 ("SEMI", {}),
                 (
                     "VAR",
                     {
                         "id": 2,
-                        "prime": 3,
                         "attributes": {
                             "x": {"type": "int", "attr_pointer": 0},
                             "y": {"type": "float", "attr_pointer": 1},
@@ -160,7 +154,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "internal_guy",
                         "id": 5,
-                        "prime": 11,
                         "type": "int",
                     },
                 ),
@@ -175,7 +168,6 @@ TOKENIZED_SOURCE_CODE = {
                             "y": {"type": "float", "attr_pointer": 1},
                         },
                         "id": 2,
-                        "prime": 3,
                     },
                 ),
                 ("SEMI", {}),
@@ -187,15 +179,15 @@ TOKENIZED_SOURCE_CODE = {
             "prime": 3,
             "type": "int",
             "parameters": {
-                "param_1": {"type": "float", "id": 6, "prime": 13},
-                "param_2": {"type": "int", "id": 7, "prime": 17},
+                "param_1": {"type": "float", "id": 6},
+                "param_2": {"type": "int", "id": 7},
             },
             "statements": [
                 ("LCBRA", {}),
                 ("RET_SYM", {}),
-                ("VAR", {"type": "float", "id": 6, "prime": 13}),
+                ("VAR", {"type": "float", "id": 6}),
                 ("DIV", {}),
-                ("VAR", {"type": "int", "id": 7, "prime": 17}),
+                ("VAR", {"type": "int", "id": 7}),
                 ("SEMI", {}),
                 ("RCBRA", {}),
             ],
@@ -205,8 +197,8 @@ TOKENIZED_SOURCE_CODE = {
             "prime": 5,
             "type": "int",
             "parameters": {
-                "asda": {"type": "int", "id": 8, "prime": 19},
-                "abcdef": {"type": "int", "id": 9, "prime": 23},
+                "asda": {"type": "int", "id": 8},
+                "abcdef": {"type": "int", "id": 9},
             },
             "statements": [
                 ("LCBRA", {}),
@@ -215,7 +207,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "bla",
                         "id": 10,
-                        "prime": 29,
                         "type": "int",
                     },
                 ),
@@ -225,7 +216,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "bla",
                         "id": 10,
-                        "prime": 29,
                         "type": "int",
                     },
                 ),
@@ -237,7 +227,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "blabla",
                         "id": 11,
-                        "prime": 31,
                         "type": "float",
                     },
                 ),
@@ -247,7 +236,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "blabla",
                         "id": 11,
-                        "prime": 31,
                         "type": "float",
                     },
                 ),
@@ -259,7 +247,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "xaxaxa",
                         "id": 12,
-                        "prime": 37,
                         "type": "short",
                     },
                 ),
@@ -269,7 +256,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "internal_struct_var",
                         "id": 13,
-                        "prime": 41,
                         "type": "my_struct",
                         "attributes": {
                             "x": {"type": "int", "attr_pointer": 0},
@@ -282,7 +268,6 @@ TOKENIZED_SOURCE_CODE = {
                     "VAR",
                     {
                         "id": 13,
-                        "prime": 41,
                         "attributes": {
                             "x": {"type": "int", "attr_pointer": 0},
                             "y": {"type": "float", "attr_pointer": 1},
@@ -302,7 +287,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "bla",
                         "id": 10,
-                        "prime": 29,
                         "type": "int",
                     },
                 ),
@@ -312,7 +296,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "bla",
                         "id": 10,
-                        "prime": 29,
                         "type": "int",
                     },
                 ),
@@ -325,7 +308,6 @@ TOKENIZED_SOURCE_CODE = {
                                 "variable": True,
                                 "name": "blabla",
                                 "id": 11,
-                                "prime": 31,
                                 "type": "float",
                             },
                             {"variable": False, "type": "int", "value": 123},
@@ -338,12 +320,10 @@ TOKENIZED_SOURCE_CODE = {
                                 "param_1": {
                                     "type": "float",
                                     "id": 6,
-                                    "prime": 13,
                                 },
                                 "param_2": {
                                     "type": "int",
                                     "id": 7,
-                                    "prime": 17,
                                 },
                             },
                             "statements": [
@@ -354,7 +334,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "type": "float",
                                         "id": 6,
-                                        "prime": 13,
                                     },
                                 ),
                                 ("DIV", {}),
@@ -363,7 +342,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "type": "int",
                                         "id": 7,
-                                        "prime": 17,
                                     },
                                 ),
                                 ("SEMI", {}),
@@ -379,7 +357,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "blabla",
                         "id": 11,
-                        "prime": 31,
                         "type": "float",
                     },
                 ),
@@ -389,7 +366,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "bla",
                         "id": 10,
-                        "prime": 29,
                         "type": "int",
                     },
                 ),
@@ -406,12 +382,12 @@ TOKENIZED_SOURCE_CODE = {
                 ("LCBRA", {}),
                 (
                     "VAR_DEF",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("SEMI", {}),
                 (
                     "VAR",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("ASSIGN", {}),
                 (
@@ -429,12 +405,10 @@ TOKENIZED_SOURCE_CODE = {
                                 "asda": {
                                     "type": "int",
                                     "id": 8,
-                                    "prime": 19,
                                 },
                                 "abcdef": {
                                     "type": "int",
                                     "id": 9,
-                                    "prime": 23,
                                 },
                             },
                             "statements": [
@@ -444,7 +418,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "bla",
                                         "id": 10,
-                                        "prime": 29,
                                         "type": "int",
                                     },
                                 ),
@@ -454,7 +427,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "bla",
                                         "id": 10,
-                                        "prime": 29,
                                         "type": "int",
                                     },
                                 ),
@@ -466,7 +438,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "blabla",
                                         "id": 11,
-                                        "prime": 31,
                                         "type": "float",
                                     },
                                 ),
@@ -476,7 +447,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "blabla",
                                         "id": 11,
-                                        "prime": 31,
                                         "type": "float",
                                     },
                                 ),
@@ -488,7 +458,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "xaxaxa",
                                         "id": 12,
-                                        "prime": 37,
                                         "type": "short",
                                     },
                                 ),
@@ -498,7 +467,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "internal_struct_var",
                                         "id": 13,
-                                        "prime": 41,
                                         "type": "my_struct",
                                         "attributes": {
                                             "x": {"type": "int", "attr_pointer": 0},
@@ -511,7 +479,6 @@ TOKENIZED_SOURCE_CODE = {
                                     "VAR",
                                     {
                                         "id": 13,
-                                        "prime": 41,
                                         "attributes": {
                                             "x": {"type": "int", "attr_pointer": 0},
                                             "y": {"type": "float", "attr_pointer": 1},
@@ -531,7 +498,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "bla",
                                         "id": 10,
-                                        "prime": 29,
                                         "type": "int",
                                     },
                                 ),
@@ -541,7 +507,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "bla",
                                         "id": 10,
-                                        "prime": 29,
                                         "type": "int",
                                     },
                                 ),
@@ -554,7 +519,6 @@ TOKENIZED_SOURCE_CODE = {
                                                 "variable": True,
                                                 "name": "blabla",
                                                 "id": 11,
-                                                "prime": 31,
                                                 "type": "float",
                                             },
                                             {
@@ -571,12 +535,10 @@ TOKENIZED_SOURCE_CODE = {
                                                 "param_1": {
                                                     "type": "float",
                                                     "id": 6,
-                                                    "prime": 13,
                                                 },
                                                 "param_2": {
                                                     "type": "int",
                                                     "id": 7,
-                                                    "prime": 17,
                                                 },
                                             },
                                             "statements": [
@@ -587,7 +549,6 @@ TOKENIZED_SOURCE_CODE = {
                                                     {
                                                         "type": "float",
                                                         "id": 6,
-                                                        "prime": 13,
                                                     },
                                                 ),
                                                 ("DIV", {}),
@@ -596,7 +557,6 @@ TOKENIZED_SOURCE_CODE = {
                                                     {
                                                         "type": "int",
                                                         "id": 7,
-                                                        "prime": 17,
                                                     },
                                                 ),
                                                 ("SEMI", {}),
@@ -612,7 +572,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "blabla",
                                         "id": 11,
-                                        "prime": 31,
                                         "type": "float",
                                     },
                                 ),
@@ -622,7 +581,6 @@ TOKENIZED_SOURCE_CODE = {
                                     {
                                         "name": "bla",
                                         "id": 10,
-                                        "prime": 29,
                                         "type": "int",
                                     },
                                 ),
@@ -638,7 +596,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "array",
                         "id": 15,
-                        "prime": 47,
                         "type": "int",
                         "length": 10,
                     },
@@ -649,7 +606,6 @@ TOKENIZED_SOURCE_CODE = {
                     {
                         "name": "array",
                         "id": 15,
-                        "prime": 47,
                         "type": "int",
                         "length": 10,
                     },
@@ -662,7 +618,7 @@ TOKENIZED_SOURCE_CODE = {
                 ("SEMI", {}),
                 (
                     "VAR_DEF",
-                    {"name": "y", "id": 16, "prime": 53, "type": "int"},
+                    {"name": "y", "id": 16, "type": "int"},
                 ),
                 ("SEMI", {}),
                 ("IF_SYM", {}),
@@ -672,7 +628,7 @@ TOKENIZED_SOURCE_CODE = {
                 ("LPAR", {}),
                 (
                     "VAR",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("LSHIFT", {}),
                 ("CST", {"type": "int", "value": 4}),
@@ -684,7 +640,7 @@ TOKENIZED_SOURCE_CODE = {
                 ("LPAR", {}),
                 (
                     "VAR",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("GREATER", {}),
                 ("CST", {"type": "int", "value": 1}),
@@ -694,7 +650,7 @@ TOKENIZED_SOURCE_CODE = {
                 ("LPAR", {}),
                 (
                     "VAR",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("LESS", {}),
                 ("CST", {"type": "int", "value": 10}),
@@ -703,12 +659,12 @@ TOKENIZED_SOURCE_CODE = {
                 ("LCBRA", {}),
                 (
                     "VAR",
-                    {"name": "y", "id": 16, "prime": 53, "type": "int"},
+                    {"name": "y", "id": 16, "type": "int"},
                 ),
                 ("ASSIGN", {}),
                 (
                     "VAR",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("BITAND", {}),
                 ("CST", {"type": "int", "value": 1}),
@@ -718,12 +674,12 @@ TOKENIZED_SOURCE_CODE = {
                 ("LCBRA", {}),
                 (
                     "VAR",
-                    {"name": "y", "id": 16, "prime": 53, "type": "int"},
+                    {"name": "y", "id": 16, "type": "int"},
                 ),
                 ("ASSIGN", {}),
                 (
                     "VAR",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("BITOR", {}),
                 ("CST", {"type": "int", "value": 1}),
@@ -734,12 +690,12 @@ TOKENIZED_SOURCE_CODE = {
                 ("LPAR", {}),
                 (
                     "VAR",
-                    {"name": "x", "id": 14, "prime": 43, "type": "int"},
+                    {"name": "x", "id": 14, "type": "int"},
                 ),
                 ("MULT", {}),
                 (
                     "VAR",
-                    {"name": "y", "id": 16, "prime": 53, "type": "int"},
+                    {"name": "y", "id": 16, "type": "int"},
                 ),
                 ("RPAR", {}),
                 ("DIV", {}),

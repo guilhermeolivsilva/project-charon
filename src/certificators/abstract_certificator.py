@@ -8,7 +8,7 @@ class AbstractCertificator:
 
     def __init__(self, **kwargs) -> None:
         self.computed_certificate: list[str] = []
-        self.initial_prime: int = 2
+        self.current_prime: int = 2
 
         # The environment maps variables primes to symbols that represents their
         # associated types. `int x[2]` will be mapped to [3, 3], and

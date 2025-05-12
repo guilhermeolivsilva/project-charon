@@ -10,7 +10,7 @@ def test_init() -> None:
     frontend_certificator = FrontendCertificator(ast=ABSTRACT_SYNTAX_TREE)
 
     assert frontend_certificator.computed_certificate == []
-    assert frontend_certificator.initial_prime == 2
+    assert frontend_certificator.current_prime == 2
     assert frontend_certificator.ast == ABSTRACT_SYNTAX_TREE
 
 

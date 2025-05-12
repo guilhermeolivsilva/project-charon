@@ -180,13 +180,20 @@ class BackendCertificator(AbstractCertificator):
                 next_bytecode_idx = bytecode_idx + 1
                 next_bytecode = self.bytecode_list[next_bytecode_idx]
 
+                is_param = (
+                    bytecode["instruction"] == "CONSTANT"
+                    and next_bytecode["instruction"] in ["STORE", "STOREF"]
+                    and next_bytecode["metadata"]["register"] == bytecode["metadata"]["register"]
+                    and next_bytecode["metadata"]["value"] == "arg"
+                )
+
                 is_variable = (
                     bytecode["instruction"] == "CONSTANT"
                     and next_bytecode["instruction"] == "ADD"
                     and next_bytecode["metadata"]["rhs_register"] == "zero"
                 )
 
-                if not is_variable:
+                if not any([is_param, is_variable]):
                     continue
 
                 # Try to infer the variable type
@@ -270,25 +277,23 @@ class BackendCertificator(AbstractCertificator):
                 #    - just a `STOREF`: float
                 #    - `STORE` preceeded by `TRUNC`: short
                 if var_type is None:
-                    for _idx, temp_bytecode in enumerate(self.bytecode_list[following_bytecode_idx:]):
-                        temp_bytecode_idx = _idx + following_bytecode_idx
-
+                    for _idx, _bytecode in enumerate(self.bytecode_list):
                         found_int_store_bytecode = (
-                            temp_bytecode["instruction"] == "STORE"
-                            and temp_bytecode["metadata"]["register"] == var_address_register
+                            _bytecode["instruction"] == "STORE"
+                            and _bytecode["metadata"]["register"] == var_address_register
                         )
 
                         if found_int_store_bytecode:
                             var_type = (
                                 "short"
-                                if self.bytecode_list[temp_bytecode_idx - 1]["instruction"] == "TRUNC"
+                                if self.bytecode_list[_idx - 1]["instruction"] == "TRUNC"
                                 else "int"
                             )
                             break
 
                         found_float_store_bytecode = (
-                            temp_bytecode["instruction"] == "STOREF"
-                            and temp_bytecode["metadata"]["register"] == var_address_register
+                            _bytecode["instruction"] == "STOREF"
+                            and _bytecode["metadata"]["register"] == var_address_register
                         )
                         if found_float_store_bytecode:
                             var_type = "float"
@@ -301,9 +306,23 @@ class BackendCertificator(AbstractCertificator):
                     temp_variables[var_base_address]["addresses"][var_address] = var_type
 
                 else:
+                    # Initialize all the subaddresses as `unknown`, except if it
+                    # is a dynamically indexed array (then all the types must be
+                    # the same)
+                    _offset = int(var_base_address, 16)
+                    _type = var_type if is_offset_in_another_var else "__unknown_type__"
                     temp_variables[var_base_address] = {
-                        "addresses": {var_address: var_type}
+                        "addresses": {
+                            hex(address): _type
+                            for address in range(
+                                _offset + 0,
+                                _offset + self.program["data"][var_base_address],
+                                4
+                            )
+                        }
                     }
+                    
+                    temp_variables[var_base_address]["addresses"][var_address] = var_type
 
             except IndexError:
                 break

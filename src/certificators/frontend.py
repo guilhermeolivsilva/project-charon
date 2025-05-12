@@ -6,7 +6,7 @@ from typing_extensions import override
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.certificators.abstract_certificator import AbstractCertificator
-from src.utils import primes_list
+from src.utils import primes_list, next_prime
 
 
 class FrontendCertificator(AbstractCertificator):
@@ -39,6 +39,8 @@ class FrontendCertificator(AbstractCertificator):
         """
 
         computed_exponents = self._certificate_ast()
+        computed_exponents = self._handle_variables_primes(computed_exponents)
+        # computed_exponents = self._add_var_def_symbols(computed_exponents)
 
         self.computed_certificate = [
             f"{positional_prime}^({exponent})"
@@ -71,6 +73,51 @@ class FrontendCertificator(AbstractCertificator):
         ast_certificate = self.ast.root.get_certificate_label()
 
         return ast_certificate
+    
+    def _handle_variables_primes(self, computed_exponents: list[str]) -> list[str]:
+        """
+        Handle variables primes by emitting it only for active variables.
+        
+        This method also replaces all the placeholders in `computed_exponents`
+        with emitted primes.
+
+        Parameters
+        ----------
+        ast_certificate : list[str]
+            The list of labels of the AST certificate.
+
+        Returns
+        -------
+        ast_certificate : list[str]
+            The list of labels of the AST certificate, after replacing
+            placeholders.
+        """
+
+        # Emit primes for "alive" variables
+        for var_id, entry in self.environment.items():
+            if entry["active"]:
+                self.environment[var_id]["prime"] = self.current_prime
+                self.current_prime = next_prime(self.current_prime)
+
+        # Replace placeholders
+        pattern = r"VAR_(\d+)_PRIME_PLACEHOLDER"
+
+        for idx, element in enumerate(computed_exponents):
+            matches = re.finditer(pattern, element)
+
+            for match in matches:
+                string_with_placeholder = match.group(0)
+                var_id = int(match.group(1))
+                var_prime = self.environment[var_id]["prime"]
+                computed_exponents[idx] = computed_exponents[idx].replace(
+                    string_with_placeholder,
+                    f"{var_prime}"
+                )
+
+        return computed_exponents
+    
+    def _add_var_def_symbols(self, computed_exponents: list[str]) -> list[str]:
+        ...
     
     def _add_types_certificates(self, certificate: str) -> str:
         """

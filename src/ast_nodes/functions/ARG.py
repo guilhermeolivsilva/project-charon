@@ -137,8 +137,6 @@ class ARG(Node):
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
         certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.

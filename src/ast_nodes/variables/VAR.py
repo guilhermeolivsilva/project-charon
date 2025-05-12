@@ -42,6 +42,9 @@ class VAR(Node):
             new_str += f" (array), Length: {array_length}"
 
         return new_str
+    
+    def get_id(self) -> int:
+        return self.id
 
     @override
     def generate_code(
@@ -144,14 +147,17 @@ class VAR(Node):
         self.certificate_label = [f"{self.symbol}"]
 
         # Check if it is a parameter
-        var_prime = self.variable_metadata['prime']
-        is_parameter = certificator_env[var_prime].get("parameter")
+        is_parameter = certificator_env[self.id].get("parameter")
 
         if is_parameter:
             parameter_symbol = get_certificate_symbol("PARAM")
             self.certificate_label.append(f"{parameter_symbol}")
 
-        certificator_env[var_prime]["type"] = [self.type]
+        # Only update the `type` for "simple" variables (`ELEMENT_ACCESS`
+        # will do this for arrays/structs)
+        if len(certificator_env[self.id]["type"]) == 1:
+            certificator_env[self.id]["type"] = [self.type]
+            certificator_env[self.id]["active"] = True
 
         return certificator_env
 
@@ -198,5 +204,5 @@ class VAR(Node):
         # Add ^1 because it means memory offset + 1. As this is a regular
         # variable – and not an array nor struct –, the offset is always 0.
         self.symbol: str = (
-            f"({symbol})" + f"^({self.variable_metadata['prime']})" + "^(2)" + "^(1)"
+            f"({symbol})" + f"^(VAR_{self.id}_PRIME_PLACEHOLDER)" + "^(2)" + "^(1)"
         )

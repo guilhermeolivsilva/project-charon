@@ -253,9 +253,10 @@ class ELEMENT_ACCESS(Node):
         certificate_label = f"({self.symbol})"
 
         # Add the prime of the variable being accessed
-        variable_metadata = self.variable.get_metadata()
-        variable_prime = variable_metadata["prime"]
-        certificate_label += f"^({variable_prime})"
+        self.variable.certificate(certificator_env)
+        variable_id = self.variable.get_id()
+        certificate_label += f"^(VAR_{variable_id}_PRIME_PLACEHOLDER)"
+        certificator_env[variable_id]["active"] = True
 
         # Static access (i.e., indexing an array with a variable, or accessing
         # a struct attribute)
@@ -266,22 +267,23 @@ class ELEMENT_ACCESS(Node):
             # Update the environment with the symbol of the accessed element's
             # type
             accessed_attribute_index: int = self.element.get_value()
-            certificator_env[variable_prime]["type"][accessed_attribute_index] = (
+            certificator_env[variable_id]["type"][accessed_attribute_index] = (
                 self.type
             )
 
         else:
-            indexing_variable_metadata = self.element.get_metadata()
-            indexing_variable_prime = indexing_variable_metadata["prime"]
-            certificate_label += f"^(3)^({indexing_variable_prime})"
+            indexing_variable_id = self.element.get_id()
+            certificator_env[indexing_variable_id]["active"] = True
+            certificate_label += f"^(3)^(VAR_{indexing_variable_id}_PRIME_PLACEHOLDER)"
 
             # Update the environment to tell all the elements of this variable
             # have the same type symbol
-            number_of_elements = len(certificator_env[variable_prime]["type"])
-            certificator_env[variable_prime]["type"] = [
+            number_of_elements = len(certificator_env[variable_id]["type"])
+            certificator_env[variable_id]["type"] = [
                 self.type
                 for _ in range(number_of_elements)
             ]
+            
 
         self.certificate_label = [f"{certificate_label}"]
 

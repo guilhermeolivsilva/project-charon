@@ -134,16 +134,14 @@ class SEQ(Node):
         Parameters
         ----------
         certificator_env : dict[int, list[int]]
-            The certificators's environment, that maps variables IDs to
-            encodings of their types.
-        certificator_env : dict[int, list[int]]
             The updated certificator's environment, with any additional
             information about the variable's types it might have captured.
 
         Returns
         -------
-        : int
-            The prime that comes immediately after `positional_prime`.
+        certificator_env : dict[int, list[int]]
+            The updated certificator's environment, with any additional
+            information about the variable's types it might have captured.
         """
 
         for child in self.children:
