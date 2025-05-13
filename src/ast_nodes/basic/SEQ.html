@@ -216,22 +216,20 @@
 </span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        Parameters</span>
 </span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">        ----------</span>
 </span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        Returns</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        -------</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        : int</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        Returns</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        -------</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -374,22 +372,20 @@
 </span><span id="SEQ-135"><a href="#SEQ-135"><span class="linenos">135</span></a><span class="sd">        Parameters</span>
 </span><span id="SEQ-136"><a href="#SEQ-136"><span class="linenos">136</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ-137"><a href="#SEQ-137"><span class="linenos">137</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ-138"><a href="#SEQ-138"><span class="linenos">138</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="SEQ-139"><a href="#SEQ-139"><span class="linenos">139</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="SEQ-140"><a href="#SEQ-140"><span class="linenos">140</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ-141"><a href="#SEQ-141"><span class="linenos">141</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="SEQ-142"><a href="#SEQ-142"><span class="linenos">142</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="SEQ-143"><a href="#SEQ-143"><span class="linenos">143</span></a>
-</span><span id="SEQ-144"><a href="#SEQ-144"><span class="linenos">144</span></a><span class="sd">        Returns</span>
-</span><span id="SEQ-145"><a href="#SEQ-145"><span class="linenos">145</span></a><span class="sd">        -------</span>
-</span><span id="SEQ-146"><a href="#SEQ-146"><span class="linenos">146</span></a><span class="sd">        : int</span>
-</span><span id="SEQ-147"><a href="#SEQ-147"><span class="linenos">147</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="SEQ-148"><a href="#SEQ-148"><span class="linenos">148</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="SEQ-149"><a href="#SEQ-149"><span class="linenos">149</span></a>
-</span><span id="SEQ-150"><a href="#SEQ-150"><span class="linenos">150</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="SEQ-151"><a href="#SEQ-151"><span class="linenos">151</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="SEQ-152"><a href="#SEQ-152"><span class="linenos">152</span></a>
-</span><span id="SEQ-153"><a href="#SEQ-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="SEQ-138"><a href="#SEQ-138"><span class="linenos">138</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="SEQ-139"><a href="#SEQ-139"><span class="linenos">139</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="SEQ-140"><a href="#SEQ-140"><span class="linenos">140</span></a>
+</span><span id="SEQ-141"><a href="#SEQ-141"><span class="linenos">141</span></a><span class="sd">        Returns</span>
+</span><span id="SEQ-142"><a href="#SEQ-142"><span class="linenos">142</span></a><span class="sd">        -------</span>
+</span><span id="SEQ-143"><a href="#SEQ-143"><span class="linenos">143</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="SEQ-144"><a href="#SEQ-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="SEQ-145"><a href="#SEQ-145"><span class="linenos">145</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="SEQ-146"><a href="#SEQ-146"><span class="linenos">146</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ-147"><a href="#SEQ-147"><span class="linenos">147</span></a>
+</span><span id="SEQ-148"><a href="#SEQ-148"><span class="linenos">148</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="SEQ-149"><a href="#SEQ-149"><span class="linenos">149</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="SEQ-150"><a href="#SEQ-150"><span class="linenos">150</span></a>
+</span><span id="SEQ-151"><a href="#SEQ-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -678,22 +674,20 @@ environment : dict[int, str]
 </span><span id="SEQ.certificate-135"><a href="#SEQ.certificate-135"><span class="linenos">135</span></a><span class="sd">        Parameters</span>
 </span><span id="SEQ.certificate-136"><a href="#SEQ.certificate-136"><span class="linenos">136</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ.certificate-137"><a href="#SEQ.certificate-137"><span class="linenos">137</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ.certificate-138"><a href="#SEQ.certificate-138"><span class="linenos">138</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
-</span><span id="SEQ.certificate-139"><a href="#SEQ.certificate-139"><span class="linenos">139</span></a><span class="sd">            encodings of their types.</span>
-</span><span id="SEQ.certificate-140"><a href="#SEQ.certificate-140"><span class="linenos">140</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ.certificate-141"><a href="#SEQ.certificate-141"><span class="linenos">141</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="SEQ.certificate-142"><a href="#SEQ.certificate-142"><span class="linenos">142</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="SEQ.certificate-143"><a href="#SEQ.certificate-143"><span class="linenos">143</span></a>
-</span><span id="SEQ.certificate-144"><a href="#SEQ.certificate-144"><span class="linenos">144</span></a><span class="sd">        Returns</span>
-</span><span id="SEQ.certificate-145"><a href="#SEQ.certificate-145"><span class="linenos">145</span></a><span class="sd">        -------</span>
-</span><span id="SEQ.certificate-146"><a href="#SEQ.certificate-146"><span class="linenos">146</span></a><span class="sd">        : int</span>
-</span><span id="SEQ.certificate-147"><a href="#SEQ.certificate-147"><span class="linenos">147</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="SEQ.certificate-148"><a href="#SEQ.certificate-148"><span class="linenos">148</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="SEQ.certificate-149"><a href="#SEQ.certificate-149"><span class="linenos">149</span></a>
-</span><span id="SEQ.certificate-150"><a href="#SEQ.certificate-150"><span class="linenos">150</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-</span><span id="SEQ.certificate-151"><a href="#SEQ.certificate-151"><span class="linenos">151</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="SEQ.certificate-152"><a href="#SEQ.certificate-152"><span class="linenos">152</span></a>
-</span><span id="SEQ.certificate-153"><a href="#SEQ.certificate-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="SEQ.certificate-138"><a href="#SEQ.certificate-138"><span class="linenos">138</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="SEQ.certificate-139"><a href="#SEQ.certificate-139"><span class="linenos">139</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="SEQ.certificate-140"><a href="#SEQ.certificate-140"><span class="linenos">140</span></a>
+</span><span id="SEQ.certificate-141"><a href="#SEQ.certificate-141"><span class="linenos">141</span></a><span class="sd">        Returns</span>
+</span><span id="SEQ.certificate-142"><a href="#SEQ.certificate-142"><span class="linenos">142</span></a><span class="sd">        -------</span>
+</span><span id="SEQ.certificate-143"><a href="#SEQ.certificate-143"><span class="linenos">143</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="SEQ.certificate-144"><a href="#SEQ.certificate-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="SEQ.certificate-145"><a href="#SEQ.certificate-145"><span class="linenos">145</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="SEQ.certificate-146"><a href="#SEQ.certificate-146"><span class="linenos">146</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ.certificate-147"><a href="#SEQ.certificate-147"><span class="linenos">147</span></a>
+</span><span id="SEQ.certificate-148"><a href="#SEQ.certificate-148"><span class="linenos">148</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+</span><span id="SEQ.certificate-149"><a href="#SEQ.certificate-149"><span class="linenos">149</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="SEQ.certificate-150"><a href="#SEQ.certificate-150"><span class="linenos">150</span></a>
+</span><span id="SEQ.certificate-151"><a href="#SEQ.certificate-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -705,16 +699,14 @@ appear in the <code><a href="#SEQ.children">children</a></code> list. The <code>
 <h2 id="parameters">Parameters</h2>
 
 <p>certificator_env : dict[int, list[int]]
-    The certificators's environment, that maps variables IDs to
-    encodings of their types.
-certificator_env : dict[int, list[int]]
     The updated certificator's environment, with any additional
     information about the variable's types it might have captured.</p>
 
 <h2 id="returns">Returns</h2>
 
-<p>: int
-    The prime that comes immediately after <code>positional_prime</code>.</p>
+<p>certificator_env : dict[int, list[int]]
+    The updated certificator's environment, with any additional
+    information about the variable's types it might have captured.</p>
 </div>
 
 

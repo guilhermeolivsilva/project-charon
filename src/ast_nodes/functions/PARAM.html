@@ -166,7 +166,7 @@
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
 </span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        the variable&#39;s ID to the symbols that encode the type of this</span>
 </span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
 </span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        `self.size` elements.)</span>
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>
@@ -188,10 +188,12 @@
 </span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="c1"># Tag this variable as a parameter</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -296,7 +298,7 @@
 </span><span id="PARAM-97"><a href="#PARAM-97"><span class="linenos"> 97</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
 </span><span id="PARAM-98"><a href="#PARAM-98"><span class="linenos"> 98</span></a>
 </span><span id="PARAM-99"><a href="#PARAM-99"><span class="linenos"> 99</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
-</span><span id="PARAM-100"><a href="#PARAM-100"><span class="linenos">100</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
+</span><span id="PARAM-100"><a href="#PARAM-100"><span class="linenos">100</span></a><span class="sd">        the variable&#39;s ID to the symbols that encode the type of this</span>
 </span><span id="PARAM-101"><a href="#PARAM-101"><span class="linenos">101</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
 </span><span id="PARAM-102"><a href="#PARAM-102"><span class="linenos">102</span></a><span class="sd">        `self.size` elements.)</span>
 </span><span id="PARAM-103"><a href="#PARAM-103"><span class="linenos">103</span></a>
@@ -318,10 +320,12 @@
 </span><span id="PARAM-119"><a href="#PARAM-119"><span class="linenos">119</span></a>
 </span><span id="PARAM-120"><a href="#PARAM-120"><span class="linenos">120</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="PARAM-121"><a href="#PARAM-121"><span class="linenos">121</span></a>
-</span><span id="PARAM-122"><a href="#PARAM-122"><span class="linenos">122</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
-</span><span id="PARAM-123"><a href="#PARAM-123"><span class="linenos">123</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="PARAM-124"><a href="#PARAM-124"><span class="linenos">124</span></a>
-</span><span id="PARAM-125"><a href="#PARAM-125"><span class="linenos">125</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="PARAM-122"><a href="#PARAM-122"><span class="linenos">122</span></a>        <span class="c1"># Tag this variable as a parameter</span>
+</span><span id="PARAM-123"><a href="#PARAM-123"><span class="linenos">123</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+</span><span id="PARAM-124"><a href="#PARAM-124"><span class="linenos">124</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="PARAM-125"><a href="#PARAM-125"><span class="linenos">125</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="PARAM-126"><a href="#PARAM-126"><span class="linenos">126</span></a>
+</span><span id="PARAM-127"><a href="#PARAM-127"><span class="linenos">127</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -483,7 +487,7 @@ environment : dict[int, str]
 </span><span id="PARAM.certificate-97"><a href="#PARAM.certificate-97"><span class="linenos"> 97</span></a><span class="sd">        Compute the certificate of this variable definition.</span>
 </span><span id="PARAM.certificate-98"><a href="#PARAM.certificate-98"><span class="linenos"> 98</span></a>
 </span><span id="PARAM.certificate-99"><a href="#PARAM.certificate-99"><span class="linenos"> 99</span></a><span class="sd">        `VAR_DEF` objects will add an entry in the `certificator_env` that maps</span>
-</span><span id="PARAM.certificate-100"><a href="#PARAM.certificate-100"><span class="linenos">100</span></a><span class="sd">        the variable&#39;s prime to the symbols that encode the type of this</span>
+</span><span id="PARAM.certificate-100"><a href="#PARAM.certificate-100"><span class="linenos">100</span></a><span class="sd">        the variable&#39;s ID to the symbols that encode the type of this</span>
 </span><span id="PARAM.certificate-101"><a href="#PARAM.certificate-101"><span class="linenos">101</span></a><span class="sd">        variable. (The entry will be initiated as a sequence of `unknown`, with</span>
 </span><span id="PARAM.certificate-102"><a href="#PARAM.certificate-102"><span class="linenos">102</span></a><span class="sd">        `self.size` elements.)</span>
 </span><span id="PARAM.certificate-103"><a href="#PARAM.certificate-103"><span class="linenos">103</span></a>
@@ -505,17 +509,19 @@ environment : dict[int, str]
 </span><span id="PARAM.certificate-119"><a href="#PARAM.certificate-119"><span class="linenos">119</span></a>
 </span><span id="PARAM.certificate-120"><a href="#PARAM.certificate-120"><span class="linenos">120</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="PARAM.certificate-121"><a href="#PARAM.certificate-121"><span class="linenos">121</span></a>
-</span><span id="PARAM.certificate-122"><a href="#PARAM.certificate-122"><span class="linenos">122</span></a>        <span class="c1"># Tag this var. prime as a parameter</span>
-</span><span id="PARAM.certificate-123"><a href="#PARAM.certificate-123"><span class="linenos">123</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="PARAM.certificate-124"><a href="#PARAM.certificate-124"><span class="linenos">124</span></a>
-</span><span id="PARAM.certificate-125"><a href="#PARAM.certificate-125"><span class="linenos">125</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="PARAM.certificate-122"><a href="#PARAM.certificate-122"><span class="linenos">122</span></a>        <span class="c1"># Tag this variable as a parameter</span>
+</span><span id="PARAM.certificate-123"><a href="#PARAM.certificate-123"><span class="linenos">123</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+</span><span id="PARAM.certificate-124"><a href="#PARAM.certificate-124"><span class="linenos">124</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="PARAM.certificate-125"><a href="#PARAM.certificate-125"><span class="linenos">125</span></a>        <span class="n">certificator_env</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="PARAM.certificate-126"><a href="#PARAM.certificate-126"><span class="linenos">126</span></a>
+</span><span id="PARAM.certificate-127"><a href="#PARAM.certificate-127"><span class="linenos">127</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Compute the certificate of this variable definition.</p>
 
 <p><code>VAR_DEF</code> objects will add an entry in the <code>certificator_env</code> that maps
-the variable's prime to the symbols that encode the type of this
+the variable's ID to the symbols that encode the type of this
 variable. (The entry will be initiated as a sequence of <code>unknown</code>, with
 <code>self.size</code> elements.)</p>
 
@@ -541,8 +547,8 @@ of this variable that will be later filled by the <code>certificator</code>.</p>
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="../variables/VAR_DEF.html#VAR_DEF">src.ast_nodes.variables.VAR_DEF.VAR_DEF</a></dt>
-                                <dd id="PARAM.variable_metadata" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.variable_metadata">variable_metadata</a></dd>
-                <dd id="PARAM.prime" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.prime">prime</a></dd>
+                                <dd id="PARAM.id" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.id">id</a></dd>
+                <dd id="PARAM.variable_metadata" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.variable_metadata">variable_metadata</a></dd>
                 <dd id="PARAM.size" class="variable"><a href="../variables/VAR_DEF.html#VAR_DEF.size">size</a></dd>
                 <dd id="PARAM.print" class="function"><a href="../variables/VAR_DEF.html#VAR_DEF.print">print</a></dd>
 

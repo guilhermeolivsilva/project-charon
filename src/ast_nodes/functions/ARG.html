@@ -216,19 +216,17 @@
 </span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
 </span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">        Returns</span>
 </span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        -------</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        : int</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
 </span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -371,19 +369,17 @@
 </span><span id="ARG-138"><a href="#ARG-138"><span class="linenos">138</span></a>
 </span><span id="ARG-139"><a href="#ARG-139"><span class="linenos">139</span></a><span class="sd">        Returns</span>
 </span><span id="ARG-140"><a href="#ARG-140"><span class="linenos">140</span></a><span class="sd">        -------</span>
-</span><span id="ARG-141"><a href="#ARG-141"><span class="linenos">141</span></a><span class="sd">        : int</span>
-</span><span id="ARG-142"><a href="#ARG-142"><span class="linenos">142</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="ARG-143"><a href="#ARG-143"><span class="linenos">143</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="ARG-144"><a href="#ARG-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="ARG-145"><a href="#ARG-145"><span class="linenos">145</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="ARG-146"><a href="#ARG-146"><span class="linenos">146</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ARG-147"><a href="#ARG-147"><span class="linenos">147</span></a>
-</span><span id="ARG-148"><a href="#ARG-148"><span class="linenos">148</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="ARG-149"><a href="#ARG-149"><span class="linenos">149</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="ARG-141"><a href="#ARG-141"><span class="linenos">141</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="ARG-142"><a href="#ARG-142"><span class="linenos">142</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="ARG-143"><a href="#ARG-143"><span class="linenos">143</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="ARG-144"><a href="#ARG-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-145"><a href="#ARG-145"><span class="linenos">145</span></a>
+</span><span id="ARG-146"><a href="#ARG-146"><span class="linenos">146</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="ARG-147"><a href="#ARG-147"><span class="linenos">147</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="ARG-148"><a href="#ARG-148"><span class="linenos">148</span></a>
+</span><span id="ARG-149"><a href="#ARG-149"><span class="linenos">149</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
 </span><span id="ARG-150"><a href="#ARG-150"><span class="linenos">150</span></a>
-</span><span id="ARG-151"><a href="#ARG-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-</span><span id="ARG-152"><a href="#ARG-152"><span class="linenos">152</span></a>
-</span><span id="ARG-153"><a href="#ARG-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="ARG-151"><a href="#ARG-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -632,19 +628,17 @@ environment : dict[int, str]
 </span><span id="ARG.certificate-138"><a href="#ARG.certificate-138"><span class="linenos">138</span></a>
 </span><span id="ARG.certificate-139"><a href="#ARG.certificate-139"><span class="linenos">139</span></a><span class="sd">        Returns</span>
 </span><span id="ARG.certificate-140"><a href="#ARG.certificate-140"><span class="linenos">140</span></a><span class="sd">        -------</span>
-</span><span id="ARG.certificate-141"><a href="#ARG.certificate-141"><span class="linenos">141</span></a><span class="sd">        : int</span>
-</span><span id="ARG.certificate-142"><a href="#ARG.certificate-142"><span class="linenos">142</span></a><span class="sd">            The prime that comes immediately after `positional_prime`.</span>
-</span><span id="ARG.certificate-143"><a href="#ARG.certificate-143"><span class="linenos">143</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="ARG.certificate-144"><a href="#ARG.certificate-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="ARG.certificate-145"><a href="#ARG.certificate-145"><span class="linenos">145</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="ARG.certificate-146"><a href="#ARG.certificate-146"><span class="linenos">146</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ARG.certificate-147"><a href="#ARG.certificate-147"><span class="linenos">147</span></a>
-</span><span id="ARG.certificate-148"><a href="#ARG.certificate-148"><span class="linenos">148</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
-</span><span id="ARG.certificate-149"><a href="#ARG.certificate-149"><span class="linenos">149</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="ARG.certificate-141"><a href="#ARG.certificate-141"><span class="linenos">141</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
+</span><span id="ARG.certificate-142"><a href="#ARG.certificate-142"><span class="linenos">142</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
+</span><span id="ARG.certificate-143"><a href="#ARG.certificate-143"><span class="linenos">143</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="ARG.certificate-144"><a href="#ARG.certificate-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG.certificate-145"><a href="#ARG.certificate-145"><span class="linenos">145</span></a>
+</span><span id="ARG.certificate-146"><a href="#ARG.certificate-146"><span class="linenos">146</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
+</span><span id="ARG.certificate-147"><a href="#ARG.certificate-147"><span class="linenos">147</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
+</span><span id="ARG.certificate-148"><a href="#ARG.certificate-148"><span class="linenos">148</span></a>
+</span><span id="ARG.certificate-149"><a href="#ARG.certificate-149"><span class="linenos">149</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
 </span><span id="ARG.certificate-150"><a href="#ARG.certificate-150"><span class="linenos">150</span></a>
-</span><span id="ARG.certificate-151"><a href="#ARG.certificate-151"><span class="linenos">151</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-</span><span id="ARG.certificate-152"><a href="#ARG.certificate-152"><span class="linenos">152</span></a>
-</span><span id="ARG.certificate-153"><a href="#ARG.certificate-153"><span class="linenos">153</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
+</span><span id="ARG.certificate-151"><a href="#ARG.certificate-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
 
 
@@ -661,9 +655,7 @@ the <code><a href="#ARG">ARG</a></code> itself.</p>
 
 <h2 id="returns">Returns</h2>
 
-<p>: int
-    The prime that comes immediately after <code>positional_prime</code>.
-certificator_env : dict[int, list[int]]
+<p>certificator_env : dict[int, list[int]]
     The updated certificator's environment, with any additional
     information about the variable's types it might have captured.</p>
 </div>
