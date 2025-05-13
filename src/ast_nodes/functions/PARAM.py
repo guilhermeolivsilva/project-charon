@@ -5,6 +5,7 @@ from typing import Union
 from typing_extensions import override
 
 from src.ast_nodes.variables.VAR_DEF import VAR_DEF
+from src.utils import TYPE_SYMBOLS_MAP
 
 
 class PARAM(VAR_DEF):
@@ -122,5 +123,8 @@ class PARAM(VAR_DEF):
         certificator_env[self.id]["type"] = [self.type]
         certificator_env[self.id]["parameter"] = True
         certificator_env[self.id]["active"] = True
+
+        _type_symbol = TYPE_SYMBOLS_MAP[self.type]['type_symbol']
+        self.certificate_label = [f"({self.symbol})^({_type_symbol})"]
 
         return certificator_env

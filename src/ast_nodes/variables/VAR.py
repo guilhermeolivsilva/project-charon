@@ -146,13 +146,6 @@ class VAR(Node):
 
         self.certificate_label = [f"{self.symbol}"]
 
-        # Check if it is a parameter
-        is_parameter = certificator_env[self.id].get("parameter")
-
-        if is_parameter:
-            parameter_symbol = get_certificate_symbol("PARAM")
-            self.certificate_label.append(f"{parameter_symbol}")
-
         # Only update the `type` for "simple" variables (`ELEMENT_ACCESS`
         # will do this for arrays/structs)
         if len(certificator_env[self.id]["type"]) == 1:

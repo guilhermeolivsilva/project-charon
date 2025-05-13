@@ -648,17 +648,6 @@ class BackendCertificator(AbstractCertificator):
                     bytecodes_to_mark_as_done += 1
 
         exponents = [exponent]
-        
-        # Handle usage of parameter
-        var_address = bytecode["metadata"]["value"]
-        is_parameter = (
-            self.environment["variables"]
-                            [var_address].get("parameter", False)
-        )
-
-        if is_parameter:
-            param_symbol = get_certificate_symbol("PARAM")
-            exponents.append(param_symbol)
 
         for idx in range(bytecode_idx, bytecode_idx + bytecodes_to_mark_as_done):
             bytecode_id = self.bytecode_list[idx]["bytecode_id"]
@@ -975,10 +964,19 @@ class BackendCertificator(AbstractCertificator):
             The encoding exponent of this parameter.
         """
 
+        param_symbol = get_certificate_symbol("PARAM")
+
         # Mark this variable as a parameter in the environment. The `CONSTANT`
         # bytecode has the variable address as its value.
         var_address = bytecode["metadata"]["value"]
         self.environment["variables"][var_address]["parameter"] = True
+        var_type = self.environment["variables"][var_address]["addresses"].values()
+
+        exponent = f"({param_symbol})^"
+        exponent += "^".join(
+            f"({TYPE_SYMBOLS_MAP[_type]['type_symbol']})"
+            for _type in list(var_type)
+        )
 
         # Mark this `CONSTANT` and the `STORE` as done.
         bytecodes_to_mark_as_done = 2
@@ -987,7 +985,7 @@ class BackendCertificator(AbstractCertificator):
             bytecode_id = self.bytecode_list[idx]["bytecode_id"]
             self.bytecode_status[bytecode_id] = True
 
-        return []
+        return [exponent]
 
     def _handle_mov(
         self,
