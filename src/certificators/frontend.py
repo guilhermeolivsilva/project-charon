@@ -6,7 +6,12 @@ from typing_extensions import override
 
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.certificators.abstract_certificator import AbstractCertificator
-from src.utils import primes_list, next_prime
+from src.utils import (
+    primes_list,
+    next_prime,
+    get_certificate_symbol,
+    TYPE_SYMBOLS_MAP
+)
 
 
 class FrontendCertificator(AbstractCertificator):
@@ -40,7 +45,7 @@ class FrontendCertificator(AbstractCertificator):
 
         computed_exponents = self._certificate_ast()
         computed_exponents = self._handle_variables_primes(computed_exponents)
-        # computed_exponents = self._add_var_def_symbols(computed_exponents)
+        computed_exponents = self._add_var_def_symbols(computed_exponents)
 
         self.computed_certificate = [
             f"{positional_prime}^({exponent})"
@@ -83,12 +88,12 @@ class FrontendCertificator(AbstractCertificator):
 
         Parameters
         ----------
-        ast_certificate : list[str]
+        computed_exponents : list[str]
             The list of labels of the AST certificate.
 
         Returns
         -------
-        ast_certificate : list[str]
+        computed_exponents : list[str]
             The list of labels of the AST certificate, after replacing
             placeholders.
         """
@@ -117,8 +122,40 @@ class FrontendCertificator(AbstractCertificator):
         return computed_exponents
     
     def _add_var_def_symbols(self, computed_exponents: list[str]) -> list[str]:
-        ...
-    
+        """
+        Add `VAR_DEF` symbols to the beginning of `computed_exponents`.
+
+        Only variables that are `active` in the certificator environment will
+        be considered.
+
+        Parameters
+        ----------
+        computed_exponents : list[str]
+            The list of labels of the AST certificate.
+
+        Returns
+        -------
+        computed_exponents : list[str]
+            The list of labels of the AST certificate, added with `VAR_DEF`
+            labels.
+        """
+
+        var_def_exponents = []
+        var_def_base_symbol = get_certificate_symbol("VAR_DEF")
+
+        for var_data in self.environment.values():
+            if any([not var_data["active"], var_data.get("parameter", False)]):
+                continue
+
+            type_symbols = "^".join([
+                f'({TYPE_SYMBOLS_MAP[_type]["type_symbol"]})'
+                for _type in var_data["type"]
+            ])
+
+            var_def_exponents.append(f"({var_def_base_symbol})^{type_symbols}")
+
+        return [*var_def_exponents, *computed_exponents]
+
     def _add_types_certificates(self, certificate: str) -> str:
         """
         Add types certificates to the certificate.

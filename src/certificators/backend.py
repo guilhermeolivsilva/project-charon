@@ -10,6 +10,7 @@ from src.utils import (
     get_certificate_symbol,
     primes_list,
     INSTRUCTIONS_CATEGORIES,
+    TYPE_SYMBOLS_MAP
 )
 
 
@@ -447,6 +448,8 @@ class BackendCertificator(AbstractCertificator):
                 if not status
             ])
             raise ValueError(_err_msg)
+        
+        computed_exponents = self._add_var_def_symbols(computed_exponents)
 
         self.computed_certificate = [
             f"{positional_prime}^({exponent})"
@@ -1455,3 +1458,35 @@ class BackendCertificator(AbstractCertificator):
         self.bytecode_status[bytecode_id] = True
 
         return [exponent]
+
+    def _add_var_def_symbols(self, computed_exponents: list[str]) -> list[str]:
+        """
+        Add `VAR_DEF` symbols to the beginning of `computed_exponents`.
+
+        Parameters
+        ----------
+        computed_exponents : list[str]
+            The list of exponents obtained from the machine code.
+
+        Returns
+        -------
+        computed_exponents : list[str]
+            The list of exponents obtained from the machine code, added with
+            `VAR_DEF` labels.
+        """
+
+        var_def_exponents = []
+        var_def_base_symbol = get_certificate_symbol("VAR_DEF")
+
+        for var_data in self.environment["variables"].values():
+            if var_data.get("parameter", False):
+                continue
+
+            type_symbols = "^".join([
+                f'({TYPE_SYMBOLS_MAP[_type]["type_symbol"]})'
+                for _type in var_data["addresses"].values()
+            ])
+
+            var_def_exponents.append(f"({var_def_base_symbol})^{type_symbols}")
+
+        return [*var_def_exponents, *computed_exponents]
