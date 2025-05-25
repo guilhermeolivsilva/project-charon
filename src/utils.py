@@ -300,6 +300,7 @@ __MISC = {"PROG": ["HALT"]}
 
 # Nodes kinds and their associated instructions
 NODE_TO_INSTRUCTION_MAPPING = {
+    **builtin_types,
     **__CONSTANTS,
     **__VARIABLES,
     **__FUNCTIONS,
@@ -347,7 +348,6 @@ TYPE_SYMBOLS_MAP = {
     _type: {"type_symbol": base, "enforce": float if _type == "float" else int}
     for _type, base in zip(builtin_types.keys(), primes_list(len(builtin_types.keys())))
 }
-# TYPE_SYMBOLS_MAP["unknown"] = next_prime(len())
 
 
 def get_certificate_symbol(operation) -> str:

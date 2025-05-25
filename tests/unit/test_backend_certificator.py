@@ -117,7 +117,7 @@ def test_init() -> None:
                 "prime": 43,
             },
         },
-        "stash": {101: ["23"]}
+        "stash": {101: ["41"]}
     }
 
 
