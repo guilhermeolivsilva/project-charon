@@ -95,5 +95,6 @@ class ASSIGN(Operation):
 
         del operation_code[-1]["metadata"]["lhs_register"]
         del operation_code[-1]["metadata"]["rhs_register"]
+        register -= 1
 
         return operation_code, register, environment
