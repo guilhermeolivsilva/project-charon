@@ -80,7 +80,7 @@
 
                         <label class="view-source-button" for="mod-SEQ-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Representation of SEQ nodes for the Abstract Syntax Tree.&quot;&quot;&quot;</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">"""Representation of SEQ nodes for the Abstract Syntax Tree."""</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
@@ -90,12 +90,12 @@
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">SEQ</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">    Implement the representation of a sequence of statements for the AST.</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">    The node doesn&#39;t have any semantics itself, `instruction`, or has a</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">    The node doesn't have any semantics itself, `instruction`, or has a</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">    certificate. Its only purpose is to help structuring the AST.</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">    """</span>
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
 </span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>    <span class="nd">@override</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -104,20 +104,20 @@
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>
 </span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>
 </span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="sd">        Parameters</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="sd">        ----------</span>
 </span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a><span class="sd">        child : Node</span>
 </span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a><span class="sd">            The child to be added to the list.</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">        """</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>
 </span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>    <span class="nd">@override</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>
 </span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        For `SEQ` nodes, obtain the certificate from the `children` subtrees,</span>
@@ -127,7 +127,7 @@
 </span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        -------</span>
 </span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        : list of str</span>
 </span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        """</span>
 </span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>
 </span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>
@@ -138,7 +138,7 @@
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="nd">@override</span>
 </span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
 </span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
@@ -148,7 +148,7 @@
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        ----------</span>
 </span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        """</span>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>
@@ -163,10 +163,10 @@
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="nb">int</span><span class="p">,</span>
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="p">]:</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        Generate the code associated with this `SEQ`.</span>
 </span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        For this node specialization, return a list with the children&#39;s code,</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        For this node specialization, return a list with the children's code,</span>
 </span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        generated in the same order as they appear in the `children` attribute.</span>
 </span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        The `SEQ` node itself does not generate code, for it has no associated</span>
 </span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        `instruction`.</span>
@@ -177,7 +177,7 @@
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            Node.</span>
 </span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">            The compiler's environment, that maps variables IDs to memory</span>
 </span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
 </span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
 </span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        Returns</span>
@@ -189,7 +189,7 @@
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">            The number of the next register available.</span>
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        environment : dict[int, str]</span>
 </span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">        """</span>
 </span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>
 </span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>
@@ -207,7 +207,7 @@
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>
 </span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">        For `SEQ` nodes, certificate the child nodes in the same order as they</span>
@@ -216,15 +216,15 @@
 </span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        Parameters</span>
 </span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">        ----------</span>
 </span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">            information about the variable's types it might have captured.</span>
 </span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>
 </span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        Returns</span>
 </span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        -------</span>
 </span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        """</span>
 </span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
 </span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
 </span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
@@ -246,12 +246,12 @@
     </div>
     <a class="headerlink" href="#SEQ"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ-11"><a href="#SEQ-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">SEQ</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="SEQ-12"><a href="#SEQ-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ-12"><a href="#SEQ-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="SEQ-13"><a href="#SEQ-13"><span class="linenos"> 13</span></a><span class="sd">    Implement the representation of a sequence of statements for the AST.</span>
 </span><span id="SEQ-14"><a href="#SEQ-14"><span class="linenos"> 14</span></a>
-</span><span id="SEQ-15"><a href="#SEQ-15"><span class="linenos"> 15</span></a><span class="sd">    The node doesn&#39;t have any semantics itself, `instruction`, or has a</span>
+</span><span id="SEQ-15"><a href="#SEQ-15"><span class="linenos"> 15</span></a><span class="sd">    The node doesn't have any semantics itself, `instruction`, or has a</span>
 </span><span id="SEQ-16"><a href="#SEQ-16"><span class="linenos"> 16</span></a><span class="sd">    certificate. Its only purpose is to help structuring the AST.</span>
-</span><span id="SEQ-17"><a href="#SEQ-17"><span class="linenos"> 17</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="SEQ-17"><a href="#SEQ-17"><span class="linenos"> 17</span></a><span class="sd">    """</span>
 </span><span id="SEQ-18"><a href="#SEQ-18"><span class="linenos"> 18</span></a>
 </span><span id="SEQ-19"><a href="#SEQ-19"><span class="linenos"> 19</span></a>    <span class="nd">@override</span>
 </span><span id="SEQ-20"><a href="#SEQ-20"><span class="linenos"> 20</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -260,20 +260,20 @@
 </span><span id="SEQ-23"><a href="#SEQ-23"><span class="linenos"> 23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="SEQ-24"><a href="#SEQ-24"><span class="linenos"> 24</span></a>
 </span><span id="SEQ-25"><a href="#SEQ-25"><span class="linenos"> 25</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="SEQ-26"><a href="#SEQ-26"><span class="linenos"> 26</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ-26"><a href="#SEQ-26"><span class="linenos"> 26</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ-27"><a href="#SEQ-27"><span class="linenos"> 27</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="SEQ-28"><a href="#SEQ-28"><span class="linenos"> 28</span></a>
 </span><span id="SEQ-29"><a href="#SEQ-29"><span class="linenos"> 29</span></a><span class="sd">        Parameters</span>
 </span><span id="SEQ-30"><a href="#SEQ-30"><span class="linenos"> 30</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ-31"><a href="#SEQ-31"><span class="linenos"> 31</span></a><span class="sd">        child : Node</span>
 </span><span id="SEQ-32"><a href="#SEQ-32"><span class="linenos"> 32</span></a><span class="sd">            The child to be added to the list.</span>
-</span><span id="SEQ-33"><a href="#SEQ-33"><span class="linenos"> 33</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ-33"><a href="#SEQ-33"><span class="linenos"> 33</span></a><span class="sd">        """</span>
 </span><span id="SEQ-34"><a href="#SEQ-34"><span class="linenos"> 34</span></a>
 </span><span id="SEQ-35"><a href="#SEQ-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </span><span id="SEQ-36"><a href="#SEQ-36"><span class="linenos"> 36</span></a>
 </span><span id="SEQ-37"><a href="#SEQ-37"><span class="linenos"> 37</span></a>    <span class="nd">@override</span>
 </span><span id="SEQ-38"><a href="#SEQ-38"><span class="linenos"> 38</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="SEQ-39"><a href="#SEQ-39"><span class="linenos"> 39</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ-39"><a href="#SEQ-39"><span class="linenos"> 39</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ-40"><a href="#SEQ-40"><span class="linenos"> 40</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="SEQ-41"><a href="#SEQ-41"><span class="linenos"> 41</span></a>
 </span><span id="SEQ-42"><a href="#SEQ-42"><span class="linenos"> 42</span></a><span class="sd">        For `SEQ` nodes, obtain the certificate from the `children` subtrees,</span>
@@ -283,7 +283,7 @@
 </span><span id="SEQ-46"><a href="#SEQ-46"><span class="linenos"> 46</span></a><span class="sd">        -------</span>
 </span><span id="SEQ-47"><a href="#SEQ-47"><span class="linenos"> 47</span></a><span class="sd">        : list of str</span>
 </span><span id="SEQ-48"><a href="#SEQ-48"><span class="linenos"> 48</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="SEQ-49"><a href="#SEQ-49"><span class="linenos"> 49</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ-49"><a href="#SEQ-49"><span class="linenos"> 49</span></a><span class="sd">        """</span>
 </span><span id="SEQ-50"><a href="#SEQ-50"><span class="linenos"> 50</span></a>
 </span><span id="SEQ-51"><a href="#SEQ-51"><span class="linenos"> 51</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="SEQ-52"><a href="#SEQ-52"><span class="linenos"> 52</span></a>
@@ -294,7 +294,7 @@
 </span><span id="SEQ-57"><a href="#SEQ-57"><span class="linenos"> 57</span></a>
 </span><span id="SEQ-58"><a href="#SEQ-58"><span class="linenos"> 58</span></a>    <span class="nd">@override</span>
 </span><span id="SEQ-59"><a href="#SEQ-59"><span class="linenos"> 59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="SEQ-60"><a href="#SEQ-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ-60"><a href="#SEQ-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ-61"><a href="#SEQ-61"><span class="linenos"> 61</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="SEQ-62"><a href="#SEQ-62"><span class="linenos"> 62</span></a>
 </span><span id="SEQ-63"><a href="#SEQ-63"><span class="linenos"> 63</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
@@ -304,7 +304,7 @@
 </span><span id="SEQ-67"><a href="#SEQ-67"><span class="linenos"> 67</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ-68"><a href="#SEQ-68"><span class="linenos"> 68</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="SEQ-69"><a href="#SEQ-69"><span class="linenos"> 69</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="SEQ-70"><a href="#SEQ-70"><span class="linenos"> 70</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ-70"><a href="#SEQ-70"><span class="linenos"> 70</span></a><span class="sd">        """</span>
 </span><span id="SEQ-71"><a href="#SEQ-71"><span class="linenos"> 71</span></a>
 </span><span id="SEQ-72"><a href="#SEQ-72"><span class="linenos"> 72</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="SEQ-73"><a href="#SEQ-73"><span class="linenos"> 73</span></a>
@@ -319,10 +319,10 @@
 </span><span id="SEQ-82"><a href="#SEQ-82"><span class="linenos"> 82</span></a>        <span class="nb">int</span><span class="p">,</span>
 </span><span id="SEQ-83"><a href="#SEQ-83"><span class="linenos"> 83</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </span><span id="SEQ-84"><a href="#SEQ-84"><span class="linenos"> 84</span></a>    <span class="p">]:</span>
-</span><span id="SEQ-85"><a href="#SEQ-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ-85"><a href="#SEQ-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ-86"><a href="#SEQ-86"><span class="linenos"> 86</span></a><span class="sd">        Generate the code associated with this `SEQ`.</span>
 </span><span id="SEQ-87"><a href="#SEQ-87"><span class="linenos"> 87</span></a>
-</span><span id="SEQ-88"><a href="#SEQ-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, return a list with the children&#39;s code,</span>
+</span><span id="SEQ-88"><a href="#SEQ-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, return a list with the children's code,</span>
 </span><span id="SEQ-89"><a href="#SEQ-89"><span class="linenos"> 89</span></a><span class="sd">        generated in the same order as they appear in the `children` attribute.</span>
 </span><span id="SEQ-90"><a href="#SEQ-90"><span class="linenos"> 90</span></a><span class="sd">        The `SEQ` node itself does not generate code, for it has no associated</span>
 </span><span id="SEQ-91"><a href="#SEQ-91"><span class="linenos"> 91</span></a><span class="sd">        `instruction`.</span>
@@ -333,7 +333,7 @@
 </span><span id="SEQ-96"><a href="#SEQ-96"><span class="linenos"> 96</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
 </span><span id="SEQ-97"><a href="#SEQ-97"><span class="linenos"> 97</span></a><span class="sd">            Node.</span>
 </span><span id="SEQ-98"><a href="#SEQ-98"><span class="linenos"> 98</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="SEQ-99"><a href="#SEQ-99"><span class="linenos"> 99</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="SEQ-99"><a href="#SEQ-99"><span class="linenos"> 99</span></a><span class="sd">            The compiler's environment, that maps variables IDs to memory</span>
 </span><span id="SEQ-100"><a href="#SEQ-100"><span class="linenos">100</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
 </span><span id="SEQ-101"><a href="#SEQ-101"><span class="linenos">101</span></a>
 </span><span id="SEQ-102"><a href="#SEQ-102"><span class="linenos">102</span></a><span class="sd">        Returns</span>
@@ -345,7 +345,7 @@
 </span><span id="SEQ-108"><a href="#SEQ-108"><span class="linenos">108</span></a><span class="sd">            The number of the next register available.</span>
 </span><span id="SEQ-109"><a href="#SEQ-109"><span class="linenos">109</span></a><span class="sd">        environment : dict[int, str]</span>
 </span><span id="SEQ-110"><a href="#SEQ-110"><span class="linenos">110</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="SEQ-111"><a href="#SEQ-111"><span class="linenos">111</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ-111"><a href="#SEQ-111"><span class="linenos">111</span></a><span class="sd">        """</span>
 </span><span id="SEQ-112"><a href="#SEQ-112"><span class="linenos">112</span></a>
 </span><span id="SEQ-113"><a href="#SEQ-113"><span class="linenos">113</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="SEQ-114"><a href="#SEQ-114"><span class="linenos">114</span></a>
@@ -363,7 +363,7 @@
 </span><span id="SEQ-126"><a href="#SEQ-126"><span class="linenos">126</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="SEQ-127"><a href="#SEQ-127"><span class="linenos">127</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="SEQ-128"><a href="#SEQ-128"><span class="linenos">128</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="SEQ-129"><a href="#SEQ-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ-129"><a href="#SEQ-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ-130"><a href="#SEQ-130"><span class="linenos">130</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="SEQ-131"><a href="#SEQ-131"><span class="linenos">131</span></a>
 </span><span id="SEQ-132"><a href="#SEQ-132"><span class="linenos">132</span></a><span class="sd">        For `SEQ` nodes, certificate the child nodes in the same order as they</span>
@@ -372,15 +372,15 @@
 </span><span id="SEQ-135"><a href="#SEQ-135"><span class="linenos">135</span></a><span class="sd">        Parameters</span>
 </span><span id="SEQ-136"><a href="#SEQ-136"><span class="linenos">136</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ-137"><a href="#SEQ-137"><span class="linenos">137</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ-138"><a href="#SEQ-138"><span class="linenos">138</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="SEQ-139"><a href="#SEQ-139"><span class="linenos">139</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="SEQ-138"><a href="#SEQ-138"><span class="linenos">138</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="SEQ-139"><a href="#SEQ-139"><span class="linenos">139</span></a><span class="sd">            information about the variable's types it might have captured.</span>
 </span><span id="SEQ-140"><a href="#SEQ-140"><span class="linenos">140</span></a>
 </span><span id="SEQ-141"><a href="#SEQ-141"><span class="linenos">141</span></a><span class="sd">        Returns</span>
 </span><span id="SEQ-142"><a href="#SEQ-142"><span class="linenos">142</span></a><span class="sd">        -------</span>
 </span><span id="SEQ-143"><a href="#SEQ-143"><span class="linenos">143</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ-144"><a href="#SEQ-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="SEQ-145"><a href="#SEQ-145"><span class="linenos">145</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="SEQ-146"><a href="#SEQ-146"><span class="linenos">146</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ-144"><a href="#SEQ-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="SEQ-145"><a href="#SEQ-145"><span class="linenos">145</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="SEQ-146"><a href="#SEQ-146"><span class="linenos">146</span></a><span class="sd">        """</span>
 </span><span id="SEQ-147"><a href="#SEQ-147"><span class="linenos">147</span></a>
 </span><span id="SEQ-148"><a href="#SEQ-148"><span class="linenos">148</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
 </span><span id="SEQ-149"><a href="#SEQ-149"><span class="linenos">149</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
@@ -441,14 +441,14 @@ certificate. Its only purpose is to help structuring the AST.</p>
     </div>
     <a class="headerlink" href="#SEQ.add_child"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.add_child-25"><a href="#SEQ.add_child-25"><span class="linenos">25</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="SEQ.add_child-26"><a href="#SEQ.add_child-26"><span class="linenos">26</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ.add_child-26"><a href="#SEQ.add_child-26"><span class="linenos">26</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ.add_child-27"><a href="#SEQ.add_child-27"><span class="linenos">27</span></a><span class="sd">        Add a child Node to the `self.children` list.</span>
 </span><span id="SEQ.add_child-28"><a href="#SEQ.add_child-28"><span class="linenos">28</span></a>
 </span><span id="SEQ.add_child-29"><a href="#SEQ.add_child-29"><span class="linenos">29</span></a><span class="sd">        Parameters</span>
 </span><span id="SEQ.add_child-30"><a href="#SEQ.add_child-30"><span class="linenos">30</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ.add_child-31"><a href="#SEQ.add_child-31"><span class="linenos">31</span></a><span class="sd">        child : Node</span>
 </span><span id="SEQ.add_child-32"><a href="#SEQ.add_child-32"><span class="linenos">32</span></a><span class="sd">            The child to be added to the list.</span>
-</span><span id="SEQ.add_child-33"><a href="#SEQ.add_child-33"><span class="linenos">33</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ.add_child-33"><a href="#SEQ.add_child-33"><span class="linenos">33</span></a><span class="sd">        """</span>
 </span><span id="SEQ.add_child-34"><a href="#SEQ.add_child-34"><span class="linenos">34</span></a>
 </span><span id="SEQ.add_child-35"><a href="#SEQ.add_child-35"><span class="linenos">35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </span></pre></div>
@@ -478,7 +478,7 @@ certificate. Its only purpose is to help structuring the AST.</p>
     <a class="headerlink" href="#SEQ.get_certificate_label"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.get_certificate_label-37"><a href="#SEQ.get_certificate_label-37"><span class="linenos">37</span></a>    <span class="nd">@override</span>
 </span><span id="SEQ.get_certificate_label-38"><a href="#SEQ.get_certificate_label-38"><span class="linenos">38</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="SEQ.get_certificate_label-39"><a href="#SEQ.get_certificate_label-39"><span class="linenos">39</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ.get_certificate_label-39"><a href="#SEQ.get_certificate_label-39"><span class="linenos">39</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ.get_certificate_label-40"><a href="#SEQ.get_certificate_label-40"><span class="linenos">40</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="SEQ.get_certificate_label-41"><a href="#SEQ.get_certificate_label-41"><span class="linenos">41</span></a>
 </span><span id="SEQ.get_certificate_label-42"><a href="#SEQ.get_certificate_label-42"><span class="linenos">42</span></a><span class="sd">        For `SEQ` nodes, obtain the certificate from the `children` subtrees,</span>
@@ -488,7 +488,7 @@ certificate. Its only purpose is to help structuring the AST.</p>
 </span><span id="SEQ.get_certificate_label-46"><a href="#SEQ.get_certificate_label-46"><span class="linenos">46</span></a><span class="sd">        -------</span>
 </span><span id="SEQ.get_certificate_label-47"><a href="#SEQ.get_certificate_label-47"><span class="linenos">47</span></a><span class="sd">        : list of str</span>
 </span><span id="SEQ.get_certificate_label-48"><a href="#SEQ.get_certificate_label-48"><span class="linenos">48</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="SEQ.get_certificate_label-49"><a href="#SEQ.get_certificate_label-49"><span class="linenos">49</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ.get_certificate_label-49"><a href="#SEQ.get_certificate_label-49"><span class="linenos">49</span></a><span class="sd">        """</span>
 </span><span id="SEQ.get_certificate_label-50"><a href="#SEQ.get_certificate_label-50"><span class="linenos">50</span></a>
 </span><span id="SEQ.get_certificate_label-51"><a href="#SEQ.get_certificate_label-51"><span class="linenos">51</span></a>        <span class="n">certificate_label</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="SEQ.get_certificate_label-52"><a href="#SEQ.get_certificate_label-52"><span class="linenos">52</span></a>
@@ -526,7 +526,7 @@ recursively. The <code><a href="#SEQ">SEQ</a></code> node itself does not have a
     <a class="headerlink" href="#SEQ.print"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="SEQ.print-58"><a href="#SEQ.print-58"><span class="linenos">58</span></a>    <span class="nd">@override</span>
 </span><span id="SEQ.print-59"><a href="#SEQ.print-59"><span class="linenos">59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="SEQ.print-60"><a href="#SEQ.print-60"><span class="linenos">60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ.print-60"><a href="#SEQ.print-60"><span class="linenos">60</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ.print-61"><a href="#SEQ.print-61"><span class="linenos">61</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="SEQ.print-62"><a href="#SEQ.print-62"><span class="linenos">62</span></a>
 </span><span id="SEQ.print-63"><a href="#SEQ.print-63"><span class="linenos">63</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
@@ -536,7 +536,7 @@ recursively. The <code><a href="#SEQ">SEQ</a></code> node itself does not have a
 </span><span id="SEQ.print-67"><a href="#SEQ.print-67"><span class="linenos">67</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ.print-68"><a href="#SEQ.print-68"><span class="linenos">68</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="SEQ.print-69"><a href="#SEQ.print-69"><span class="linenos">69</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="SEQ.print-70"><a href="#SEQ.print-70"><span class="linenos">70</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ.print-70"><a href="#SEQ.print-70"><span class="linenos">70</span></a><span class="sd">        """</span>
 </span><span id="SEQ.print-71"><a href="#SEQ.print-71"><span class="linenos">71</span></a>
 </span><span id="SEQ.print-72"><a href="#SEQ.print-72"><span class="linenos">72</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="SEQ.print-73"><a href="#SEQ.print-73"><span class="linenos">73</span></a>
@@ -578,10 +578,10 @@ with an additional left space.</p>
 </span><span id="SEQ.generate_code-82"><a href="#SEQ.generate_code-82"><span class="linenos"> 82</span></a>        <span class="nb">int</span><span class="p">,</span>
 </span><span id="SEQ.generate_code-83"><a href="#SEQ.generate_code-83"><span class="linenos"> 83</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </span><span id="SEQ.generate_code-84"><a href="#SEQ.generate_code-84"><span class="linenos"> 84</span></a>    <span class="p">]:</span>
-</span><span id="SEQ.generate_code-85"><a href="#SEQ.generate_code-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ.generate_code-85"><a href="#SEQ.generate_code-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ.generate_code-86"><a href="#SEQ.generate_code-86"><span class="linenos"> 86</span></a><span class="sd">        Generate the code associated with this `SEQ`.</span>
 </span><span id="SEQ.generate_code-87"><a href="#SEQ.generate_code-87"><span class="linenos"> 87</span></a>
-</span><span id="SEQ.generate_code-88"><a href="#SEQ.generate_code-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, return a list with the children&#39;s code,</span>
+</span><span id="SEQ.generate_code-88"><a href="#SEQ.generate_code-88"><span class="linenos"> 88</span></a><span class="sd">        For this node specialization, return a list with the children's code,</span>
 </span><span id="SEQ.generate_code-89"><a href="#SEQ.generate_code-89"><span class="linenos"> 89</span></a><span class="sd">        generated in the same order as they appear in the `children` attribute.</span>
 </span><span id="SEQ.generate_code-90"><a href="#SEQ.generate_code-90"><span class="linenos"> 90</span></a><span class="sd">        The `SEQ` node itself does not generate code, for it has no associated</span>
 </span><span id="SEQ.generate_code-91"><a href="#SEQ.generate_code-91"><span class="linenos"> 91</span></a><span class="sd">        `instruction`.</span>
@@ -592,7 +592,7 @@ with an additional left space.</p>
 </span><span id="SEQ.generate_code-96"><a href="#SEQ.generate_code-96"><span class="linenos"> 96</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
 </span><span id="SEQ.generate_code-97"><a href="#SEQ.generate_code-97"><span class="linenos"> 97</span></a><span class="sd">            Node.</span>
 </span><span id="SEQ.generate_code-98"><a href="#SEQ.generate_code-98"><span class="linenos"> 98</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="SEQ.generate_code-99"><a href="#SEQ.generate_code-99"><span class="linenos"> 99</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="SEQ.generate_code-99"><a href="#SEQ.generate_code-99"><span class="linenos"> 99</span></a><span class="sd">            The compiler's environment, that maps variables IDs to memory</span>
 </span><span id="SEQ.generate_code-100"><a href="#SEQ.generate_code-100"><span class="linenos">100</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
 </span><span id="SEQ.generate_code-101"><a href="#SEQ.generate_code-101"><span class="linenos">101</span></a>
 </span><span id="SEQ.generate_code-102"><a href="#SEQ.generate_code-102"><span class="linenos">102</span></a><span class="sd">        Returns</span>
@@ -604,7 +604,7 @@ with an additional left space.</p>
 </span><span id="SEQ.generate_code-108"><a href="#SEQ.generate_code-108"><span class="linenos">108</span></a><span class="sd">            The number of the next register available.</span>
 </span><span id="SEQ.generate_code-109"><a href="#SEQ.generate_code-109"><span class="linenos">109</span></a><span class="sd">        environment : dict[int, str]</span>
 </span><span id="SEQ.generate_code-110"><a href="#SEQ.generate_code-110"><span class="linenos">110</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="SEQ.generate_code-111"><a href="#SEQ.generate_code-111"><span class="linenos">111</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ.generate_code-111"><a href="#SEQ.generate_code-111"><span class="linenos">111</span></a><span class="sd">        """</span>
 </span><span id="SEQ.generate_code-112"><a href="#SEQ.generate_code-112"><span class="linenos">112</span></a>
 </span><span id="SEQ.generate_code-113"><a href="#SEQ.generate_code-113"><span class="linenos">113</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="SEQ.generate_code-114"><a href="#SEQ.generate_code-114"><span class="linenos">114</span></a>
@@ -665,7 +665,7 @@ environment : dict[int, str]
 </span><span id="SEQ.certificate-126"><a href="#SEQ.certificate-126"><span class="linenos">126</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="SEQ.certificate-127"><a href="#SEQ.certificate-127"><span class="linenos">127</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="SEQ.certificate-128"><a href="#SEQ.certificate-128"><span class="linenos">128</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="SEQ.certificate-129"><a href="#SEQ.certificate-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="SEQ.certificate-129"><a href="#SEQ.certificate-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="SEQ.certificate-130"><a href="#SEQ.certificate-130"><span class="linenos">130</span></a><span class="sd">        Compute the certificate of the current `SEQ`, and set this attribute.</span>
 </span><span id="SEQ.certificate-131"><a href="#SEQ.certificate-131"><span class="linenos">131</span></a>
 </span><span id="SEQ.certificate-132"><a href="#SEQ.certificate-132"><span class="linenos">132</span></a><span class="sd">        For `SEQ` nodes, certificate the child nodes in the same order as they</span>
@@ -674,15 +674,15 @@ environment : dict[int, str]
 </span><span id="SEQ.certificate-135"><a href="#SEQ.certificate-135"><span class="linenos">135</span></a><span class="sd">        Parameters</span>
 </span><span id="SEQ.certificate-136"><a href="#SEQ.certificate-136"><span class="linenos">136</span></a><span class="sd">        ----------</span>
 </span><span id="SEQ.certificate-137"><a href="#SEQ.certificate-137"><span class="linenos">137</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ.certificate-138"><a href="#SEQ.certificate-138"><span class="linenos">138</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="SEQ.certificate-139"><a href="#SEQ.certificate-139"><span class="linenos">139</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
+</span><span id="SEQ.certificate-138"><a href="#SEQ.certificate-138"><span class="linenos">138</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="SEQ.certificate-139"><a href="#SEQ.certificate-139"><span class="linenos">139</span></a><span class="sd">            information about the variable's types it might have captured.</span>
 </span><span id="SEQ.certificate-140"><a href="#SEQ.certificate-140"><span class="linenos">140</span></a>
 </span><span id="SEQ.certificate-141"><a href="#SEQ.certificate-141"><span class="linenos">141</span></a><span class="sd">        Returns</span>
 </span><span id="SEQ.certificate-142"><a href="#SEQ.certificate-142"><span class="linenos">142</span></a><span class="sd">        -------</span>
 </span><span id="SEQ.certificate-143"><a href="#SEQ.certificate-143"><span class="linenos">143</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="SEQ.certificate-144"><a href="#SEQ.certificate-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="SEQ.certificate-145"><a href="#SEQ.certificate-145"><span class="linenos">145</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="SEQ.certificate-146"><a href="#SEQ.certificate-146"><span class="linenos">146</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="SEQ.certificate-144"><a href="#SEQ.certificate-144"><span class="linenos">144</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="SEQ.certificate-145"><a href="#SEQ.certificate-145"><span class="linenos">145</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="SEQ.certificate-146"><a href="#SEQ.certificate-146"><span class="linenos">146</span></a><span class="sd">        """</span>
 </span><span id="SEQ.certificate-147"><a href="#SEQ.certificate-147"><span class="linenos">147</span></a>
 </span><span id="SEQ.certificate-148"><a href="#SEQ.certificate-148"><span class="linenos">148</span></a>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
 </span><span id="SEQ.certificate-149"><a href="#SEQ.certificate-149"><span class="linenos">149</span></a>            <span class="n">certificator_env</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>

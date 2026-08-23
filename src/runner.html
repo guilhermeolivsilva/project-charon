@@ -107,7 +107,7 @@
 
                         <label class="view-source-button" for="mod-runner-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Generate a runner for Charon programs.&quot;&quot;&quot;</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">"""Generate a runner for Charon programs."""</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
@@ -119,7 +119,7 @@
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Charon</span><span class="p">:</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">    This class represents an instance of a program in [C]haron.</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">    An instance is composed by the parsed source (i.e., the output from the</span>
@@ -143,7 +143,7 @@
 </span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">        An instance of `FrontendCertificator` loaded with the `ast`.</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">    backend_certificator : BackendCertificator</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">        An instance of `BackendCertificator` loaded with the `program`.</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">    """</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
 </span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="bp">self</span><span class="p">,</span>
@@ -164,43 +164,43 @@
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">backend_certificator</span> <span class="o">=</span> <span class="n">backend_certificator</span>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_parsed_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `parsed_source` attribute.&quot;&quot;&quot;</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="w">        </span><span class="sd">"""Get the `parsed_source` attribute."""</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_source</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
 </span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_ast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractSyntaxTree</span><span class="p">:</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `ast` attribute.&quot;&quot;&quot;</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="w">        </span><span class="sd">"""Get the `ast` attribute."""</span>
 </span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span>
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    
 </span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_code_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CodeGenerator</span><span class="p">:</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `code_generator` attribute.&quot;&quot;&quot;</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="w">        </span><span class="sd">"""Get the `code_generator` attribute."""</span>
 </span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_generator</span>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>
 </span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_program</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `program` attribute.&quot;&quot;&quot;</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="w">        </span><span class="sd">"""Get the `program` attribute."""</span>
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>
 </span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_vm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VirtualMachine</span><span class="p">:</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `vm` attribute.&quot;&quot;&quot;</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="w">        </span><span class="sd">"""Get the `vm` attribute."""</span>
 </span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vm</span>
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_frontend_certificator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FrontendCertificator</span><span class="p">:</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `frontend_certificator` attribute.&quot;&quot;&quot;</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="w">        </span><span class="sd">"""Get the `frontend_certificator` attribute."""</span>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontend_certificator</span>
 </span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
 </span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_backend_certificator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BackendCertificator</span><span class="p">:</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `backend_certificator` attribute.&quot;&quot;&quot;</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="w">        </span><span class="sd">"""Get the `backend_certificator` attribute."""</span>
 </span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>
 </span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend_certificator</span>
 </span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>
 </span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>
 </span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="k">def</span><span class="w"> </span><span class="nf">create_instance</span><span class="p">(</span><span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Charon</span><span class="p">:</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">    Create an instance that certificates and runs the input `source_code`.</span>
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>
 </span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">    Parameters</span>
@@ -212,7 +212,7 @@
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">    -------</span>
 </span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">    instance : Charon</span>
 </span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        An instance of this [C]haron program.</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">    """</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>    <span class="n">lexer</span> <span class="o">=</span> <span class="n">Lexer</span><span class="p">(</span><span class="n">source_code</span><span class="o">=</span><span class="n">source_code</span><span class="p">)</span>
 </span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>    <span class="n">parsed_source</span> <span class="o">=</span> <span class="n">lexer</span><span class="o">.</span><span class="n">parse_source_code</span><span class="p">()</span>
@@ -230,13 +230,13 @@
 </span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="n">backend_certificator</span> <span class="o">=</span> <span class="n">BackendCertificator</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
 </span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
 </span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="n">_instance</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="s2">&quot;parsed_source&quot;</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="s2">&quot;ast&quot;</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="s2">&quot;code_generator&quot;</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="s2">&quot;program&quot;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="s2">&quot;vm&quot;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        <span class="s2">&quot;frontend_certificator&quot;</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="s2">&quot;backend_certificator&quot;</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="s2">"parsed_source"</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="s2">"ast"</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="s2">"code_generator"</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="s2">"program"</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="s2">"vm"</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        <span class="s2">"frontend_certificator"</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="s2">"backend_certificator"</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
 </span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>    <span class="p">}</span>
 </span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>
 </span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    <span class="k">return</span> <span class="n">Charon</span><span class="p">(</span><span class="o">**</span><span class="n">_instance</span><span class="p">)</span>
@@ -256,7 +256,7 @@
     </div>
     <a class="headerlink" href="#Charon"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon-13"><a href="#Charon-13"><span class="linenos">13</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Charon</span><span class="p">:</span>
-</span><span id="Charon-14"><a href="#Charon-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Charon-14"><a href="#Charon-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="Charon-15"><a href="#Charon-15"><span class="linenos">15</span></a><span class="sd">    This class represents an instance of a program in [C]haron.</span>
 </span><span id="Charon-16"><a href="#Charon-16"><span class="linenos">16</span></a>
 </span><span id="Charon-17"><a href="#Charon-17"><span class="linenos">17</span></a><span class="sd">    An instance is composed by the parsed source (i.e., the output from the</span>
@@ -280,7 +280,7 @@
 </span><span id="Charon-35"><a href="#Charon-35"><span class="linenos">35</span></a><span class="sd">        An instance of `FrontendCertificator` loaded with the `ast`.</span>
 </span><span id="Charon-36"><a href="#Charon-36"><span class="linenos">36</span></a><span class="sd">    backend_certificator : BackendCertificator</span>
 </span><span id="Charon-37"><a href="#Charon-37"><span class="linenos">37</span></a><span class="sd">        An instance of `BackendCertificator` loaded with the `program`.</span>
-</span><span id="Charon-38"><a href="#Charon-38"><span class="linenos">38</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="Charon-38"><a href="#Charon-38"><span class="linenos">38</span></a><span class="sd">    """</span>
 </span><span id="Charon-39"><a href="#Charon-39"><span class="linenos">39</span></a>
 </span><span id="Charon-40"><a href="#Charon-40"><span class="linenos">40</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="Charon-41"><a href="#Charon-41"><span class="linenos">41</span></a>        <span class="bp">self</span><span class="p">,</span>
@@ -301,37 +301,37 @@
 </span><span id="Charon-56"><a href="#Charon-56"><span class="linenos">56</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">backend_certificator</span> <span class="o">=</span> <span class="n">backend_certificator</span>
 </span><span id="Charon-57"><a href="#Charon-57"><span class="linenos">57</span></a>
 </span><span id="Charon-58"><a href="#Charon-58"><span class="linenos">58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_parsed_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="Charon-59"><a href="#Charon-59"><span class="linenos">59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `parsed_source` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon-59"><a href="#Charon-59"><span class="linenos">59</span></a><span class="w">        </span><span class="sd">"""Get the `parsed_source` attribute."""</span>
 </span><span id="Charon-60"><a href="#Charon-60"><span class="linenos">60</span></a>
 </span><span id="Charon-61"><a href="#Charon-61"><span class="linenos">61</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_source</span>
 </span><span id="Charon-62"><a href="#Charon-62"><span class="linenos">62</span></a>
 </span><span id="Charon-63"><a href="#Charon-63"><span class="linenos">63</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_ast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractSyntaxTree</span><span class="p">:</span>
-</span><span id="Charon-64"><a href="#Charon-64"><span class="linenos">64</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `ast` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon-64"><a href="#Charon-64"><span class="linenos">64</span></a><span class="w">        </span><span class="sd">"""Get the `ast` attribute."""</span>
 </span><span id="Charon-65"><a href="#Charon-65"><span class="linenos">65</span></a>
 </span><span id="Charon-66"><a href="#Charon-66"><span class="linenos">66</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span>
 </span><span id="Charon-67"><a href="#Charon-67"><span class="linenos">67</span></a>    
 </span><span id="Charon-68"><a href="#Charon-68"><span class="linenos">68</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_code_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CodeGenerator</span><span class="p">:</span>
-</span><span id="Charon-69"><a href="#Charon-69"><span class="linenos">69</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `code_generator` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon-69"><a href="#Charon-69"><span class="linenos">69</span></a><span class="w">        </span><span class="sd">"""Get the `code_generator` attribute."""</span>
 </span><span id="Charon-70"><a href="#Charon-70"><span class="linenos">70</span></a>
 </span><span id="Charon-71"><a href="#Charon-71"><span class="linenos">71</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_generator</span>
 </span><span id="Charon-72"><a href="#Charon-72"><span class="linenos">72</span></a>
 </span><span id="Charon-73"><a href="#Charon-73"><span class="linenos">73</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_program</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="Charon-74"><a href="#Charon-74"><span class="linenos">74</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `program` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon-74"><a href="#Charon-74"><span class="linenos">74</span></a><span class="w">        </span><span class="sd">"""Get the `program` attribute."""</span>
 </span><span id="Charon-75"><a href="#Charon-75"><span class="linenos">75</span></a>
 </span><span id="Charon-76"><a href="#Charon-76"><span class="linenos">76</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span>
 </span><span id="Charon-77"><a href="#Charon-77"><span class="linenos">77</span></a>
 </span><span id="Charon-78"><a href="#Charon-78"><span class="linenos">78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_vm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VirtualMachine</span><span class="p">:</span>
-</span><span id="Charon-79"><a href="#Charon-79"><span class="linenos">79</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `vm` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon-79"><a href="#Charon-79"><span class="linenos">79</span></a><span class="w">        </span><span class="sd">"""Get the `vm` attribute."""</span>
 </span><span id="Charon-80"><a href="#Charon-80"><span class="linenos">80</span></a>
 </span><span id="Charon-81"><a href="#Charon-81"><span class="linenos">81</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vm</span>
 </span><span id="Charon-82"><a href="#Charon-82"><span class="linenos">82</span></a>
 </span><span id="Charon-83"><a href="#Charon-83"><span class="linenos">83</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_frontend_certificator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FrontendCertificator</span><span class="p">:</span>
-</span><span id="Charon-84"><a href="#Charon-84"><span class="linenos">84</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `frontend_certificator` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon-84"><a href="#Charon-84"><span class="linenos">84</span></a><span class="w">        </span><span class="sd">"""Get the `frontend_certificator` attribute."""</span>
 </span><span id="Charon-85"><a href="#Charon-85"><span class="linenos">85</span></a>
 </span><span id="Charon-86"><a href="#Charon-86"><span class="linenos">86</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontend_certificator</span>
 </span><span id="Charon-87"><a href="#Charon-87"><span class="linenos">87</span></a>
 </span><span id="Charon-88"><a href="#Charon-88"><span class="linenos">88</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_backend_certificator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BackendCertificator</span><span class="p">:</span>
-</span><span id="Charon-89"><a href="#Charon-89"><span class="linenos">89</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `backend_certificator` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon-89"><a href="#Charon-89"><span class="linenos">89</span></a><span class="w">        </span><span class="sd">"""Get the `backend_certificator` attribute."""</span>
 </span><span id="Charon-90"><a href="#Charon-90"><span class="linenos">90</span></a>
 </span><span id="Charon-91"><a href="#Charon-91"><span class="linenos">91</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend_certificator</span>
 </span></pre></div>
@@ -485,7 +485,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#Charon.get_parsed_source"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon.get_parsed_source-58"><a href="#Charon.get_parsed_source-58"><span class="linenos">58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_parsed_source</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="Charon.get_parsed_source-59"><a href="#Charon.get_parsed_source-59"><span class="linenos">59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `parsed_source` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon.get_parsed_source-59"><a href="#Charon.get_parsed_source-59"><span class="linenos">59</span></a><span class="w">        </span><span class="sd">"""Get the `parsed_source` attribute."""</span>
 </span><span id="Charon.get_parsed_source-60"><a href="#Charon.get_parsed_source-60"><span class="linenos">60</span></a>
 </span><span id="Charon.get_parsed_source-61"><a href="#Charon.get_parsed_source-61"><span class="linenos">61</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_source</span>
 </span></pre></div>
@@ -508,7 +508,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#Charon.get_ast"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon.get_ast-63"><a href="#Charon.get_ast-63"><span class="linenos">63</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_ast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractSyntaxTree</span><span class="p">:</span>
-</span><span id="Charon.get_ast-64"><a href="#Charon.get_ast-64"><span class="linenos">64</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `ast` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon.get_ast-64"><a href="#Charon.get_ast-64"><span class="linenos">64</span></a><span class="w">        </span><span class="sd">"""Get the `ast` attribute."""</span>
 </span><span id="Charon.get_ast-65"><a href="#Charon.get_ast-65"><span class="linenos">65</span></a>
 </span><span id="Charon.get_ast-66"><a href="#Charon.get_ast-66"><span class="linenos">66</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ast</span>
 </span></pre></div>
@@ -531,7 +531,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#Charon.get_code_generator"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon.get_code_generator-68"><a href="#Charon.get_code_generator-68"><span class="linenos">68</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_code_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CodeGenerator</span><span class="p">:</span>
-</span><span id="Charon.get_code_generator-69"><a href="#Charon.get_code_generator-69"><span class="linenos">69</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `code_generator` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon.get_code_generator-69"><a href="#Charon.get_code_generator-69"><span class="linenos">69</span></a><span class="w">        </span><span class="sd">"""Get the `code_generator` attribute."""</span>
 </span><span id="Charon.get_code_generator-70"><a href="#Charon.get_code_generator-70"><span class="linenos">70</span></a>
 </span><span id="Charon.get_code_generator-71"><a href="#Charon.get_code_generator-71"><span class="linenos">71</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_generator</span>
 </span></pre></div>
@@ -554,7 +554,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#Charon.get_program"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon.get_program-73"><a href="#Charon.get_program-73"><span class="linenos">73</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_program</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="Charon.get_program-74"><a href="#Charon.get_program-74"><span class="linenos">74</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `program` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon.get_program-74"><a href="#Charon.get_program-74"><span class="linenos">74</span></a><span class="w">        </span><span class="sd">"""Get the `program` attribute."""</span>
 </span><span id="Charon.get_program-75"><a href="#Charon.get_program-75"><span class="linenos">75</span></a>
 </span><span id="Charon.get_program-76"><a href="#Charon.get_program-76"><span class="linenos">76</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span>
 </span></pre></div>
@@ -577,7 +577,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#Charon.get_vm"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon.get_vm-78"><a href="#Charon.get_vm-78"><span class="linenos">78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_vm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VirtualMachine</span><span class="p">:</span>
-</span><span id="Charon.get_vm-79"><a href="#Charon.get_vm-79"><span class="linenos">79</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `vm` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon.get_vm-79"><a href="#Charon.get_vm-79"><span class="linenos">79</span></a><span class="w">        </span><span class="sd">"""Get the `vm` attribute."""</span>
 </span><span id="Charon.get_vm-80"><a href="#Charon.get_vm-80"><span class="linenos">80</span></a>
 </span><span id="Charon.get_vm-81"><a href="#Charon.get_vm-81"><span class="linenos">81</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vm</span>
 </span></pre></div>
@@ -600,7 +600,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#Charon.get_frontend_certificator"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon.get_frontend_certificator-83"><a href="#Charon.get_frontend_certificator-83"><span class="linenos">83</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_frontend_certificator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FrontendCertificator</span><span class="p">:</span>
-</span><span id="Charon.get_frontend_certificator-84"><a href="#Charon.get_frontend_certificator-84"><span class="linenos">84</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `frontend_certificator` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon.get_frontend_certificator-84"><a href="#Charon.get_frontend_certificator-84"><span class="linenos">84</span></a><span class="w">        </span><span class="sd">"""Get the `frontend_certificator` attribute."""</span>
 </span><span id="Charon.get_frontend_certificator-85"><a href="#Charon.get_frontend_certificator-85"><span class="linenos">85</span></a>
 </span><span id="Charon.get_frontend_certificator-86"><a href="#Charon.get_frontend_certificator-86"><span class="linenos">86</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontend_certificator</span>
 </span></pre></div>
@@ -623,7 +623,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#Charon.get_backend_certificator"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Charon.get_backend_certificator-88"><a href="#Charon.get_backend_certificator-88"><span class="linenos">88</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_backend_certificator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BackendCertificator</span><span class="p">:</span>
-</span><span id="Charon.get_backend_certificator-89"><a href="#Charon.get_backend_certificator-89"><span class="linenos">89</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the `backend_certificator` attribute.&quot;&quot;&quot;</span>
+</span><span id="Charon.get_backend_certificator-89"><a href="#Charon.get_backend_certificator-89"><span class="linenos">89</span></a><span class="w">        </span><span class="sd">"""Get the `backend_certificator` attribute."""</span>
 </span><span id="Charon.get_backend_certificator-90"><a href="#Charon.get_backend_certificator-90"><span class="linenos">90</span></a>
 </span><span id="Charon.get_backend_certificator-91"><a href="#Charon.get_backend_certificator-91"><span class="linenos">91</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend_certificator</span>
 </span></pre></div>
@@ -647,7 +647,7 @@ backend_certificator : BackendCertificator
     </div>
     <a class="headerlink" href="#create_instance"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="create_instance-94"><a href="#create_instance-94"><span class="linenos"> 94</span></a><span class="k">def</span><span class="w"> </span><span class="nf">create_instance</span><span class="p">(</span><span class="n">source_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Charon</span><span class="p">:</span>
-</span><span id="create_instance-95"><a href="#create_instance-95"><span class="linenos"> 95</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="create_instance-95"><a href="#create_instance-95"><span class="linenos"> 95</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="create_instance-96"><a href="#create_instance-96"><span class="linenos"> 96</span></a><span class="sd">    Create an instance that certificates and runs the input `source_code`.</span>
 </span><span id="create_instance-97"><a href="#create_instance-97"><span class="linenos"> 97</span></a>
 </span><span id="create_instance-98"><a href="#create_instance-98"><span class="linenos"> 98</span></a><span class="sd">    Parameters</span>
@@ -659,7 +659,7 @@ backend_certificator : BackendCertificator
 </span><span id="create_instance-104"><a href="#create_instance-104"><span class="linenos">104</span></a><span class="sd">    -------</span>
 </span><span id="create_instance-105"><a href="#create_instance-105"><span class="linenos">105</span></a><span class="sd">    instance : Charon</span>
 </span><span id="create_instance-106"><a href="#create_instance-106"><span class="linenos">106</span></a><span class="sd">        An instance of this [C]haron program.</span>
-</span><span id="create_instance-107"><a href="#create_instance-107"><span class="linenos">107</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="create_instance-107"><a href="#create_instance-107"><span class="linenos">107</span></a><span class="sd">    """</span>
 </span><span id="create_instance-108"><a href="#create_instance-108"><span class="linenos">108</span></a>
 </span><span id="create_instance-109"><a href="#create_instance-109"><span class="linenos">109</span></a>    <span class="n">lexer</span> <span class="o">=</span> <span class="n">Lexer</span><span class="p">(</span><span class="n">source_code</span><span class="o">=</span><span class="n">source_code</span><span class="p">)</span>
 </span><span id="create_instance-110"><a href="#create_instance-110"><span class="linenos">110</span></a>    <span class="n">parsed_source</span> <span class="o">=</span> <span class="n">lexer</span><span class="o">.</span><span class="n">parse_source_code</span><span class="p">()</span>
@@ -677,13 +677,13 @@ backend_certificator : BackendCertificator
 </span><span id="create_instance-122"><a href="#create_instance-122"><span class="linenos">122</span></a>    <span class="n">backend_certificator</span> <span class="o">=</span> <span class="n">BackendCertificator</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
 </span><span id="create_instance-123"><a href="#create_instance-123"><span class="linenos">123</span></a>
 </span><span id="create_instance-124"><a href="#create_instance-124"><span class="linenos">124</span></a>    <span class="n">_instance</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="create_instance-125"><a href="#create_instance-125"><span class="linenos">125</span></a>        <span class="s2">&quot;parsed_source&quot;</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
-</span><span id="create_instance-126"><a href="#create_instance-126"><span class="linenos">126</span></a>        <span class="s2">&quot;ast&quot;</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
-</span><span id="create_instance-127"><a href="#create_instance-127"><span class="linenos">127</span></a>        <span class="s2">&quot;code_generator&quot;</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
-</span><span id="create_instance-128"><a href="#create_instance-128"><span class="linenos">128</span></a>        <span class="s2">&quot;program&quot;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
-</span><span id="create_instance-129"><a href="#create_instance-129"><span class="linenos">129</span></a>        <span class="s2">&quot;vm&quot;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
-</span><span id="create_instance-130"><a href="#create_instance-130"><span class="linenos">130</span></a>        <span class="s2">&quot;frontend_certificator&quot;</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
-</span><span id="create_instance-131"><a href="#create_instance-131"><span class="linenos">131</span></a>        <span class="s2">&quot;backend_certificator&quot;</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
+</span><span id="create_instance-125"><a href="#create_instance-125"><span class="linenos">125</span></a>        <span class="s2">"parsed_source"</span><span class="p">:</span> <span class="n">parsed_source</span><span class="p">,</span>
+</span><span id="create_instance-126"><a href="#create_instance-126"><span class="linenos">126</span></a>        <span class="s2">"ast"</span><span class="p">:</span> <span class="n">ast</span><span class="p">,</span>
+</span><span id="create_instance-127"><a href="#create_instance-127"><span class="linenos">127</span></a>        <span class="s2">"code_generator"</span><span class="p">:</span> <span class="n">generator</span><span class="p">,</span>
+</span><span id="create_instance-128"><a href="#create_instance-128"><span class="linenos">128</span></a>        <span class="s2">"program"</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
+</span><span id="create_instance-129"><a href="#create_instance-129"><span class="linenos">129</span></a>        <span class="s2">"vm"</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+</span><span id="create_instance-130"><a href="#create_instance-130"><span class="linenos">130</span></a>        <span class="s2">"frontend_certificator"</span><span class="p">:</span> <span class="n">frontend_certificator</span><span class="p">,</span>
+</span><span id="create_instance-131"><a href="#create_instance-131"><span class="linenos">131</span></a>        <span class="s2">"backend_certificator"</span><span class="p">:</span> <span class="n">backend_certificator</span><span class="p">,</span>
 </span><span id="create_instance-132"><a href="#create_instance-132"><span class="linenos">132</span></a>    <span class="p">}</span>
 </span><span id="create_instance-133"><a href="#create_instance-133"><span class="linenos">133</span></a>
 </span><span id="create_instance-134"><a href="#create_instance-134"><span class="linenos">134</span></a>    <span class="k">return</span> <span class="n">Charon</span><span class="p">(</span><span class="o">**</span><span class="n">_instance</span><span class="p">)</span>

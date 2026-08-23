@@ -77,7 +77,7 @@
 
                         <label class="view-source-button" for="mod-ARG-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Representation of ARG nodes for the Abstract Syntax Tree.&quot;&quot;&quot;</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">"""Representation of ARG nodes for the Abstract Syntax Tree."""</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
@@ -90,7 +90,7 @@
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ARG</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">    Implement the representation of a function argument for the AST.</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">    Parameters</span>
@@ -99,7 +99,7 @@
 </span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">        The node representation of this argument.</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">    parameter_type : str</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">        The type the parameter expects from the argument.</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">    """</span>
 </span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>
 </span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>    <span class="nd">@override</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argument_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CST</span><span class="p">,</span> <span class="n">VAR</span><span class="p">],</span> <span class="n">parameter_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -110,7 +110,7 @@
 </span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
 </span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="nd">@override</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>
 </span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
@@ -120,7 +120,7 @@
 </span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        ----------</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        """</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>
 </span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>
@@ -134,7 +134,7 @@
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="nb">int</span><span class="p">,</span>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="p">]:</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
@@ -147,7 +147,7 @@
 </span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
 </span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">            Node.</span>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">            The compiler's environment, that maps variables IDs to memory</span>
 </span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
 </span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        Returns</span>
@@ -159,7 +159,7 @@
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">            The number of the next register available.</span>
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">        environment : dict[int, str]</span>
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        """</span>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
@@ -176,7 +176,7 @@
 </span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>        <span class="c1"># they are not the same</span>
 </span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>            <span class="c1"># Type cast emitter doesn&#39;t change the {var_id: address} environment</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>            <span class="c1"># Type cast emitter doesn't change the {var_id: address} environment</span>
 </span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>            <span class="n">arg_typecast</span><span class="p">,</span> <span class="n">register</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
@@ -187,10 +187,10 @@
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
 </span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
 </span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>            <span class="s2">"instruction"</span><span class="p">:</span> <span class="s2">"MOV"</span><span class="p">,</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>            <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>                <span class="s2">"register"</span><span class="p">:</span> <span class="s2">"arg"</span><span class="p">,</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>                <span class="s2">"value"</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
 </span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>            <span class="p">},</span>
 </span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>        <span class="p">}</span>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
@@ -202,7 +202,7 @@
 </span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
 </span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>
 </span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
@@ -211,20 +211,20 @@
 </span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">        Parameters</span>
 </span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">        ----------</span>
 </span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">            The certificators's environment, that maps variables IDs to</span>
 </span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">            encodings of their types.</span>
 </span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
 </span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">        Returns</span>
 </span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        -------</span>
 </span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        """</span>
 </span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>
 </span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
 </span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
 </span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
 </span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
@@ -243,7 +243,7 @@
     </div>
     <a class="headerlink" href="#ARG"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="ARG-14"><a href="#ARG-14"><span class="linenos"> 14</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ARG</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="ARG-15"><a href="#ARG-15"><span class="linenos"> 15</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG-15"><a href="#ARG-15"><span class="linenos"> 15</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="ARG-16"><a href="#ARG-16"><span class="linenos"> 16</span></a><span class="sd">    Implement the representation of a function argument for the AST.</span>
 </span><span id="ARG-17"><a href="#ARG-17"><span class="linenos"> 17</span></a>
 </span><span id="ARG-18"><a href="#ARG-18"><span class="linenos"> 18</span></a><span class="sd">    Parameters</span>
@@ -252,7 +252,7 @@
 </span><span id="ARG-21"><a href="#ARG-21"><span class="linenos"> 21</span></a><span class="sd">        The node representation of this argument.</span>
 </span><span id="ARG-22"><a href="#ARG-22"><span class="linenos"> 22</span></a><span class="sd">    parameter_type : str</span>
 </span><span id="ARG-23"><a href="#ARG-23"><span class="linenos"> 23</span></a><span class="sd">        The type the parameter expects from the argument.</span>
-</span><span id="ARG-24"><a href="#ARG-24"><span class="linenos"> 24</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="ARG-24"><a href="#ARG-24"><span class="linenos"> 24</span></a><span class="sd">    """</span>
 </span><span id="ARG-25"><a href="#ARG-25"><span class="linenos"> 25</span></a>
 </span><span id="ARG-26"><a href="#ARG-26"><span class="linenos"> 26</span></a>    <span class="nd">@override</span>
 </span><span id="ARG-27"><a href="#ARG-27"><span class="linenos"> 27</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argument_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CST</span><span class="p">,</span> <span class="n">VAR</span><span class="p">],</span> <span class="n">parameter_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -263,7 +263,7 @@
 </span><span id="ARG-32"><a href="#ARG-32"><span class="linenos"> 32</span></a>
 </span><span id="ARG-33"><a href="#ARG-33"><span class="linenos"> 33</span></a>    <span class="nd">@override</span>
 </span><span id="ARG-34"><a href="#ARG-34"><span class="linenos"> 34</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ARG-35"><a href="#ARG-35"><span class="linenos"> 35</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG-35"><a href="#ARG-35"><span class="linenos"> 35</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="ARG-36"><a href="#ARG-36"><span class="linenos"> 36</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
 </span><span id="ARG-37"><a href="#ARG-37"><span class="linenos"> 37</span></a>
 </span><span id="ARG-38"><a href="#ARG-38"><span class="linenos"> 38</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
@@ -273,7 +273,7 @@
 </span><span id="ARG-42"><a href="#ARG-42"><span class="linenos"> 42</span></a><span class="sd">        ----------</span>
 </span><span id="ARG-43"><a href="#ARG-43"><span class="linenos"> 43</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="ARG-44"><a href="#ARG-44"><span class="linenos"> 44</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="ARG-45"><a href="#ARG-45"><span class="linenos"> 45</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-45"><a href="#ARG-45"><span class="linenos"> 45</span></a><span class="sd">        """</span>
 </span><span id="ARG-46"><a href="#ARG-46"><span class="linenos"> 46</span></a>
 </span><span id="ARG-47"><a href="#ARG-47"><span class="linenos"> 47</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="ARG-48"><a href="#ARG-48"><span class="linenos"> 48</span></a>
@@ -287,7 +287,7 @@
 </span><span id="ARG-56"><a href="#ARG-56"><span class="linenos"> 56</span></a>        <span class="nb">int</span><span class="p">,</span>
 </span><span id="ARG-57"><a href="#ARG-57"><span class="linenos"> 57</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </span><span id="ARG-58"><a href="#ARG-58"><span class="linenos"> 58</span></a>    <span class="p">]:</span>
-</span><span id="ARG-59"><a href="#ARG-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG-59"><a href="#ARG-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="ARG-60"><a href="#ARG-60"><span class="linenos"> 60</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
 </span><span id="ARG-61"><a href="#ARG-61"><span class="linenos"> 61</span></a>
 </span><span id="ARG-62"><a href="#ARG-62"><span class="linenos"> 62</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
@@ -300,7 +300,7 @@
 </span><span id="ARG-69"><a href="#ARG-69"><span class="linenos"> 69</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
 </span><span id="ARG-70"><a href="#ARG-70"><span class="linenos"> 70</span></a><span class="sd">            Node.</span>
 </span><span id="ARG-71"><a href="#ARG-71"><span class="linenos"> 71</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="ARG-72"><a href="#ARG-72"><span class="linenos"> 72</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="ARG-72"><a href="#ARG-72"><span class="linenos"> 72</span></a><span class="sd">            The compiler's environment, that maps variables IDs to memory</span>
 </span><span id="ARG-73"><a href="#ARG-73"><span class="linenos"> 73</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
 </span><span id="ARG-74"><a href="#ARG-74"><span class="linenos"> 74</span></a>
 </span><span id="ARG-75"><a href="#ARG-75"><span class="linenos"> 75</span></a><span class="sd">        Returns</span>
@@ -312,7 +312,7 @@
 </span><span id="ARG-81"><a href="#ARG-81"><span class="linenos"> 81</span></a><span class="sd">            The number of the next register available.</span>
 </span><span id="ARG-82"><a href="#ARG-82"><span class="linenos"> 82</span></a><span class="sd">        environment : dict[int, str]</span>
 </span><span id="ARG-83"><a href="#ARG-83"><span class="linenos"> 83</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="ARG-84"><a href="#ARG-84"><span class="linenos"> 84</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-84"><a href="#ARG-84"><span class="linenos"> 84</span></a><span class="sd">        """</span>
 </span><span id="ARG-85"><a href="#ARG-85"><span class="linenos"> 85</span></a>
 </span><span id="ARG-86"><a href="#ARG-86"><span class="linenos"> 86</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="ARG-87"><a href="#ARG-87"><span class="linenos"> 87</span></a>
@@ -329,7 +329,7 @@
 </span><span id="ARG-98"><a href="#ARG-98"><span class="linenos"> 98</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
 </span><span id="ARG-99"><a href="#ARG-99"><span class="linenos"> 99</span></a>        <span class="c1"># they are not the same</span>
 </span><span id="ARG-100"><a href="#ARG-100"><span class="linenos">100</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
-</span><span id="ARG-101"><a href="#ARG-101"><span class="linenos">101</span></a>            <span class="c1"># Type cast emitter doesn&#39;t change the {var_id: address} environment</span>
+</span><span id="ARG-101"><a href="#ARG-101"><span class="linenos">101</span></a>            <span class="c1"># Type cast emitter doesn't change the {var_id: address} environment</span>
 </span><span id="ARG-102"><a href="#ARG-102"><span class="linenos">102</span></a>            <span class="n">arg_typecast</span><span class="p">,</span> <span class="n">register</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
 </span><span id="ARG-103"><a href="#ARG-103"><span class="linenos">103</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
 </span><span id="ARG-104"><a href="#ARG-104"><span class="linenos">104</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
@@ -340,10 +340,10 @@
 </span><span id="ARG-109"><a href="#ARG-109"><span class="linenos">109</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
 </span><span id="ARG-110"><a href="#ARG-110"><span class="linenos">110</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
 </span><span id="ARG-111"><a href="#ARG-111"><span class="linenos">111</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ARG-112"><a href="#ARG-112"><span class="linenos">112</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="ARG-113"><a href="#ARG-113"><span class="linenos">113</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="ARG-114"><a href="#ARG-114"><span class="linenos">114</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="ARG-115"><a href="#ARG-115"><span class="linenos">115</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="ARG-112"><a href="#ARG-112"><span class="linenos">112</span></a>            <span class="s2">"instruction"</span><span class="p">:</span> <span class="s2">"MOV"</span><span class="p">,</span>
+</span><span id="ARG-113"><a href="#ARG-113"><span class="linenos">113</span></a>            <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="ARG-114"><a href="#ARG-114"><span class="linenos">114</span></a>                <span class="s2">"register"</span><span class="p">:</span> <span class="s2">"arg"</span><span class="p">,</span>
+</span><span id="ARG-115"><a href="#ARG-115"><span class="linenos">115</span></a>                <span class="s2">"value"</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
 </span><span id="ARG-116"><a href="#ARG-116"><span class="linenos">116</span></a>            <span class="p">},</span>
 </span><span id="ARG-117"><a href="#ARG-117"><span class="linenos">117</span></a>        <span class="p">}</span>
 </span><span id="ARG-118"><a href="#ARG-118"><span class="linenos">118</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
@@ -355,7 +355,7 @@
 </span><span id="ARG-124"><a href="#ARG-124"><span class="linenos">124</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="ARG-125"><a href="#ARG-125"><span class="linenos">125</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="ARG-126"><a href="#ARG-126"><span class="linenos">126</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="ARG-127"><a href="#ARG-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG-127"><a href="#ARG-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="ARG-128"><a href="#ARG-128"><span class="linenos">128</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
 </span><span id="ARG-129"><a href="#ARG-129"><span class="linenos">129</span></a>
 </span><span id="ARG-130"><a href="#ARG-130"><span class="linenos">130</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
@@ -364,20 +364,20 @@
 </span><span id="ARG-133"><a href="#ARG-133"><span class="linenos">133</span></a><span class="sd">        Parameters</span>
 </span><span id="ARG-134"><a href="#ARG-134"><span class="linenos">134</span></a><span class="sd">        ----------</span>
 </span><span id="ARG-135"><a href="#ARG-135"><span class="linenos">135</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="ARG-136"><a href="#ARG-136"><span class="linenos">136</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="ARG-136"><a href="#ARG-136"><span class="linenos">136</span></a><span class="sd">            The certificators's environment, that maps variables IDs to</span>
 </span><span id="ARG-137"><a href="#ARG-137"><span class="linenos">137</span></a><span class="sd">            encodings of their types.</span>
 </span><span id="ARG-138"><a href="#ARG-138"><span class="linenos">138</span></a>
 </span><span id="ARG-139"><a href="#ARG-139"><span class="linenos">139</span></a><span class="sd">        Returns</span>
 </span><span id="ARG-140"><a href="#ARG-140"><span class="linenos">140</span></a><span class="sd">        -------</span>
 </span><span id="ARG-141"><a href="#ARG-141"><span class="linenos">141</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="ARG-142"><a href="#ARG-142"><span class="linenos">142</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="ARG-143"><a href="#ARG-143"><span class="linenos">143</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="ARG-144"><a href="#ARG-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG-142"><a href="#ARG-142"><span class="linenos">142</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="ARG-143"><a href="#ARG-143"><span class="linenos">143</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="ARG-144"><a href="#ARG-144"><span class="linenos">144</span></a><span class="sd">        """</span>
 </span><span id="ARG-145"><a href="#ARG-145"><span class="linenos">145</span></a>
 </span><span id="ARG-146"><a href="#ARG-146"><span class="linenos">146</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="ARG-147"><a href="#ARG-147"><span class="linenos">147</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
 </span><span id="ARG-148"><a href="#ARG-148"><span class="linenos">148</span></a>
-</span><span id="ARG-149"><a href="#ARG-149"><span class="linenos">149</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+</span><span id="ARG-149"><a href="#ARG-149"><span class="linenos">149</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
 </span><span id="ARG-150"><a href="#ARG-150"><span class="linenos">150</span></a>
 </span><span id="ARG-151"><a href="#ARG-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
@@ -453,7 +453,7 @@ parameter_type : str
     <a class="headerlink" href="#ARG.print"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="ARG.print-33"><a href="#ARG.print-33"><span class="linenos">33</span></a>    <span class="nd">@override</span>
 </span><span id="ARG.print-34"><a href="#ARG.print-34"><span class="linenos">34</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ARG.print-35"><a href="#ARG.print-35"><span class="linenos">35</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG.print-35"><a href="#ARG.print-35"><span class="linenos">35</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="ARG.print-36"><a href="#ARG.print-36"><span class="linenos">36</span></a><span class="sd">        Print the string representation of this `ARG`.</span>
 </span><span id="ARG.print-37"><a href="#ARG.print-37"><span class="linenos">37</span></a>
 </span><span id="ARG.print-38"><a href="#ARG.print-38"><span class="linenos">38</span></a><span class="sd">        The node itself is aligned with `indent`, and `argument_value` is padded</span>
@@ -463,7 +463,7 @@ parameter_type : str
 </span><span id="ARG.print-42"><a href="#ARG.print-42"><span class="linenos">42</span></a><span class="sd">        ----------</span>
 </span><span id="ARG.print-43"><a href="#ARG.print-43"><span class="linenos">43</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="ARG.print-44"><a href="#ARG.print-44"><span class="linenos">44</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="ARG.print-45"><a href="#ARG.print-45"><span class="linenos">45</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG.print-45"><a href="#ARG.print-45"><span class="linenos">45</span></a><span class="sd">        """</span>
 </span><span id="ARG.print-46"><a href="#ARG.print-46"><span class="linenos">46</span></a>
 </span><span id="ARG.print-47"><a href="#ARG.print-47"><span class="linenos">47</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="ARG.print-48"><a href="#ARG.print-48"><span class="linenos">48</span></a>
@@ -504,7 +504,7 @@ with an additional left space.</p>
 </span><span id="ARG.generate_code-56"><a href="#ARG.generate_code-56"><span class="linenos"> 56</span></a>        <span class="nb">int</span><span class="p">,</span>
 </span><span id="ARG.generate_code-57"><a href="#ARG.generate_code-57"><span class="linenos"> 57</span></a>        <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 </span><span id="ARG.generate_code-58"><a href="#ARG.generate_code-58"><span class="linenos"> 58</span></a>    <span class="p">]:</span>
-</span><span id="ARG.generate_code-59"><a href="#ARG.generate_code-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG.generate_code-59"><a href="#ARG.generate_code-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="ARG.generate_code-60"><a href="#ARG.generate_code-60"><span class="linenos"> 60</span></a><span class="sd">        Generate the code associated with this `ARG`.</span>
 </span><span id="ARG.generate_code-61"><a href="#ARG.generate_code-61"><span class="linenos"> 61</span></a>
 </span><span id="ARG.generate_code-62"><a href="#ARG.generate_code-62"><span class="linenos"> 62</span></a><span class="sd">        For this node specialization, generate code from the `argument_value`</span>
@@ -517,7 +517,7 @@ with an additional left space.</p>
 </span><span id="ARG.generate_code-69"><a href="#ARG.generate_code-69"><span class="linenos"> 69</span></a><span class="sd">            The number of the register to be used by the code generated by this</span>
 </span><span id="ARG.generate_code-70"><a href="#ARG.generate_code-70"><span class="linenos"> 70</span></a><span class="sd">            Node.</span>
 </span><span id="ARG.generate_code-71"><a href="#ARG.generate_code-71"><span class="linenos"> 71</span></a><span class="sd">        environment : dict[int, str]</span>
-</span><span id="ARG.generate_code-72"><a href="#ARG.generate_code-72"><span class="linenos"> 72</span></a><span class="sd">            The compiler&#39;s environment, that maps variables IDs to memory</span>
+</span><span id="ARG.generate_code-72"><a href="#ARG.generate_code-72"><span class="linenos"> 72</span></a><span class="sd">            The compiler's environment, that maps variables IDs to memory</span>
 </span><span id="ARG.generate_code-73"><a href="#ARG.generate_code-73"><span class="linenos"> 73</span></a><span class="sd">            addresses and function IDs to instructions indices.</span>
 </span><span id="ARG.generate_code-74"><a href="#ARG.generate_code-74"><span class="linenos"> 74</span></a>
 </span><span id="ARG.generate_code-75"><a href="#ARG.generate_code-75"><span class="linenos"> 75</span></a><span class="sd">        Returns</span>
@@ -529,7 +529,7 @@ with an additional left space.</p>
 </span><span id="ARG.generate_code-81"><a href="#ARG.generate_code-81"><span class="linenos"> 81</span></a><span class="sd">            The number of the next register available.</span>
 </span><span id="ARG.generate_code-82"><a href="#ARG.generate_code-82"><span class="linenos"> 82</span></a><span class="sd">        environment : dict[int, str]</span>
 </span><span id="ARG.generate_code-83"><a href="#ARG.generate_code-83"><span class="linenos"> 83</span></a><span class="sd">            The updated {var_id: address} environment mapping.</span>
-</span><span id="ARG.generate_code-84"><a href="#ARG.generate_code-84"><span class="linenos"> 84</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG.generate_code-84"><a href="#ARG.generate_code-84"><span class="linenos"> 84</span></a><span class="sd">        """</span>
 </span><span id="ARG.generate_code-85"><a href="#ARG.generate_code-85"><span class="linenos"> 85</span></a>
 </span><span id="ARG.generate_code-86"><a href="#ARG.generate_code-86"><span class="linenos"> 86</span></a>        <span class="n">code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="ARG.generate_code-87"><a href="#ARG.generate_code-87"><span class="linenos"> 87</span></a>
@@ -546,7 +546,7 @@ with an additional left space.</p>
 </span><span id="ARG.generate_code-98"><a href="#ARG.generate_code-98"><span class="linenos"> 98</span></a>        <span class="c1"># Type cast the argument value to the type the parameter expects, if</span>
 </span><span id="ARG.generate_code-99"><a href="#ARG.generate_code-99"><span class="linenos"> 99</span></a>        <span class="c1"># they are not the same</span>
 </span><span id="ARG.generate_code-100"><a href="#ARG.generate_code-100"><span class="linenos">100</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">:</span>
-</span><span id="ARG.generate_code-101"><a href="#ARG.generate_code-101"><span class="linenos">101</span></a>            <span class="c1"># Type cast emitter doesn&#39;t change the {var_id: address} environment</span>
+</span><span id="ARG.generate_code-101"><a href="#ARG.generate_code-101"><span class="linenos">101</span></a>            <span class="c1"># Type cast emitter doesn't change the {var_id: address} environment</span>
 </span><span id="ARG.generate_code-102"><a href="#ARG.generate_code-102"><span class="linenos">102</span></a>            <span class="n">arg_typecast</span><span class="p">,</span> <span class="n">register</span> <span class="o">=</span> <span class="n">type_cast</span><span class="p">(</span>
 </span><span id="ARG.generate_code-103"><a href="#ARG.generate_code-103"><span class="linenos">103</span></a>                <span class="n">original_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
 </span><span id="ARG.generate_code-104"><a href="#ARG.generate_code-104"><span class="linenos">104</span></a>                <span class="n">target_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_type</span><span class="p">,</span>
@@ -557,10 +557,10 @@ with an additional left space.</p>
 </span><span id="ARG.generate_code-109"><a href="#ARG.generate_code-109"><span class="linenos">109</span></a>        <span class="c1"># ARG must point to the same register that contains the `argument_value`</span>
 </span><span id="ARG.generate_code-110"><a href="#ARG.generate_code-110"><span class="linenos">110</span></a>        <span class="n">argument_value_register</span> <span class="o">=</span> <span class="n">register</span> <span class="o">-</span> <span class="mi">1</span>
 </span><span id="ARG.generate_code-111"><a href="#ARG.generate_code-111"><span class="linenos">111</span></a>        <span class="n">argument_store_code</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ARG.generate_code-112"><a href="#ARG.generate_code-112"><span class="linenos">112</span></a>            <span class="s2">&quot;instruction&quot;</span><span class="p">:</span> <span class="s2">&quot;MOV&quot;</span><span class="p">,</span>
-</span><span id="ARG.generate_code-113"><a href="#ARG.generate_code-113"><span class="linenos">113</span></a>            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="ARG.generate_code-114"><a href="#ARG.generate_code-114"><span class="linenos">114</span></a>                <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;arg&quot;</span><span class="p">,</span>
-</span><span id="ARG.generate_code-115"><a href="#ARG.generate_code-115"><span class="linenos">115</span></a>                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
+</span><span id="ARG.generate_code-112"><a href="#ARG.generate_code-112"><span class="linenos">112</span></a>            <span class="s2">"instruction"</span><span class="p">:</span> <span class="s2">"MOV"</span><span class="p">,</span>
+</span><span id="ARG.generate_code-113"><a href="#ARG.generate_code-113"><span class="linenos">113</span></a>            <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="ARG.generate_code-114"><a href="#ARG.generate_code-114"><span class="linenos">114</span></a>                <span class="s2">"register"</span><span class="p">:</span> <span class="s2">"arg"</span><span class="p">,</span>
+</span><span id="ARG.generate_code-115"><a href="#ARG.generate_code-115"><span class="linenos">115</span></a>                <span class="s2">"value"</span><span class="p">:</span> <span class="n">argument_value_register</span><span class="p">,</span>
 </span><span id="ARG.generate_code-116"><a href="#ARG.generate_code-116"><span class="linenos">116</span></a>            <span class="p">},</span>
 </span><span id="ARG.generate_code-117"><a href="#ARG.generate_code-117"><span class="linenos">117</span></a>        <span class="p">}</span>
 </span><span id="ARG.generate_code-118"><a href="#ARG.generate_code-118"><span class="linenos">118</span></a>        <span class="n">code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_store_code</span><span class="p">)</span>
@@ -614,7 +614,7 @@ environment : dict[int, str]
 </span><span id="ARG.certificate-124"><a href="#ARG.certificate-124"><span class="linenos">124</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="ARG.certificate-125"><a href="#ARG.certificate-125"><span class="linenos">125</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="ARG.certificate-126"><a href="#ARG.certificate-126"><span class="linenos">126</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="ARG.certificate-127"><a href="#ARG.certificate-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ARG.certificate-127"><a href="#ARG.certificate-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="ARG.certificate-128"><a href="#ARG.certificate-128"><span class="linenos">128</span></a><span class="sd">        Compute the certificate of the this `ARG`, and set this attribute.</span>
 </span><span id="ARG.certificate-129"><a href="#ARG.certificate-129"><span class="linenos">129</span></a>
 </span><span id="ARG.certificate-130"><a href="#ARG.certificate-130"><span class="linenos">130</span></a><span class="sd">        For `ARG` nodes, certificate the `argument_value` node first, and then</span>
@@ -623,20 +623,20 @@ environment : dict[int, str]
 </span><span id="ARG.certificate-133"><a href="#ARG.certificate-133"><span class="linenos">133</span></a><span class="sd">        Parameters</span>
 </span><span id="ARG.certificate-134"><a href="#ARG.certificate-134"><span class="linenos">134</span></a><span class="sd">        ----------</span>
 </span><span id="ARG.certificate-135"><a href="#ARG.certificate-135"><span class="linenos">135</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="ARG.certificate-136"><a href="#ARG.certificate-136"><span class="linenos">136</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="ARG.certificate-136"><a href="#ARG.certificate-136"><span class="linenos">136</span></a><span class="sd">            The certificators's environment, that maps variables IDs to</span>
 </span><span id="ARG.certificate-137"><a href="#ARG.certificate-137"><span class="linenos">137</span></a><span class="sd">            encodings of their types.</span>
 </span><span id="ARG.certificate-138"><a href="#ARG.certificate-138"><span class="linenos">138</span></a>
 </span><span id="ARG.certificate-139"><a href="#ARG.certificate-139"><span class="linenos">139</span></a><span class="sd">        Returns</span>
 </span><span id="ARG.certificate-140"><a href="#ARG.certificate-140"><span class="linenos">140</span></a><span class="sd">        -------</span>
 </span><span id="ARG.certificate-141"><a href="#ARG.certificate-141"><span class="linenos">141</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="ARG.certificate-142"><a href="#ARG.certificate-142"><span class="linenos">142</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="ARG.certificate-143"><a href="#ARG.certificate-143"><span class="linenos">143</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="ARG.certificate-144"><a href="#ARG.certificate-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ARG.certificate-142"><a href="#ARG.certificate-142"><span class="linenos">142</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="ARG.certificate-143"><a href="#ARG.certificate-143"><span class="linenos">143</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="ARG.certificate-144"><a href="#ARG.certificate-144"><span class="linenos">144</span></a><span class="sd">        """</span>
 </span><span id="ARG.certificate-145"><a href="#ARG.certificate-145"><span class="linenos">145</span></a>
 </span><span id="ARG.certificate-146"><a href="#ARG.certificate-146"><span class="linenos">146</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="ARG.certificate-147"><a href="#ARG.certificate-147"><span class="linenos">147</span></a>        <span class="n">_argument_value_certificate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument_value</span><span class="o">.</span><span class="n">get_certificate_label</span><span class="p">()</span>
 </span><span id="ARG.certificate-148"><a href="#ARG.certificate-148"><span class="linenos">148</span></a>
-</span><span id="ARG.certificate-149"><a href="#ARG.certificate-149"><span class="linenos">149</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+</span><span id="ARG.certificate-149"><a href="#ARG.certificate-149"><span class="linenos">149</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">certificate_label</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">_argument_value_certificate</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
 </span><span id="ARG.certificate-150"><a href="#ARG.certificate-150"><span class="linenos">150</span></a>
 </span><span id="ARG.certificate-151"><a href="#ARG.certificate-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>

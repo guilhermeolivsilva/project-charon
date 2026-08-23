@@ -83,7 +83,7 @@
 
                         <label class="view-source-button" for="mod-conditional-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Representation of conditionals for the Abstract Syntax Tree.&quot;&quot;&quot;</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">"""Representation of conditionals for the Abstract Syntax Tree."""</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
@@ -92,7 +92,7 @@
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Conditional</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">    Implement the representation of conditionals for the AST.</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">    Parameters</span>
@@ -102,7 +102,7 @@
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">    statement_if_true : Node</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="sd">        evaluates to `True`.</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">    """</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>    <span class="nd">@override</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -117,7 +117,7 @@
 </span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>
 </span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="nd">@override</span>
 </span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
@@ -128,7 +128,7 @@
 </span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        -------</span>
 </span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        : list of str</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        """</span>
 </span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>
 </span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>        <span class="k">return</span> <span class="p">[</span>
 </span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">conditional_expression_boundary</span><span class="p">,</span>
@@ -140,7 +140,7 @@
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>    <span class="nd">@override</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
@@ -150,7 +150,7 @@
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">        ----------</span>
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        """</span>
 </span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>
@@ -162,7 +162,7 @@
 </span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
@@ -172,27 +172,27 @@
 </span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        Parameters</span>
 </span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        ----------</span>
 </span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">            The certificators's environment, that maps variables IDs to</span>
 </span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">            encodings of their types.</span>
 </span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>
 </span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        Returns</span>
 </span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        -------</span>
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        """</span>
 </span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>
 </span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>        <span class="c1"># Add the symbol to delimit the condition expression</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="n">_conditional_expression_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;COND&quot;</span><span class="p">]</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="n">_conditional_expression_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">"COND"</span><span class="p">]</span>
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conditional_expression_boundary</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_conditional_expression_boundary_symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_conditional_expression_boundary_symbol</span><span class="si">}</span><span class="s2">"</span>
 </span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="p">)</span>
 </span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_certificate</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_certificate</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_symbol</span><span class="si">}</span><span class="s2">"</span>
 </span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>
 </span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
@@ -211,7 +211,7 @@
     </div>
     <a class="headerlink" href="#Conditional"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional-10"><a href="#Conditional-10"><span class="linenos"> 10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Conditional</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-</span><span id="Conditional-11"><a href="#Conditional-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional-11"><a href="#Conditional-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">"""</span>
 </span><span id="Conditional-12"><a href="#Conditional-12"><span class="linenos"> 12</span></a><span class="sd">    Implement the representation of conditionals for the AST.</span>
 </span><span id="Conditional-13"><a href="#Conditional-13"><span class="linenos"> 13</span></a>
 </span><span id="Conditional-14"><a href="#Conditional-14"><span class="linenos"> 14</span></a><span class="sd">    Parameters</span>
@@ -221,7 +221,7 @@
 </span><span id="Conditional-18"><a href="#Conditional-18"><span class="linenos"> 18</span></a><span class="sd">    statement_if_true : Node</span>
 </span><span id="Conditional-19"><a href="#Conditional-19"><span class="linenos"> 19</span></a><span class="sd">        The node representation of code to run if the `parenthesis_expression`</span>
 </span><span id="Conditional-20"><a href="#Conditional-20"><span class="linenos"> 20</span></a><span class="sd">        evaluates to `True`.</span>
-</span><span id="Conditional-21"><a href="#Conditional-21"><span class="linenos"> 21</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="Conditional-21"><a href="#Conditional-21"><span class="linenos"> 21</span></a><span class="sd">    """</span>
 </span><span id="Conditional-22"><a href="#Conditional-22"><span class="linenos"> 22</span></a>
 </span><span id="Conditional-23"><a href="#Conditional-23"><span class="linenos"> 23</span></a>    <span class="nd">@override</span>
 </span><span id="Conditional-24"><a href="#Conditional-24"><span class="linenos"> 24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parenthesis_expression</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">statement_if_true</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -236,7 +236,7 @@
 </span><span id="Conditional-33"><a href="#Conditional-33"><span class="linenos"> 33</span></a>
 </span><span id="Conditional-34"><a href="#Conditional-34"><span class="linenos"> 34</span></a>    <span class="nd">@override</span>
 </span><span id="Conditional-35"><a href="#Conditional-35"><span class="linenos"> 35</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="Conditional-36"><a href="#Conditional-36"><span class="linenos"> 36</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional-36"><a href="#Conditional-36"><span class="linenos"> 36</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="Conditional-37"><a href="#Conditional-37"><span class="linenos"> 37</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="Conditional-38"><a href="#Conditional-38"><span class="linenos"> 38</span></a>
 </span><span id="Conditional-39"><a href="#Conditional-39"><span class="linenos"> 39</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
@@ -247,7 +247,7 @@
 </span><span id="Conditional-44"><a href="#Conditional-44"><span class="linenos"> 44</span></a><span class="sd">        -------</span>
 </span><span id="Conditional-45"><a href="#Conditional-45"><span class="linenos"> 45</span></a><span class="sd">        : list of str</span>
 </span><span id="Conditional-46"><a href="#Conditional-46"><span class="linenos"> 46</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="Conditional-47"><a href="#Conditional-47"><span class="linenos"> 47</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional-47"><a href="#Conditional-47"><span class="linenos"> 47</span></a><span class="sd">        """</span>
 </span><span id="Conditional-48"><a href="#Conditional-48"><span class="linenos"> 48</span></a>
 </span><span id="Conditional-49"><a href="#Conditional-49"><span class="linenos"> 49</span></a>        <span class="k">return</span> <span class="p">[</span>
 </span><span id="Conditional-50"><a href="#Conditional-50"><span class="linenos"> 50</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">conditional_expression_boundary</span><span class="p">,</span>
@@ -259,7 +259,7 @@
 </span><span id="Conditional-56"><a href="#Conditional-56"><span class="linenos"> 56</span></a>
 </span><span id="Conditional-57"><a href="#Conditional-57"><span class="linenos"> 57</span></a>    <span class="nd">@override</span>
 </span><span id="Conditional-58"><a href="#Conditional-58"><span class="linenos"> 58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Conditional-59"><a href="#Conditional-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional-59"><a href="#Conditional-59"><span class="linenos"> 59</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="Conditional-60"><a href="#Conditional-60"><span class="linenos"> 60</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="Conditional-61"><a href="#Conditional-61"><span class="linenos"> 61</span></a>
 </span><span id="Conditional-62"><a href="#Conditional-62"><span class="linenos"> 62</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
@@ -269,7 +269,7 @@
 </span><span id="Conditional-66"><a href="#Conditional-66"><span class="linenos"> 66</span></a><span class="sd">        ----------</span>
 </span><span id="Conditional-67"><a href="#Conditional-67"><span class="linenos"> 67</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="Conditional-68"><a href="#Conditional-68"><span class="linenos"> 68</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="Conditional-69"><a href="#Conditional-69"><span class="linenos"> 69</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional-69"><a href="#Conditional-69"><span class="linenos"> 69</span></a><span class="sd">        """</span>
 </span><span id="Conditional-70"><a href="#Conditional-70"><span class="linenos"> 70</span></a>
 </span><span id="Conditional-71"><a href="#Conditional-71"><span class="linenos"> 71</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="Conditional-72"><a href="#Conditional-72"><span class="linenos"> 72</span></a>
@@ -281,7 +281,7 @@
 </span><span id="Conditional-78"><a href="#Conditional-78"><span class="linenos"> 78</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="Conditional-79"><a href="#Conditional-79"><span class="linenos"> 79</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="Conditional-80"><a href="#Conditional-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="Conditional-81"><a href="#Conditional-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional-81"><a href="#Conditional-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="Conditional-82"><a href="#Conditional-82"><span class="linenos"> 82</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
 </span><span id="Conditional-83"><a href="#Conditional-83"><span class="linenos"> 83</span></a>
 </span><span id="Conditional-84"><a href="#Conditional-84"><span class="linenos"> 84</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
@@ -291,27 +291,27 @@
 </span><span id="Conditional-88"><a href="#Conditional-88"><span class="linenos"> 88</span></a><span class="sd">        Parameters</span>
 </span><span id="Conditional-89"><a href="#Conditional-89"><span class="linenos"> 89</span></a><span class="sd">        ----------</span>
 </span><span id="Conditional-90"><a href="#Conditional-90"><span class="linenos"> 90</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Conditional-91"><a href="#Conditional-91"><span class="linenos"> 91</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="Conditional-91"><a href="#Conditional-91"><span class="linenos"> 91</span></a><span class="sd">            The certificators's environment, that maps variables IDs to</span>
 </span><span id="Conditional-92"><a href="#Conditional-92"><span class="linenos"> 92</span></a><span class="sd">            encodings of their types.</span>
 </span><span id="Conditional-93"><a href="#Conditional-93"><span class="linenos"> 93</span></a>
 </span><span id="Conditional-94"><a href="#Conditional-94"><span class="linenos"> 94</span></a><span class="sd">        Returns</span>
 </span><span id="Conditional-95"><a href="#Conditional-95"><span class="linenos"> 95</span></a><span class="sd">        -------</span>
 </span><span id="Conditional-96"><a href="#Conditional-96"><span class="linenos"> 96</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Conditional-97"><a href="#Conditional-97"><span class="linenos"> 97</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="Conditional-98"><a href="#Conditional-98"><span class="linenos"> 98</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="Conditional-99"><a href="#Conditional-99"><span class="linenos"> 99</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional-97"><a href="#Conditional-97"><span class="linenos"> 97</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="Conditional-98"><a href="#Conditional-98"><span class="linenos"> 98</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="Conditional-99"><a href="#Conditional-99"><span class="linenos"> 99</span></a><span class="sd">        """</span>
 </span><span id="Conditional-100"><a href="#Conditional-100"><span class="linenos">100</span></a>
 </span><span id="Conditional-101"><a href="#Conditional-101"><span class="linenos">101</span></a>        <span class="c1"># Add the symbol to delimit the condition expression</span>
-</span><span id="Conditional-102"><a href="#Conditional-102"><span class="linenos">102</span></a>        <span class="n">_conditional_expression_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;COND&quot;</span><span class="p">]</span>
+</span><span id="Conditional-102"><a href="#Conditional-102"><span class="linenos">102</span></a>        <span class="n">_conditional_expression_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">"COND"</span><span class="p">]</span>
 </span><span id="Conditional-103"><a href="#Conditional-103"><span class="linenos">103</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conditional_expression_boundary</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="Conditional-104"><a href="#Conditional-104"><span class="linenos">104</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_conditional_expression_boundary_symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Conditional-104"><a href="#Conditional-104"><span class="linenos">104</span></a>            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_conditional_expression_boundary_symbol</span><span class="si">}</span><span class="s2">"</span>
 </span><span id="Conditional-105"><a href="#Conditional-105"><span class="linenos">105</span></a>        <span class="p">)</span>
 </span><span id="Conditional-106"><a href="#Conditional-106"><span class="linenos">106</span></a>
 </span><span id="Conditional-107"><a href="#Conditional-107"><span class="linenos">107</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="Conditional-108"><a href="#Conditional-108"><span class="linenos">108</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="Conditional-109"><a href="#Conditional-109"><span class="linenos">109</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="Conditional-110"><a href="#Conditional-110"><span class="linenos">110</span></a>
-</span><span id="Conditional-111"><a href="#Conditional-111"><span class="linenos">111</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_certificate</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Conditional-111"><a href="#Conditional-111"><span class="linenos">111</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_certificate</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_symbol</span><span class="si">}</span><span class="s2">"</span>
 </span><span id="Conditional-112"><a href="#Conditional-112"><span class="linenos">112</span></a>
 </span><span id="Conditional-113"><a href="#Conditional-113"><span class="linenos">113</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
@@ -414,7 +414,7 @@ statement_if_true : Node
     <a class="headerlink" href="#Conditional.get_certificate_label"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.get_certificate_label-34"><a href="#Conditional.get_certificate_label-34"><span class="linenos">34</span></a>    <span class="nd">@override</span>
 </span><span id="Conditional.get_certificate_label-35"><a href="#Conditional.get_certificate_label-35"><span class="linenos">35</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_certificate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="Conditional.get_certificate_label-36"><a href="#Conditional.get_certificate_label-36"><span class="linenos">36</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional.get_certificate_label-36"><a href="#Conditional.get_certificate_label-36"><span class="linenos">36</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="Conditional.get_certificate_label-37"><a href="#Conditional.get_certificate_label-37"><span class="linenos">37</span></a><span class="sd">        Get the contents of `certificate_label`.</span>
 </span><span id="Conditional.get_certificate_label-38"><a href="#Conditional.get_certificate_label-38"><span class="linenos">38</span></a>
 </span><span id="Conditional.get_certificate_label-39"><a href="#Conditional.get_certificate_label-39"><span class="linenos">39</span></a><span class="sd">        For `Conditional` nodes, obtain the certificates, recursively, from the</span>
@@ -425,7 +425,7 @@ statement_if_true : Node
 </span><span id="Conditional.get_certificate_label-44"><a href="#Conditional.get_certificate_label-44"><span class="linenos">44</span></a><span class="sd">        -------</span>
 </span><span id="Conditional.get_certificate_label-45"><a href="#Conditional.get_certificate_label-45"><span class="linenos">45</span></a><span class="sd">        : list of str</span>
 </span><span id="Conditional.get_certificate_label-46"><a href="#Conditional.get_certificate_label-46"><span class="linenos">46</span></a><span class="sd">            A list containing the certificate label of the `Node`.</span>
-</span><span id="Conditional.get_certificate_label-47"><a href="#Conditional.get_certificate_label-47"><span class="linenos">47</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional.get_certificate_label-47"><a href="#Conditional.get_certificate_label-47"><span class="linenos">47</span></a><span class="sd">        """</span>
 </span><span id="Conditional.get_certificate_label-48"><a href="#Conditional.get_certificate_label-48"><span class="linenos">48</span></a>
 </span><span id="Conditional.get_certificate_label-49"><a href="#Conditional.get_certificate_label-49"><span class="linenos">49</span></a>        <span class="k">return</span> <span class="p">[</span>
 </span><span id="Conditional.get_certificate_label-50"><a href="#Conditional.get_certificate_label-50"><span class="linenos">50</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">conditional_expression_boundary</span><span class="p">,</span>
@@ -465,7 +465,7 @@ node itself, and, finally, from the <code><a href="#Conditional.statement_if_tru
     <a class="headerlink" href="#Conditional.print"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Conditional.print-57"><a href="#Conditional.print-57"><span class="linenos">57</span></a>    <span class="nd">@override</span>
 </span><span id="Conditional.print-58"><a href="#Conditional.print-58"><span class="linenos">58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Conditional.print-59"><a href="#Conditional.print-59"><span class="linenos">59</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional.print-59"><a href="#Conditional.print-59"><span class="linenos">59</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="Conditional.print-60"><a href="#Conditional.print-60"><span class="linenos">60</span></a><span class="sd">        Print the string representation of this `Conditional`.</span>
 </span><span id="Conditional.print-61"><a href="#Conditional.print-61"><span class="linenos">61</span></a>
 </span><span id="Conditional.print-62"><a href="#Conditional.print-62"><span class="linenos">62</span></a><span class="sd">        The node itself is aligned with `indent`, and its children are padded</span>
@@ -475,7 +475,7 @@ node itself, and, finally, from the <code><a href="#Conditional.statement_if_tru
 </span><span id="Conditional.print-66"><a href="#Conditional.print-66"><span class="linenos">66</span></a><span class="sd">        ----------</span>
 </span><span id="Conditional.print-67"><a href="#Conditional.print-67"><span class="linenos">67</span></a><span class="sd">        indent : int (optional, default = 0)</span>
 </span><span id="Conditional.print-68"><a href="#Conditional.print-68"><span class="linenos">68</span></a><span class="sd">            The number of left padding spaces to indent.</span>
-</span><span id="Conditional.print-69"><a href="#Conditional.print-69"><span class="linenos">69</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional.print-69"><a href="#Conditional.print-69"><span class="linenos">69</span></a><span class="sd">        """</span>
 </span><span id="Conditional.print-70"><a href="#Conditional.print-70"><span class="linenos">70</span></a>
 </span><span id="Conditional.print-71"><a href="#Conditional.print-71"><span class="linenos">71</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span>
 </span><span id="Conditional.print-72"><a href="#Conditional.print-72"><span class="linenos">72</span></a>
@@ -514,7 +514,7 @@ with an additional left space.</p>
 </span><span id="Conditional.certificate-78"><a href="#Conditional.certificate-78"><span class="linenos"> 78</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="Conditional.certificate-79"><a href="#Conditional.certificate-79"><span class="linenos"> 79</span></a>        <span class="n">certificator_env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 </span><span id="Conditional.certificate-80"><a href="#Conditional.certificate-80"><span class="linenos"> 80</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-</span><span id="Conditional.certificate-81"><a href="#Conditional.certificate-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Conditional.certificate-81"><a href="#Conditional.certificate-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">"""</span>
 </span><span id="Conditional.certificate-82"><a href="#Conditional.certificate-82"><span class="linenos"> 82</span></a><span class="sd">        Compute the certificate of the current `Conditional`, and set this attribute.</span>
 </span><span id="Conditional.certificate-83"><a href="#Conditional.certificate-83"><span class="linenos"> 83</span></a>
 </span><span id="Conditional.certificate-84"><a href="#Conditional.certificate-84"><span class="linenos"> 84</span></a><span class="sd">        For `Conditional` nodes, certificate the `parenthesis_expression`,</span>
@@ -524,27 +524,27 @@ with an additional left space.</p>
 </span><span id="Conditional.certificate-88"><a href="#Conditional.certificate-88"><span class="linenos"> 88</span></a><span class="sd">        Parameters</span>
 </span><span id="Conditional.certificate-89"><a href="#Conditional.certificate-89"><span class="linenos"> 89</span></a><span class="sd">        ----------</span>
 </span><span id="Conditional.certificate-90"><a href="#Conditional.certificate-90"><span class="linenos"> 90</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Conditional.certificate-91"><a href="#Conditional.certificate-91"><span class="linenos"> 91</span></a><span class="sd">            The certificators&#39;s environment, that maps variables IDs to</span>
+</span><span id="Conditional.certificate-91"><a href="#Conditional.certificate-91"><span class="linenos"> 91</span></a><span class="sd">            The certificators's environment, that maps variables IDs to</span>
 </span><span id="Conditional.certificate-92"><a href="#Conditional.certificate-92"><span class="linenos"> 92</span></a><span class="sd">            encodings of their types.</span>
 </span><span id="Conditional.certificate-93"><a href="#Conditional.certificate-93"><span class="linenos"> 93</span></a>
 </span><span id="Conditional.certificate-94"><a href="#Conditional.certificate-94"><span class="linenos"> 94</span></a><span class="sd">        Returns</span>
 </span><span id="Conditional.certificate-95"><a href="#Conditional.certificate-95"><span class="linenos"> 95</span></a><span class="sd">        -------</span>
 </span><span id="Conditional.certificate-96"><a href="#Conditional.certificate-96"><span class="linenos"> 96</span></a><span class="sd">        certificator_env : dict[int, list[int]]</span>
-</span><span id="Conditional.certificate-97"><a href="#Conditional.certificate-97"><span class="linenos"> 97</span></a><span class="sd">            The updated certificator&#39;s environment, with any additional</span>
-</span><span id="Conditional.certificate-98"><a href="#Conditional.certificate-98"><span class="linenos"> 98</span></a><span class="sd">            information about the variable&#39;s types it might have captured.</span>
-</span><span id="Conditional.certificate-99"><a href="#Conditional.certificate-99"><span class="linenos"> 99</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Conditional.certificate-97"><a href="#Conditional.certificate-97"><span class="linenos"> 97</span></a><span class="sd">            The updated certificator's environment, with any additional</span>
+</span><span id="Conditional.certificate-98"><a href="#Conditional.certificate-98"><span class="linenos"> 98</span></a><span class="sd">            information about the variable's types it might have captured.</span>
+</span><span id="Conditional.certificate-99"><a href="#Conditional.certificate-99"><span class="linenos"> 99</span></a><span class="sd">        """</span>
 </span><span id="Conditional.certificate-100"><a href="#Conditional.certificate-100"><span class="linenos">100</span></a>
 </span><span id="Conditional.certificate-101"><a href="#Conditional.certificate-101"><span class="linenos">101</span></a>        <span class="c1"># Add the symbol to delimit the condition expression</span>
-</span><span id="Conditional.certificate-102"><a href="#Conditional.certificate-102"><span class="linenos">102</span></a>        <span class="n">_conditional_expression_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">&quot;COND&quot;</span><span class="p">]</span>
+</span><span id="Conditional.certificate-102"><a href="#Conditional.certificate-102"><span class="linenos">102</span></a>        <span class="n">_conditional_expression_boundary_symbol</span> <span class="o">=</span> <span class="n">SYMBOLS_MAP</span><span class="p">[</span><span class="s2">"COND"</span><span class="p">]</span>
 </span><span id="Conditional.certificate-103"><a href="#Conditional.certificate-103"><span class="linenos">103</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conditional_expression_boundary</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="Conditional.certificate-104"><a href="#Conditional.certificate-104"><span class="linenos">104</span></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_conditional_expression_boundary_symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Conditional.certificate-104"><a href="#Conditional.certificate-104"><span class="linenos">104</span></a>            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_conditional_expression_boundary_symbol</span><span class="si">}</span><span class="s2">"</span>
 </span><span id="Conditional.certificate-105"><a href="#Conditional.certificate-105"><span class="linenos">105</span></a>        <span class="p">)</span>
 </span><span id="Conditional.certificate-106"><a href="#Conditional.certificate-106"><span class="linenos">106</span></a>
 </span><span id="Conditional.certificate-107"><a href="#Conditional.certificate-107"><span class="linenos">107</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parenthesis_expression</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="Conditional.certificate-108"><a href="#Conditional.certificate-108"><span class="linenos">108</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="Conditional.certificate-109"><a href="#Conditional.certificate-109"><span class="linenos">109</span></a>        <span class="n">certificator_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement_if_true</span><span class="o">.</span><span class="n">certificate</span><span class="p">(</span><span class="n">certificator_env</span><span class="p">)</span>
 </span><span id="Conditional.certificate-110"><a href="#Conditional.certificate-110"><span class="linenos">110</span></a>
-</span><span id="Conditional.certificate-111"><a href="#Conditional.certificate-111"><span class="linenos">111</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_certificate</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_symbol</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="Conditional.certificate-111"><a href="#Conditional.certificate-111"><span class="linenos">111</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_certificate</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_symbol</span><span class="si">}</span><span class="s2">"</span>
 </span><span id="Conditional.certificate-112"><a href="#Conditional.certificate-112"><span class="linenos">112</span></a>
 </span><span id="Conditional.certificate-113"><a href="#Conditional.certificate-113"><span class="linenos">113</span></a>        <span class="k">return</span> <span class="n">certificator_env</span>
 </span></pre></div>
