@@ -165,7 +165,7 @@ The EBNF expression of the language grammar is shown below:
 
 ## Lexer
 
-The [`Lexer`](https://github.com/guilhermeolivsilva/project-charon/blob/main/src/lexer.py)
+The [`Lexer`](src/lexer.py)
 tokenizes and pre-processes the code. It also makes some basic syntax checks.
 
 Check its attributes (namely, `conditionals`, `symbols`, `operators`, and
@@ -176,7 +176,7 @@ checks it performs.
 ## Abstract Syntax Tree
 
 The language builds its Abstract Syntax Tree (AST) with the
-[`AbstractSyntaxTree`](https://github.com/guilhermeolivsilva/project-charon/blob/main/src/abstract_syntax_tree.py)
+[`AbstractSyntaxTree`](src/abstract_syntax_tree.py)
 class. It has operation precedence, and is generated recursively. It makes
 additional syntax checks, and it is worth to check its `Raises` sections.
 
@@ -191,7 +191,7 @@ and generates a list of instructions to be run by the [`VirtualMachine`](#virtua
 ## Virtual Machine
 
 Finally, the compiled code runs in the
-[`VirtualMachine`](https://github.com/guilhermeolivsilva/project-charon/blob/main/src/virtual_machine.py).
+[`VirtualMachine`](src/virtual_machine.py).
 It interprets the code, instruction by instruction, and implements a local memory
 and some execution registers (`program_counter`, `memory_pointer` etc.).
 
@@ -202,7 +202,7 @@ registers.
 # Examples
 
 All the following examples have been implemented as integration tests, and you
-may find it [here](https://github.com/guilhermeolivsilva/project-charon/tree/main/tests/integration).
+may find it [here](tests/integration).
 
 These tests cover all of the language's functionality:
 
@@ -220,4 +220,4 @@ And also some cool programs:
 - compute the greatest common divisor between two numbers.
 
 There are also unit tests. These are very useful to dive deeper into additional
-details of the project's features. You may find it [here](https://github.com/guilhermeolivsilva/project-charon/tree/main/tests/unit).
+details of the project's features. You may find it [here](tests/unit).
